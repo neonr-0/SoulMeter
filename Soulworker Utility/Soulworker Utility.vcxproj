@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -121,17 +122,20 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
@@ -214,6 +218,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketUseSkill.h" />
     <ClInclude Include="Soulworker Packet\SWPacketWorldChange.h" />
     <ClInclude Include="Soulworker Packet\SWSPacket.h" />
+    <ClInclude Include="Soulworker Packet\SWSPacketHeartbeat.h" />
     <ClInclude Include="Soulworker Packet\SWSPacketMaker.h" />
     <ClInclude Include="Soulworker Packet\SWSPacketMyDodgeUsed.h" />
     <ClInclude Include="Soulworker Packet\SWSPacketMySkillUsed.h" />
@@ -282,6 +287,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketUseSkill.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketWorldChange.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacket.cpp" />
+    <ClCompile Include="Soulworker Packet\SWSPacketHeartbeat.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacketMaker.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacketMyDodgeUsed.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacketMySkillUsed.cpp" />

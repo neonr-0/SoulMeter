@@ -36,17 +36,18 @@ VOID UtillWindow::Update()
 	//	ImGui::EndChild();
 	//	ImGui::End();
 	//}
+	if (_isOpen) {
+		if (ImGui::BeginTabItem(STR_UTILWINDOW_COMBATLOG))
+		{
+			ImGui::BeginChild("Scrolling");
+			std::list<string>::iterator it;
+			for (it = logList.begin(); it != logList.end(); it++)
+				ImGui::Text(it->c_str());
+			ImGui::SetScrollHere(1.0f);
+			ImGui::EndChild();
 
-	if (ImGui::BeginTabItem(STR_UTILWINDOW_COMBATLOG))
-	{
-		ImGui::BeginChild("Scrolling");
-		std::list<string>::iterator it;
-		for (it = logList.begin(); it != logList.end(); it++)
-			ImGui::Text(it->c_str());
-		ImGui::SetScrollHere(1.0f);
-		ImGui::EndChild();
-
-		ImGui::EndTabItem();
+			ImGui::EndTabItem();
+		}
 	}
 }
 

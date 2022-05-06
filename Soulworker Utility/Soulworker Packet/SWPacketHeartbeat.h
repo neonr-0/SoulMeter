@@ -8,8 +8,9 @@
 
 #pragma pack(push, 1)
 typedef struct _SWPACKETHEARTBEAT {
+	BYTE _unknown01; //0430new
 	UINT32 _millisecond; // 1000이 1초인 무언가
-	BYTE _unknown01[4];
+	BYTE _unknown02[4];
 }SWPACKETHEARTBEAT;
 
 #pragma pack(pop)

@@ -47,4 +47,7 @@ public:
 	VOID Update();
 	VOID ClearTable();
 	VOID ResizeTalbe();
+
+	ULONG64 _lastSendTimestamp = 0;
+	INT _ping = 0;
 };

@@ -11,6 +11,9 @@ SWSPacketMaker.cpp
 SWSPacketMaker.h
 SWSPacket.h
 
+# Backup Files
+*.bak
+
 # User Option Files
 *.ini
 *.xml
