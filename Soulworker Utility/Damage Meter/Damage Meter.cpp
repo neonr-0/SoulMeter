@@ -55,20 +55,29 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 	if (_mazeEnd)
 		return;
 
-
-	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
-	UINT32 db2 = 0;
-	if (db != nullptr) {
-		db2 = db->_db2;
-	}
-	// 타이머가 멈춰있고 퍼펫구슬/옥타곤/폭심지 때린거면 무시
-	if (!isRun() && (resumeIgnoreIdList.find(db2) != resumeIgnoreIdList.end()))
-		return;
-
-	// 메이즈 들어와서 켰을경우에도 무시
+	// Meter must know mazeId to work correctly
 	if (GetWorldID() == 0)
 		return;
 
+	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
+	UINT32 monsterId = 0;
+	if (db != nullptr) {
+		monsterId = db->_db2;
+	}
+
+	if (!isRun()) {
+		// Do not start/resume if it is damage to Puppet Orb,Ephnel Octagon, or Nabi Bomb wick
+		if (resumeIgnoreIdList.find(monsterId) != resumeIgnoreIdList.end()) {
+			return;
+		}
+
+		// If it is BS normal, only damage to Boss can start/resume timer.
+		if (GetWorldID() == 21018) {
+			if ((monsterId != 31310101) && (monsterId != 31310102)) {
+				return;
+			}
+		}
+	}
 
 	Start();
 	InsertPlayerInfo(id, totalDMG, soulstoneDMG, damageType, maxCombo, monsterID, skillID);
