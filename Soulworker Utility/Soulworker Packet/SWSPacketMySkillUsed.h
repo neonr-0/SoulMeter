@@ -6,7 +6,6 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKET_MYSKILLUSED {
-	BYTE unk02[1]; //0430new
 	UINT32 _skillId;
 	UINT32 _playerId;
 	FLOAT _locationX;

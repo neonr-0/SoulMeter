@@ -3,7 +3,6 @@
 
 #pragma pack(push, 1)
 typedef struct _SWPACKETBUFFIN {
-	BYTE _unknown01; //0430new
 	UINT32 _playerID;
 	USHORT _buffID;
 	FLOAT _duration;

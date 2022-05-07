@@ -5,7 +5,7 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKETOBJECTCREATE {
-	SHORT _unknown01; //0430new
+	BYTE _unknown01; //0430new
 	UINT32 _id;
 	FLOAT _locationX;
 	FLOAT _locationY;

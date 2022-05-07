@@ -5,7 +5,6 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKET_OTHERUSESKILL {
-	BYTE _unk01;
 	UINT32 _playerId;
 	UINT32 _skillId;
 	FLOAT _locationX;

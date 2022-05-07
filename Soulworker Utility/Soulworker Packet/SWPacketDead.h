@@ -5,7 +5,6 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKET_DEAD {
-	BYTE _unknown1;
 	UINT32 _playerid;
 	BYTE _unknown2[7];
 }SWPACKET_DEAD;

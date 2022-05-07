@@ -5,7 +5,6 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKETWORLDCHANGE {
-	BYTE _unknown2[1]; //0430new
 	UINT32 _id;
 	BYTE _unknwon1[20];
 	USHORT _worldID;

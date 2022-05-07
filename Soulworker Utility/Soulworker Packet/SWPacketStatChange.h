@@ -6,7 +6,6 @@
 
 typedef struct _SWPACKETSTATCHANGE_HEADER {
 	BYTE _unknown01;
-	BYTE _unknown02; //0430new
 	UINT32 _playerID;
 	BYTE _statsCount;
 }SWPACKETSTATCHANGE_HEADER;

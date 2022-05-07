@@ -5,8 +5,7 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKETAKASIC {
-	BYTE unk01; // 0403new
-	UINT32 _ownder_id; // 0403new??
+	UINT32 _ownder_id;
 	UINT32 _id;
 }SWPACKETAKASIC;
 

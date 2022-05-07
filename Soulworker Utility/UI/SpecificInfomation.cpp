@@ -335,7 +335,7 @@ VOID SpecificInformation::UpdateBuffTable() {
 
 		ImGui::SetWindowFontScale(_columnFontScale);
 
-		ImGui::TableSetupColumn(STR_TABLE_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(STR_SPECIFICINFO_BUFF_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(STR_TABLE_DURATION, ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableHeadersRow();
 

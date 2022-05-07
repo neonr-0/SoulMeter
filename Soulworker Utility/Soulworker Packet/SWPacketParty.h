@@ -16,7 +16,7 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKETPARTY_HEADER {
-	BYTE _unknown01[5]; //0430new
+	BYTE _unknown01[4]; //0430new
 	UINT32 _partyHostID;
 	BYTE _unknown02[10];
 	BYTE _partyPlayerCount;

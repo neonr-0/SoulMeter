@@ -7,7 +7,6 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKET_MYDODGEUSED {
-	BYTE unk[1]; //0430new
 	UINT32 _skillId;
 	UINT32 _playerId;
 	BYTE _unknown01[46];

@@ -3,7 +3,6 @@
 
 #pragma pack(push, 1)
 typedef struct _SWPACKETAGGROCHANGED {
-	BYTE unk01; //0430new
 	UINT32 _id;
 	UINT32 _targetedId;
 }SWPACKETAGGROCHANGED;

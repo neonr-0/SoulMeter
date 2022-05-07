@@ -16,7 +16,7 @@
 #pragma pack(push, 1)
 
 typedef struct _SWPACKETPOS_HEADER {
-	BYTE _unknown01[5]; //0430new
+	BYTE _unknown01[4];
 	UINT32 _posHostID;
 	BYTE _unknown02[10];
 	BYTE _posPlayerCount;
