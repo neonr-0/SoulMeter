@@ -77,7 +77,7 @@ VOID SpecificInformation::UpdateSkillInfo() {
 
 VOID SpecificInformation::UpdateSkillTotalInfo()
 {
-	if (ImGui::BeginTabItem("Total"))
+	if (ImGui::BeginTabItem(STR_SPECIFICINFO_TOTAL))
 	{
 
 			auto player = DAMAGEMETER.GetPlayerInfo(_playerID);
@@ -97,7 +97,7 @@ VOID SpecificInformation::UpdateSkillTotalInfo()
 			if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
 
 				ImGui::TableSetupColumn(STR_TABLE_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
-				ImGui::TableSetupColumn(u8"시전횟수", ImGuiTableColumnFlags_WidthFixed, -1);
+				ImGui::TableSetupColumn(STR_SPECIFICINFO_USE_SKILL_COUNTS, ImGuiTableColumnFlags_WidthFixed, -1);
 				ImGui::TableHeadersRow();
 
 				CHAR comma[128] = { 0 }; CHAR label[128] = { 0 };
