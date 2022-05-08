@@ -181,6 +181,16 @@ VOID UiOption::OpenOption() {
 			_open = FALSE;
 		}
 
+#ifdef _DEBUG
+		if (ImGui::Button("START TIMER")) {
+			DAMAGEMETER.Start();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("STOP TIMER")) {
+			DAMAGEMETER.Suspend();
+		}
+#endif
+
 		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
 		ShowFontSelector();
 		ImGui::PopItemWidth();

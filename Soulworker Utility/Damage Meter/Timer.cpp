@@ -3,9 +3,9 @@
 
 Timer::Timer() {
 	_status = TIMER_STATUS::end;
-	_startTimePoint = std::chrono::system_clock::now();
-	_suspendTimePoint = std::chrono::system_clock::now();
-	_suspendedTime = 0.f;
+	_startTimePoint = GetCurrentTimeStamp();
+	_suspendTimePoint = GetCurrentTimeStamp();
+	_suspendedTime = 0;
 }
 
 Timer::~Timer() {
@@ -15,14 +15,12 @@ Timer::~Timer() {
 VOID Timer::Run() {
 	
 	if (_status == TIMER_STATUS::end) {
-		_startTimePoint = std::chrono::system_clock::now();
+		_startTimePoint = GetCurrentTimeStamp();
 		_suspendedTime = 0.f;
 		_status = TIMER_STATUS::run;
 	}
 	else if (_status == TIMER_STATUS::suspend) {
-		std::chrono::duration<FLOAT> suspendedTime;
-		suspendedTime = std::chrono::system_clock::now() - _suspendTimePoint;
-		_suspendedTime += suspendedTime.count();
+		_suspendedTime += GetCurrentTimeStamp() - _suspendTimePoint;
 		_status = TIMER_STATUS::run;
 	}
 	else {
@@ -33,7 +31,7 @@ VOID Timer::Run() {
 VOID Timer::Suspend() {
 
 	if (_status == TIMER_STATUS::run) {
-		_suspendTimePoint = std::chrono::system_clock::now();
+		_suspendTimePoint = GetCurrentTimeStamp();
 		_status = TIMER_STATUS::suspend;
 	}
 	else {
@@ -53,12 +51,12 @@ BOOL Timer::isRun() {
 		return FALSE;
 }
 
-FLOAT Timer::GetTime() {
+ULONG64 Timer::GetTime() {
 
-	std::chrono::duration<FLOAT> time;
+	ULONG64 time;
 
 	if (_status == TIMER_STATUS::run) {
-		time = std::chrono::system_clock::now() - _startTimePoint;
+		time = GetCurrentTimeStamp() - _startTimePoint;
 	}
 	else if (_status == TIMER_STATUS::suspend) {
 		time = _suspendTimePoint - _startTimePoint;
@@ -67,5 +65,5 @@ FLOAT Timer::GetTime() {
 		return 0;
 	}
 
-	return time.count() - _suspendedTime;
+	return time - _suspendedTime;
 }
