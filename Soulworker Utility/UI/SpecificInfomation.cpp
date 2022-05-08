@@ -34,7 +34,7 @@ VOID SpecificInformation::Update(BOOL* open) {
 	_accumulatedTime += UIWINDOW.GetDeltaTime();
 
 	if (_accumulatedTime > UIOPTION.GetRefreshTime()) {
-		_tableTime = DAMAGEMETER.GetTime();
+		_tableTime = DAMAGEMETER.GetTime() / 1000;
 		_accumulatedTime = 0;
 	}
 
@@ -345,7 +345,7 @@ VOID SpecificInformation::UpdateBuffTable() {
 		for (auto itr = (*buff)->begin(); itr != (*buff)->end(); itr++) {
 
 			CHAR label[128] = { 0 };
-			FLOAT duration_percent = (*itr)->GetTime() / DAMAGEMETER.GetTime();
+			FLOAT duration_percent = (*itr)->GetTime() / (DAMAGEMETER.GetTime() / 1000);
 
 			if (duration_percent > 1)
 				duration_percent = 1;
