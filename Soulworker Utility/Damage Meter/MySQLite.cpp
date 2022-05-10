@@ -77,7 +77,7 @@ BOOL MySQL::InitSkillDB() {
 
 	CHAR* errbuf = nullptr;
 
-	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Skill(Id INTEGER PRIMARY KEY, Name_KR TEXT NOT NULL);";
+	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Skill(Id INTEGER PRIMARY KEY, Name_TC TEXT NOT NULL, Name_EN TEXT NULL);";
 
 	if (sqlite3_exec(_db, sql, 0, 0, &errbuf) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in InitSkillDB : %s"), errbuf);
@@ -103,7 +103,7 @@ BOOL MySQL::InitMonsterDB() {
 	CHAR* errbuf = nullptr;
 
 	//const CHAR* sql = "CREATE TABLE IF NOT EXISTS Monster(Db1 INTEGER, Db2 INTEGER, Name_KR TEXT NOT NULL, PRIMARY KEY(Db1, Db2));";
-	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Monster(Db2 INTEGER, Name_TC TEXT NOT NULL, PRIMARY KEY(Db2));";
+	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Monster(Db2 INTEGER, Name_TC TEXT NOT NULL, Name_EN TEXT NULL, PRIMARY KEY(Db2));";
 
 	if (sqlite3_exec(_db, sql, 0, 0, &errbuf) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in InitMonsterDB : %s"), errbuf);
@@ -127,7 +127,7 @@ BOOL MySQL::InitMonsterDB() {
 BOOL MySQL::InitMapDB() {
 	CHAR* errbuf = nullptr;
 
-	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Map(Id INTEGER PRIMARY KEY, Name_TC TEXT NOT NULL);";
+	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Map(Id INTEGER PRIMARY KEY, Name_TC TEXT NOT NULL, Name_EN TEXT NULL);";
 
 	if (sqlite3_exec(_db, sql, 0, 0, &errbuf) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in InitMapDB : %s"), errbuf);
@@ -150,7 +150,7 @@ BOOL MySQL::InitMapDB() {
 BOOL MySQL::InitBuffDB() {
 	CHAR* errbuf = nullptr;
 
-	const CHAR* sql = "CREATE TABLE IF NOT EXISTS \"Buff\" (\"Id\" INTEGER,\"Name_EN\" TEXT,\"Name_TC\" TEXT, PRIMARY KEY(\"Id\"))";
+	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Buff (Id INTEGER PRIMARY KEY, Name_EN TEXT NULL, Name_TC TEXT NOT NULL)";
 
 	if (sqlite3_exec(_db, sql, 0, 0, &errbuf) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in InitBuffDB : %s"), errbuf);
