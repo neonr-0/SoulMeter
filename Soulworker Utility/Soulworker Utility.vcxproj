@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>SoulMeter 1.2.9.10</TargetName>
+    <TargetName>SoulMeter 1.3.0.0</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -192,6 +192,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Soulworker Packet\PacketInfo.h" />
     <ClInclude Include="Soulworker Packet\PacketType.h" />
+    <ClInclude Include="Soulworker Packet\SWCrypt.h" />
     <ClInclude Include="Soulworker Packet\SWPacket.h" />
     <ClInclude Include="Soulworker Packet\SWPacketAggroChanged.h" />
     <ClInclude Include="Soulworker Packet\SWPacketAkasic.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet Capture\MyWinDivert.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Soulworker Packet\SWCrypt.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacket.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketAggroChanged.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketAkasic.cpp" />

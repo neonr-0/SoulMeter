@@ -4,6 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Decrypt
+SWCrypt.cpp
+SWCrypt.h
 SWPacketMaker.cpp
 SWPacketMaker.h
 SWPacket.h

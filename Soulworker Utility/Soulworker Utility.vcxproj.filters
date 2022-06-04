@@ -118,6 +118,9 @@
     <Filter Include="SWSPacket\0x01">
       <UniqueIdentifier>{7322b679-2408-48db-bc9d-a6124f8bfc1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWCrypt">
+      <UniqueIdentifier>{22bb4fe9-2c11-4f33-a0b1-609f858a7e6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -342,6 +345,9 @@
     <ClInclude Include="Soulworker Packet\SWSPacketHeartbeat.h">
       <Filter>SWSPacket\0x01</Filter>
     </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWCrypt.h">
+      <Filter>SWCrypt</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWSPacketHeartbeat.cpp">
       <Filter>SWSPacket\0x01</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWCrypt.cpp">
+      <Filter>SWCrypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
