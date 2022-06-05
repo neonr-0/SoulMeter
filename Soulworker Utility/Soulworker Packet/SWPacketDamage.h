@@ -40,8 +40,9 @@ static unordered_set<UINT32> pauseIdList({
 	31309102, // 
 	31301001, // 
 	31301002, // 
-	31310101 // 
+	31310101, // 
 	// 702 // 
+	31310103 // BS Hard Phase 1
 	});
 static unordered_set<UINT32> endIdList({
 	31308001, // 
