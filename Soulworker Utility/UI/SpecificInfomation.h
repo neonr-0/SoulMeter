@@ -20,6 +20,7 @@ private:
 	VOID UpdateSkillTotalInfo();
 	VOID UpdateMonsterCombo();
 	VOID UpdateSkillTable();
+	VOID UpdateSkillTotalTable();
 
 	// 버프 집계 정보
 	VOID UpdateBuffMeter();

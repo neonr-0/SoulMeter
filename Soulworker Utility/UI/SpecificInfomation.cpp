@@ -75,60 +75,71 @@ VOID SpecificInformation::UpdateSkillInfo() {
 	}
 }
 
-VOID SpecificInformation::UpdateSkillTotalInfo()
-{
+VOID SpecificInformation::UpdateSkillTotalInfo() {
+
 	if (ImGui::BeginTabItem(STR_SPECIFICINFO_TOTAL))
 	{
+		ImGui::OutlineText::PushOutlineText(ImGui::IMGUIOUTLINETEXT(UIOPTION.GetOutlineColor(), 1));
+		ImGui::TextAlignCenter::SetTextAlignCenter();
+		{
+			UpdateSkillTotalTable();
+		}
+		ImGui::TextAlignCenter::UnSetTextAlignCenter();
+		ImGui::OutlineText::PopOutlineText();
 
-			auto player = DAMAGEMETER.GetPlayerInfo(_playerID);
-
-			if (player == DAMAGEMETER.end())
-				return;
-
-
-			ImGuiStyle& style = ImGui::GetStyle();
-
-			ImVec2 prevWindowPadding = style.WindowPadding;
-			style.WindowPadding.x = 0;
-			style.WindowPadding.y = 0;
-
-			CHAR table[128] = { 0 };
-			sprintf_s(table, 128, "##skilltable%d", _playerID);
-			if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
-
-				ImGui::TableSetupColumn(STR_TABLE_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
-				ImGui::TableSetupColumn(STR_SPECIFICINFO_USE_SKILL_COUNTS, ImGuiTableColumnFlags_WidthFixed, -1);
-				ImGui::TableHeadersRow();
-
-				CHAR comma[128] = { 0 }; CHAR label[128] = { 0 };
-				UINT windowWidth = ImGui::GetWindowWidth();
-
-				ImGui::SetWindowFontScale(_tableFontScale);
-
-				for (auto itr = (*player)->skillCounts.begin(); itr != (*player)->skillCounts.end(); itr++) {
-					ImGui::TableNextRow();
-					ImGui::TableNextColumn();
-
-					// NAME
-					SWDB.GetSkillName(itr->first, _skillName, SKILL_NAME_LEN);
-
-					ImGui::Text(_skillName);
-
-					ImGui::TableNextColumn();
-
-					// 시전횟수
-					sprintf_s(label, 128, "%d", itr->second);
-					TextCommma(label, comma);
-					ImGui::Text(comma);
-				}
-				ImGui::EndTable();
-			}
-			ImGui::SetWindowFontScale(_globalFontScale);
-
-			style.WindowPadding.x = prevWindowPadding.x;
-			style.WindowPadding.y = prevWindowPadding.y;
 		ImGui::EndTabItem();
 	}
+}
+
+VOID SpecificInformation::UpdateSkillTotalTable()
+{
+	auto player = DAMAGEMETER.GetPlayerInfo(_playerID);
+
+	if (player == DAMAGEMETER.end())
+		return;
+
+
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	ImVec2 prevWindowPadding = style.WindowPadding;
+	style.WindowPadding.x = 0;
+	style.WindowPadding.y = 0;
+
+	CHAR table[128] = { 0 };
+	sprintf_s(table, 128, "##skilltotaltable%d", _playerID);
+	if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
+
+		ImGui::TableSetupColumn(STR_TABLE_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(STR_SPECIFICINFO_USE_SKILL_COUNTS, ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableHeadersRow();
+
+		CHAR comma[128] = { 0 }; CHAR label[128] = { 0 };
+		UINT windowWidth = ImGui::GetWindowWidth();
+
+		ImGui::SetWindowFontScale(_tableFontScale);
+
+		for (auto itr = (*player)->skillCounts.begin(); itr != (*player)->skillCounts.end(); itr++) {
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+
+			// NAME
+			SWDB.GetSkillName(itr->first, _skillName, SKILL_NAME_LEN);
+
+			ImGui::Text(_skillName);
+
+			ImGui::TableNextColumn();
+
+			// 시전횟수
+			sprintf_s(label, 128, "%d", itr->second);
+			TextCommma(label, comma);
+			ImGui::Text(comma);
+		}
+		ImGui::EndTable();
+	}
+	ImGui::SetWindowFontScale(_globalFontScale);
+
+	style.WindowPadding.x = prevWindowPadding.x;
+	style.WindowPadding.y = prevWindowPadding.y;
 }
 
 VOID SpecificInformation::UpdateMonsterCombo() {

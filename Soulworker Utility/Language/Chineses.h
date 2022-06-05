@@ -20,7 +20,7 @@
 
 // https://i.imgur.com/0UqwGlV.png
 #define STR_TABLE_YOU u8"我"
-#define STR_TABLE_NAME u8"角色"
+#define STR_TABLE_NAME u8"名稱"
 #define STR_TABLE_DPS u8"DPS"
 #define STR_TABLE_DAMAGE_PERCENT u8"D%"
 #define STR_TABLE_TOTAL_DAMAGE u8"DAMAGE"

@@ -40,6 +40,9 @@ VOID SWPacketDamage::Do() {
 		player->_playerID = 0;
 	}
 
+	//if (!DAMAGEMETER.CheckPlayer(player->_playerID))
+	//	Log::WriteLogA(const_cast<CHAR*>("[DEBUG] [ID = %04x]"), player->_playerID);
+
 	// If attacker is not a player, then check it is summoned object and get summoner's id for checking is summoner a player
 	// 
 	if (!DAMAGEMETER.CheckPlayer(player->_playerID)) {
@@ -66,7 +69,7 @@ VOID SWPacketDamage::Do() {
 			//DAMAGEMETER.AddDamage(player->_playerID, monster->_totalDMG, monster->_criticalDMG, player->_maxCombo != 0 ? 1 : 0, player->_maxCombo != 0 ? CheckCritical(monster->_damageType) : 0, player->_maxCombo, monster->_monsterID, player->_skillID);
 
 		//Log::WriteLogA(const_cast<CHAR*>("[DEBUG] [MonsterNum = 0x%01x] [MonsterID = %04x] [PlayerID = %04x] [CheckPlayer = %d] [GetOwnerID = %04x] [OwnerCheckPlayer = %d]"),
-		//	monsterNum, monsterID, player->_playerID, DAMAGEMETER.CheckPlayer(player->_playerID),
+		//	monsterNum, monster->_monsterID, player->_playerID, DAMAGEMETER.CheckPlayer(player->_playerID),
 		//	DAMAGEMETER.GetOwnerID(player->_playerID), DAMAGEMETER.CheckPlayer(DAMAGEMETER.GetOwnerID(player->_playerID)));
 
 
