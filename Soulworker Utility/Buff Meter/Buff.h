@@ -1,6 +1,6 @@
 #pragma once
 
-#define BUFF_NAME_LEN 64 // 원래 32임
+#define BUFF_NAME_LEN 64 // 
 
 class Buff : public MemoryPool<Buff> {
 private:
