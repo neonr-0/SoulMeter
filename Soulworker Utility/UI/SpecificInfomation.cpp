@@ -98,7 +98,6 @@ VOID SpecificInformation::UpdateSkillTotalTable()
 	if (player == DAMAGEMETER.end())
 		return;
 
-
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	ImVec2 prevWindowPadding = style.WindowPadding;

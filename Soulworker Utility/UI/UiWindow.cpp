@@ -225,6 +225,10 @@ VOID UiWindow::Update() {
 	PLOTWINDOW.Update();
 	UpdateMainTable();
 
+#ifdef _DEBUG
+	ImGui::ShowMetricsWindow();
+#endif
+
 	ImGui::EndFrame();
 	DrawScene();
 }
