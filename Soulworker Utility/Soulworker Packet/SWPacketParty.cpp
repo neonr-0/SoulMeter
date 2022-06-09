@@ -18,8 +18,6 @@ VOID SWPacketParty::Do() {
 		SWPACKETPARTY_DATA* party_data = (SWPACKETPARTY_DATA*)p_data;
 		BYTE job = *(p_data + sizeof(SWPACKETPARTY_DATA) + party_data->_nickSize + 1);
 
-		//printf("job %d", job);
-
 		WCHAR utf16[MAX_NAME_LEN] = {0};
 		memcpy_s(utf16, MAX_NAME_LEN * sizeof(WCHAR), p_data + sizeof(SWPACKETPARTY_DATA), party_data->_nickSize);
 
