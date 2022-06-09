@@ -23,14 +23,16 @@ struct damageInfo {
 	double _time;
 };
 
-class PlotWindow : public Singleton<PlotWindow> {
+class PlotInfo : public MemoryPool<PlotInfo> {
 private:
+	UINT32 _id;
+	string _name;
+
 	vector<metaInfo*> metaInfos;
 	unordered_map<UINT32, vector<double>> dpsList;
 	unordered_map<UINT32, vector<double>> timeList;
-	bool _isOpen = false;
-	bool _allowed = false;
 	double _lastTime = -1;
+	bool _allowed = false;
 
 	vector<double> _abList;
 	vector<double> _abTimeList;
@@ -44,7 +46,65 @@ private:
 	vector<double> _annonYList;
 	vector<string> _annonContentList;
 
+protected:
+	PlotInfo() {}
+	PlotInfo(const PlotInfo& other) {}
+
+public:
+	PlotInfo::PlotInfo(UINT32 id, string name);
+
+	VOID AddData(DOUBLE DPS, DOUBLE time, bool isFirstElement);
+	VOID AddAbData(DOUBLE DPS, DOUBLE time);
+	VOID AddJqData(BYTE stack, DOUBLE time);
+	VOID AddAnnonation(string content);
+	vector<metaInfo*> GetMetaInfo()
+	{
+		return metaInfos;
+	}
+	unordered_map<UINT32, vector<double>> GetTimeList()
+	{
+		return timeList;
+	}
+	unordered_map<UINT32, vector<double>> GetDPSList()
+	{
+		return dpsList;
+	}
+	vector<double> GetABList()
+	{
+		return _abList;
+	}
+	vector<double> GetABTimeList()
+	{
+		return _abTimeList;
+	}
+	vector<double> GetJQList()
+	{
+		return _jqList;
+	}
+	vector<double> GetJQTimeList()
+	{
+		return _jqTimeList;
+	}
+	vector<double> GetAnnonXList()
+	{
+		return _annonXList;
+	}
+	vector<double> GetAnnonYList()
+	{
+		return _annonYList;
+	}
+	vector<string> GetAnnonContentList()
+	{
+		return _annonContentList;
+	}
+};
+
+class PlotWindow : public Singleton<PlotWindow> {
+private:
+	bool _isOpen = false;
 	bool _end = false;
+
+	PlotInfo* pi = nullptr;
 
 	VOID UpdatePlotTab();
 	VOID UpdateAbPlotTab();
@@ -54,10 +114,14 @@ public:
 	VOID AddAbData(DOUBLE DPS, DOUBLE time);
 	VOID AddJqData(BYTE stack, DOUBLE time);
 	VOID AddAnnonation(string content);
+
 	VOID OpenWindow();
 	VOID Update();
 	VOID End();
 	VOID Clear();
+
+	PlotInfo* PlotWindow::GetPlotInfo();
+	VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi);
 
 	PlotWindow();
 	~PlotWindow();

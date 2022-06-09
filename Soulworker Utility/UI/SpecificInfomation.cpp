@@ -27,7 +27,7 @@ VOID SpecificInformation::SetupFontScale() {
 	_tableFontScale = _globalFontScale * UIOPTION.GetTableFontScale();
 }
 
-VOID SpecificInformation::Update(BOOL* open) {
+VOID SpecificInformation::Update(BOOL* open, INT32 index) {
 
 	SetupFontScale();
 
@@ -40,10 +40,10 @@ VOID SpecificInformation::Update(BOOL* open) {
 
 	CHAR title[128] = { 0 };
 
-	sprintf_s(title, 128, "%s %s", DAMAGEMETER.GetPlayerName(_playerID), STR_DETAIL_DETAIL);
+	sprintf_s(title, 128, "%s %s ###SpecificInformation%d", DAMAGEMETER.GetPlayerName(_playerID), STR_DETAIL_DETAIL, index);
 	ImGui::Begin(title, (bool*)open, ImGuiWindowFlags_None);
 	{
-		sprintf_s(title, 128, "##tab%d", _playerID);
+		sprintf_s(title, 128, "##tab");
 
 		if(ImGui::BeginTabBar(title))
 		{
@@ -105,7 +105,7 @@ VOID SpecificInformation::UpdateSkillTotalTable()
 	style.WindowPadding.y = 0;
 
 	CHAR table[128] = { 0 };
-	sprintf_s(table, 128, "##skilltotaltable%d", _playerID);
+	sprintf_s(table, 128, "##skilltotaltable");
 	if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
 
 		ImGui::TableSetupColumn(STR_TABLE_NAME, ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
@@ -191,7 +191,7 @@ VOID SpecificInformation::UpdateSkillTable() {
 	style.WindowPadding.y = 0;
 
 	CHAR table[128] = { 0 };
-	sprintf_s(table, 128, "##skilltable%d", _playerID);
+	sprintf_s(table, 128, "##skilltable");
 	if(ImGui::BeginTable(table, 7, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
 	
 		ImGui::SetWindowFontScale(_columnFontScale);
@@ -340,7 +340,7 @@ VOID SpecificInformation::UpdateBuffTable() {
 	style.WindowPadding.y = 0;
 
 	CHAR table[128] = { 0 };
-	sprintf_s(table, 128, "##bufftable%d", _playerID);
+	sprintf_s(table, 128, "##bufftable");
 	if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
 
 		ImGui::SetWindowFontScale(_columnFontScale);

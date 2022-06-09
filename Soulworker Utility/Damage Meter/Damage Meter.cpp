@@ -527,7 +527,7 @@ VOID SWDamageMeter::Clear() {
 
 	if (!_historyMode) {
 		if (_playerInfo.size() > 0) {
-			HISTORY.push_back(_playerInfo);
+			HISTORY.push_back(_playerInfo, BUFFMETER.GetPlayerInfo(), PLOTWINDOW.GetPlotInfo());
 			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 				itr->second->MeterReseted();
 			}
@@ -541,6 +541,7 @@ VOID SWDamageMeter::Clear() {
 	}
 	_timer.Stop();
 	PLOTWINDOW.Clear();
+	BUFFMETER.Clear();
 	_aggroedId = 0;
 }
 
@@ -585,6 +586,8 @@ VOID SWDamageMeter::SetHistory(INT index) {
 	_playerInfo = history._history;
 	_historyWorldID = history._worldID;
 	_historyTime = history._time;
+	BUFFMETER.SetPlayerInfo(history._buffHistory);
+	PLOTWINDOW.SetPlotInfo(history._plotHistory);
 
 	_historyMode = TRUE;
 }

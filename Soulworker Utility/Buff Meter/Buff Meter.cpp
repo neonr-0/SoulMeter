@@ -60,12 +60,23 @@ BuffMeter::BuffMeter() {
 }
 
 BuffMeter::~BuffMeter() {
+	Clear();
+	FreeLock();
+}
 
-	for (auto itr = _playerBuffInfo.begin(); itr != _playerBuffInfo.end(); itr++)
-		delete* itr;
+VOID BuffMeter::Clear() {
+	//for (auto itr = _playerBuffInfo.begin(); itr != _playerBuffInfo.end(); itr++)
+	//	delete* itr;
 
 	_playerBuffInfo.clear();
-	_mutex.unlock();
+}
+
+std::vector<PLAYERBUF*> BuffMeter::GetPlayerInfo() {
+	return _playerBuffInfo;
+}
+
+VOID BuffMeter::SetPlayerInfo(std::vector<PLAYERBUF*> it) {
+	_playerBuffInfo = it;
 }
 
 VOID BuffMeter::AddBuff(UINT32 playerID, USHORT buffid, BYTE stack) {

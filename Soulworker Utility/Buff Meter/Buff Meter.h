@@ -36,6 +36,10 @@ public:
 	BuffMeter();
 	~BuffMeter();
 
+	std::vector<PLAYERBUF*> GetPlayerInfo();
+	VOID SetPlayerInfo(std::vector<PLAYERBUF*> it);
+	VOID Clear();
+
 	VOID AddBuff(UINT32 playerID, USHORT buffid, BYTE stack);
 	VOID EndBuff(UINT32 playerID, USHORT buffid);
 

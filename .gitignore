@@ -6,12 +6,6 @@
 # Decrypt
 SWCrypt.cpp
 SWCrypt.h
-SWPacketMaker.cpp
-SWPacketMaker.h
-SWPacket.h
-SWSPacketMaker.cpp
-SWSPacketMaker.h
-SWSPacket.h
 
 # Backup Files
 *.bak

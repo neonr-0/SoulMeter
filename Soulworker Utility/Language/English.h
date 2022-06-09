@@ -110,9 +110,9 @@
 #define STR_DETAIL_DETAIL u8"Details"
 #define STR_DETAIL_SKILL u8"Skill"
 #define STR_DETAIL_MONSTER u8"Monster"
-#define STR_DETAIL_BUFF_AND_DEBUFF u8"Buff/Debuff (incomplete)"
+#define STR_DETAIL_BUFF_AND_DEBUFF u8"Buff/Debuff"
 
-#define STR_UTILWINDOW_MEOW u8"Meow"
+#define STR_UTILWINDOW_MEOW u8"My other data"
 
 #define STR_UTILWINDOW_DPSGRAPH u8"DPS Graph"
 #define STR_UTILWINDOW_DPSGRAPH_TIME_SEC u8"Time(sec)"

@@ -4,7 +4,17 @@
 #include <vector>
 #include ".\Language\Region.h"
 
+PlotInfo::PlotInfo(UINT32 id, string name) : _id(id), _name(name) {}
+
 VOID PlotWindow::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement)
+{
+	if (pi == nullptr)
+		pi = new PlotInfo(id, name);
+
+	pi->AddData(DPS, time, isFirstElement);
+}
+
+VOID PlotInfo::AddData(DOUBLE DPS, DOUBLE time, bool isFirstElement)
 {
 	if (isFirstElement) {
 		if (_lastTime == time) {
@@ -26,30 +36,37 @@ VOID PlotWindow::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool i
 	auto it = metaInfos.begin();
 	bool metaInfoFound = false;
 	for (; it != metaInfos.end(); it++) {
-		if ((*it)->_id == id) {
+		if ((*it)->_id == _id) {
 			metaInfoFound = true;
 			break;
 		}
 	}
 
 	if (!metaInfoFound) {
-		metaInfos.push_back(new metaInfo(id, name));
+		metaInfos.push_back(new metaInfo(_id, _name));
 
 		vector<double> newDPSvector;
 		newDPSvector.push_back(DPS);
-		dpsList.emplace(id, newDPSvector);
+		dpsList.emplace(_id, newDPSvector);
 
 		vector<double> newTimevector;
 		newTimevector.push_back(time);
-		timeList.emplace(id, newTimevector);
+		timeList.emplace(_id, newTimevector);
 	}
 	else {
-		dpsList[id].push_back(DPS);
-		timeList[id].push_back(time);
+		dpsList[_id].push_back(DPS);
+		timeList[_id].push_back(time);
 	}
 }
 
 VOID PlotWindow::AddAbData(DOUBLE DPS, DOUBLE time)
+{
+	if (pi == nullptr)
+		return;
+	pi->AddAbData(DPS, time);
+}
+
+VOID PlotInfo::AddAbData(DOUBLE DPS, DOUBLE time)
 {
 	if (_abLastTime == time) {
 		return;
@@ -62,6 +79,13 @@ VOID PlotWindow::AddAbData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotWindow::AddJqData(BYTE stack, DOUBLE time)
 {
+	if (pi == nullptr)
+		return;
+	pi->AddJqData(stack, time);
+}
+
+VOID PlotInfo::AddJqData(BYTE stack, DOUBLE time)
+{
 	if (_jqLastTime == time) {
 		return;
 	}
@@ -72,6 +96,13 @@ VOID PlotWindow::AddJqData(BYTE stack, DOUBLE time)
 }
 
 VOID PlotWindow::AddAnnonation(string content)
+{
+	if (pi == nullptr)
+		return;
+	pi->AddAnnonation(content);
+}
+
+VOID PlotInfo::AddAnnonation(string content)
 {
 	_annonXList.push_back(_abTimeList.back());
 	_annonYList.push_back(_abList.back());
@@ -91,9 +122,11 @@ VOID PlotWindow::Update()
 
 		if (ImGui::BeginTabBar(u8"테스트2"))
 		{
-			UpdatePlotTab();
-			UpdateAbPlotTab();
-			UpdateJqPlotTab();
+			if (pi != nullptr) {
+				UpdatePlotTab();
+				UpdateAbPlotTab();
+				UpdateJqPlotTab();
+			}
 			UTILLWINDOW.Update();
 			ImGui::EndTabBar();
 		}
@@ -105,6 +138,9 @@ VOID PlotWindow::UpdatePlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_DPSGRAPH))
 	{
+		auto timeList = pi->GetTimeList();
+		auto dpsList = pi->GetDPSList();
+		auto metaInfos = pi->GetMetaInfo();
 		if (timeList.size() > 0) {
 			UINT32 firstId = metaInfos.front()->_id;
 			UINT32 lastId = metaInfos.back()->_id;
@@ -148,7 +184,7 @@ VOID PlotWindow::UpdatePlotTab()
 			}
 		}
 
-		if (ImPlot::BeginPlot(STR_UTILWINDOW_DPSGRAPH, STR_UTILWINDOW_DPSGRAPH_TIME_SEC, "dps", ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
+		if (ImPlot::BeginPlot(STR_UTILWINDOW_DPSGRAPH, STR_UTILWINDOW_DPSGRAPH_TIME_SEC, STR_UTILWINDOW_DPSGRAPH, ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
 			auto it = metaInfos.begin();
 			for (; it != metaInfos.end(); it++) {
 				UINT32 id = (*it)->_id;
@@ -167,6 +203,11 @@ VOID PlotWindow::UpdateAbPlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_ABGRAPH))
 	{
+		auto _abTimeList = pi->GetABTimeList();
+		auto _abList = pi->GetABList();
+		auto _annonXList = pi->GetAnnonXList();
+		auto _annonYList = pi->GetAnnonYList();
+		auto _annonContentList = pi->GetAnnonContentList();
 		UINT32 currentSize = _abTimeList.size();
 
 		DOUBLE startX = 0.0;
@@ -182,12 +223,12 @@ VOID PlotWindow::UpdateAbPlotTab()
 			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
 		}
 		ImPlot::SetNextPlotLimitsY(0.0, 100.0, ImGuiCond_Always);
-		if (ImPlot::BeginPlot(STR_UTILWINDOW_ABGRAPH, STR_UTILWINDOW_ABGRAPH_TIME_SEC, "ab", ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
+		if (ImPlot::BeginPlot(STR_UTILWINDOW_ABGRAPH, STR_UTILWINDOW_ABGRAPH_TIME_SEC, STR_UTILWINDOW_ABGRAPH, ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(STR_TABLE_YOU, _abTimeList.data(), _abList.data(), _abList.size());
 			auto itr = _annonXList.begin();
 			for (; itr != _annonXList.end(); itr++) {
 				int currentIndex = itr - _annonXList.begin();
-				ImPlot::Annotate(_annonXList.at(currentIndex),_annonYList.at(currentIndex), ImVec2(15, 15), ImVec4(0.30f, 0.30f, 0.30f, 0.84f), _annonContentList.at(currentIndex).c_str());
+				ImPlot::Annotate(_annonXList.at(currentIndex), _annonYList.at(currentIndex), ImVec2(15, 15), ImVec4(0.30f, 0.30f, 0.30f, 0.84f), _annonContentList.at(currentIndex).c_str());
 			}
 			ImPlot::EndPlot();
 		}
@@ -199,6 +240,8 @@ VOID PlotWindow::UpdateJqPlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_JQGRAPH))
 	{
+		auto _jqTimeList = pi->GetJQTimeList();
+		auto _jqList = pi->GetJQList();
 		UINT32 currentSize = _jqTimeList.size();
 		DOUBLE startX = 0.0;
 		DOUBLE endX = 5.0;
@@ -212,15 +255,13 @@ VOID PlotWindow::UpdateJqPlotTab()
 			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
 		}
 		ImPlot::SetNextPlotLimitsY(0, 4, ImGuiCond_Always);
-		if (ImPlot::BeginPlot(STR_UTILWINDOW_JQGRAPH, STR_UTILWINDOW_JQGRAOH_TIME_SEC, "stack", ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
+		if (ImPlot::BeginPlot(STR_UTILWINDOW_JQGRAPH, STR_UTILWINDOW_JQGRAOH_TIME_SEC, STR_UTILWINDOW_JQGRAPH, ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(STR_TABLE_YOU, _jqTimeList.data(), _jqList.data(), _jqList.size());
 			ImPlot::EndPlot();
 		}
 		ImGui::EndTabItem();
 	}
 }
-
-
 
 VOID PlotWindow::End()
 {
@@ -230,20 +271,17 @@ VOID PlotWindow::End()
 VOID PlotWindow::Clear()
 {
 	_end = false;
-	metaInfos.clear();
-	dpsList.clear();
-	timeList.clear();
+	pi = nullptr;
+}
 
-	_abList.clear();
-	_abTimeList.clear();
+VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi)
+{
+	pi = p_pi;
+}
 
-	_jqList.clear();
-	_jqTimeList.clear();
-
-	_lastTime = -1.0;
-	_abLastTime = -1.0;
-	_jqLastTime = -1.0;
-	// TODO : new
+PlotInfo* PlotWindow::GetPlotInfo()
+{
+	return pi;
 }
 
 PlotWindow::PlotWindow()

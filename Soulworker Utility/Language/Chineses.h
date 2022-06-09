@@ -109,9 +109,9 @@
 #define STR_DETAIL_DETAIL u8"詳細資料"
 #define STR_DETAIL_SKILL u8"技能"
 #define STR_DETAIL_MONSTER u8"怪物"
-#define STR_DETAIL_BUFF_AND_DEBUFF u8"增益/減益狀態（不完整）"
+#define STR_DETAIL_BUFF_AND_DEBUFF u8"增益/減益狀態"
 
-#define STR_UTILWINDOW_MEOW u8"Meow"
+#define STR_UTILWINDOW_MEOW u8"我的其他資料"
 
 #define STR_UTILWINDOW_DPSGRAPH u8"DPS變化圖"
 #define STR_UTILWINDOW_DPSGRAPH_TIME_SEC u8"Time(sec)"

@@ -5,6 +5,7 @@
 #include ".\UI\PlayerTable.h"
 #include ".\UI\UiWindow.h"
 #include ".\Damage Meter\Damage Meter.h"
+#include ".\Buff Meter\Buff Meter.h"
 
 UiOption::UiOption()  : _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0,0), _windowWidth(800), _refreshTime(0.3)  {
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
@@ -117,6 +118,7 @@ VOID UiOption::Helper() {
 
 	UINT monster[4] = { 1323502223, 1324283942, 1321158942, 1174505472 };
 	UINT skill[4] = { 72000233, 72000331, 72000433, 72000638 };
+	UINT buff[4] = { 10001, 10111, 10222, 10333 };
 
 	if (DAMAGEMETER.GetWorldID() == 0) {
 		DAMAGEMETER.SetWorldID(20011);
@@ -152,6 +154,8 @@ VOID UiOption::Helper() {
 		DAMAGEMETER.AddDamage(id, helper * 30000, helper * 5000, 4, helper * 4, (i + 5) % 8, skill[(i + 2) % 4]);
 		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 6) % 8, skill[(i + 3) % 4]);
 		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 7) % 8, skill[(i + 3) % 4]);
+
+		BUFFMETER.AddBuff(id, buff[id], 1 + id);
 		helper++;
 	}
 }
