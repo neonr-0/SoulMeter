@@ -185,8 +185,6 @@ VOID PlayerTable::BeginPopupMenu() {
 		if (HISTORY.GetCurrentIndex() > 0 && !DAMAGEMETER.isRun())
 			history_open = true;
 
-
-		ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 		if (ImGui::BeginMenu(STR_MENU_HISTORY, history_open)) {
 
 			for (INT i = 0; i < HISTORY_SIZE; i++) {
@@ -211,7 +209,6 @@ VOID PlayerTable::BeginPopupMenu() {
 
 			ImGui::EndMenu();
 		}
-		ImGui::PopStyleColor();
 
 		if (ImGui::MenuItem(STR_UTILWINDOW_MEOW)) {
 			//UTILLWINDOW.OpenWindow();
