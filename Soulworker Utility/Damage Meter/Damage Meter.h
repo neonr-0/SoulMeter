@@ -465,6 +465,7 @@ private:
 
 	USHORT _historyWorldID;
 	FLOAT _historyTime;
+	INT32 _historyID = -1;
 
 	UINT32 _aggroedId;
 
@@ -542,4 +543,9 @@ public:
 
 	VOID SetHistory(INT index);
 	BOOL isHistoryMode();
+
+	INT32 GetCurrentHistoryID()
+	{
+		return _historyID;
+	}
 };

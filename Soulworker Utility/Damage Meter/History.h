@@ -22,7 +22,7 @@ public:
 class SWDamageMeterHistory : public Singleton<SWDamageMeterHistory> {
 private:
 	HISTORY_INFO _historys[HISTORY_SIZE];
-	UINT _curIndex;
+	UINT _curIndex = 0;
 	
 	VOID ClearHistory(INT index);
 
@@ -33,4 +33,8 @@ public:
 	VOID push_back(vector<SWDamagePlayer*>& playerInfo, std::vector<PLAYERBUF*>& playerBuffInfo, PlotInfo* playerPlotInfo);
 	SIZE_T size();
 	const HISTORY_INFO& operator[](INT index);
+	UINT GetCurrentIndex()
+	{
+		return _curIndex;
+	}
 };

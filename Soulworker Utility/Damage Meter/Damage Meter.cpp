@@ -574,6 +574,7 @@ VOID SWDamageMeter::Restore() {
 		return;
 
 	_playerInfo.clear();
+	_historyID = -1;
 }
 
 VOID SWDamageMeter::SetHistory(INT index) {
@@ -586,6 +587,7 @@ VOID SWDamageMeter::SetHistory(INT index) {
 	_playerInfo = history._history;
 	_historyWorldID = history._worldID;
 	_historyTime = history._time;
+	_historyID = index;
 	BUFFMETER.SetPlayerInfo(history._buffHistory);
 	PLOTWINDOW.SetPlotInfo(history._plotHistory);
 

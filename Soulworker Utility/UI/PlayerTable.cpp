@@ -90,7 +90,7 @@ VOID PlayerTable::Update() {
 
 		CHAR title[256] = { 0 };
 
-		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.2_%s] Ping: %dms  ###DamageMeter", 
+		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.3_%s] Ping: %dms  ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			SWPACKETMAKER.GetKeyInfo(),
@@ -182,12 +182,17 @@ VOID PlayerTable::BeginPopupMenu() {
 
 
 		bool history_open = false;
-		if (HISTORY.size() > 0)
+		if (HISTORY.GetCurrentIndex() > 0 && !DAMAGEMETER.isRun())
 			history_open = true;
 
+
+		ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 		if (ImGui::BeginMenu(STR_MENU_HISTORY, history_open)) {
 
-			for (INT i = 0; i < HISTORY.size(); i++) {
+			for (INT i = 0; i < HISTORY_SIZE; i++) {
+
+				if (HISTORY.GetCurrentIndex() - 1 < i)
+					break;
 
 				auto history = HISTORY[i];
 				CHAR label[128] = { 0 };
@@ -195,14 +200,18 @@ VOID PlayerTable::BeginPopupMenu() {
 				CHAR mapName[MAX_MAP_LEN] = { 0 };
 				SWDB.GetMapName(history._worldID, mapName, MAX_MAP_LEN);
 
-				sprintf_s(label, 128, u8"%s %d:%d:%d", mapName, history._saveTime.wHour, history._saveTime.wMinute, history._saveTime.wSecond);
-				if (ImGui::MenuItem(label)) {
+				sprintf_s(label, 128, u8"%s %02d:%02d:%02d(%02d:%02d.%01d)", mapName, 
+					history._saveTime.wHour, history._saveTime.wMinute, history._saveTime.wSecond,
+					(UINT)history._time / (60 * 1000), (UINT)(history._time / 1000) % 60, (UINT)history._time % 1000 / 100
+				);
+				if (ImGui::MenuItem(label, 0, DAMAGEMETER.GetCurrentHistoryID() == i)) {
 					DAMAGEMETER.SetHistory(i);
 				}
 			}
 
 			ImGui::EndMenu();
 		}
+		ImGui::PopStyleColor();
 
 		if (ImGui::MenuItem(STR_UTILWINDOW_MEOW)) {
 			//UTILLWINDOW.OpenWindow();
