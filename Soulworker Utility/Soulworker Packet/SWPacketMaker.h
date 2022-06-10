@@ -15,10 +15,12 @@
 #define SEGMENTATION_SUCCESS 5
 #define SEGMENTATION_FAILED 6
 
+#ifdef _DEBUG
 #define DEBUG_SEGMENTATION 0
 #define DEBUG_CREATEPACKET 0
 #define DEBUG_RESIZEPACKET 0
 #define DEBUG_DISPLAYPKT 0
+#endif
 
 class SWPacketMaker : public Singleton<SWPacketMaker> {
 private:

@@ -260,6 +260,9 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		case OPcode::OBJECTCREATE: //0605
 			swpacket = new SWPacketObjectCreate(swheader, data);
 			break;
+		case OPcode::OTHER_INFOS_MONSTER:
+			swpacket = new SWPacketOtherInfosMonster(swheader, data);
+			break;
 
 			/*0x05*/
 		case OPcode::STARTMOVE:
@@ -339,16 +342,15 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 
 
 		default:
-			//swpacket = new SWPacket(swheader, data);
+#if DEBUG_DISPLAYPKT == 1
+			Log::WriteLogA("OP : %04x\tsize : %04x", swheader->_op, swheader->_size);
+			for (int i = 0; i < swheader->_size; i++)
+				Log::WriteLogNoDate(L"%02x ", data[i]);
+			Log::WriteLogNoDate(L"\n\n");
+#endif
 			break;
 		}
 
-#if DEBUG_DISPLAYPKT == 1
-		printf("OP : %04x\tsize : %04x\n", swheader->_op, swheader->_size);
-		for (int i = 0; i < swheader->_size; i++)
-			printf(const_cast<CHAR*>("%02x "), data[i]);
-		printf(const_cast<CHAR*>("\n"));
-#endif
 		if (swpacket != nullptr) {
 #if DEBUG_CREATEPACKET == 1 // && defined(_DEBUG)
 			swpacket->Debug();
