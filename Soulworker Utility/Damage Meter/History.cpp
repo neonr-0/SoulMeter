@@ -21,6 +21,7 @@ VOID _HISTORYINFO::Clear(){
 
 	_history.clear();
 	_buffHistory.clear();
+	delete _plotHistory;
 	_plotHistory = nullptr;
 	_worldID = 0;
 	ZeroMemory(&_saveTime, sizeof(SYSTEMTIME));
