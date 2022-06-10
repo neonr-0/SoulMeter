@@ -12,11 +12,13 @@ using namespace std;
 
 #define PLAYER_JOB_CANT_FIND 10
 
+#ifdef _DEBUG
 #define DEBUG_DAMAGEMETER_OWNER_ID 0
 #define DEBUG_DAMAGEMETER_DB 0
 #define DEBUG_DAMAGEMETER_WORLD 0
 #define DEBUG_DAMAGEMETER_MYID 0
 #define DEBUG_DAMAGEMETER_PLAYERMETA 0
+#endif
 
 // 
 #define DAMAGEMETER SWDamageMeter::getInstance()

@@ -4,10 +4,12 @@
 
 #define WINDIVERT_FILTER_RULE "tcp.SrcPort == 10200 or tcp.DstPort == 10200"
 
+#ifdef _DEBUG
 #define DEBUG_DIVERT_ALL 0
 #define DEBUG_DIVERT_IP 0
 #define DEBUG_DIVERT_TCP 0
 #define DEBUG_DIVERT_DATA 0
+#endif
 
 class MyWinDivert : public Singleton<MyWinDivert> {
 private:

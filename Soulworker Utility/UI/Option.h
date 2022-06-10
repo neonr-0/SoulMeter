@@ -4,8 +4,10 @@
 
 #define OPTION_FILE_NAME "option.xml"
 
+#ifdef _DEBUG
 #define DEBUG_READ_XML 0
 #define DEBUG_COLUMN_WIDTH 0
+#endif
 
 class UiOption : public Singleton<UiOption> {
 private:

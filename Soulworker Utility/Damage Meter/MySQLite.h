@@ -4,8 +4,10 @@
 #define SWDB MySQL::getInstance()
 #define SWDBPATH "SWDB.db"
 
+#ifdef _DEBUG
 #define DEBUG_SKILL_NAME 0
 #define DEBUG_MONSTER_NAME 0
+#endif
 
 class MySQL : public Singleton<MySQL> {
 private:

@@ -15,9 +15,11 @@
 #define SEGMENTATION_SUCCESS 5
 #define SEGMENTATION_FAILED 6
 
+#ifdef _DEBUG
 #define DEBUG_SEGMENTATION 0
 #define DEBUG_CREATESPACKET 0
 #define DEBUG_RESIZEPACKET 0
+#endif
 
 class SWSPacketMaker : public Singleton<SWSPacketMaker> {
 private:

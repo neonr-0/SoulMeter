@@ -277,6 +277,7 @@ VOID PlotWindow::Clear()
 VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi)
 {
 	pi = p_pi;
+	_end = true;
 }
 
 PlotInfo* PlotWindow::GetPlotInfo()
