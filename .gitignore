@@ -9,6 +9,7 @@ SWCrypt.h
 
 # Backup Files
 *.bak
+*.db-journal
 
 # User Option Files
 *.ini
