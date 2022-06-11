@@ -208,7 +208,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketMazeEnd.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMazeStart.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMonsterKilled.h" />
-    <ClInclude Include="Soulworker Packet\SWPacketObjectCreate.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketInInfoMonster.h" />
     <ClInclude Include="Soulworker Packet\SWPacketOtherInfosMonster.h" />
     <ClInclude Include="Soulworker Packet\SWPacketOtherUseSkill.h" />
     <ClInclude Include="Soulworker Packet\SWPacketParty.h" />
@@ -279,7 +279,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketMazeEnd.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMazeStart.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMonsterKilled.cpp" />
-    <ClCompile Include="Soulworker Packet\SWPacketObjectCreate.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketInInfoMonster.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketOtherInfosMonster.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketOtherUseSkill.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketParty.cpp" />

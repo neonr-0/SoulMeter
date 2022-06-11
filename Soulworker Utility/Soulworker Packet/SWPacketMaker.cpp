@@ -257,8 +257,8 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		case OPcode::SPAWNED_CHARINFO: //¥Î¤£¨ì
 			//swpacket = new SWPacketSpawnedCharInfo(swheader, data);
 			break;
-		case OPcode::OBJECTCREATE: //0605
-			swpacket = new SWPacketObjectCreate(swheader, data);
+		case OPcode::IN_INFO_MONSTER: //0605
+			swpacket = new SWPacketInInfoMonster(swheader, data);
 			break;
 		case OPcode::OTHER_INFOS_MONSTER:
 			swpacket = new SWPacketOtherInfosMonster(swheader, data);

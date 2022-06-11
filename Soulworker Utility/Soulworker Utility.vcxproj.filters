@@ -267,7 +267,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketPos.h">
       <Filter>SWPacket\Packet\0x2e Force</Filter>
     </ClInclude>
-    <ClInclude Include="Soulworker Packet\SWPacketObjectCreate.h">
+    <ClInclude Include="Soulworker Packet\SWPacketInInfoMonster.h">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketChat.h">
@@ -488,7 +488,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketPos.cpp">
       <Filter>SWPacket\Packet\0x2e Force</Filter>
     </ClCompile>
-    <ClCompile Include="Soulworker Packet\SWPacketObjectCreate.cpp">
+    <ClCompile Include="Soulworker Packet\SWPacketInInfoMonster.cpp">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketChat.cpp">
