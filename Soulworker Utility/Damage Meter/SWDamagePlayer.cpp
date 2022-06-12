@@ -108,11 +108,11 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 			_soulstoneDamageForSoulstone += soulstoneDMG;
 		}
 	}
-	else {
+	else if (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
 		// 3,4 = boss
 		// 99 = manual disable
 		INT32 monsterType = -1;
-		if ((SWDB.GetMonsterType(db2, &monsterType) && (monsterType == 3 || monsterType == 4)) || !UIOPTION.AutoDetectIsBoss()) {
+		if (!UIOPTION.AutoDetectIsBoss() || (SWDB.GetMonsterType(db2, &monsterType) && (monsterType == 3 || monsterType == 4))) {
 			//Log::WriteLog(const_cast<LPTSTR>(_T("!!![DEBUG] Monster [%d] is boss.")), db2);
 			_damage += totalDMG;
 			_soulstoneDamage += soulstoneDMG;
