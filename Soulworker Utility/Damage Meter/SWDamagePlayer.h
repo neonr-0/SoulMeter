@@ -29,6 +29,11 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 	//31310108, 31310109, // 아마 얼음이랑 봉자
 	31310118, 31310119, // 이게 진짜 얼음이랑 봉자 (위에껀 오타)
 
+	/* Rocco Town Hero */
+	34401502, 34401503, 34401504,
+	34401702,
+	34401802, 34401803,
+
 	/* 기타(etc) */
 	14000101, 14000102, 14000103, // 퍼펫 빨강/파랑/금색 구슬 (puppet orb)
 	1081102, 1081103, 1081104, 1081105, 1081106, 1081107, 1081108, 1081109, // 옥타곤 1렙~5렙+특성3렙 (octagon)
@@ -84,7 +89,7 @@ private:
 	VOID Sort();
 
 protected:
-	SWDamagePlayer() : _id(0), _damage(0), _soulstoneDamage(0), _hitCount(0), _critHitCount(0), _maxCombo(0), 
+	SWDamagePlayer() : _id(0), _damage(0), _soulstoneDamage(0), _hitCount(0), _critHitCount(0), _maxCombo(0),
 		_hitCountForCritRate(0), _critHitCountForCritRate(0), _soulstoneCount(0), _hitCountForArmorBreak(0),
 		_armorBreak(0), _sg(0), _stamina(0), _sv(0), _attackSpeed(0), _partialDamage(0.0f) { }
 

@@ -79,6 +79,7 @@
 #define STR_OPTION_TEXT_OUTLINE_COLOR u8"Text Outline Color"
 #define STR_OPTION_ACTIVE_COLOR u8"Active Color"
 #define STR_OPTION_INACTIVE_COLOR u8"InActive Color"
+#define STR_OPTION_AUTO_DETECT_IS_BOSS u8"Auto detect is boss"
 
 #define STR_CHAR_UNKNOWN u8"Unknown"
 #define STR_CHAR_HARU u8"Haru"

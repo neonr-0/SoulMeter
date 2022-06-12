@@ -27,6 +27,7 @@ private:
 	BOOL _is1M;
 	BOOL _isSoloMode;
 	BOOL _hideName;
+	BOOL _autoDetectBoss;
 	ImVec2 _cellPadding;
 	FLOAT _framerate;
 	FLOAT _windowBorderSize;
@@ -66,6 +67,7 @@ public:
 	const BOOL& is1K();
 	const BOOL& is1M();
 	const BOOL& isSoloMode();
+	const BOOL& AutoDetectIsBoss();
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
 

@@ -3,6 +3,8 @@
 #include ".\Damage Meter\SWDamagePlayer.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Soulworker Packet\PacketInfo.h"
+#include ".\MySQLite.h";
+#include ".\UI\Option.h";
 
 SWDamagePlayer::SWDamagePlayer(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAMAGE_DAMAGETYPE damageType, USHORT maxCombo, UINT32 monsterID, UINT32 skillID) {
 	_id = id;
@@ -106,18 +108,23 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 			_soulstoneDamageForSoulstone += soulstoneDMG;
 		}
 	}
-	// 
-	// 
-	else if (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
-		_damage += totalDMG;
-		_soulstoneDamage += soulstoneDMG;
-
-		if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
-			_damageForSoulstone += totalDMG;
-			_soulstoneDamageForSoulstone += soulstoneDMG;
-		}
-	}
 	else {
+		// 3,4 = boss
+		// 99 = manual disable
+		INT32 monsterType = -1;
+		if ((SWDB.GetMonsterType(db2, &monsterType) && (monsterType == 3 || monsterType == 4)) || !UIOPTION.AutoDetectIsBoss()) {
+			//Log::WriteLog(const_cast<LPTSTR>(_T("!!![DEBUG] Monster [%d] is boss.")), db2);
+			_damage += totalDMG;
+			_soulstoneDamage += soulstoneDMG;
+
+			if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
+				_damageForSoulstone += totalDMG;
+				_soulstoneDamageForSoulstone += soulstoneDMG;
+			}
+		}
+		else {
+			//Log::WriteLog(const_cast<LPTSTR>(_T("[DEBUG] Monster [%d] isn't boss.")), db2);
+		}
 	}
 
 #if DEBUG_DAMAGE_PLAYER == 1

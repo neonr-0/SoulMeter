@@ -28,7 +28,7 @@ SWDamageMeter::~SWDamageMeter() {
 	_dbInfo.clear();
 	_playerMetadata.clear();
 
-	_mutex.unlock();
+	FreeLock();
 }
 
 VOID SWDamageMeter::GetLock() {
@@ -336,7 +336,6 @@ VOID SWDamageMeter::Sort() {
 }
 
 VOID SWDamageMeter::InsertDB(UINT32 id, UINT32 db2) {
-
 	auto itr = _dbInfo.begin();
 
 	for (; itr != _dbInfo.end(); itr++) {

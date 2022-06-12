@@ -7,7 +7,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Buff Meter\Buff Meter.h"
 
-UiOption::UiOption()  : _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0,0), _windowWidth(800), _refreshTime(0.3)  {
+UiOption::UiOption()  : _autoDetectBoss(0), _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0, 0), _windowWidth(800), _refreshTime(0.3) {
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
 	_jobBasicColor[1] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(247, 142, 59, 255)));	// 하루
 	_jobBasicColor[2] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(59, 147, 247, 255)));	// 어윈
@@ -47,6 +47,7 @@ BOOL UiOption::ShowFontSelector() {
 	}
 	ImGui::Checkbox(STR_OPTION_SOLO_MODE, (bool*)&_isSoloMode);
 	ImGui::Checkbox(STR_OPTION_HIDE_NAME, (bool*)&_hideName);
+	ImGui::Checkbox(STR_OPTION_AUTO_DETECT_IS_BOSS, (bool*)&_autoDetectBoss);
 
 	return TRUE;
 }
@@ -116,7 +117,7 @@ VOID UiOption::Helper() {
 	static UINT32 helper = 1;
 	CHAR name[128] = { 0 };
 
-	UINT monster[4] = { 1323502223, 1324283942, 1321158942, 1174505472 };
+	UINT monster[4] = { 604, 605, 10000206, 10194613 };
 	UINT skill[4] = { 72000233, 72000331, 72000433, 72000638 };
 	UINT buff[4] = { 10001, 10111, 10222, 10333 };
 
@@ -296,7 +297,10 @@ BOOL UiOption::GetOption() {
 
 	attr->QueryIntValue(&_is1M);
 
-
+	attr = ele->FindAttribute("AutoDetectIsBoss");
+	if (attr == nullptr)
+		return FALSE;
+	attr->QueryIntValue(&_autoDetectBoss);
 
 	attr = ele->FindAttribute("IsSoloMode");
 	if (attr == nullptr)
@@ -662,6 +666,7 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("K", _is1K);
 	option->SetAttribute("M", _is1M);
 	option->SetAttribute("IsSoloMode", _isSoloMode);
+	option->SetAttribute("AutoDetectIsBoss", _autoDetectBoss);
 	option->SetAttribute("DoHideName", _hideName);
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -815,6 +820,10 @@ const BOOL& UiOption::is1M() {
 
 const BOOL& UiOption::isSoloMode(){
 	return _isSoloMode;
+}
+
+const BOOL& UiOption::AutoDetectIsBoss() {
+	return _autoDetectBoss;
 }
 
 const BOOL& UiOption::doHideName()

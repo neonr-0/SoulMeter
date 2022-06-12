@@ -72,26 +72,26 @@ VOID SWPacketDamage::Do() {
 		//	monsterNum, monster->_monsterID, player->_playerID, DAMAGEMETER.CheckPlayer(player->_playerID),
 		//	DAMAGEMETER.GetOwnerID(player->_playerID), DAMAGEMETER.CheckPlayer(DAMAGEMETER.GetOwnerID(player->_playerID)));
 
-
-		DAMAGEMETER.AddDamage(player->_playerID, monster->_totalDMG, monster->_soulstoneDMG, (SWPACKETDAMAGE_DAMAGETYPE)(monster->_damageType),
-			player->_maxCombo, monster->_monsterID, player->_skillID);
-
-
 		SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monster->_monsterID);
 		UINT32 db2 = 0;
+		// Don't calc not in db monster
 		if (db != nullptr) {
 			db2 = db->_db2;
-		}
 
-		// 
-		if (monster->_remainHP <= 0 && pauseIdList.find(db2) != pauseIdList.end()) {
-			DAMAGEMETER.Suspend();
-		}
+			DAMAGEMETER.AddDamage(player->_playerID, monster->_totalDMG, monster->_soulstoneDMG, (SWPACKETDAMAGE_DAMAGETYPE)(monster->_damageType),
+				player->_maxCombo, monster->_monsterID, player->_skillID);
 
-		// 
-		else if (monster->_remainHP <= 0 && endIdList.find(db2) != endIdList.end()) {
-			DAMAGEMETER.SetMazeState(TRUE);
-			DAMAGEMETER.Suspend();
+			// 
+			if (monster->_remainHP <= 0 && pauseIdList.find(db2) != pauseIdList.end()) {
+				DAMAGEMETER.Suspend();
+			}
+
+			// 
+			else if (monster->_remainHP <= 0 && endIdList.find(db2) != endIdList.end()) {
+				DAMAGEMETER.SetMazeState(TRUE);
+				DAMAGEMETER.Suspend();
+			}
+
 		}
 	}
 }

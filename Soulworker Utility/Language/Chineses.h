@@ -69,6 +69,7 @@
 #define STR_OPTION_UNIT_1M u8"以百萬單位顯示(M)"
 #define STR_OPTION_SOLO_MODE u8"單人模式 (只顯示自己的數據)"
 #define STR_OPTION_HIDE_NAME u8"隱藏名稱"
+#define STR_OPTION_AUTO_DETECT_IS_BOSS u8"自動檢測是否為Boss"
 
 #define STR_OPTION_WINDOW_BORDER_SIZE u8"視窗邊框大小"
 #define STR_OPTION_CELL_PADDING u8"表格間距"

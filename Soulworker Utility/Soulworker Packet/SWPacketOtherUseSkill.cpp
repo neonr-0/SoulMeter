@@ -18,7 +18,7 @@ VOID SWPacketOtherUseSkill::Do() {
 
 	DAMAGEMETER.AddSkillUsed(otherSkill->_playerId, otherSkill->_skillId);
 
-	UINT32 userId = otherSkill->_playerId;
+	/*UINT32 userId = otherSkill->_playerId;
 	if (!DAMAGEMETER.CheckPlayer(userId)) {
 		UINT32 ownerId = DAMAGEMETER.GetOwnerID(userId);
 		if (!DAMAGEMETER.CheckPlayer(ownerId)) {
@@ -41,7 +41,7 @@ VOID SWPacketOtherUseSkill::Do() {
 				//Log::MyLog(test.c_str());
 			}
 		}
-	}
+	}*/
 
 
 }

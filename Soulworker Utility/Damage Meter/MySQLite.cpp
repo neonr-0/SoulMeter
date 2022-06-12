@@ -113,7 +113,7 @@ BOOL MySQL::InitMonsterDB() {
 	}
 
 	//std::string sql2 = "SELECT Name_" LANG " From Monster Where Db1 = ? and Db2 = ?";
-	std::string sql2 = "SELECT Name_"s + LANG + " From Monster Where Db2 = ?"s;
+	std::string sql2 = "SELECT Name_"s + LANG + ",type From Monster Where Db2 = ?"s;
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_monster_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -281,6 +281,25 @@ BOOL MySQL::GetMonsterName(UINT32 DB2, CHAR* out_buffer, SIZE_T out_buffer_lengt
 			return FALSE;
 
 		strcpy_s(out_buffer, out_buffer_length, result);
+	}
+
+	return TRUE;
+}
+
+BOOL MySQL::GetMonsterType(UINT32 DB2, INT32* type) {
+
+	if (type == nullptr || _monster_stmt == nullptr)
+		return FALSE;
+
+	sqlite3_reset(_monster_stmt);
+
+	sqlite3_bind_int(_monster_stmt, 1, DB2);
+
+	INT step = sqlite3_step(_monster_stmt);
+
+	if (step == SQLITE_ROW) {
+		INT32 result = sqlite3_column_int(_monster_stmt, 1);
+		memcpy_s(type, sizeof(INT32), &result, sizeof(INT32));
 	}
 
 	return TRUE;
