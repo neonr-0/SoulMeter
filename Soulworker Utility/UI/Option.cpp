@@ -156,7 +156,7 @@ VOID UiOption::Helper() {
 		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 6) % 8, skill[(i + 3) % 4]);
 		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 7) % 8, skill[(i + 3) % 4]);
 
-		BUFFMETER.AddBuff(id, buff[id], 1 + id);
+		BUFFMETER.AddBuff(id, buff[id % 4], 1 + id);
 		helper++;
 	}
 }
