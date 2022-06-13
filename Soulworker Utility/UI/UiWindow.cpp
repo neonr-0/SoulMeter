@@ -181,7 +181,7 @@ BOOL UiWindow::SetFontList() {
 		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseFull());
 #endif
 #ifdef SERVER_JAPAN
-		/* GetGlyphRangesJapanese() doesn't contain CJK Ideograms, so it can't display "肆" at "猫刀・肆の型：月斬" */
+		/* GetGlyphRangesJapanese() doesn't contain CJK Ideograms, so it can't display Chinese */
 		// io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesJapanese());
 		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseFull());
 #endif
@@ -250,7 +250,7 @@ VOID UiWindow::DrawScene() {
 		ImGui::RenderPlatformWindowsDefault();
 	}
 
-	_swapChain->Present(UIOPTION.GetFramerate(), 0);
+	_swapChain->Present(static_cast<UINT>(UIOPTION.GetFramerate()), 0);
 }
 
 LRESULT UiWindow::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {

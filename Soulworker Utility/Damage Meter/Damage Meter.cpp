@@ -436,7 +436,7 @@ VOID SWDamageMeter::SetMyID(UINT32 id) {
 #endif
 }
 
-UINT64 SWDamageMeter::GetMyID() {
+UINT32 SWDamageMeter::GetMyID() {
 	return _myID;
 }
 
@@ -479,7 +479,7 @@ vector<SWDamagePlayer*>::const_iterator SWDamageMeter::end() {
 	return _playerInfo.end();
 }
 
-const SIZE_T& SWDamageMeter::size() {
+const SIZE_T SWDamageMeter::size() {
 	return _playerInfo.size();
 }
 

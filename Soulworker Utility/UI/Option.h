@@ -55,8 +55,8 @@ public:
 	VOID Update();
 	VOID Init();
 
-	const ImU32& GetJobColor(UINT index);
-	const ImU32& GetOutlineColor();
+	const ImU32 GetJobColor(UINT index);
+	const ImU32 GetOutlineColor();
 	const FLOAT& GetFontScale();
 	const FLOAT& GetColumnFontScale();
 	const FLOAT& GetTableFontScale();
@@ -66,14 +66,13 @@ public:
 	const BOOL& is1K();
 	const BOOL& is1M();
 	const BOOL& isSoloMode();
-	const BOOL& AutoDetectIsBoss();
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
 
 	BOOL ToggleTopMost();
 
 	const FLOAT& GetFramerate();
-	VOID SetFramerate(UINT i);
+	VOID SetFramerate(FLOAT i);
 
 	const FLOAT& GetWindowWidth();
 	VOID SetWindowWidth(const FLOAT& width);
