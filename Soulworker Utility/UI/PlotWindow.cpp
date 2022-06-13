@@ -305,7 +305,7 @@ VOID PlotWindow::UpdateBossHpPlotCombo()
 	const CHAR* comboPreview = nullptr;
 
 	if (bossInfos.begin() != bossInfos.end()) {
-		if (_selectedBossHpComboID == -1)
+		if (_selectedBossHpComboID == -1 || bossInfos.find(_selectedBossHpComboID) == bossInfos.end())
 			_selectedBossHpComboID = bossInfos.begin()->first;
 		comboPreview = bossInfos.at(_selectedBossHpComboID);
 
