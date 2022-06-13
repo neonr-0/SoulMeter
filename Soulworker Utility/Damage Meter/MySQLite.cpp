@@ -113,7 +113,7 @@ BOOL MySQL::InitMonsterDB() {
 	}
 
 	//std::string sql2 = "SELECT Name_" LANG " From Monster Where Db1 = ? and Db2 = ?";
-	std::string sql2 = "SELECT Name_"s + LANG + ",type From Monster Where Db2 = ?"s;
+	std::string sql2 = "SELECT Name_"s + LANG + ", type From Monster Where Db2 = ?"s;
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_monster_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));

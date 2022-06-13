@@ -16,6 +16,8 @@ SWDamageMonster::SWDamageMonster(UINT32 id, UINT32 db2, UINT64 damage, UINT64 cr
 	ZeroMemory(_name, MONSTER_NAME_LEN);
 	SWDB.GetMonsterName(db2, _name, MONSTER_NAME_LEN);
 
+	SWDB.GetMonsterType(db2, &_type);
+
 #if DEBUG_DAMAGE_MONSTER == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("\t[MONSTER] [ID = %d] [DB2 = %d] [NAME = %s] [DMG = %llu] [cirDMG = %llu] [hitCount = %d] [cirtHitCount = %d]")), _id, _db2, _name, _damage, _critDamage, _hitCount, _critHitCount);
 #endif
@@ -71,6 +73,10 @@ VOID SWDamageMonster::Sort() {
 
 UINT32 SWDamageMonster::GetID() {
 	return _id;
+}
+
+INT32 SWDamageMonster::GetType() {
+	return _type;
 }
 
 //USHORT SWDamageMonster::GetDB1() {

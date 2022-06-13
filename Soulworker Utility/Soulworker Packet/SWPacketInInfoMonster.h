@@ -8,11 +8,11 @@ typedef struct _SWPACKET_IN_INFO_MONSTER1 {
 
 	UINT32 id;
 
-	UINT32 unk01;
-	UINT32 unk02;
-	UINT32 unk03;
+	FLOAT unk01;
+	FLOAT unk02;
+	FLOAT unk03;
 
-	UINT32 unk04;
+	FLOAT unk04;
 	ULONG64 unk05;
 	ULONG64 unk06;
 	UINT32 unk07;
@@ -24,8 +24,8 @@ typedef struct _SWPACKET_IN_INFO_MONSTER1 {
 	UINT32 unk11;
 	UINT32 unk12;
 	BYTE unk13;
-	ULONG64 unk14;
-	ULONG64 unk15;
+	DOUBLE unk14;
+	DOUBLE unk15;
 	BYTE data1Count;
 
 }SWPACKET_IN_INFO_MONSTER1;
@@ -41,7 +41,7 @@ typedef struct _SWPACKET_IN_INFO_MONSTER2 {
 
 	ULONG64 unk01;
 	ULONG64 unk02;
-	UINT32 unk03;
+	FLOAT unk03;
 	BYTE data2Count;
 
 }SWPACKET_IN_INFO_MONSTER2;
@@ -49,7 +49,7 @@ typedef struct _SWPACKET_IN_INFO_MONSTER2 {
 typedef struct _SWPACKET_IN_INFO_MONSTER_DATA2 {
 
 	UINT32 unk01;
-	UINT32 unk02;
+	FLOAT unk02;
 	BYTE unk03;
 	UINT32 unk04;
 	BYTE unk05;

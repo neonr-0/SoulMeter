@@ -7,7 +7,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Buff Meter\Buff Meter.h"
 
-UiOption::UiOption()  : _autoDetectBoss(0), _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0, 0), _windowWidth(800), _refreshTime(0.3) {
+UiOption::UiOption()  :  _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0, 0), _windowWidth(800), _refreshTime(0.3) {
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
 	_jobBasicColor[1] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(247, 142, 59, 255)));	// 하루
 	_jobBasicColor[2] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(59, 147, 247, 255)));	// 어윈
@@ -47,7 +47,6 @@ BOOL UiOption::ShowFontSelector() {
 	}
 	ImGui::Checkbox(STR_OPTION_SOLO_MODE, (bool*)&_isSoloMode);
 	ImGui::Checkbox(STR_OPTION_HIDE_NAME, (bool*)&_hideName);
-	ImGui::Checkbox(STR_OPTION_AUTO_DETECT_IS_BOSS, (bool*)&_autoDetectBoss);
 
 	return TRUE;
 }
@@ -147,14 +146,14 @@ VOID UiOption::Helper() {
 		}
 
 		//DAMAGEMETER.InsertPlayerMetadata(id, name, helper % 10);
-		DAMAGEMETER.AddDamage(id, helper * 10000, helper * 5000, 4, helper * 2, i % 8, skill[i % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 20000, helper * 5000, 4, helper * 3, (i + 1) % 8, skill[(i + 1) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 30000, helper * 5000, 4, helper * 4, (i + 2) % 8, skill[(i + 2) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 3) % 8, skill[(i + 3) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 20000, helper * 5000, 4, helper * 3, (i + 4) % 8, skill[(i + 1) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 30000, helper * 5000, 4, helper * 4, (i + 5) % 8, skill[(i + 2) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 6) % 8, skill[(i + 3) % 4]);
-		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 7) % 8, skill[(i + 3) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 10000, helper * 5000, 4, helper * 2, i % 4, skill[i % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 20000, helper * 5000, 4, helper * 3, (i + 1) % 4, skill[(i + 1) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 30000, helper * 5000, 4, helper * 4, (i + 2) % 4, skill[(i + 2) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 3) % 4, skill[(i + 3) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 20000, helper * 5000, 4, helper * 3, (i + 4) % 4, skill[(i + 1) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 30000, helper * 5000, 4, helper * 4, (i + 5) % 4, skill[(i + 2) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 6) % 4, skill[(i + 3) % 4]);
+		DAMAGEMETER.AddDamage(id, helper * 40000, helper * 5000, 4, helper * 5, (i + 7) % 4, skill[(i + 3) % 4]);
 
 		BUFFMETER.AddBuff(id, buff[id % 4], 1 + id);
 		helper++;
@@ -296,11 +295,6 @@ BOOL UiOption::GetOption() {
 		return FALSE;
 
 	attr->QueryIntValue(&_is1M);
-
-	attr = ele->FindAttribute("AutoDetectIsBoss");
-	if (attr == nullptr)
-		return FALSE;
-	attr->QueryIntValue(&_autoDetectBoss);
 
 	attr = ele->FindAttribute("IsSoloMode");
 	if (attr == nullptr)
@@ -666,7 +660,6 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("K", _is1K);
 	option->SetAttribute("M", _is1M);
 	option->SetAttribute("IsSoloMode", _isSoloMode);
-	option->SetAttribute("AutoDetectIsBoss", _autoDetectBoss);
 	option->SetAttribute("DoHideName", _hideName);
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -820,10 +813,6 @@ const BOOL& UiOption::is1M() {
 
 const BOOL& UiOption::isSoloMode(){
 	return _isSoloMode;
-}
-
-const BOOL& UiOption::AutoDetectIsBoss() {
-	return _autoDetectBoss;
 }
 
 const BOOL& UiOption::doHideName()

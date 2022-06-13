@@ -106,9 +106,6 @@
     <Filter Include="SWPacket\Packet\0x23">
       <UniqueIdentifier>{7f555519-1ef8-4524-ab04-21d92bad646d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SWPacket\Packet\0x17">
-      <UniqueIdentifier>{0703aa35-35ed-44a9-acc5-9e44e43fc318}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SWPacket\Packet\0x22 Guild">
       <UniqueIdentifier>{431c215d-7997-4c5e-8721-8efea686854e}</UniqueIdentifier>
     </Filter>
@@ -120,6 +117,9 @@
     </Filter>
     <Filter Include="SWCrypt">
       <UniqueIdentifier>{22bb4fe9-2c11-4f33-a0b1-609f858a7e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SWPacket\Packet\0x17 Monster">
+      <UniqueIdentifier>{0703aa35-35ed-44a9-acc5-9e44e43fc318}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -325,10 +325,10 @@
       <Filter>UI\Window</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketAggroChanged.h">
-      <Filter>SWPacket\Packet\0x17</Filter>
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketMonsterKilled.h">
-      <Filter>SWPacket\Packet\0x17</Filter>
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
     <ClInclude Include="Language\Chineses.h">
       <Filter>Language</Filter>
@@ -350,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketOtherInfosMonster.h">
       <Filter>SWPacket\Packet\0x04 World</Filter>
+    </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketMonsterStatUpdate.h">
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -543,10 +546,10 @@
       <Filter>UI\Window</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketAggroChanged.cpp">
-      <Filter>SWPacket\Packet\0x17</Filter>
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketMonsterKilled.cpp">
-      <Filter>SWPacket\Packet\0x17</Filter>
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWSPacketMyDodgeUsed.cpp">
       <Filter>SWSPacket\0x06 Combat</Filter>
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketOtherInfosMonster.cpp">
       <Filter>SWPacket\Packet\0x04 World</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketMonsterStatUpdate.cpp">
+      <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

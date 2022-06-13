@@ -160,8 +160,8 @@ VOID SpecificInformation::UpdateMonsterCombo() {
 	
 		for (auto itr = (*player)->begin(); itr != (*player)->end(); itr++) {
 			
-			CHAR label[128] = { 0 };
-			sprintf_s(label, 128, "%s##%d", (*itr)->GetName(), (*itr)->GetID());
+			CHAR label[MONSTER_NAME_LEN] = { 0 };
+			sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", (*itr)->GetName(), (*itr)->GetID());
 
 			if (ImGui::Selectable(label)) {
 				_monsterID_SKILL = (*itr)->GetID();

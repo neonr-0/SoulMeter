@@ -49,7 +49,9 @@ static unordered_set<UINT32> endIdList({
 	31309151, // 
 	31301003, // 
 	31310102, // 
-	31310107 // BS Hard Phase 2
+	31310107, // BS Hard Phase 2
+	32308101, //raphakumba HH
+	32301001, //flemma solo
 	});
 
 class SWPacketDamage : public SWPacket {

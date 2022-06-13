@@ -27,7 +27,6 @@ private:
 	BOOL _is1M;
 	BOOL _isSoloMode;
 	BOOL _hideName;
-	BOOL _autoDetectBoss;
 	ImVec2 _cellPadding;
 	FLOAT _framerate;
 	FLOAT _windowBorderSize;

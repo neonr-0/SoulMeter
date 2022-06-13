@@ -3,18 +3,18 @@
 #include "UtillWindow.h"
 #include <vector>
 #include ".\Language\Region.h"
-
-PlotInfo::PlotInfo(UINT32 id, string name) : _id(id), _name(name) {}
+#include ".\Damage Meter\MySQLite.h"
+#include ".\Damage Meter\Damage Meter.h"
 
 VOID PlotWindow::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement)
 {
-	if (pi == nullptr)
-		pi = new PlotInfo(id, name);
+	if (_pi == nullptr)
+		_pi = new PlotInfo();
 
-	pi->AddData(DPS, time, isFirstElement);
+	_pi->AddData(id, name, DPS, time, isFirstElement);
 }
 
-VOID PlotInfo::AddData(DOUBLE DPS, DOUBLE time, bool isFirstElement)
+VOID PlotInfo::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement)
 {
 	if (isFirstElement) {
 		if (_lastTime == time) {
@@ -33,37 +33,37 @@ VOID PlotInfo::AddData(DOUBLE DPS, DOUBLE time, bool isFirstElement)
 	}
 	_lastTime = time;
 
-	auto it = metaInfos.begin();
+	auto it = _metaInfos.begin();
 	bool metaInfoFound = false;
-	for (; it != metaInfos.end(); it++) {
-		if ((*it)->_id == _id) {
+	for (; it != _metaInfos.end(); it++) {
+		if ((*it)->_id == id) {
 			metaInfoFound = true;
 			break;
 		}
 	}
 
 	if (!metaInfoFound) {
-		metaInfos.push_back(new metaInfo(_id, _name));
+		_metaInfos.push_back(new metaInfo(id, name));
 
 		vector<double> newDPSvector;
 		newDPSvector.push_back(DPS);
-		dpsList.emplace(_id, newDPSvector);
+		_dpsList.emplace(id, newDPSvector);
 
 		vector<double> newTimevector;
 		newTimevector.push_back(time);
-		timeList.emplace(_id, newTimevector);
+		_timeList.emplace(id, newTimevector);
 	}
 	else {
-		dpsList[_id].push_back(DPS);
-		timeList[_id].push_back(time);
+		_dpsList[id].push_back(DPS);
+		_timeList[id].push_back(time);
 	}
 }
 
 VOID PlotWindow::AddAbData(DOUBLE DPS, DOUBLE time)
 {
-	if (pi == nullptr)
-		return;
-	pi->AddAbData(DPS, time);
+	if (_pi == nullptr)
+		_pi = new PlotInfo();
+	_pi->AddAbData(DPS, time);
 }
 
 VOID PlotInfo::AddAbData(DOUBLE DPS, DOUBLE time)
@@ -79,9 +79,9 @@ VOID PlotInfo::AddAbData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotWindow::AddJqData(BYTE stack, DOUBLE time)
 {
-	if (pi == nullptr)
-		return;
-	pi->AddJqData(stack, time);
+	if (_pi == nullptr)
+		_pi = new PlotInfo();
+	_pi->AddJqData(stack, time);
 }
 
 VOID PlotInfo::AddJqData(BYTE stack, DOUBLE time)
@@ -97,9 +97,9 @@ VOID PlotInfo::AddJqData(BYTE stack, DOUBLE time)
 
 VOID PlotWindow::AddAnnonation(string content)
 {
-	if (pi == nullptr)
-		return;
-	pi->AddAnnonation(content);
+	if (_pi == nullptr)
+		_pi = new PlotInfo();
+	_pi->AddAnnonation(content);
 }
 
 VOID PlotInfo::AddAnnonation(string content)
@@ -107,6 +107,19 @@ VOID PlotInfo::AddAnnonation(string content)
 	_annonXList.push_back(_abTimeList.back());
 	_annonYList.push_back(_abList.back());
 	_annonContentList.push_back(content);
+}
+
+VOID PlotWindow::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
+{
+	if (_pi == nullptr)
+		_pi = new PlotInfo();
+	_pi->AddBossHpData(id, HP, time);
+}
+
+VOID PlotInfo::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
+{
+	_bossHpList[id].push_back((double)HP/1000000);
+	_bossTimeList[id].push_back(time);
 }
 
 VOID PlotWindow::OpenWindow()
@@ -122,10 +135,11 @@ VOID PlotWindow::Update()
 
 		if (ImGui::BeginTabBar(u8"테스트2"))
 		{
-			if (pi != nullptr) {
+			if (_pi != nullptr) {
 				UpdatePlotTab();
 				UpdateAbPlotTab();
 				UpdateJqPlotTab();
+				UpdateBossHpPlotTab();
 			}
 			UTILLWINDOW.Update();
 			ImGui::EndTabBar();
@@ -138,9 +152,9 @@ VOID PlotWindow::UpdatePlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_DPSGRAPH))
 	{
-		auto timeList = pi->GetTimeList();
-		auto dpsList = pi->GetDPSList();
-		auto metaInfos = pi->GetMetaInfo();
+		auto timeList = _pi->GetTimeList();
+		auto dpsList = _pi->GetDPSList();
+		auto metaInfos = _pi->GetMetaInfo();
 		if (timeList.size() > 0) {
 			UINT32 firstId = metaInfos.front()->_id;
 			UINT32 lastId = metaInfos.back()->_id;
@@ -203,11 +217,11 @@ VOID PlotWindow::UpdateAbPlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_ABGRAPH))
 	{
-		auto _abTimeList = pi->GetABTimeList();
-		auto _abList = pi->GetABList();
-		auto _annonXList = pi->GetAnnonXList();
-		auto _annonYList = pi->GetAnnonYList();
-		auto _annonContentList = pi->GetAnnonContentList();
+		auto _abTimeList = _pi->GetABTimeList();
+		auto _abList = _pi->GetABList();
+		auto _annonXList = _pi->GetAnnonXList();
+		auto _annonYList = _pi->GetAnnonYList();
+		auto _annonContentList = _pi->GetAnnonContentList();
 		UINT32 currentSize = _abTimeList.size();
 
 		DOUBLE startX = 0.0;
@@ -240,8 +254,8 @@ VOID PlotWindow::UpdateJqPlotTab()
 {
 	if (ImGui::BeginTabItem(STR_UTILWINDOW_JQGRAPH))
 	{
-		auto _jqTimeList = pi->GetJQTimeList();
-		auto _jqList = pi->GetJQList();
+		auto _jqTimeList = _pi->GetJQTimeList();
+		auto _jqList = _pi->GetJQList();
 		UINT32 currentSize = _jqTimeList.size();
 		DOUBLE startX = 0.0;
 		DOUBLE endX = 5.0;
@@ -263,6 +277,106 @@ VOID PlotWindow::UpdateJqPlotTab()
 	}
 }
 
+VOID PlotWindow::UpdateBossHpPlotTab()
+{
+	if (ImGui::BeginTabItem(STR_UTILWINDOW_BOSSHPGRAPH))
+	{
+		UpdateBossHpPlotCombo();
+
+		if (_selectedBossHpComboID != -1)
+			UpdateBossHpPlotGraph();
+
+		ImGui::EndTabItem();
+	}
+}
+
+VOID PlotWindow::UpdateBossHpPlotCombo()
+{
+	unordered_map<UINT32, const CHAR*> bossInfos;
+
+	// Get all monster data
+	for (auto itr = DAMAGEMETER.begin(); itr < DAMAGEMETER.end(); itr++) {
+		for (auto itr2 = (*itr)->begin(); itr2 != (*itr)->end(); itr2++) {
+			if ((*itr2)->GetType() == 3 || (*itr2)->GetType() == 4)
+				bossInfos.emplace((*itr2)->GetID(), (*itr2)->GetName());
+		}
+	}
+
+	const CHAR* comboPreview = nullptr;
+
+	if (bossInfos.begin() != bossInfos.end()) {
+		if (_selectedBossHpComboID == -1)
+			_selectedBossHpComboID = bossInfos.begin()->first;
+		comboPreview = bossInfos.at(_selectedBossHpComboID);
+
+		if (ImGui::BeginCombo("BOSS", comboPreview, ImGuiComboFlags_HeightLarge)) {
+
+			for (auto itr = bossInfos.begin(); itr != bossInfos.end(); itr++) {
+
+				CHAR label[MONSTER_NAME_LEN] = { 0 };
+				sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", itr->second, itr->first);
+
+				if (ImGui::Selectable(label)) {
+					_selectedBossHpComboID = itr->first;
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+	}
+}
+
+VOID PlotWindow::UpdateBossHpPlotGraph()
+{
+	auto timeList = _pi->GetBossTimeList();
+	auto bossHpList = _pi->GetBossHpList();
+	if (timeList.size() > 0) {
+		USHORT currentSize = timeList[_selectedBossHpComboID].size();
+
+		// 
+		DOUBLE startX = 0.0;
+		if (currentSize > 45) {
+			startX = timeList[_selectedBossHpComboID].at(currentSize - 45);
+		}
+		DOUBLE endX = timeList[_selectedBossHpComboID].at(currentSize - 1);
+		//
+		DOUBLE startY = 0;
+		DOUBLE endY = 100;
+		if (currentSize > 45) {
+			auto itr = bossHpList[_selectedBossHpComboID].begin();
+			itr += (bossHpList[_selectedBossHpComboID].size() - 1) - (45 - 1);
+			for (; itr != bossHpList[_selectedBossHpComboID].end(); itr++) {
+				if (*itr > endY) {
+					endY = *itr;
+				}
+			}
+		}
+		else {
+			auto itr = bossHpList[_selectedBossHpComboID].begin();
+			for (; itr != bossHpList[_selectedBossHpComboID].end(); itr++) {
+				if (*itr > endY) {
+					endY = *itr;
+				}
+			}
+		}
+		startY = endY - 7000;
+		if (startY <= 0) {
+			startY = 0;
+		}
+		endY += 100;
+
+		if (!_end) {
+			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+			ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+		}
+	}
+
+	if (ImPlot::BeginPlot(STR_UTILWINDOW_BOSSHPGRAPH, STR_UTILWINDOW_BOSSHPGRAPH_TIME_SEC, STR_UTILWINDOW_BOSSHPGRAPH, ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
+		ImPlot::PlotLine(STR_UTILWINDOW_BOSSHPGRAPH_UNIT, timeList[_selectedBossHpComboID].data(), bossHpList[_selectedBossHpComboID].data(), bossHpList[_selectedBossHpComboID].size());
+		ImPlot::EndPlot();
+	}
+}
+
 VOID PlotWindow::End()
 {
 	_end = true;
@@ -271,22 +385,19 @@ VOID PlotWindow::End()
 VOID PlotWindow::Clear()
 {
 	_end = false;
-	pi = nullptr;
+	_pi = nullptr;
+	_selectedBossHpComboID = -1;
 }
 
 VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi)
 {
-	pi = p_pi;
+	_pi = p_pi;
 	_end = true;
 }
 
 PlotInfo* PlotWindow::GetPlotInfo()
 {
-	return pi;
-}
-
-PlotWindow::PlotWindow()
-{
+	return _pi;
 }
 
 PlotWindow::~PlotWindow()

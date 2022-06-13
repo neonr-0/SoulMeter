@@ -50,4 +50,9 @@ public:
 
 	ULONG64 _lastSendTimestamp = 0;
 	INT _ping = 0;
+
+	FLOAT GetTableTime()
+	{
+		return _tableTime;
+	}
 };

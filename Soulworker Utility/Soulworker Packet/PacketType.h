@@ -42,7 +42,8 @@
 #include ".\Soulworker Packet\SWPacketParty.h"
 #include ".\Soulworker Packet\SWPacketPartyListInfo.h"
 
-/* 0x17 ?? */
+/* 0x17 Monster */
+#include ".\Soulworker Packet\SWPacketMonsterStatUpdate.h"
 #include ".\Soulworker Packet\SWPacketMonsterKilled.h"
 #include ".\Soulworker Packet\SWPacketAggroChanged.h"
 
@@ -61,7 +62,7 @@
 // 대충 여기에 다 집어놓고 packetType만 include해서 쓰면 됨
 
 
-
+// opcode0106: 01=mainCMD, 06=subCMD
 enum OPcode {
 	HEARTBEAT = 0x0106,
 
@@ -94,10 +95,12 @@ enum OPcode {
 
 	MAZEEND = 0x1175,
 
-	/* 0x12 Party*/
+	/* 0x12 Party */
 	PARTY = 0x1209,
 	PARTY_LIST_INFO = 0x1236,
 
+	/* 0x17 Monster */
+	MONSTER_STAT_UPDATE = 0x1712,
 	MONSTER_KILLED = 0x1711,
 	AGGRO_CHANGED = 0x1722,
 

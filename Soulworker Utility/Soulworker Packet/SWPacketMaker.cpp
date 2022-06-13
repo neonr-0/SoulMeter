@@ -308,7 +308,6 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 
 			/* 0x11 */
-
 		case OPcode::MAZEEND:
 			swpacket = new SWPacketMazeEnd(swheader, data);
 			break;
@@ -321,7 +320,10 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			//swpacket = new SWPacketPartyListInfo(swheader, data);
 			break;
 
-			/* 0x17 ?? */
+			/* 0x17 Monster */
+		case OPcode::MONSTER_STAT_UPDATE:
+			swpacket = new SWPacketMonsterStatUpdate(swheader, data);
+			break;
 		case OPcode::MONSTER_KILLED: //0430
 			swpacket = new SWPacketMonsterKilled(swheader, data);
 			break;
@@ -335,11 +337,10 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 
 			/* 0x2e Force*/
-		// 8人組隊
+			// 8人組隊
 		case OPcode::POS: //0430
 			swpacket = new SWPacketPos(swheader, data);
 			break;
-
 
 		default:
 #if DEBUG_DISPLAYPKT == 1

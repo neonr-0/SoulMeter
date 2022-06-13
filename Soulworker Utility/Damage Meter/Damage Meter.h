@@ -3,6 +3,7 @@
 #include ".\Language\Region.h"
 #include ".\Damage Meter\Timer.h"
 #include ".\Damage Meter\SWDamagePlayer.h"
+#include ".\UI\PlotWindow.h"
 using namespace std;
 #include <unordered_map>
 
@@ -467,7 +468,7 @@ private:
 
 	USHORT _historyWorldID;
 	FLOAT _historyTime;
-	INT32 _historyID = -1;
+	INT32 _historyID;
 
 	UINT32 _aggroedId;
 
@@ -483,7 +484,7 @@ private:
 	mutex _mutex;
 
 public:
-	SWDamageMeter() : _myID(0), _worldID(0), _mazeEnd(0), _historyMode(0), _historyWorldID(0), _historyTime(0) {}
+	SWDamageMeter() :  _historyID(-1), _myID(0), _worldID(0), _mazeEnd(0), _historyMode(0), _historyWorldID(0), _historyTime(0) {}
 	~SWDamageMeter();
 
 	VOID GetLock();

@@ -25,12 +25,10 @@ struct damageInfo {
 
 class PlotInfo : public MemoryPool<PlotInfo> {
 private:
-	UINT32 _id;
-	string _name;
 
-	vector<metaInfo*> metaInfos;
-	unordered_map<UINT32, vector<double>> dpsList;
-	unordered_map<UINT32, vector<double>> timeList;
+	vector<metaInfo*> _metaInfos;
+	unordered_map<UINT32, vector<double>> _dpsList;
+	unordered_map<UINT32, vector<double>> _timeList;
 	double _lastTime = -1;
 	bool _allowed = false;
 
@@ -46,28 +44,27 @@ private:
 	vector<double> _annonYList;
 	vector<string> _annonContentList;
 
-protected:
-	PlotInfo() {}
-	PlotInfo(const PlotInfo& other) {}
+	unordered_map<UINT32, vector<double>> _bossHpList;
+	unordered_map<UINT32, vector<double>> _bossTimeList;
 
 public:
-	PlotInfo::PlotInfo(UINT32 id, string name);
 
-	VOID AddData(DOUBLE DPS, DOUBLE time, bool isFirstElement);
+	VOID AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement);
 	VOID AddAbData(DOUBLE DPS, DOUBLE time);
 	VOID AddJqData(BYTE stack, DOUBLE time);
 	VOID AddAnnonation(string content);
+	VOID AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time);
 	vector<metaInfo*> GetMetaInfo()
 	{
-		return metaInfos;
+		return _metaInfos;
 	}
 	unordered_map<UINT32, vector<double>> GetTimeList()
 	{
-		return timeList;
+		return _timeList;
 	}
 	unordered_map<UINT32, vector<double>> GetDPSList()
 	{
-		return dpsList;
+		return _dpsList;
 	}
 	vector<double> GetABList()
 	{
@@ -97,6 +94,14 @@ public:
 	{
 		return _annonContentList;
 	}
+	unordered_map<UINT32, vector<double>> GetBossHpList()
+	{
+		return _bossHpList;
+	}
+	unordered_map<UINT32, vector<double>> GetBossTimeList()
+	{
+		return _bossTimeList;
+	}
 };
 
 class PlotWindow : public Singleton<PlotWindow> {
@@ -104,26 +109,33 @@ private:
 	bool _isOpen = false;
 	bool _end = false;
 
-	PlotInfo* pi = nullptr;
+	PlotInfo* _pi = nullptr;
+
+	UINT32 _selectedBossHpComboID;
 
 	VOID UpdatePlotTab();
 	VOID UpdateAbPlotTab();
 	VOID UpdateJqPlotTab();
+	VOID UpdateBossHpPlotTab();
+	VOID UpdateBossHpPlotCombo();
+	VOID UpdateBossHpPlotGraph();
 public:
+
 	VOID AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement);
 	VOID AddAbData(DOUBLE DPS, DOUBLE time);
 	VOID AddJqData(BYTE stack, DOUBLE time);
 	VOID AddAnnonation(string content);
+	VOID AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time);
 
 	VOID OpenWindow();
 	VOID Update();
 	VOID End();
 	VOID Clear();
 
-	PlotInfo* PlotWindow::GetPlotInfo();
-	VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi);
+	VOID SetPlotInfo(PlotInfo* p_pi);
+	PlotInfo* GetPlotInfo();
 
-	PlotWindow();
+	PlotWindow() : _selectedBossHpComboID(-1) {}
 	~PlotWindow();
 
 };

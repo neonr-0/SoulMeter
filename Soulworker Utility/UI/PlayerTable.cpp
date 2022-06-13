@@ -90,7 +90,7 @@ VOID PlayerTable::Update() {
 
 		CHAR title[256] = { 0 };
 
-		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.4_%s] Ping: %dms  ###DamageMeter", 
+		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.5_%s] Ping: %dms  ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			SWPACKETMAKER.GetKeyInfo(),
@@ -347,7 +347,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 
 
 		// DPS
-		if (_tableTime == 0) {
+		if (_tableTime < 1) {
 			sprintf_s(label, 128, "%.0lf", (float)0);
 			ImGui::Text(comma);
 		}
