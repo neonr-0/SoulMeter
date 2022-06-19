@@ -84,7 +84,7 @@ VOID SWPacketDamage::Do() {
 			if (monster->_remainHP <= 0) {
 				if (UIOPTION.isSaveDataWhenBossDied() && saveDataAndResetIdList.find(db2) != saveDataAndResetIdList.end()) {
 					DAMAGEMETER.Clear();
-					DAMAGEMETER.SetMazeState(FALSE);
+					DAMAGEMETER.SetMazeState(endIdList.find(db2) != endIdList.end());
 				}
 				else {
 					if (pauseIdList.find(db2) != pauseIdList.end()) {
