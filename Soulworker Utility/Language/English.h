@@ -1,5 +1,4 @@
 #pragma once
-//#define ERROR_MSG_WINDIVERT_241 L"Diver install failed. Click OK goto install windows update."
 
 // encoding utf-8 (ㅇㅅㅇ)
 //https://i.imgur.com/dT4XLuh.png
@@ -12,6 +11,7 @@
 #define STR_MENU_TOPMOST u8"Always On Top"
 #define STR_MENU_HISTORY u8"History"
 #define STR_MENU_OPTIONS u8"Option"
+#define STR_MENU_MEOW u8"Graph"
 #define STR_MENU_EXIT u8"Exit"
 
 // https://i.imgur.com/e0KEFOM.png
@@ -79,7 +79,7 @@
 #define STR_OPTION_TEXT_OUTLINE_COLOR u8"Text Outline Color"
 #define STR_OPTION_ACTIVE_COLOR u8"Active Color"
 #define STR_OPTION_INACTIVE_COLOR u8"InActive Color"
-#define STR_OPTION_AUTO_DETECT_IS_BOSS u8"Auto detect is boss"
+#define STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED u8"Save data and reset when BOSS died"
 
 #define STR_CHAR_UNKNOWN u8"Unknown"
 #define STR_CHAR_HARU u8"Haru"
@@ -112,8 +112,6 @@
 #define STR_DETAIL_SKILL u8"Skill"
 #define STR_DETAIL_MONSTER u8"Monster"
 #define STR_DETAIL_BUFF_AND_DEBUFF u8"Buff/Debuff"
-
-#define STR_UTILWINDOW_MEOW u8"Graph"
 
 #define STR_UTILWINDOW_DPSGRAPH u8"DPS Graph"
 #define STR_UTILWINDOW_DPSGRAPH_TIME_SEC u8"Time(sec)"

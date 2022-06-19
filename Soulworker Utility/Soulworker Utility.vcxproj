@@ -178,6 +178,7 @@
     <ClInclude Include="Buff Meter\Buff.h" />
     <ClInclude Include="Damage Meter\Damage Meter.h" />
     <ClInclude Include="Damage Meter\History.h" />
+    <ClInclude Include="Damage Meter\MonsterList.h" />
     <ClInclude Include="Damage Meter\MySQLite.h" />
     <ClInclude Include="Damage Meter\SWDamageMonster.h" />
     <ClInclude Include="Damage Meter\SWDamagePlayer.h" />

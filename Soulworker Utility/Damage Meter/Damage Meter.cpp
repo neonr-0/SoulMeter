@@ -414,7 +414,7 @@ VOID SWDamageMeter::SetAggro(UINT32 id, UINT32 targetedId)
 	}
 	//Log::MyLog("db2 : %u\n", db2);
 
-	if (bossMonsterList.find(db2) != bossMonsterList.end()) {
+	if (changeAggroIdList.find(db2) != changeAggroIdList.end()) {
 		//Log::MyLog("id is registered");
 		_aggroedId = targetedId;
 	}
@@ -503,15 +503,12 @@ VOID SWDamageMeter::Suspend() {
 		Restore();
 		_historyMode = FALSE;
 	}
+
 	_timer.Suspend();
+
 	for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 		itr->second->MeterSuspended();
 	}
-
-	//auto itr = _playerInfo.begin();
-	//for (; itr != _playerInfo.end(); itr++) {
-	//	(*itr)->MeterSuspended();
-	//}
 }
 
 VOID SWDamageMeter::Start() {

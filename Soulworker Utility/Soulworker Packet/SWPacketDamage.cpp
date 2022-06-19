@@ -81,17 +81,21 @@ VOID SWPacketDamage::Do() {
 			DAMAGEMETER.AddDamage(player->_playerID, monster->_totalDMG, monster->_soulstoneDMG, (SWPACKETDAMAGE_DAMAGETYPE)(monster->_damageType),
 				player->_maxCombo, monster->_monsterID, player->_skillID);
 
-			// 
-			if (monster->_remainHP <= 0 && pauseIdList.find(db2) != pauseIdList.end()) {
-				DAMAGEMETER.Suspend();
+			if (monster->_remainHP <= 0) {
+				if (UIOPTION.isSaveDataWhenBossDied() && saveDataAndResetIdList.find(db2) != saveDataAndResetIdList.end()) {
+					DAMAGEMETER.Clear();
+					DAMAGEMETER.SetMazeState(FALSE);
+				}
+				else {
+					if (pauseIdList.find(db2) != pauseIdList.end()) {
+						DAMAGEMETER.Suspend();
+					}
+					else if (endIdList.find(db2) != endIdList.end()) {
+						DAMAGEMETER.SetMazeState(TRUE);
+						DAMAGEMETER.Suspend();
+					}
+				}
 			}
-
-			// 
-			else if (monster->_remainHP <= 0 && endIdList.find(db2) != endIdList.end()) {
-				DAMAGEMETER.SetMazeState(TRUE);
-				DAMAGEMETER.Suspend();
-			}
-
 		}
 	}
 }

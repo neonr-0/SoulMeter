@@ -4,6 +4,8 @@
 #include ".\Damage Meter\Timer.h"
 #include ".\Damage Meter\SWDamagePlayer.h"
 #include ".\UI\PlotWindow.h"
+#include ".\Damage Meter\MonsterList.h"
+#include ".\UI\Option.h"
 using namespace std;
 #include <unordered_map>
 
@@ -35,31 +37,8 @@ typedef struct _SW_OWNER_ID_STRUCT {
 
 typedef struct _SW_DB2_STRUCT {
 	UINT32 _id;
-	//	USHORT _db1;
 	UINT32 _db2;
 }SW_DB2_STRUCT;
-
-
-static unordered_set<UINT32> resumeIgnoreIdList({
-	
-	14000101, 14000102, 14000103,
-	1081102, 1081103, 1081104, 1081105, 1081106, 1081107, 1081108, 1081109,
-	1091101 
-	});
-
-static unordered_set<UINT32> bossMonsterList({
-	
-	701, 702, 
-	31308001, 
-	//31309101, 31309102, 31309151, 
-	31309151, 
-	31301001, 31301002, 31301003, 
-	31310101, 31310102, 
-	31310103, 31310107 
-
-	//90500009,90500010,90500011,90500012, 
-	//90500014,90500015,90500016,90500017 
-	});
 
 
 class SWDamageMeter : public Singleton<SWDamageMeter> {

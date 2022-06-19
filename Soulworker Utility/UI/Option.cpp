@@ -7,7 +7,12 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Buff Meter\Buff Meter.h"
 
-UiOption::UiOption()  :  _open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), _is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3) {
+UiOption::UiOption()  : 
+	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
+	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false),
+	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3)
+{
+	
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
 	_jobBasicColor[1] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(247, 142, 59, 255)));	// haru
 	_jobBasicColor[2] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(59, 147, 247, 255)));	// owin
@@ -47,6 +52,7 @@ BOOL UiOption::ShowFontSelector() {
 	}
 	ImGui::Checkbox(STR_OPTION_SOLO_MODE, (bool*)&_isSoloMode);
 	ImGui::Checkbox(STR_OPTION_HIDE_NAME, (bool*)&_hideName);
+	ImGui::Checkbox(STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED, (bool*)&_saveDataWhenBossDied);
 
 	return TRUE;
 }
@@ -309,6 +315,10 @@ BOOL UiOption::GetOption() {
 	if (attr == nullptr)
 		return FALSE;
 	attr->QueryIntValue(&_isTopMost);
+
+	attr = ele->FindAttribute("SaveDataWhenBossDied");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_saveDataWhenBossDied);
 
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1M = %d")), _is1M);
@@ -660,6 +670,8 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("M", _is1M);
 	option->SetAttribute("IsSoloMode", _isSoloMode);
 	option->SetAttribute("DoHideName", _hideName);
+	option->SetAttribute("SaveDataWhenBossDied", _saveDataWhenBossDied);
+
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
 	option->SetAttribute("BorderSize", _windowBorderSize);
@@ -822,6 +834,11 @@ const BOOL& UiOption::doHideName()
 const BOOL& UiOption::isTopMost()
 {
 	return _isTopMost;
+}
+
+const BOOL& UiOption::isSaveDataWhenBossDied()
+{
+	return _saveDataWhenBossDied;
 }
 
 VOID UiOption::Update() {

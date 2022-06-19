@@ -1,45 +1,12 @@
 #pragma once
 #include ".\Damage Meter\SWDamageMonster.h"
 #include ".\Soulworker Packet\PacketInfo.h"
+#include ".\Damage Meter\MonsterList.h"
 #include <unordered_set>
 #include <map>
 using namespace std;
 
 #define DEBUG_DAMAGE_PLAYER 0
-
-static unordered_set<UINT32> dpsIgnoreIdList({
-	/* (HH) */
-	31308106, // (Hermit)
-	31308102, 31308103, 31308104, // (totem)
-	31308105, 31308112, 31308111, 31308114, 31308115, // defilement
-	31308110, 31308113, 31308116, // Clone of Raphakumba
-
-	/* (LF) */
-	31309109, 31309154, // Queen's Sword
-
-	/* (Primal, Hero Primal) */
-	// ..
-
-	/* (BS) */
-	31310111, 31310112, // Tenebris
-	31310116, 31310117, // Flame of Tenebris
-	31310151, 31310152, 31310153, 31310154, // Mobs
-	31310192, // Reward box
-
-	/* (BSVH) */
-	31310118, 31310119, // Desire Energy Fragment, Hazy Beam
-
-	/* Rocco Town Hero */
-	34401502, 34401503, 34401504,
-	34401702,
-	34401802, 34401803,
-
-	/* (etc) */
-	14000101, 14000102, 14000103, // (puppet orb)
-	1081102, 1081103, 1081104, 1081105, 1081106, 1081107, 1081108, 1081109, // (octagon)
-	1091101 // (wicked bomb)
-
-	});
 
 class SWDamagePlayer : public MemoryPool<SWDamagePlayer, 30> {
 private:

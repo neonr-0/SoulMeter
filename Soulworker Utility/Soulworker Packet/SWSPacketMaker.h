@@ -5,8 +5,6 @@
 
 #define SWSPACKETMAKER SWSPacketMaker::getInstance()
 
-#define KEY_FILE_NAME "SWPkey.bin"
-
 #define NO_SEGMENTATION 0
 #define YES_SEGMENTATION 1
 #define REASSAMBLY 2

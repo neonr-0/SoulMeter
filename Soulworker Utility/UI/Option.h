@@ -33,8 +33,9 @@ private:
 	FLOAT _windowWidth;
 	FLOAT _refreshTime;
 	BOOL _isTopMost;
-	BOOL ShowTableOption();
+	BOOL _saveDataWhenBossDied;
 
+	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
 
 	VOID Helper();
@@ -68,6 +69,7 @@ public:
 	const BOOL& isSoloMode();
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
+	const BOOL& isSaveDataWhenBossDied();
 
 	BOOL ToggleTopMost();
 

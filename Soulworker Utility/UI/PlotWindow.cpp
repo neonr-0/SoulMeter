@@ -131,7 +131,7 @@ VOID PlotWindow::Update()
 {
 	if (_isOpen) {
 
-		ImGui::Begin(STR_UTILWINDOW_MEOW, &_isOpen, ImGuiWindowFlags_None);
+		ImGui::Begin(STR_MENU_MEOW, &_isOpen, ImGuiWindowFlags_None);
 
 		if (ImGui::BeginTabBar(u8"PlotWindowTab"))
 		{

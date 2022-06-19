@@ -354,6 +354,9 @@
     <ClInclude Include="Soulworker Packet\SWPacketMonsterStatUpdate.h">
       <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
+    <ClInclude Include="Damage Meter\MonsterList.h">
+      <Filter>Damge Meter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

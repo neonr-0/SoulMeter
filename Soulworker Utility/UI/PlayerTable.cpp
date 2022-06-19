@@ -210,7 +210,7 @@ VOID PlayerTable::BeginPopupMenu() {
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::MenuItem(STR_UTILWINDOW_MEOW)) {
+		if (ImGui::MenuItem(STR_MENU_MEOW)) {
 			//UTILLWINDOW.OpenWindow();
 			PLOTWINDOW.OpenWindow();
 		}
