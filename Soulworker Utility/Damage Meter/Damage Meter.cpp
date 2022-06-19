@@ -216,6 +216,7 @@ VOID SWDamageMeter::BuffOut(UINT32 playerId, USHORT buffId)
 {
 	if (_mazeEnd)
 		return;
+	// The Real Army 
 	if (buffId != 60228)
 		return;
 

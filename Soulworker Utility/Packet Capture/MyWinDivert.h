@@ -1,5 +1,8 @@
 #pragma once
 
+#include "pch.h"
+using namespace std;
+
 #define WINDIVERT MyWinDivert::getInstance()
 
 #define WINDIVERT_FILTER_RULE "tcp.SrcPort == 10200 or tcp.DstPort == 10200"
@@ -13,12 +16,22 @@
 
 class MyWinDivert : public Singleton<MyWinDivert> {
 private:
+	struct PacketInfo
+	{
+		IPv4Packet* _pkt;
+		BOOL _isRecv;
+		MyWinDivert* _this;
+	};
+
 	static DWORD WINAPI ReceiveCallback(LPVOID prc);
+	static DWORD WINAPI ParsePacket(LPVOID prc);
 
 	HANDLE _handle;
 
 	static VOID PrintIPHeader(IPv4Packet* p_packet);
 	static VOID PrintTCPHeader(IPv4Packet* p_packet);
+
+	mutex _mutex;
 
 public:
 	MyWinDivert() { }

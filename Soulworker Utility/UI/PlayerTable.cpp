@@ -348,8 +348,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 
 		// DPS
 		if (_tableTime < 1) {
-			sprintf_s(label, 128, "%.0lf", (float)0);
-			ImGui::Text(comma);
+			ImGui::Text("-");
 		}
 		else {
 			DOUBLE dps = ((DOUBLE)(*itr)->GetDamage()) / _tableTime;

@@ -118,7 +118,7 @@ VOID PlotWindow::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
 
 VOID PlotInfo::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
 {
-	_bossHpList[id].push_back((double)HP/1000000);
+	_bossHpList[id].push_back(static_cast<double>(HP / 1000000));
 	_bossTimeList[id].push_back(time);
 }
 
