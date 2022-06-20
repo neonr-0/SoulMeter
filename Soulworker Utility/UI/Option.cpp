@@ -202,9 +202,13 @@ VOID UiOption::ShowLangSelector() {
 
 VOID UiOption::ChangeLang()
 {
-	LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
-	// need reload sql command
-	SWDB.Init();
+	DAMAGEMETER.GetLock();
+	{
+		LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+		// need reload sql command
+		SWDB.Init();
+	}
+	DAMAGEMETER.FreeLock();
 }
 
 VOID UiOption::OpenOption() {
