@@ -3,6 +3,10 @@
 #include ".\Soulworker Packet\SWPacketMaker.h"
 #include ".\Soulworker Packet\SWSPacketMaker.h"
 #include ".\Soulworker Packet\SWCrypt.h"
+#include ".\UI\Option.h"
+
+//	 Windivert 1.4.2
+#define WINDIVERT_MTU_MAX (40 + 0xFFFF)
 
 DWORD MyWinDivert::Init() {
 
@@ -17,6 +21,27 @@ DWORD MyWinDivert::Init() {
 			break;
 		}
 
+		if (!WinDivertSetParam(_handle, WINDIVERT_PARAM_QUEUE_LEN, 16384))
+		{
+			Log::WriteLog(const_cast<LPTSTR>(_T("Error in WinDivertSetParam1: %x")), GetLastError());
+			error = ERROR_INVALID_HANDLE;
+			break;
+		}
+
+		if (!WinDivertSetParam(_handle, WINDIVERT_PARAM_QUEUE_TIME, 8000))
+		{
+			Log::WriteLog(const_cast<LPTSTR>(_T("Error in WinDivertSetParam2: %x")), GetLastError());
+			error = ERROR_INVALID_HANDLE;
+			break;
+		}
+
+		if (!WinDivertSetParam(_handle, WINDIVERT_PARAM_QUEUE_SIZE, 33554432))
+		{
+			Log::WriteLog(const_cast<LPTSTR>(_T("Error in WinDivertSetParam3: %x")), GetLastError());
+			error = ERROR_INVALID_HANDLE;
+			break;
+		}
+
 		CreateThread(NULL, 0, ReceiveCallback, this, 0, NULL);
 
 	} while (false);
@@ -25,9 +50,6 @@ DWORD MyWinDivert::Init() {
 }
 
 DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
-
-//	 Windivert 1.4.2
-#define WINDIVERT_MTU_MAX (40 + 0xFFFF)
 
 	DWORD error = ERROR_SUCCESS;
 

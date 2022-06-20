@@ -12,8 +12,20 @@
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ PSTR szCmdLine, _In_ int iCmdShow) {
 
-	_wsetlocale(LC_ALL, L"zh-TW.UTF8");
 	MiniDump::Begin();
+
+	const UINT codePage = GetACP();
+	switch (codePage) {
+	case 936: // ZH-CN
+	case 950: // ZH-TW
+		_wsetlocale(LC_ALL, L"zh-TW.UTF8");
+		LANGMANAGER.SetCurrentLang(ZH_TW);
+		break;
+	default:
+		_wsetlocale(LC_ALL, L"en-US.UTF8");
+		LANGMANAGER.SetCurrentLang(EN_US);
+		break;
+	}
 
 	if (!SWDB.Init()) {
 		Log::WriteLog(const_cast<LPTSTR>(_T("InitDB Failed")));

@@ -1,19 +1,6 @@
 #include "pch.h"
-#include ".\Language\Region.h"
-#include ".\Damage Meter\MySQLite.h"
 
-#ifdef _LANG_KOREAN
-#define LANG "KR"
-#endif
-#ifdef _LANG_ENGLISH
-#define LANG "EN"
-#endif
-#ifdef _LANG_CHINESES
-#define LANG "TC"
-#endif
-#ifdef _LANG_JAPANESE
-#define LANG "JP"
-#endif
+#include ".\Damage Meter\MySQLite.h"
 
 MySQL::MySQL() : _db(nullptr), _memdb(nullptr) {
 
@@ -87,7 +74,7 @@ BOOL MySQL::InitSkillDB() {
 	}
 
 //	const CHAR* sql2 = "SELECT Name From Skill Where Id = ?";
-	std::string sql2 = string("SELECT Name_") + string(LANG) + " From Skill Where Id = ?";
+	std::string sql2 = string("SELECT Name_") + string(LANGMANAGER.GetSqlLang()) + " From Skill Where Id = ?";
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_skill_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -113,7 +100,7 @@ BOOL MySQL::InitMonsterDB() {
 	}
 
 	//std::string sql2 = "SELECT Name_" LANG " From Monster Where Db1 = ? and Db2 = ?";
-	std::string sql2 = "SELECT Name_"s + LANG + ", type From Monster Where Db2 = ?"s;
+	std::string sql2 = "SELECT Name_"s + string(LANGMANAGER.GetSqlLang()) + ", type From Monster Where Db2 = ?"s;
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_monster_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -136,7 +123,7 @@ BOOL MySQL::InitMapDB() {
 		return FALSE;
 	}
 
-	std::string sql2 = "SELECT Name_"s + LANG + " From Map Where Id = ?"s;
+	std::string sql2 = "SELECT Name_"s + string(LANGMANAGER.GetSqlLang()) + " From Map Where Id = ?"s;
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_map_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -159,7 +146,7 @@ BOOL MySQL::InitBuffDB() {
 		return FALSE;
 	}
 
-	std::string sql2 = "SELECT Name_"s + LANG + " From Buff Where Id = ?";
+	std::string sql2 = "SELECT Name_"s + string(LANGMANAGER.GetSqlLang()) + " From Buff Where Id = ?";
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_buff_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -306,7 +293,7 @@ BOOL MySQL::GetMapName(UINT32 mapID, CHAR* out_buffer, SIZE_T out_buffer_length)
 		return FALSE;
 
 	if (mapID == 0) {
-		strcpy_s(out_buffer, out_buffer_length, const_cast<CHAR*>(STR_WORLD_NO_INFORMATION));
+		strcpy_s(out_buffer, out_buffer_length, const_cast<CHAR*>(LANGMANAGER.GetText(STR_WORLD_NO_INFORMATION)));
 		return TRUE;
 	}
 

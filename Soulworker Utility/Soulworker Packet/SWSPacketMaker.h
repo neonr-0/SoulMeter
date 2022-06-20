@@ -1,5 +1,5 @@
 #pragma once
-#include ".\Language\Region.h"
+
 #include ".\Soulworker Packet\PacketType.h"
 #include ".\Soulworker Packet\SWPacket.h"
 
@@ -110,14 +110,6 @@ private:
 
 	VOID Decrypt(BYTE* data, const UINT size, const UINT start, const UINT keyIndex);
 
-#if defined(SERVER_KOREA)
-	BYTE _keyTable[64] = { 0xee, 0x1b, 0xde, 0xa6, 0x46, 0xe9, 0x2a, 0xdb, 0x97, 0x67, 0x9c, 0x02, 0x3c, 0xce, 0x9a };
-	char _keyInfo[32] = "No_key_info";
-	int _keyLength = 15;
-
-	USHORT _SWMAGIC = 3;
-#endif
-#if defined(SERVER_STEAM)
 	BYTE _keyTable[256] = {
 		0x86, 0x40, 0x41, 0x20, 0x8C, 0x1A, 0x2E, 0x2C,
 		0x30, 0x1E, 0x99, 0xC9, 0x04, 0xE1, 0xD3, 0xD0,
@@ -154,16 +146,6 @@ private:
 	};
 	char _keyInfo[32] = "@ga0321";
 	int _keyLength = 256;
-
-	USHORT _SWMAGIC = 5;
-#endif
-#if defined(SERVER_JAPAN) // same as past of KR server
-	BYTE _keyTable[64] = { 0x60, 0x3B, 0x0B };
-	char _keyInfo[32] = "No_key_info";
-	int _keyLength = 3;
-
-	USHORT _SWMAGIC = 2;
-#endif
 
 
 	SWSHEADER* GetSWSHeader(IPv4Packet* packet);

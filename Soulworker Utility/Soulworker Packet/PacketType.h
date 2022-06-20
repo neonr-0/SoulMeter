@@ -1,4 +1,8 @@
 #pragma once
+
+#define SWMAGIC 5
+#define SWCONSTVALUE 1
+
 #include ".\Soulworker Packet\SWPacket.h"
 /* 0x01 */
 #include ".\Soulworker Packet\SWPacketHeartbeat.h"

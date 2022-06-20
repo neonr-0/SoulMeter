@@ -1,20 +1,4 @@
 #pragma once
-#include ".\Language\Region.h"
-
-
-#ifdef SERVER_KOREA
-#define SWMAGIC 3
-#endif
-#ifdef SERVER_STEAM
-#define SWMAGIC 3
-#endif
-#ifdef SERVER_JAPAN
-#define SWMAGIC 2
-#endif
-
-//SWMAGIC WILL BE SET BY KEY FILE
-
-#define SWCONSTVALUE 1
 
 #pragma pack(push, 1)
 

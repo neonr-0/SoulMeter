@@ -10,28 +10,11 @@ typedef struct _SWPACKETSTATCHANGE_HEADER {
 	BYTE _statsCount;
 }SWPACKETSTATCHANGE_HEADER;
 
-#if defined(SERVER_KOREA)
-typedef struct _SWPACKETSTATCHANGE_DATA {
-	FLOAT _statValue;
-	USHORT _statType;
-	BYTE _unknown01[8];
-}SWPACKETSTATCHANGE_DATA;
-#endif
-
-#if defined(SERVER_STEAM)
 typedef struct _SWPACKETSTATCHANGE_DATA {
 	FLOAT _statValue;
 	USHORT _statType;
 	BYTE _unknown01[8]; //0430new
 }SWPACKETSTATCHANGE_DATA;
-#endif
-#if defined(SERVER_JAPAN) // same as KR server
-typedef struct _SWPACKETSTATCHANGE_DATA {
-	FLOAT _statValue;
-	USHORT _statType;
-	BYTE _unknown01[8];
-}SWPACKETSTATCHANGE_DATA;
-#endif
 
 #pragma pack(pop)
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "UtillWindow.h"
-#include ".\Language\Region.h"
+
 
 VOID UtillWindow::AddLog(string log)
 {
@@ -37,7 +37,7 @@ VOID UtillWindow::Update()
 	//	ImGui::End();
 	//}
 	if (_isOpen) {
-		if (ImGui::BeginTabItem(STR_UTILWINDOW_COMBATLOG))
+		if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_PLOTWINDOW_COMBATLOG)))
 		{
 			ImGui::BeginChild("Scrolling");
 			std::list<string>::iterator it;

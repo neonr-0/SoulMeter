@@ -23,15 +23,7 @@ VOID SWPacketStatChange::Do() {
 	}
 	else { // 
 		// when you entering maze, there is stat packets
-#if defined(SERVER_KOREA)
 		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14;
-#endif
-#if defined(SERVER_STEAM)
-		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14;
-#endif
-#if defined(SERVER_JAPAN)
-		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14; // same as KR server
-#endif
 	}
 
 	for (int i = 0; i < stat_header->_statsCount; i++) {
@@ -55,15 +47,7 @@ VOID SWPacketStatChange::Debug() {
 }
 	else { // 
 		// when you entering maze, there is stat packets
-#if defined(SERVER_KOREA)
-		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14;
-#endif
-#if defined(SERVER_STEAM)
 		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER);
-#endif
-#if defined(SERVER_JAPAN)
-		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14; // same as KR server
-#endif
 	}
 
 	for (int i = 0; i < stat_header->_statsCount; i++) {

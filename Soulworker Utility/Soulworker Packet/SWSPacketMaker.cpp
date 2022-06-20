@@ -18,7 +18,7 @@ SWSHEADER* SWSPacketMaker::GetSWSHeader(IPv4Packet* packet) {
 
 	SWSHEADER* swheader = (SWSHEADER*)(packet->_data);
 
-	if (swheader->_magic != _SWMAGIC || swheader->_const_value01 != SWCONSTVALUE)
+	if (swheader->_magic != SWMAGIC || swheader->_const_value01 != SWCONSTVALUE)
 		return nullptr;
 
 	return swheader;
@@ -35,16 +35,15 @@ VOID SWSPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, cons
 		return;
 	UINT _size = size;
 
-	if (_SWMAGIC == 5) {
-		SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
+#if SWMAGIC == 5
+	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
+#elif SWMAGIC == 3
+	_size -= sizeof(SWHEADER) + 3;
+	BYTE ecx = data[5];
+	for (UINT i = 0; i < _size; i++) {
+		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 16)];
 	}
-	else if (_SWMAGIC == 3) {
-		_size -= sizeof(SWHEADER) + 3;
-		BYTE ecx = data[5];
-		for (UINT i = 0; i < _size; i++) {
-			data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 16)];
-		}
-	}
+#endif
 }
 
 VOID SWSPacketMaker::ResizePacket(IPv4Packet* packet) {

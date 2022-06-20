@@ -1,8 +1,11 @@
 #pragma once
+#include "pch.h"
+#include <unordered_map>
 
 #define UIOPTION UiOption::getInstance()
 
 #define OPTION_FILE_NAME "option.xml"
+#define NETWORK_NAME_LEN 256
 
 #ifdef _DEBUG
 #define DEBUG_READ_XML 0
@@ -34,16 +37,17 @@ private:
 	FLOAT _refreshTime;
 	BOOL _isTopMost;
 	BOOL _saveDataWhenBossDied;
+	INT32 _selectedLang;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
+	VOID ShowLangSelector();
 
 	VOID Helper();
 
 	BOOL GetOption();
 	BOOL SaveOption();
 	BOOL SetBasicOption();
-	
 
 	BOOL _open;
 

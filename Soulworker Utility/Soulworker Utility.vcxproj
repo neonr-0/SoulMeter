@@ -184,11 +184,8 @@
     <ClInclude Include="Damage Meter\SWDamagePlayer.h" />
     <ClInclude Include="Damage Meter\SWDamageSkill.h" />
     <ClInclude Include="Damage Meter\Timer.h" />
-    <ClInclude Include="Language\Chineses.h" />
-    <ClInclude Include="Language\English.h" />
-    <ClInclude Include="Language\Japanese.h" />
-    <ClInclude Include="Language\Korean.h" />
-    <ClInclude Include="Language\Region.h" />
+    <ClInclude Include="Language\Language.h" />
+    <ClInclude Include="Language\LanguageText.h" />
     <ClInclude Include="Packet Capture\MyWinDivert.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
@@ -263,6 +260,7 @@
     <ClCompile Include="Damage Meter\SWDamagePlayer.cpp" />
     <ClCompile Include="Damage Meter\SWDamageSkill.cpp" />
     <ClCompile Include="Damage Meter\Timer.cpp" />
+    <ClCompile Include="Language\Language.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet Capture\MyWinDivert.cpp" />
     <ClCompile Include="pch.cpp">

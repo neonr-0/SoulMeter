@@ -51,3 +51,4 @@
 #include ".\Util\CriticalSection.h"
 #include ".\Util\MultiThreadSync.h"
 #include ".\Util\MemoryPool.h"
+#include ".\Language\Language.h"

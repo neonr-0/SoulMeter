@@ -20,6 +20,12 @@ SWCrypt.h
 # Npcap
 npcap/
 
+# Boost
+boost/
+
+# ICU
+icu/
+
 #Font File
 *.ttf
 

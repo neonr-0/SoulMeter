@@ -1,5 +1,5 @@
 #include "pch.h"
-#include ".\Language\Region.h"
+
 #include ".\UI\DX11.h"
 #include ".\UI\DX Input.h"
 #include ".\UI\UiWindow.h"
@@ -174,20 +174,7 @@ BOOL UiWindow::SetFontList() {
 		strcat_s(fontPath, path);
 		strcat_s(fontPath, fd.name);
 
-#ifdef SERVER_KOREA
-		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesKorean());
-#endif
-#ifdef SERVER_STEAM
 		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseFull());
-#endif
-#ifdef SERVER_JAPAN
-		/* GetGlyphRangesJapanese() doesn't contain CJK Ideograms, so it can't display Chinese */
-		// io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesJapanese());
-		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseFull());
-#endif
-
-
-		
 	} while (_findnext(handle, &fd) != -1);
 	
 	_findclose(handle);

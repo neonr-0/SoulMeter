@@ -1,5 +1,5 @@
 #pragma once
-#include ".\Language\Region.h"
+
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Soulworker Packet\SWSPacket.h"
 

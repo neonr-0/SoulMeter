@@ -1,5 +1,5 @@
 #include "pch.h"
-#include ".\Language\Region.h"
+
 #include ".\UI\Option.h"
 #include ".\UI\HotKey.h"
 #include ".\UI\PlayerTable.h"
@@ -10,7 +10,7 @@
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
 	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false),
-	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3)
+	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _selectedLang(LANGMANAGER.GetCurrentLang())
 {
 	
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
@@ -36,23 +36,23 @@ BOOL UiOption::ShowFontSelector() {
 
 	ImFont* font_current = ImGui::GetFont();
 
-	ImGui::Text(STR_OPTION_FONTSCALE_DESC);
-	ImGui::DragFloat(STR_OPTION_FONTSCALE, &_fontScale, 0.005f, 0.3f, 2.0f, "%.1f");
+	ImGui::Text(LANGMANAGER.GetText(STR_OPTION_FONTSCALE_DESC));
+	ImGui::DragFloat(LANGMANAGER.GetText(STR_OPTION_FONTSCALE), &_fontScale, 0.005f, 0.3f, 2.0f, "%.1f");
 
 	font_current->Scale = _fontScale;
 
-	if (ImGui::Checkbox(STR_OPTION_UNIT_1K, (bool*)&_is1K)) {
+	if (ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_UNIT_1K), (bool*)&_is1K)) {
 		if (_is1M)
 			_is1M = FALSE;
 	}
 
-	if (ImGui::Checkbox(STR_OPTION_UNIT_1M, (bool*)&_is1M)) {
+	if (ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_UNIT_1M), (bool*)&_is1M)) {
 		if (_is1K)
 			_is1K = FALSE;
 	}
-	ImGui::Checkbox(STR_OPTION_SOLO_MODE, (bool*)&_isSoloMode);
-	ImGui::Checkbox(STR_OPTION_HIDE_NAME, (bool*)&_hideName);
-	ImGui::Checkbox(STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED, (bool*)&_saveDataWhenBossDied);
+	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_SOLO_MODE), (bool*)&_isSoloMode);
+	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_HIDE_NAME), (bool*)&_hideName);
+	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED), (bool*)&_saveDataWhenBossDied);
 
 	return TRUE;
 }
@@ -61,14 +61,14 @@ BOOL UiOption::ShowTableOption() {
 
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	ImGui::SliderFloat(STR_OPTION_WINDOW_BORDER_SIZE, &_windowBorderSize, 0.0f, 1.0f, "%.0f");
+	ImGui::SliderFloat(LANGMANAGER.GetText(STR_OPTION_WINDOW_BORDER_SIZE), &_windowBorderSize, 0.0f, 1.0f, "%.0f");
 	style.WindowBorderSize = _windowBorderSize;
-	ImGui::SliderFloat2(STR_OPTION_CELL_PADDING, (float*)&_cellPadding, 0.0f, 20.0f, "%.0f");
+	ImGui::SliderFloat2(LANGMANAGER.GetText(STR_OPTION_CELL_PADDING), (float*)&_cellPadding, 0.0f, 20.0f, "%.0f");
 	style.CellPadding = _cellPadding;
-	ImGui::DragFloat(STR_OPTION_COLUMN_FONT_SCALE, &_columnFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
-	ImGui::DragFloat(STR_OPTION_TABLE_FONT_SCALE, &_tableFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText(STR_OPTION_COLUMN_FONT_SCALE), &_columnFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText(STR_OPTION_TABLE_FONT_SCALE), &_tableFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
 	ImGui::Separator();
-	ImGui::DragFloat(STR_OPTION_TABLE_REFRESH_TIME, &_refreshTime, 0.005f, 0.1f, 1.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText(STR_OPTION_TABLE_REFRESH_TIME), &_refreshTime, 0.005f, 0.1f, 1.0f, "%.1f");
 	ImGui::Separator();
 	ImGui::ColorEdit4("##ColorText", (FLOAT*)&_textColor, ImGuiColorEditFlags_None); 
 	ImGui::SameLine(); 	ImGui::Text(ImGui::GetStyleColorName(0));
@@ -77,22 +77,33 @@ BOOL UiOption::ShowTableOption() {
 	ImGui::SameLine();	ImGui::Text(ImGui::GetStyleColorName(2));
 	style.Colors[2] = _windowBg;
 	ImGui::ColorEdit4("##ColorOutline", (FLOAT*)&_outlineColor, ImGuiColorEditFlags_None);
-	ImGui::SameLine();	ImGui::Text(STR_OPTION_TEXT_OUTLINE_COLOR);
+	ImGui::SameLine();	ImGui::Text(LANGMANAGER.GetText(STR_OPTION_TEXT_OUTLINE_COLOR));
 	ImGui::ColorEdit4("##ColorActiveColor", (FLOAT*)&_activeColor[1], ImGuiColorEditFlags_None);
-	ImGui::SameLine();	ImGui::Text(STR_OPTION_ACTIVE_COLOR);
+	ImGui::SameLine();	ImGui::Text(LANGMANAGER.GetText(STR_OPTION_ACTIVE_COLOR));
 	ImGui::ColorEdit4("##ColorInActiveColor", (FLOAT*)&_activeColor[0], ImGuiColorEditFlags_None);
-	ImGui::SameLine();	ImGui::Text(STR_OPTION_INACTIVE_COLOR);
+	ImGui::SameLine();	ImGui::Text(LANGMANAGER.GetText(STR_OPTION_INACTIVE_COLOR));
 
-	const char job[10][32] = { {STR_CHAR_UNKNOWN}, {STR_CHAR_HARU}, {STR_CHAR_ERWIN}, {STR_CHAR_LILY}, {STR_CHAR_JIN}, {STR_CHAR_STELLA},{STR_CHAR_IRIS}, {STR_CHAR_CHII}, {STR_CHAR_Ephnel}, {STR_CHAR_NABI} };
+	const char* job[10][32] = { 
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_UNKNOWN)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_HARU)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_ERWIN)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_LILY)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_JIN)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_STELLA)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_IRIS)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_CHII)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_EPHNEL)},
+		{(const char*)LANGMANAGER.GetText(STR_CHAR_NABI)}
+	};
 
 	for (int i = 0; i < 10; i++) {
 		ImGui::PushID(i);
 		ImGui::ColorEdit4("##Color", (FLOAT*)&_jobColor[i], ImGuiColorEditFlags_None);
-		ImGui::SameLine();	ImGui::Text(job[i]);
+		ImGui::SameLine();	ImGui::Text(*job[i]);
 
 		if (memcmp(&_jobColor[i], &_jobBasicColor[i], sizeof(ImVec4)) != 0) {
 			ImGui::SameLine(0.0f, style.ItemInnerSpacing.x); 
-			if (ImGui::Button(STR_OPTION_RESTORE_DEFAULT_COLOR)) {
+			if (ImGui::Button(LANGMANAGER.GetText(STR_OPTION_RESTORE_DEFAULT_COLOR))) {
 				_jobColor[i] = _jobBasicColor[i];
 			}
 		}
@@ -105,12 +116,14 @@ BOOL UiOption::ShowTableOption() {
 
 BOOL UiOption::ShowHotkeySetting() {
 
-	const char* text =
-		STR_OPTION_HOTKEY_DESC_1
-		STR_OPTION_HOTKEY_DESC_2
-		STR_OPTION_HOTKEY_DESC_3
-		STR_OPTION_HOTKEY_DESC_4
-		STR_OPTION_HOTKEY_DESC_5;
+	char text[4096] = { 0 };
+	sprintf_s(text, "%s%s%s%s%s",
+		LANGMANAGER.GetText(STR_OPTION_HOTKEY_DESC_1),
+		LANGMANAGER.GetText(STR_OPTION_HOTKEY_DESC_2),
+		LANGMANAGER.GetText(STR_OPTION_HOTKEY_DESC_3),
+		LANGMANAGER.GetText(STR_OPTION_HOTKEY_DESC_4),
+		LANGMANAGER.GetText(STR_OPTION_HOTKEY_DESC_5)
+	);
 
 	ImGui::Text(text);
 
@@ -140,7 +153,7 @@ VOID UiOption::Helper() {
 	DAMAGEMETER.InsertDB(7, monster[3]);
 
 	for (INT i = 0; i < 4; i++) {
-		sprintf_s(name, 128, "%s %d", STR_OPTION_TEST_VALUE_PLAYER, helper);
+		sprintf_s(name, 128, "%s %d", LANGMANAGER.GetText(STR_OPTION_TEST_VALUE_PLAYER), helper);
 		
 		UINT32 id;
 		if (helper == 3) {
@@ -166,6 +179,27 @@ VOID UiOption::Helper() {
 	}
 }
 
+VOID UiOption::ShowLangSelector() {
+	const CHAR* comboPreview = LANGMANAGER.GetLangName((SUPPORTED_LANG)_selectedLang);
+
+	ImGui::Text(LANGMANAGER.GetText(STR_OPTION_COMBO_LANG));
+	if (ImGui::BeginCombo(u8"###OptionLangSelector", comboPreview, ImGuiComboFlags_HeightLarge)) {
+
+		for (INT32 i = 0; i < SUPPORTED_LANG_LEN; i++) {
+
+			CHAR label[MONSTER_NAME_LEN] = { 0 };
+			sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", LANGMANAGER.GetLangName((SUPPORTED_LANG)i) , i);
+
+			if (ImGui::Selectable(label)) {
+				_selectedLang = i;
+				LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 VOID UiOption::OpenOption() {
 
 	_open = TRUE;
@@ -175,15 +209,15 @@ VOID UiOption::OpenOption() {
 		PLAYERTABLE.ResizeTalbe();
 	}
 
-	ImGui::Begin(STR_OPTION_WINDOWS_NAME, 0, ImGuiWindowFlags_None);
+	ImGui::Begin(LANGMANAGER.GetText(STR_OPTION_WINDOWS_NAME), 0, ImGuiWindowFlags_None);
 
-		if (ImGui::Button(STR_OPTION_ADD_TEST_VALUE)) {
+		if (ImGui::Button(LANGMANAGER.GetText(STR_OPTION_ADD_TEST_VALUE))) {
 			Helper();
 		}
 
 		ImGui::SameLine(); 		
 		
-		if (ImGui::Button(STR_OPTION_SAVE_AND_EXIT)) {
+		if (ImGui::Button(LANGMANAGER.GetText(STR_OPTION_SAVE_AND_EXIT))) {
 			SaveOption();
 			if (DAMAGEMETER.GetWorldID() == 20011) {
 				DAMAGEMETER.SetWorldID(0);
@@ -201,19 +235,20 @@ VOID UiOption::OpenOption() {
 		}
 #endif
 
+		ShowLangSelector();
 		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
 		ShowFontSelector();
 		ImGui::PopItemWidth();
 
 		if (ImGui::BeginTabBar("##tabs")) {
-			if (ImGui::BeginTabItem(STR_OPTION_TAB_TABLE_SETTING)) {
+			if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_OPTION_TAB_TABLE_SETTING))) {
 				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
 				ShowTableOption();
 				ImGui::PopItemWidth();
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem(STR_OPTION_TAB_HOTKEY_SETTING)) {
+			if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_OPTION_TAB_HOTKEY_SETTING))) {
 				ShowHotkeySetting();
 				ImGui::EndTabItem();
 			}
@@ -319,6 +354,12 @@ BOOL UiOption::GetOption() {
 	attr = ele->FindAttribute("SaveDataWhenBossDied");
 	if (attr != nullptr)
 		attr->QueryIntValue(&_saveDataWhenBossDied);
+
+	attr = ele->FindAttribute("UseLang");
+	if (attr != nullptr) {
+		attr->QueryIntValue(&_selectedLang);
+		LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+	}
 
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1M = %d")), _is1M);
@@ -671,6 +712,7 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("IsSoloMode", _isSoloMode);
 	option->SetAttribute("DoHideName", _hideName);
 	option->SetAttribute("SaveDataWhenBossDied", _saveDataWhenBossDied);
+	option->SetAttribute("UseLang", _selectedLang);
 
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);

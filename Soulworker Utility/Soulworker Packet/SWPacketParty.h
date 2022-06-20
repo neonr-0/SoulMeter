@@ -1,17 +1,9 @@
 #pragma once
-#include ".\Language\Region.h"
+
 #include ".\Soulworker Packet\SWPacket.h"
 #include ".\Damage Meter\Damage Meter.h"
 
-#ifdef SERVER_KOREA
-#define SWPACKETPARTY_DUMMY 36
-#endif
-#ifdef SERVER_STEAM
 #define SWPACKETPARTY_DUMMY 32 //0430NEW
-#endif
-#ifdef SERVER_JAPAN
-#define SWPACKETPARTY_DUMMY 36 // same as KR server
-#endif
 
 #pragma pack(push, 1)
 

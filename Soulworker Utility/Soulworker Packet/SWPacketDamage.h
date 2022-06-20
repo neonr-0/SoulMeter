@@ -15,15 +15,7 @@ typedef struct _SWPACKETDAMAGE_MONSTER {
 	FLOAT _unknownF1; // 4
 	FLOAT _unknownF2; // 4
 	FLOAT _unknownF3; // 4
-#ifdef SERVER_KOREA
-	BYTE _unknown02[22]; // sum  // previous value 18
-#endif
-#ifdef SERVER_STEAM
 	BYTE _unknown02[22]; // 0605
-#endif
-#ifdef SERVER_JAPAN
-    BYTE _unknown02[18]; // same as past of KR server
-#endif
 }SWPACKETDAMAGE_MONSTER;
 
 typedef struct _SWPACKETDAMAGE_PLAYER {

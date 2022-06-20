@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include ".\Language\Region.h"
+
 #include ".\Damage Meter\Timer.h"
 #include ".\Damage Meter\SWDamagePlayer.h"
 #include ".\UI\PlotWindow.h"

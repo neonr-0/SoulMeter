@@ -48,7 +48,7 @@ VOID SWDamageMeterHistory::push_back(vector<SWDamagePlayer*>& playerInfo, std::v
 const HISTORY_INFO& SWDamageMeterHistory::operator[](INT index) {
 	
 	if (index >= HISTORY_SIZE || index < 0)
-		assert("History index out of bounds");
+		assert(FALSE);
 
 	return _historys[index];
 }

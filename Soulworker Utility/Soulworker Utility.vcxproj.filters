@@ -228,15 +228,6 @@
     <ClInclude Include="Soulworker Packet\PacketInfo.h">
       <Filter>SWPacket\헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Language\Korean.h">
-      <Filter>Language</Filter>
-    </ClInclude>
-    <ClInclude Include="Language\English.h">
-      <Filter>Language</Filter>
-    </ClInclude>
-    <ClInclude Include="Language\Region.h">
-      <Filter>Language</Filter>
-    </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketDamage.h">
       <Filter>SWPacket\Packet\0x06 Combat</Filter>
     </ClInclude>
@@ -330,17 +321,11 @@
     <ClInclude Include="Soulworker Packet\SWPacketMonsterKilled.h">
       <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Language\Chineses.h">
-      <Filter>Language</Filter>
-    </ClInclude>
     <ClInclude Include="Soulworker Packet\SWSPacketMyDodgeUsed.h">
       <Filter>SWSPacket\0x06 Combat</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketDead.h">
       <Filter>SWPacket\Packet\0x03</Filter>
-    </ClInclude>
-    <ClInclude Include="Language\Japanese.h">
-      <Filter>Language</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWSPacketHeartbeat.h">
       <Filter>SWSPacket\0x01</Filter>
@@ -356,6 +341,12 @@
     </ClInclude>
     <ClInclude Include="Damage Meter\MonsterList.h">
       <Filter>Damge Meter</Filter>
+    </ClInclude>
+    <ClInclude Include="Language\Language.h">
+      <Filter>Language</Filter>
+    </ClInclude>
+    <ClInclude Include="Language\LanguageText.h">
+      <Filter>Language</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +562,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketMonsterStatUpdate.cpp">
       <Filter>SWPacket\Packet\0x17 Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Language\Language.cpp">
+      <Filter>Language</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
