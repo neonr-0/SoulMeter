@@ -90,7 +90,7 @@ VOID PlayerTable::Update() {
 
 		CHAR title[256] = { 0 };
 
-		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.6_%s] Ping: %lldms  ###DamageMeter", 
+		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.0.7_%s] Ping: %lldms  ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			SWPACKETMAKER.GetKeyInfo(),
@@ -302,6 +302,10 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		if (UIOPTION.isSoloMode() && DAMAGEMETER.GetPlayerName((*itr)->GetID()) != LANGMANAGER.GetText(STR_TABLE_YOU)) {
 			continue;
 		}
+
+		// Skip Unknown Player
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText(PLAYER_NAME_CANT_FIND))
+			continue;
 
 		// 
 		if (itr == DAMAGEMETER.begin())
