@@ -42,6 +42,7 @@ private:
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
 	VOID ShowLangSelector();
+	VOID ChangeLang();
 
 	VOID Helper();
 

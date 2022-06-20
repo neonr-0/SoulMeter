@@ -1,11 +1,11 @@
 #include "pch.h"
-
 #include ".\UI\Option.h"
 #include ".\UI\HotKey.h"
 #include ".\UI\PlayerTable.h"
 #include ".\UI\UiWindow.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Buff Meter\Buff Meter.h"
+#include ".\Damage Meter\MySQLite.h"
 
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
@@ -192,12 +192,19 @@ VOID UiOption::ShowLangSelector() {
 
 			if (ImGui::Selectable(label)) {
 				_selectedLang = i;
-				LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+				ChangeLang();
 			}
 		}
 
 		ImGui::EndCombo();
 	}
+}
+
+VOID UiOption::ChangeLang()
+{
+	LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+	// need reload sql command
+	SWDB.Init();
 }
 
 VOID UiOption::OpenOption() {
@@ -358,7 +365,7 @@ BOOL UiOption::GetOption() {
 	attr = ele->FindAttribute("UseLang");
 	if (attr != nullptr) {
 		attr->QueryIntValue(&_selectedLang);
-		LANGMANAGER.SetCurrentLang((SUPPORTED_LANG)_selectedLang);
+		ChangeLang();
 	}
 
 #if DEBUG_READ_XML == 1

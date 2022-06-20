@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include <vector>
 
@@ -159,7 +159,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥¼ª¾¦a°Ï"
+				u8"æœªçŸ¥åœ°å€"
 			}
 		}
 	},
@@ -172,7 +172,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥¼ª¾ª±®a?"
+				u8"æœªçŸ¥ç©å®¶?"
 			}
 		}
 	},
@@ -187,7 +187,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¶}©l/¼È°±"
+				u8"é–‹å§‹/æš«åœ"
 			}
 		}
 	},
@@ -200,7 +200,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"²M°£"
+				u8"æ¸…é™¤"
 			}
 		}
 	},
@@ -213,7 +213,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Åã¥Ü¦b³Ì¤W¼h"
+				u8"é¡¯ç¤ºåœ¨æœ€ä¸Šå±¤"
 			}
 		}
 	},
@@ -226,7 +226,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"°O¿ı¦Cªí"
+				u8"è¨˜éŒ„åˆ—è¡¨"
 			}
 		}
 	},
@@ -239,7 +239,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³]©w"
+				u8"è¨­å®š"
 			}
 		}
 	},
@@ -252,7 +252,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¹Ïªí###MeowGraph"
+				u8"åœ–è¡¨###MeowGraph"
 			}
 		}
 	},
@@ -265,7 +265,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Â÷¶}"
+				u8"é›¢é–‹"
 			}
 		}
 	},
@@ -278,7 +278,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"½Õ¾ãÄæ¦ì¦Ü³Ì¾A¤j¤p"
+				u8"èª¿æ•´æ¬„ä½è‡³æœ€é©å¤§å°"
 			}
 		}
 	},
@@ -291,7 +291,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"½Õ¾ã©Ò¦³Äæ¦ì¦Ü³Ì¾A¤j¤p"
+				u8"èª¿æ•´æ‰€æœ‰æ¬„ä½è‡³æœ€é©å¤§å°"
 			}
 		}
 	},
@@ -304,7 +304,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"­«³]±Æ§Ç"
+				u8"é‡è¨­æ’åº"
 			}
 		}
 	},
@@ -319,7 +319,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§Ú"
+				u8"æˆ‘"
 			}
 		}
 	},
@@ -332,7 +332,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¦WºÙ"
+				u8"åç¨±"
 			}
 		}
 	},
@@ -345,7 +345,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨C¬í¶Ë®`"
+				u8"æ¯ç§’å‚·å®³"
 			}
 		}
 	},
@@ -358,7 +358,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¶Ë®`¤ñ"
+				u8"å‚·å®³æ¯”"
 			}
 		}
 	},
@@ -371,7 +371,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Á`¶Ë®`"
+				u8"ç¸½å‚·å®³"
 			}
 		}
 	},
@@ -384,7 +384,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Á`À»¤¤"
+				u8"ç¸½æ“Šä¸­"
 			}
 		}
 	},
@@ -397,7 +397,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¼ÉÀ»²v"
+				u8"æš´æ“Šç‡"
 			}
 		}
 	},
@@ -410,7 +410,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨C¬íÀ»¤¤"
+				u8"æ¯ç§’æ“Šä¸­"
 			}
 		}
 	},
@@ -423,7 +423,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨C¬í¼ÉÀ»"
+				u8"æ¯ç§’æš´æ“Š"
 			}
 		}
 	},
@@ -436,7 +436,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨C¬í§Ş¯à¨Ï¥Î"
+				u8"æ¯ç§’æŠ€èƒ½ä½¿ç”¨"
 			}
 		}
 	},
@@ -449,7 +449,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³Ì°ª³sÀ»"
+				u8"æœ€é«˜é€£æ“Š"
 			}
 		}
 	},
@@ -462,7 +462,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§ğÃz©M"
+				u8"æ”»çˆ†å’Œ"
 			}
 		}
 	},
@@ -475,7 +475,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ÆF»î­È"
+				u8"éˆé­‚å€¼"
 			}
 		}
 	},
@@ -488,7 +488,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§ğ³t"
+				u8"æ”»é€Ÿ"
 			}
 		}
 	},
@@ -501,7 +501,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³e¬ï"
+				u8"è²«ç©¿"
 			}
 		}
 	},
@@ -514,7 +514,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"­@¤O"
+				u8"è€åŠ›"
 			}
 		}
 	},
@@ -527,7 +527,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Ä±¿ô­È"
+				u8"è¦ºé†’å€¼"
 			}
 		}
 	},
@@ -540,7 +540,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ÆF»î¥ÛÁ`¶Ë(%)"
+				u8"éˆé­‚çŸ³ç¸½å‚·(%)"
 			}
 		}
 	},
@@ -553,7 +553,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ÆF»î¥ÛÄ²µo"
+				u8"éˆé­‚çŸ³è§¸ç™¼"
 			}
 		}
 	},
@@ -566,7 +566,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ÆF»î¥ÛÁ`¶Ë"
+				u8"éˆé­‚çŸ³ç¸½å‚·"
 			}
 		}
 	},
@@ -579,7 +579,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§¡³e"
+				u8"å‡è²«"
 			}
 		}
 	},
@@ -592,7 +592,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§ğÀ»¥¢±Ñ"
+				u8"æ”»æ“Šå¤±æ•—"
 			}
 		}
 	},
@@ -605,7 +605,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§ğÀ»¥¢±Ñ(%)"
+				u8"æ”»æ“Šå¤±æ•—(%)"
 			}
 		}
 	},
@@ -618,7 +618,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§ğÀ»¥¢±ÑÁ`¶Ë"
+				u8"æ”»æ“Šå¤±æ•—ç¸½å‚·"
 			}
 		}
 	},
@@ -631,7 +631,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨üÀ»(§tµL¶Ë)"
+				u8"å—æ“Š(å«ç„¡å‚·)"
 			}
 		}
 	},
@@ -644,7 +644,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨üÀ»"
+				u8"å—æ“Š"
 			}
 		}
 	},
@@ -657,7 +657,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨üÀ»(76)"
+				u8"å—æ“Š(76)"
 			}
 		}
 	},
@@ -670,7 +670,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"76¹¢1«¬"
+				u8"76é£¾1å‹"
 			}
 		}
 	},
@@ -683,7 +683,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"76¹¢2«¬"
+				u8"76é£¾2å‹"
 			}
 		}
 	},
@@ -696,7 +696,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"76¹¢3«¬"
+				u8"76é£¾3å‹"
 			}
 		}
 	},
@@ -709,7 +709,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"°jÁ×²v A"
+				u8"è¿´é¿ç‡ A"
 			}
 		}
 	},
@@ -722,7 +722,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"°jÁ×²v B"
+				u8"è¿´é¿ç‡ B"
 			}
 		}
 	},
@@ -735,7 +735,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¬õ±Ò»X"
+				u8"ç´…å•Ÿè’™"
 			}
 		}
 	},
@@ -748,7 +748,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"µµ±Ò»X"
+				u8"ç´«å•Ÿè’™"
 			}
 		}
 	},
@@ -761,7 +761,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"·l¥¢¦å¶q"
+				u8"æå¤±è¡€é‡"
 			}
 		}
 	},
@@ -774,7 +774,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"°jÁ×"
+				u8"è¿´é¿"
 			}
 		}
 	},
@@ -787,7 +787,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¦º¤`"
+				u8"æ­»äº¡"
 			}
 		}
 	},
@@ -800,7 +800,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"«ùÄò®É¶¡"
+				u8"æŒçºŒæ™‚é–“"
 			}
 		}
 	},
@@ -815,7 +815,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³]©w###Option"
+				u8"è¨­å®š###Option"
 			}
 		}
 	},
@@ -828,7 +828,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¤å¦r©ñ¤j­¿²v"
+				u8"æ–‡å­—æ”¾å¤§å€ç‡"
 			}
 		}
 	},
@@ -841,7 +841,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨Ì¾Ú­¿²v½Õ¾ã¤å¦r¤j¤p"
+				u8"ä¾æ“šå€ç‡èª¿æ•´æ–‡å­—å¤§å°"
 			}
 		}
 	},
@@ -854,7 +854,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥H¤d¬°³æ¦ìÅã¥Ü(K)"
+				u8"ä»¥åƒç‚ºå–®ä½é¡¯ç¤º(K)"
 			}
 		}
 	},
@@ -867,7 +867,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥H¦Ê¸U¬°³æ¦ìÅã¥Ü(M)"
+				u8"ä»¥ç™¾è¬ç‚ºå–®ä½é¡¯ç¤º(M)"
 			}
 		}
 	},
@@ -880,7 +880,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³æ¤H¼Ò¦¡ (¥uÅã¥Ü¦Û¤vªº¼Æ¾Ú)"
+				u8"å–®äººæ¨¡å¼ (åªé¡¯ç¤ºè‡ªå·±çš„æ•¸æ“š)"
 			}
 		}
 	},
@@ -893,7 +893,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ÁôÂÃ¦WºÙ"
+				u8"éš±è—åç¨±"
 			}
 		}
 	},
@@ -906,7 +906,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Boss¦º¤`®É«O¦s¸ê®Æ¨Ã­«¸m"
+				u8"Bossæ­»äº¡æ™‚ä¿å­˜è³‡æ–™ä¸¦é‡ç½®"
 			}
 		}
 	},
@@ -919,7 +919,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"µøµ¡Ãä®Ø¤j¤p"
+				u8"è¦–çª—é‚Šæ¡†å¤§å°"
 			}
 		}
 	},
@@ -932,7 +932,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ªí®æ¶¡¶Z"
+				u8"è¡¨æ ¼é–“è·"
 			}
 		}
 	},
@@ -945,7 +945,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ªí®æÄæ¦ì¤å¦r©ñ¤j­¿²v"
+				u8"è¡¨æ ¼æ¬„ä½æ–‡å­—æ”¾å¤§å€ç‡"
 			}
 		}
 	},
@@ -958,7 +958,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ªí®æ¤º®e¤å¦r©ñ¤j­¿²v"
+				u8"è¡¨æ ¼å…§å®¹æ–‡å­—æ”¾å¤§å€ç‡"
 			}
 		}
 	},
@@ -971,7 +971,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ªí®æ¤º®e¨ê·s®É¶¡(²@¬í)"
+				u8"è¡¨æ ¼å…§å®¹åˆ·æ–°æ™‚é–“(æ¯«ç§’)"
 			}
 		}
 	},
@@ -984,7 +984,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¤å¦r½ü¹øÃC¦â"
+				u8"æ–‡å­—è¼ªå»“é¡è‰²"
 			}
 		}
 	},
@@ -997,7 +997,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"­pºâ®Éªº¼ĞÃDÄæÃC¦â"
+				u8"è¨ˆç®—æ™‚çš„æ¨™é¡Œæ¬„é¡è‰²"
 			}
 		}
 	},
@@ -1010,7 +1010,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"«İ¾÷®Éªº¼ĞÃDÄæÃC¦â"
+				u8"å¾…æ©Ÿæ™‚çš„æ¨™é¡Œæ¬„é¡è‰²"
 			}
 		}
 	},
@@ -1023,7 +1023,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"«ì´_¹w³]ÃC¦â"
+				u8"æ¢å¾©é è¨­é¡è‰²"
 			}
 		}
 	},
@@ -1036,7 +1036,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"²M°£ : Ctrl + Del\n"
+				u8"æ¸…é™¤ : Ctrl + Del\n"
 			}
 		}
 	},
@@ -1049,7 +1049,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"±z¥i¥H³q¹L½s¿è option.XML ¨Ó½s¿è¼öÁä\n"
+				u8"æ‚¨å¯ä»¥é€šéç·¨è¼¯ option.XML ä¾†ç·¨è¼¯ç†±éµ\n"
 			}
 		}
 	},
@@ -1062,7 +1062,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"key ¹ïÀ³ªº­È¨Ó¦Û DirectInput Code Table\n"
+				u8"key å°æ‡‰çš„å€¼ä¾†è‡ª DirectInput Code Table\n"
 			}
 		}
 	},
@@ -1075,7 +1075,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¼öÁäªº³]©w±q key1 ¶}©l (±µµÛ key2...)\n¦p¤£»İ­n¨Ï¥Î key2/key3 ½Ğ³]©w¦¨ -1\n"
+				u8"ç†±éµçš„è¨­å®šå¾ key1 é–‹å§‹ (æ¥è‘— key2...)\nå¦‚ä¸éœ€è¦ä½¿ç”¨ key2/key3 è«‹è¨­å®šæˆ -1\n"
 			}
 		}
 	},
@@ -1088,7 +1088,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Àò¨ú§ó·s: https://github.com/ga0321/SoulMeter"
+				u8"ç²å–æ›´æ–°: https://github.com/ga0321/SoulMeter"
 			}
 		}
 	},
@@ -1101,7 +1101,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"´ú¸Õ¸ê®Æ"
+				u8"æ¸¬è©¦è³‡æ–™"
 			}
 		}
 	},
@@ -1114,7 +1114,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥[¤J´ú¸Õ¸ê®Æ"
+				u8"åŠ å…¥æ¸¬è©¦è³‡æ–™"
 			}
 		}
 	},
@@ -1127,7 +1127,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"«O¦s¨Ã°h¥X³]©w"
+				u8"ä¿å­˜ä¸¦é€€å‡ºè¨­å®š"
 			}
 		}
 	},
@@ -1140,7 +1140,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ªí³æ###TabTable"
+				u8"è¡¨å–®###TabTable"
 			}
 		}
 	},
@@ -1153,7 +1153,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¼öÁä###TabHotKey"
+				u8"ç†±éµ###TabHotKey"
 			}
 		}
 	},
@@ -1166,7 +1166,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"»y¨¥¿ï¾Ü"
+				u8"èªè¨€é¸æ“‡"
 			}
 		}
 	},
@@ -1179,7 +1179,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"­^¤å"
+				u8"è‹±æ–‡"
 			}
 		}
 	},
@@ -1192,7 +1192,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¤¤¤å(ÁcÅé)"
+				u8"ä¸­æ–‡(ç¹é«”)"
 			}
 		}
 	},
@@ -1207,7 +1207,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥¼ª¾ª±®a"
+				u8"æœªçŸ¥ç©å®¶"
 			}
 		}
 	},
@@ -1220,7 +1220,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"«¢ÅS"
+				u8"å“ˆéœ²"
 			}
 		}
 	},
@@ -1233,7 +1233,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¼Ú¤å"
+				u8"æ­æ–‡"
 			}
 		}
 	},
@@ -1246,7 +1246,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"²ú²ú"
+				u8"è‰è‰"
 			}
 		}
 	},
@@ -1259,7 +1259,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"ª÷"
+				u8"é‡‘"
 			}
 		}
 	},
@@ -1272,7 +1272,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥vÂLÛi"
+				u8"å²é»›èˆ"
 			}
 		}
 	},
@@ -1285,7 +1285,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¥ì²úµ·"
+				u8"ä¼Šè‰çµ²"
 			}
 		}
 	},
@@ -1298,7 +1298,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"µX"
+				u8"çª"
 			}
 		}
 	},
@@ -1311,7 +1311,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¦ãªÜ©gº¸"
+				u8"è‰¾èŠ™å¦®çˆ¾"
 			}
 		}
 	},
@@ -1324,7 +1324,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§õ®R­¸"
+				u8"æå¨œé£›"
 			}
 		}
 	},
@@ -1339,7 +1339,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"DPSÅÜ¤Æ¹Ï"
+				u8"DPSè®ŠåŒ–åœ–"
 			}
 		}
 	},
@@ -1352,7 +1352,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"®É¶¡(¬í)"
+				u8"æ™‚é–“(ç§’)"
 			}
 		}
 	},
@@ -1365,7 +1365,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³e¬ïÅÜ¤Æ¹Ï"
+				u8"è²«ç©¿è®ŠåŒ–åœ–"
 			}
 		}
 	},
@@ -1378,7 +1378,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"®É¶¡(¬í)"
+				u8"æ™‚é–“(ç§’)"
 			}
 		}
 	},
@@ -1391,7 +1391,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¤k¤ı¼h¼Æ(AR)ÅÜ¤Æ¹Ï"
+				u8"å¥³ç‹å±¤æ•¸(AR)è®ŠåŒ–åœ–"
 			}
 		}
 	},
@@ -1404,7 +1404,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"®É¶¡(¬í)"
+				u8"æ™‚é–“(ç§’)"
 			}
 		}
 	},
@@ -1417,7 +1417,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"Boss¦å¶qÅÜ¤Æ¹Ï"
+				u8"Bossè¡€é‡è®ŠåŒ–åœ–"
 			}
 		}
 	},
@@ -1430,7 +1430,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"®É¶¡(¬í)"
+				u8"æ™‚é–“(ç§’)"
 			}
 		}
 	},
@@ -1443,7 +1443,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"³æ¦ì(¦Ê¸U)"
+				u8"å–®ä½(ç™¾è¬)"
 			}
 		}
 	},
@@ -1456,7 +1456,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¾Ô°«¬ö¿ı"
+				u8"æˆ°é¬¥ç´€éŒ„"
 			}
 		}
 	},
@@ -1471,7 +1471,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¸Ô²Ó¸ê®Æ###DetailDetails"
+				u8"è©³ç´°è³‡æ–™###DetailDetails"
 			}
 		}
 	},
@@ -1484,7 +1484,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§Ş¯à###DetailSkill"
+				u8"æŠ€èƒ½###DetailSkill"
 			}
 		}
 	},
@@ -1497,7 +1497,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"©Çª«###DetailMonster"
+				u8"æ€ªç‰©###DetailMonster"
 			}
 		}
 	},
@@ -1510,7 +1510,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¼W¯q/´î¯qª¬ºA###DetailBuffDeBuff"
+				u8"å¢ç›Š/æ¸›ç›Šç‹€æ…‹###DetailBuffDeBuff"
 			}
 		}
 	},
@@ -1523,7 +1523,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"§Ş¯à²Î­p###SpecificinfoTotal"
+				u8"æŠ€èƒ½çµ±è¨ˆ###SpecificinfoTotal"
 			}
 		}
 	},
@@ -1536,7 +1536,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"¨Ï¥Î¦¸¼Æ"
+				u8"ä½¿ç”¨æ¬¡æ•¸"
 			}
 		}
 	},
@@ -1549,7 +1549,7 @@ const TEXT_LIST _allTextList[] = {
 			},
 			{
 				ZH_TW,
-				u8"®ÄªG"
+				u8"æ•ˆæœ"
 			}
 		}
 	},
