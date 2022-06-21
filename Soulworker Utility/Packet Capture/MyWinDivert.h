@@ -18,8 +18,7 @@ class MyWinDivert : public Singleton<MyWinDivert> {
 private:
 	struct PacketInfo
 	{
-		IPv4Packet* _pkt;
-		BOOL _isRecv;
+		BYTE* _pkt;
 		MyWinDivert* _this;
 	};
 
