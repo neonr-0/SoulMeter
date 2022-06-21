@@ -139,7 +139,7 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 			}
 				break;
 			default:
-				Log::WriteLogA(const_cast<CHAR*>("Receive Callback : IP Header is not IPv4 : %04x"), packet->_ipHeader->version);
+				//Log::WriteLogA(const_cast<CHAR*>("Receive Callback : IP Header is not IPv4 : %04x"), packet->_ipHeader->version);
 				break;
 			}
 		}

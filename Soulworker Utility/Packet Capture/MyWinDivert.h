@@ -5,7 +5,7 @@ using namespace std;
 
 #define WINDIVERT MyWinDivert::getInstance()
 
-#define WINDIVERT_FILTER_RULE "tcp.SrcPort == 10200 or tcp.DstPort == 10200"
+#define WINDIVERT_FILTER_RULE "(tcp.SrcPort == 10200 or tcp.DstPort == 10200) and tcp.PayloadLength > 0"
 
 #ifdef _DEBUG
 #define DEBUG_DIVERT_ALL 0
