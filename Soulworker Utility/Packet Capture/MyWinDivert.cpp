@@ -84,62 +84,43 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 			packet->_ipHeader = (IPHEADER*)(pkt_data);
 			packet->_ipHeader->length = _byteswap_ushort(packet->_ipHeader->length);
 
-			switch (packet->_ipHeader->version) {
-			case 4: { // IPv4
+			// TCP
+			packet->_tcpHeader = (TCPHEADER*)(pkt_data + packet->_ipHeader->len * 4);
 
-				// TCP
-				packet->_tcpHeader = (TCPHEADER*)(pkt_data + packet->_ipHeader->len * 4);
-				packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
-
-				// TCP 
-				packet->_data = (pkt_data + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+			packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+			packet->_data = (pkt_data + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 
 #if DEBUG_DIVERT_ALL == 1
-				PrintIPHeader(&packet);
-				PrintTCPHeader(&packet);
+			PrintIPHeader(&packet);
+			PrintTCPHeader(&packet);
 
-				printf("[Packet Data Start]\n");
-				for (int i = 0; i < packet->_datalength; i++)
-					printf("%02x ", packet->_data[i]);
-				printf("\n");
-				printf("[Packet Data End]\n");
+			printf("[Packet Data Start]\n");
+			for (int i = 0; i < packet->_datalength; i++)
+				printf("%02x ", packet->_data[i]);
+			printf("\n");
+			printf("[Packet Data End]\n");
 #endif
 #if DEBUG_DIVERT_IP == 1
-				PrintIPHeader(&packet);
+			PrintIPHeader(&packet);
 #endif
 
 #if DEBUG_DIVERT_TCP == 1
-				PrintTCPHeader(&packet);
-#endif
-		
-#if DEBUG_DIVERT_DATA == 1
-				printf("[Packet Data Start]\n");
-				for (int i = 0; i < packet->_datalength; i++)
-					printf("%02x ", packet->_data[i]);
-				printf("\n");
-				printf("[Packet Data End]\n");
+			PrintTCPHeader(&packet);
 #endif
 
-				USHORT realSrcPort = _byteswap_ushort(packet->_tcpHeader->src_port);
-				USHORT realDstPort = _byteswap_ushort(packet->_tcpHeader->dest_port);
+			USHORT realSrcPort = _byteswap_ushort(packet->_tcpHeader->src_port);
+			USHORT realDstPort = _byteswap_ushort(packet->_tcpHeader->dest_port);
 
-				//Log::MyLog(_T("realSrcPort : %u / realDstPort : %u\n"), realSrcPort, realDstPort);
+			//Log::MyLog(_T("realSrcPort : %u / realDstPort : %u\n"), realSrcPort, realDstPort);
 
-				PacketInfo* pi = new PacketInfo;
-				pi->_pkt = packet;
-				pi->_isRecv = (realSrcPort == 10200);
-				pi->_this = _this;
+			PacketInfo* pi = new PacketInfo;
+			pi->_pkt = packet;
+			pi->_isRecv = (realSrcPort == 10200);
+			pi->_this = _this;
 
-				HANDLE ct = CreateThread(0, NULL, ParsePacket, pi, 0, NULL);
-				if (ct == NULL) {
-					Log::WriteLog(const_cast<LPTSTR>(_T("Error in CreateParsePacketThread : %x")), GetLastError());
-					break;
-				}
-				
-			}
-				break;
-			default:
-				//Log::WriteLogA(const_cast<CHAR*>("Receive Callback : IP Header is not IPv4 : %04x"), packet->_ipHeader->version);
+			HANDLE ct = CreateThread(0, NULL, ParsePacket, pi, 0, NULL);
+			if (ct == NULL) {
+				Log::WriteLog(const_cast<LPTSTR>(_T("Error in CreateParsePacketThread : %x")), GetLastError());
 				break;
 			}
 		}
@@ -156,6 +137,14 @@ DWORD MyWinDivert::ParsePacket(LPVOID prc)
 		return -1;
 
 	std::lock_guard<std::mutex> lock(pi->_this->_mutex);
+
+#if DEBUG_DIVERT_DATA == 1
+	Log::WriteLogA("[%s Packet Data Start]", pi->_isRecv ? "RECV" : "SEND");
+	for (int i = 0; i < pi->_pkt->_datalength; i++)
+		Log::WriteLogNoDate(L"%02x ", pi->_pkt->_data[i]);
+	Log::WriteLogNoDate(L"\n");
+	Log::WriteLogA("[Packet Data End]");
+#endif
 
 	if (pi->_isRecv)
 		SWPACKETMAKER.Parse(pi->_pkt);

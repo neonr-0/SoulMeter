@@ -156,8 +156,8 @@ VOID SWPacketMaker::Reassambly(IPv4Packet* packet) {
 		Log::WriteLogA(const_cast<CHAR*>("[Reassambly Success] [datalength = %d]"), test->_datalength);
 
 		for (int i = 0; i < test->_datalength; i++)
-			printf("%02x ", test->_data[i]);
-		printf("\n");
+			Log::WriteLogNoDate(L"%02x ", test->_data[i]);
+		Log::WriteLogNoDate(L"\n");
 #endif
 		CreateSWPacket(_segmentationPacket.GetData());
 		_isSegmentation = FALSE;

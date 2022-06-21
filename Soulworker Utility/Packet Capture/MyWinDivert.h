@@ -5,13 +5,13 @@ using namespace std;
 
 #define WINDIVERT MyWinDivert::getInstance()
 
-#define WINDIVERT_FILTER_RULE "(tcp.SrcPort == 10200 or tcp.DstPort == 10200) and tcp.PayloadLength > 0"
+#define WINDIVERT_FILTER_RULE "(tcp.SrcPort == 10200 or tcp.DstPort == 10200) and tcp.PayloadLength > 0 and ip"
 
 #ifdef _DEBUG
 #define DEBUG_DIVERT_ALL 0
 #define DEBUG_DIVERT_IP 0
 #define DEBUG_DIVERT_TCP 0
-#define DEBUG_DIVERT_DATA 0
+#define DEBUG_DIVERT_DATA 1
 #endif
 
 class MyWinDivert : public Singleton<MyWinDivert> {
