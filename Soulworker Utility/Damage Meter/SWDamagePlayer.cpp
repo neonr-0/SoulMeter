@@ -97,24 +97,26 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 	}
 
 	USHORT worldID = DAMAGEMETER.GetWorldID();
-
-	// 
-	// 
+	INT32 monsterType = -1;
+	SWDB.GetMonsterType(db2, &monsterType);
+	BOOL bypassCheck = false;
+	// BS
 	if (worldID == 21018) {
 		if (db2 == 31310101 || db2 == 31310102) {
-			_damage += totalDMG;
-			_soulstoneDamage += soulstoneDMG;
-			_damageForSoulstone += totalDMG;
-			_soulstoneDamageForSoulstone += soulstoneDMG;
+			bypassCheck = true;
 		}
 	}
-	else if (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
-		_damage += totalDMG;
-		_soulstoneDamage += soulstoneDMG;
 
-		if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
-			_damageForSoulstone += totalDMG;
-			_soulstoneDamageForSoulstone += soulstoneDMG;
+	if (bypassCheck || dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
+		// Ignore object, Ex: car
+		if (monsterType != 6) {
+			_damage += totalDMG;
+			_soulstoneDamage += soulstoneDMG;
+
+			if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
+				_damageForSoulstone += totalDMG;
+				_soulstoneDamageForSoulstone += soulstoneDMG;
+			}
 		}
 	}
 

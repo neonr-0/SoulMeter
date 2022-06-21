@@ -3,6 +3,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Soulworker Packet\SWPacketDamage.h"
 #include ".\PacketInfo.h"
+#include ".\Damage Meter\MySQLite.h"
 
 
 

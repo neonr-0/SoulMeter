@@ -4,7 +4,7 @@
 #pragma pack(push, 1)
 typedef struct _SWPACKETHEARTBEAT {
 	BYTE _unknown01; //0430new
-	UINT32 _randomNumber; // random
+	UINT32 _tick; // tick
 	BYTE _unknown02[4];
 }SWPACKETHEARTBEAT;
 

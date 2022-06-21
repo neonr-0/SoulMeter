@@ -18,5 +18,7 @@ VOID SWSPacketHeartbeat::Log() {
 }
 
 VOID SWSPacketHeartbeat::Debug() {
+	_SWSPACKET_HEARTBEAT* hbData = (_SWSPACKET_HEARTBEAT*)(_data + sizeof(SWSHEADER));
+	//Log::WriteLog(_T("send tick : %u / "), hbData->_tick);
 	return;
 }

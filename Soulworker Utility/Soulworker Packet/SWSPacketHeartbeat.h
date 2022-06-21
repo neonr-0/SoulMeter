@@ -7,7 +7,7 @@
 
 typedef struct _SWSPACKET_HEARTBEAT {
 	BYTE unk01;
-	UINT32 _ms;
+	UINT32 _tick;
 }_SWSPACKET_HEARTBEAT;
 
 #pragma pack(pop)

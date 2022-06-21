@@ -17,7 +17,7 @@ VOID SWPacketHeartbeat::Log() {
 VOID SWPacketHeartbeat::Debug() {
 
 	SWPACKETHEARTBEAT* hbData = (SWPACKETHEARTBEAT*)(_data + sizeof(SWHEADER));
-	//Log::MyLog(_T("time : %u / "), hbData->_millisecond);
+	//Log::WriteLog(_T("recv tick : %u / "), hbData->_tick);
 	//for (int i = 0; i < sizeof(hbData->_unknown01); i++)
 	//	Log::MyLog(_T("%02x "), hbData->_unknown01[i]);
 	//Log::MyLog(_T("\n"));
