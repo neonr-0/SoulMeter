@@ -106,16 +106,14 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 		}
 	}
 
-	if (bypassCheck || dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
-		// Ignore object, Ex: car
-		if (db->_type != 6) {
-			_damage += totalDMG;
-			_soulstoneDamage += soulstoneDMG;
+	// Ignore object, Ex: car
+	if (bypassCheck || (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end() && db->_type != 6)) {
+		_damage += totalDMG;
+		_soulstoneDamage += soulstoneDMG;
 
-			if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
-				_damageForSoulstone += totalDMG;
-				_soulstoneDamageForSoulstone += soulstoneDMG;
-			}
+		if (totalDMG >= 200 && (damageType.soulstoneType != 0)) {
+			_damageForSoulstone += totalDMG;
+			_soulstoneDamageForSoulstone += soulstoneDMG;
 		}
 	}
 
