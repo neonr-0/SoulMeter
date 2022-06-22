@@ -349,10 +349,13 @@ VOID SWDamageMeter::InsertDB(UINT32 id, UINT32 db2) {
 		}
 	}
 
+	INT32 type = -1;
+	SWDB.GetMonsterType(db2, &type);
 
 	SW_DB2_STRUCT* db = new SW_DB2_STRUCT;
 	db->_id = id;
 	db->_db2 = db2;
+	db->_type = type;
 
 #if DEBUG_DAMAGEMETER_DB == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("[DEBUG] [INSERT DB] [NEW] [ID = %04x] [DB2 = %d]")), db->_id, db->_db2);

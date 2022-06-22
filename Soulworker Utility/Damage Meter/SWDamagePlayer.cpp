@@ -60,12 +60,13 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 	//Log::WriteLog(const_cast<LPTSTR>(_T("[PLAYER] [DamageType = %d]")), damageType.CRIT);
 
 
-	// 
+	// Skip not in db monster
 	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
 	UINT32 db2 = 0;
-	if (db != nullptr) {
-		db2 = db->_db2;
+	if (db == nullptr) {
+		return;
 	}
+	db2 = db->_db2;
 
 	// 
 	if (!damageType.MISS && _id == DAMAGEMETER.GetMyID()) {
@@ -97,8 +98,6 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 	}
 
 	USHORT worldID = DAMAGEMETER.GetWorldID();
-	INT32 monsterType = -1;
-	SWDB.GetMonsterType(db2, &monsterType);
 	BOOL bypassCheck = false;
 	// BS
 	if (worldID == 21018) {
@@ -109,7 +108,7 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 
 	if (bypassCheck || dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end()) {
 		// Ignore object, Ex: car
-		if (monsterType != 6) {
+		if (db->_type != 6) {
 			_damage += totalDMG;
 			_soulstoneDamage += soulstoneDMG;
 

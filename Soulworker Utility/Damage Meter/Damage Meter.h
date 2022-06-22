@@ -38,6 +38,7 @@ typedef struct _SW_OWNER_ID_STRUCT {
 typedef struct _SW_DB2_STRUCT {
 	UINT32 _id;
 	UINT32 _db2;
+	INT32 _type;
 }SW_DB2_STRUCT;
 
 

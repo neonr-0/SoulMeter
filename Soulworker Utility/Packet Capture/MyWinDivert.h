@@ -11,7 +11,7 @@ using namespace std;
 #define DEBUG_DIVERT_ALL 0
 #define DEBUG_DIVERT_IP 0
 #define DEBUG_DIVERT_TCP 0
-#define DEBUG_DIVERT_DATA 1
+#define DEBUG_DIVERT_DATA 0
 #endif
 
 class MyWinDivert : public Singleton<MyWinDivert> {

@@ -83,15 +83,19 @@ VOID SWPacketDamage::Do() {
 				player->_maxCombo, monster->_monsterID, player->_skillID);
 
 			if (monster->_remainHP <= 0) {
+				BOOL isEndId = false;
+				if (endIdList.find(db2) != endIdList.end() || db->_type == 4)
+					isEndId = true;
+
 				if (UIOPTION.isSaveDataWhenBossDied() && saveDataAndResetIdList.find(db2) != saveDataAndResetIdList.end()) {
 					DAMAGEMETER.Clear();
-					DAMAGEMETER.SetMazeState(endIdList.find(db2) != endIdList.end());
+					DAMAGEMETER.SetMazeState(isEndId);
 				}
 				else {
 					if (pauseIdList.find(db2) != pauseIdList.end()) {
 						DAMAGEMETER.Suspend();
 					}
-					else if (endIdList.find(db2) != endIdList.end()) {
+					else if (isEndId) {
 						DAMAGEMETER.SetMazeState(TRUE);
 						DAMAGEMETER.Suspend();
 					}
