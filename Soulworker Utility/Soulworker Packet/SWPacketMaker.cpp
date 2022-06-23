@@ -40,14 +40,14 @@ VOID SWPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, const
 		return;
 	UINT32 _size = size;
 
-#if SWMAGIC == 5
-	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
-#elif SWMAGIC == 3
+#if SWMAGIC == 3
 	_size -= sizeof(SWHEADER) + 3;
 	BYTE ecx = keyIndex;
 	for (UINT i = 0; i < _size; i++) {
 		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 0xF)];
 	}
+#else
+	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
 #endif
 }
 
@@ -181,6 +181,10 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 	SWPacket* swpacket = nullptr;
 	DAMAGEMETER.GetLock();
 	{
+
+#if DEBUG_DISPLAY_ALL_PKT == 1
+#endif
+
 		switch (_byteswap_ushort(swheader->_op)) {
 			/* 0x01*/
 		case OPcode::HEARTBEAT:

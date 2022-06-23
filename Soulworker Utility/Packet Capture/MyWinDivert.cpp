@@ -180,8 +180,13 @@ VOID MyWinDivert::PrintTCPHeader(IPv4Packet* p_packet) {
 
 	TCPHEADER* th = p_packet->_tcpHeader;
 
-	printf("======== TCP Header ========\n");
-	printf("src_port : %u\n", _byteswap_ushort(th->src_port));
-	printf("dest_port : %u\n", _byteswap_ushort(th->dest_port));
-	printf("length : %d\n", th->length * 4);
+	if (_byteswap_ushort(th->src_port) != 10200)
+		return;
+
+	Log::WriteLogA("======== TCP Header ========");
+	Log::WriteLogA("src_port : %u", _byteswap_ushort(th->src_port));
+	Log::WriteLogA("dest_port : %u", _byteswap_ushort(th->dest_port));
+	Log::WriteLogA("seq : %u", _byteswap_ulong(th->sqc_number));
+	Log::WriteLogA("length : %d\n", th->length * 4);
+	Log::WriteLogA("data_length : %d\n", p_packet->_datalength);
 }

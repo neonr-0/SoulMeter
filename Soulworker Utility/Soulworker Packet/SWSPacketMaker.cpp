@@ -35,14 +35,14 @@ VOID SWSPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, cons
 		return;
 	UINT _size = size;
 
-#if SWMAGIC == 5
-	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
-#elif SWMAGIC == 3
+#if SWMAGIC == 3
 	_size -= sizeof(SWHEADER) + 3;
 	BYTE ecx = data[5];
 	for (UINT i = 0; i < _size; i++) {
 		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 16)];
 	}
+#else
+	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
 #endif
 }
 

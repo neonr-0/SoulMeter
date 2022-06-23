@@ -18,6 +18,7 @@
 #define DEBUG_CREATEPACKET 0
 #define DEBUG_RESIZEPACKET 0
 #define DEBUG_DISPLAYPKT 0
+#define DEBUG_DISPLAY_ALL_PKT 0
 #endif
 
 class SWPacketMaker : public Singleton<SWPacketMaker> {
