@@ -83,10 +83,11 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 			pi->_this = _this;
 
 			HANDLE ct = CreateThread(0, NULL, ParsePacket, pi, 0, NULL);
-			if (ct == NULL) {
+			if (ct == nullptr) {
 				Log::WriteLog(const_cast<LPTSTR>(_T("Error in CreateParsePacketThread : %x")), GetLastError());
 				break;
 			}
+			CloseHandle(ct);
 		}
 
 	} while (false);

@@ -60,6 +60,7 @@ BuffMeter::BuffMeter() {
 }
 
 BuffMeter::~BuffMeter() {
+	GetLock();
 	Clear();
 	FreeLock();
 }
