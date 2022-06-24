@@ -7,8 +7,6 @@
 #include ".\Damage Meter\MySQLite.h"
 
 SWDamageMeter::~SWDamageMeter() {
-	GetLock();
-
 	if (_historyMode)
 		Restore();
 
