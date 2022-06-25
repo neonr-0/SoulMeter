@@ -82,7 +82,6 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 
 			PacketInfo* pi = new PacketInfo;
 			pi->_pkt = pkt_data;
-			pi->_this = _this;
 
 			_this->_packetQueue.push(pi);
 		}
@@ -104,7 +103,7 @@ DWORD MyWinDivert::ParsePacket(LPVOID prc)
 		}
 
 		PacketInfo* pi = _this->_packetQueue.front();
-		if (pi->_this == nullptr) {
+		if (pi->_pkt == nullptr) {
 			_this->_packetQueue.pop();
 			continue;
 		}
@@ -143,11 +142,11 @@ DWORD MyWinDivert::ParsePacket(LPVOID prc)
 
 		PACKETPARSER.Parse(packet, isRecv);
 
+		_this->_packetQueue.pop();
+
 		delete[] pi->_pkt;
 		delete pi;
 		delete packet;
-
-		_this->_packetQueue.pop();
 	}
 
 	return 0;

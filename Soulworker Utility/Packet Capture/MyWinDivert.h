@@ -23,7 +23,6 @@ private:
 	struct PacketInfo
 	{
 		BYTE* _pkt;
-		MyWinDivert* _this;
 	};
 
 	static DWORD WINAPI ReceiveCallback(LPVOID prc);
