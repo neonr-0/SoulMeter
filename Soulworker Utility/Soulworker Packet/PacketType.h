@@ -65,7 +65,7 @@
 
 
 // opcode0106: 01=mainCMD, 06=subCMD
-enum OPcode {
+enum RecvOPcode {
 	HEARTBEAT = 0x0106,
 
 	STATCHANGE = 0x0334,
@@ -109,4 +109,14 @@ enum OPcode {
 	GESTURE_USED = 0x2301,
 
 	POS = 0x2e09,
+};
+
+enum class SendOPCode
+{
+	/* 0x01 */
+	HEARTBEAT = 0x0106,
+
+	/* 0x06 */
+	DODGE_USE = 0x0606,
+	SKILL_USE = 0x0608
 };

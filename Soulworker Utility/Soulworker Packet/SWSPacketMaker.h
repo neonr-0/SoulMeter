@@ -5,112 +5,15 @@
 
 #define SWSPACKETMAKER SWSPacketMaker::getInstance()
 
-#define NO_SEGMENTATION 0
-#define YES_SEGMENTATION 1
-#define REASSAMBLY 2
-#define NO_SWHEADER 3
-#define NO_SWDATA 4
-#define SEGMENTATION_SUCCESS 5
-#define SEGMENTATION_FAILED 6
-
 #ifdef _DEBUG
-#define DEBUG_SEGMENTATION 0
 #define DEBUG_CREATESPACKET 0
-#define DEBUG_RESIZEPACKET 0
 #endif
 
 class SWSPacketMaker : public Singleton<SWSPacketMaker> {
 private:
-	class SegmentationPacket {
-	private:
-		BYTE* _data;
-		SIZE_T _size;
 
-		SIZE_T _curSize;
-		SIZE_T _packetSize;
-
-		IPv4Packet _packet;
-
-	public:
-		SegmentationPacket() {
-			_data = nullptr;
-			_size = 0;
-			_curSize = 0;
-			_packetSize = 0;
-		}
-
-		~SegmentationPacket() {
-
-			if (_data != nullptr)
-				delete[] _data;
-
-			_data = nullptr;
-		}
-
-		VOID Init(SIZE_T size) {
-
-			if (_data == nullptr) {
-				_data = new BYTE[size];
-				_size = size;
-			}
-
-			if (_size < size) {
-				delete[] _data;
-				_data = new BYTE[size];
-				_size = size;
-			}
-
-			_curSize = 0;
-			_packetSize = size;
-
-#if DEBUG_SEGMENTATION == 1
-			Log::WriteLogA(const_cast<CHAR*>("[segmentationPacket Init] [curSize = %d] [packetSize = %d]"), _curSize, _packetSize);
-#endif
-
-		}
-
-		SIZE_T GetRemainSize() {
-#if DEBUG_SEGMENTATION == 1
-			Log::WriteLogA(const_cast<CHAR*>("[segmentationPacket RemainSize = %d]"), _packetSize - _curSize);
-#endif
-
-			return _packetSize - _curSize;
-		}
-
-		DWORD AppendData(BYTE* data, SIZE_T size) {
-
-			memcpy(_data + _curSize, data, size);
-
-			size_t temp_debug = _curSize;
-			_curSize += size;
-
-#if DEBUG_SEGMENTATION == 1
-			Log::WriteLogA(const_cast<CHAR*>("[segmentationPacket AppendData Before curSize = %d After curSize = %d]"), temp_debug, _curSize);
-
-			for (int i = temp_debug; i < _curSize; i++)
-				printf("%02x ", _data[i]);
-			printf("\n");
-#endif
-
-			if (_curSize == _packetSize)
-				return SEGMENTATION_SUCCESS;
-			else if (_curSize < _packetSize)
-				return SEGMENTATION_FAILED;
-			return SEGMENTATION_FAILED;
-		}
-
-		IPv4Packet* GetData() {
-			_packet._data = _data;
-			_packet._datalength = _packetSize;
-
-			return &_packet;
-		}
-	};
-
-
-	VOID Decrypt(BYTE* data, const UINT size, const UINT start, const UINT keyIndex);
-
-	BYTE _keyTable[256] = {
+	const static INT32 _keyLength = 256;
+	BYTE _keyTable[_keyLength] = {
 		0x86, 0x40, 0x41, 0x20, 0x8C, 0x1A, 0x2E, 0x2C,
 		0x30, 0x1E, 0x99, 0xC9, 0x04, 0xE1, 0xD3, 0xD0,
 		0x0E, 0xA1, 0x33, 0x0D, 0x7C, 0x29, 0x69, 0x44,
@@ -144,30 +47,21 @@ private:
 		0xD9, 0xE9, 0xC2, 0x0A, 0xED, 0x86, 0xA4, 0x7F,
 		0x7D, 0x46, 0x4F, 0xFA, 0xD7, 0x11, 0x9E, 0x3A
 	};
-	char _keyInfo[32] = "@ga0321";
-	int _keyLength = 256;
-
-
-	SWSHEADER* GetSWSHeader(IPv4Packet* packet);
-	BYTE* GetSWData(IPv4Packet* packet);
-
-	VOID ResizePacket(IPv4Packet* packet);
-	VOID ResizePacket(SIZE_T remainsize, IPv4Packet* packet);
-
-	DWORD CheckSegmentation(IPv4Packet* packet);
-	BOOL _isSegmentation;
-
-	VOID StartReassambly(IPv4Packet* packet);
-	VOID Reassambly(IPv4Packet* packet);
-	SegmentationPacket _segmentationPacket;
-
-	VOID CreateSWPacket(IPv4Packet* packet);
-
-	VOID CheckRemainPacket(IPv4Packet* packet);
 
 public:
-	SWSPacketMaker();
-	~SWSPacketMaker();
 
-	DWORD Parse(IPv4Packet* packet);
+	BYTE* GetKeyTable()
+	{
+		return _keyTable;
+	}
+	INT32 GetKeyLength()
+	{
+		return _keyLength;
+	}
+
+	VOID Decrypt(BYTE* data, const UINT size, const UINT start, const UINT keyIndex);
+
+	SWSHEADER* GetSWSHeader(IPv4Packet* packet);
+	BYTE* GetSWSData(IPv4Packet* packet);
+	VOID CreateSWSPacket(IPv4Packet* packet);
 };

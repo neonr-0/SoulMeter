@@ -348,6 +348,9 @@
     <ClInclude Include="Language\LanguageText.h">
       <Filter>Language</Filter>
     </ClInclude>
+    <ClInclude Include="Packet Capture\PacketParser.h">
+      <Filter>PacketCapture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -565,6 +568,9 @@
     </ClCompile>
     <ClCompile Include="Language\Language.cpp">
       <Filter>Language</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet Capture\PacketParser.cpp">
+      <Filter>PacketCapture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

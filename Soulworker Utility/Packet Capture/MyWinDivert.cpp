@@ -1,12 +1,7 @@
 #include "pch.h"
 #include ".\Packet Capture\MyWinDivert.h"
-#include ".\Soulworker Packet\SWPacketMaker.h"
-#include ".\Soulworker Packet\SWSPacketMaker.h"
-#include ".\Soulworker Packet\SWCrypt.h"
+#include ".\Packet Capture\PacketParser.h"
 #include ".\UI\Option.h"
-
-//	 Windivert 1.4.2
-#define WINDIVERT_MTU_MAX (40 + 0xFFFF)
 
 DWORD MyWinDivert::Init() {
 
@@ -62,6 +57,13 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 
 		MyWinDivert* _this = (MyWinDivert*)prc;
 
+		HANDLE ct = CreateThread(0, NULL, ParsePacket, _this, 0, NULL);
+		if (ct == nullptr) {
+			Log::WriteLog(const_cast<LPTSTR>(_T("Error in CreateParsePacketThread : %x")), GetLastError());
+			break;
+		}
+		CloseHandle(ct);
+
 		WINDIVERT_ADDRESS addr;
 		UINT addrlen = sizeof(WINDIVERT_ADDRESS);
 		UINT recvlen = 0;
@@ -82,12 +84,7 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 			pi->_pkt = pkt_data;
 			pi->_this = _this;
 
-			HANDLE ct = CreateThread(0, NULL, ParsePacket, pi, 0, NULL);
-			if (ct == nullptr) {
-				Log::WriteLog(const_cast<LPTSTR>(_T("Error in CreateParsePacketThread : %x")), GetLastError());
-				break;
-			}
-			CloseHandle(ct);
+			_this->_packetQueue.push(pi);
 		}
 
 	} while (false);
@@ -97,62 +94,84 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 
 DWORD MyWinDivert::ParsePacket(LPVOID prc) 
 {
-	PacketInfo* pi = (PacketInfo*)prc;
-	if (pi->_this == nullptr)
-		return -1;
+	MyWinDivert* _this = (MyWinDivert*)prc;
 
-	std::lock_guard<std::mutex> lock(pi->_this->_mutex);
+	while (TRUE)
+	{
+		if (_this->_packetQueue.size() <= 0) {
+			Sleep(10);
+			continue;
+		}
 
-	IPv4Packet packet = { 0 };
-	// IP
-	packet._ipHeader = (IPHEADER*)(pi->_pkt);
-	packet._ipHeader->length = _byteswap_ushort(packet._ipHeader->length);
+		PacketInfo* pi = _this->_packetQueue.front();
+		if (pi->_this == nullptr) {
+			_this->_packetQueue.pop();
+			continue;
+		}
 
-	// TCP
-	packet._tcpHeader = (TCPHEADER*)(pi->_pkt + packet._ipHeader->len * 4);
+		IPv4Packet* packet = ParseStruct(pi->_pkt);
 
-	packet._datalength = packet._ipHeader->length - (packet._ipHeader->len * 4 + packet._tcpHeader->length * 4);
-	packet._data = (pi->_pkt + packet._ipHeader->len * 4 + packet._tcpHeader->length * 4);
-
-	USHORT realSrcPort = _byteswap_ushort(packet._tcpHeader->src_port);
-	USHORT realDstPort = _byteswap_ushort(packet._tcpHeader->dest_port);
-	BOOL isRecv = (realSrcPort == 10200);
+		USHORT realSrcPort = _byteswap_ushort(packet->_tcpHeader->src_port);
+		USHORT realDstPort = _byteswap_ushort(packet->_tcpHeader->dest_port);
+		BOOL isRecv = (realSrcPort == 10200);
 
 #if DEBUG_DIVERT_ALL == 1
-	PrintIPHeader(&packet);
-	PrintTCPHeader(&packet);
+		PrintIPHeader(&packet);
+		PrintTCPHeader(&packet);
 
-	printf("[Packet Data Start]\n");
-	for (int i = 0; i < packet._datalength; i++)
-		printf("%02x ", packet._data[i]);
-	printf("\n");
-	printf("[Packet Data End]\n");
+		printf("[Packet Data Start]\n");
+		for (int i = 0; i < packet._datalength; i++)
+			printf("%02x ", packet._data[i]);
+		printf("\n");
+		printf("[Packet Data End]\n");
 #endif
 #if DEBUG_DIVERT_IP == 1
-	PrintIPHeader(&packet);
+		PrintIPHeader(&packet);
 #endif
 
 #if DEBUG_DIVERT_TCP == 1
-	PrintTCPHeader(&packet);
+		PrintTCPHeader(&packet);
 #endif
 
 #if DEBUG_DIVERT_DATA == 1
-	Log::WriteLogA("[%s Packet Data Start]", isRecv ? "RECV" : "SEND");
-	for (int i = 0; i < packet._datalength; i++)
-		Log::WriteLogNoDate(L"%02x ", packet._data[i]);
-	Log::WriteLogNoDate(L"\n");
-	Log::WriteLogA("[Packet Data End]");
+		Log::WriteLogA("[%s Packet Data Start]", isRecv ? "RECV" : "SEND");
+		for (int i = 0; i < packet._datalength; i++)
+			Log::WriteLogNoDate(L"%02x ", packet._data[i]);
+		Log::WriteLogNoDate(L"\n");
+		Log::WriteLogA("[Packet Data End]");
 #endif
 
-	if (isRecv)
-		SWPACKETMAKER.Parse(&packet);
-	else
-		SWSPACKETMAKER.Parse(&packet);
+		PACKETPARSER.Parse(packet, isRecv);
 
-	delete[] pi->_pkt;
-	delete pi;
+		delete[] pi->_pkt;
+		delete pi;
+		delete packet;
+
+		_this->_packetQueue.pop();
+	}
 
 	return 0;
+}
+
+IPv4Packet* MyWinDivert::ParseStruct(BYTE* pkt)
+{
+	IPv4Packet* packet = new IPv4Packet;
+	// IP
+	packet->_ipHeader = (IPHEADER*)(pkt);
+	packet->_ipHeader->length = _byteswap_ushort(packet->_ipHeader->length);
+
+	// TCP
+	packet->_tcpHeader = (TCPHEADER*)(pkt + packet->_ipHeader->len * 4);
+	packet->_tcpHeader->seq_number = _byteswap_ulong(packet->_tcpHeader->seq_number);
+
+	packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+	packet->_data = (pkt + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+	packet->_oriData = packet->_data;
+	packet->_oriDataLength = packet->_datalength;
+
+	packet->_pkt = pkt;
+
+	return packet;
 }
 
 VOID MyWinDivert::PrintIPHeader(IPv4Packet* p_packet) {
@@ -187,7 +206,7 @@ VOID MyWinDivert::PrintTCPHeader(IPv4Packet* p_packet) {
 	Log::WriteLogA("======== TCP Header ========");
 	Log::WriteLogA("src_port : %u", _byteswap_ushort(th->src_port));
 	Log::WriteLogA("dest_port : %u", _byteswap_ushort(th->dest_port));
-	Log::WriteLogA("seq : %u", _byteswap_ulong(th->sqc_number));
+	Log::WriteLogA("seq : %u", _byteswap_ulong(th->seq_number));
 	Log::WriteLogA("length : %d\n", th->length * 4);
 	Log::WriteLogA("data_length : %d\n", p_packet->_datalength);
 }
