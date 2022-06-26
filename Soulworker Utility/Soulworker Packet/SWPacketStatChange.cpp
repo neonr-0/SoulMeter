@@ -44,17 +44,17 @@ VOID SWPacketStatChange::Debug() {
 	BYTE* p_data;
 	if (stat_header->_unknown01 == 0) {
 		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER);
-}
+	}
 	else { // 
 		// when you entering maze, there is stat packets
-		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER);
+		p_data = _data + sizeof(SWHEADER) + sizeof(SWPACKETSTATCHANGE_HEADER) + 14;
 	}
 
 	for (int i = 0; i < stat_header->_statsCount; i++) {
 		SWPACKETSTATCHANGE_DATA* party_data = (SWPACKETSTATCHANGE_DATA*)p_data;
 
 		DAMAGEMETER.UpdateStat(stat_header->_playerID, party_data->_statType, party_data->_statValue);
-		//Log::MyLog(_T("[DEBUG] [ID %08x] [statType = %x], [statValue = %f]\n"), stat_header->_playerID, party_data->_statType, party_data->_statValue);
+		//Log::WriteLog(_T("[DEBUG] [ID %08x] [statType = %x], [statValue = %f]\n"), stat_header->_playerID, party_data->_statType, party_data->_statValue);
 		p_data += sizeof(SWPACKETSTATCHANGE_DATA);
 
 	}

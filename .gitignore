@@ -17,14 +17,8 @@ SWCrypt.h
 *.dmp
 *.log
 
-# Npcap
-npcap/
-
-# Boost
-boost/
-
-# ICU
-icu/
+#Npcap
+[Nn]pcap/
 
 #Font File
 *.ttf

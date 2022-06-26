@@ -121,6 +121,9 @@
     <Filter Include="SWPacket\Packet\0x17 Monster">
       <UniqueIdentifier>{0703aa35-35ed-44a9-acc5-9e44e43fc318}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PacketCapture\Npcap">
+      <UniqueIdentifier>{dcf9be27-94cf-400c-9bec-3277288e8c35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -351,6 +354,15 @@
     <ClInclude Include="Packet Capture\PacketParser.h">
       <Filter>PacketCapture</Filter>
     </ClInclude>
+    <ClInclude Include="Packet Capture\PacketCapture.h">
+      <Filter>PacketCapture</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet Capture\MyNpcap.h">
+      <Filter>PacketCapture\Npcap</Filter>
+    </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.h">
+      <Filter>SWPacket\Packet\0x03</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -571,6 +583,15 @@
     </ClCompile>
     <ClCompile Include="Packet Capture\PacketParser.cpp">
       <Filter>PacketCapture</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet Capture\PacketCapture.cpp">
+      <Filter>PacketCapture</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet Capture\MyNpcap.cpp">
+      <Filter>PacketCapture\Npcap</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.cpp">
+      <Filter>SWPacket\Packet\0x03</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

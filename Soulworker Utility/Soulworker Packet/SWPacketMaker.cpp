@@ -3,6 +3,7 @@
 #include ".\Soulworker Packet\SWPacketMaker.h"
 #include ".\Soulworker Packet\SWCrypt.h"
 #include ".\Packet Capture\PacketParser.h"
+#include ".\UI\PlayerTable.h"
 
 SWHEADER* SWPacketMaker::GetSWHeader(IPv4Packet* packet) {
 
@@ -37,7 +38,8 @@ VOID SWPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, const
 		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 0xF)];
 	}
 #else
-	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
+	SWCrypt crypt;
+	crypt.DecryptPacket(data + start, size - start, keyIndex);
 #endif
 }
 
@@ -54,14 +56,11 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 	SWPacket* swpacket = nullptr;
 	DAMAGEMETER.GetLock();
 	{
-
-#if DEBUG_DISPLAY_ALL_PKT == 1
-#endif
-
 		switch (_byteswap_ushort(swheader->_op)) {
 			/* 0x01*/
-		case RecvOPcode::HEARTBEAT:
-			swpacket = new SWPacketHeartbeat(swheader, data);
+		case RecvOPcode::HEARTBEAT: 
+			//swpacket = new SWPacketHeartbeat(swheader, data);
+			PLAYERTABLE._ping = packet->_ts - PLAYERTABLE._lastSendTimestamp;
 			break;
 
 			/*0x03*/
@@ -70,6 +69,9 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 		case RecvOPcode::DEAD:
 			swpacket = new SWPacketDead(swheader, data);
+			break;
+		case RecvOPcode::CHARACTER_UPDATE_SPECIAL_OPTION_LIST:
+			swpacket = new SWPacketCharacterUpdateSpecialOptionList(swheader, data);
 			break;
 
 			/*0x04*/
@@ -168,7 +170,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 
 		default:
-#if DEBUG_DISPLAYPKT == 1
+#if DEBUG_RECV_DISPLAYPKT == 1
 			Log::WriteLogA("OP : %04x\tsize : %04x", swheader->_op, swheader->_size);
 			for (int i = 0; i < swheader->_size; i++)
 				Log::WriteLogNoDate(L"%02x ", data[i]);
@@ -178,7 +180,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		}
 
 		if (swpacket != nullptr) {
-#if DEBUG_CREATEPACKET == 1 // && defined(_DEBUG)
+#if DEBUG_RECV_CREATEPACKET == 1
 			swpacket->Debug();
 #endif
 			// Todo

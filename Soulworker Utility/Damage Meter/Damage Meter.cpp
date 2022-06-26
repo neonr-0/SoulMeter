@@ -307,7 +307,12 @@ BYTE SWDamageMeter::GetPlayerJob(UINT32 id) {
 	return search->second->_job;
 }
 
-VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue)
+VOID SWDamageMeter::UpdateSpecialStat(UINT32 id, USHORT statType, FLOAT statValue)
+{
+	UpdateStat(id, statType, statValue, TRUE);
+}
+
+VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue, BOOL isSpecial)
 {
 	//if (_historyMode) {
 	//	return;
@@ -326,7 +331,11 @@ VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue)
 		metaData = search->second;
 	}
 
-	metaData->UpdateStat(statType, statValue);
+	if (isSpecial)
+		metaData->UpdateSpecialStat(statType, statValue);
+	else
+		metaData->UpdateStat(statType, statValue);
+
 	return;
 }
 
@@ -511,6 +520,8 @@ VOID SWDamageMeter::Suspend() {
 	for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 		itr->second->MeterSuspended();
 	}
+
+	PLOTWINDOW.End();
 }
 
 VOID SWDamageMeter::Start() {
@@ -520,6 +531,7 @@ VOID SWDamageMeter::Start() {
 		_historyMode = FALSE;
 	}
 	_timer.Run();
+	PLOTWINDOW.Start();
 }
 
 VOID SWDamageMeter::Clear() {

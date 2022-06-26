@@ -1,5 +1,5 @@
 #include "pch.h"
-#include ".\Packet Capture/MyWinDivert.h"
+#include ".\Packet Capture/PacketCapture.h"
 #include ".\Damage Meter/Damage Meter.h"
 #include ".\UI\UiWindow.h"
 #include ".\Damage Meter\MySQLite.h"
@@ -14,6 +14,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	MiniDump::Begin();
 
+	DWORD errorCode = 0;
 	const UINT codePage = GetACP();
 	switch (codePage) {
 	case 936: // ZH-CN
@@ -32,8 +33,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		exit(-1);
 	}
 
-	if (WINDIVERT.Init()) {
-		Log::WriteLog(const_cast<LPTSTR>(_T("Init WINDIVERT Failed")));
+	if ((errorCode = PACKETCAPTURE.Init())) {
+		Log::WriteLog(const_cast<LPTSTR>(_T("Init PacketCapture Failed %d")), errorCode);
 		exit(-1);
 	}
 

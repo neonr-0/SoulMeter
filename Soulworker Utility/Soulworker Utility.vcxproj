@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Soulworker Utility\Third Party\Npcap\Include;..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>Default</LanguageStandard>
@@ -136,12 +136,13 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;wpcap.lib;Packet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <DelayLoadDLLs>wpcap.dll</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -186,7 +187,9 @@
     <ClInclude Include="Damage Meter\Timer.h" />
     <ClInclude Include="Language\Language.h" />
     <ClInclude Include="Language\LanguageText.h" />
+    <ClInclude Include="Packet Capture\MyNpcap.h" />
     <ClInclude Include="Packet Capture\MyWinDivert.h" />
+    <ClInclude Include="Packet Capture\PacketCapture.h" />
     <ClInclude Include="Packet Capture\PacketParser.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketAkasic.h" />
     <ClInclude Include="Soulworker Packet\SWPacketBuffIn.h" />
     <ClInclude Include="Soulworker Packet\SWPacketBuffOut.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.h" />
     <ClInclude Include="Soulworker Packet\SWPacketChat.h" />
     <ClInclude Include="Soulworker Packet\SWPacketCooldown.h" />
     <ClInclude Include="Soulworker Packet\SWPacketDamage.h" />
@@ -263,7 +267,9 @@
     <ClCompile Include="Damage Meter\Timer.cpp" />
     <ClCompile Include="Language\Language.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Packet Capture\MyNpcap.cpp" />
     <ClCompile Include="Packet Capture\MyWinDivert.cpp" />
+    <ClCompile Include="Packet Capture\PacketCapture.cpp" />
     <ClCompile Include="Packet Capture\PacketParser.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -274,6 +280,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketAkasic.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketBuffIn.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketBuffOut.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketChat.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketCooldown.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketDamage.cpp" />

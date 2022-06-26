@@ -36,6 +36,10 @@ private:
 	vector<double> _abTimeList;
 	double _abLastTime = -1;
 
+	vector<double> _bdList;
+	vector<double> _bdTimeList;
+	double _bdLastTime = -1;
+
 	vector<double> _jqList;
 	vector<double> _jqTimeList;
 	double _jqLastTime = -1;
@@ -51,6 +55,7 @@ public:
 
 	VOID AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement);
 	VOID AddAbData(DOUBLE DPS, DOUBLE time);
+	VOID AddBdData(DOUBLE DPS, DOUBLE time);
 	VOID AddJqData(BYTE stack, DOUBLE time);
 	VOID AddAnnonation(string content);
 	VOID AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time);
@@ -73,6 +78,14 @@ public:
 	vector<double> GetABTimeList()
 	{
 		return _abTimeList;
+	}
+	vector<double> GetBDList()
+	{
+		return _bdList;
+	}
+	vector<double> GetBDTimeList()
+	{
+		return _bdTimeList;
 	}
 	vector<double> GetJQList()
 	{
@@ -115,6 +128,7 @@ private:
 
 	VOID UpdatePlotTab();
 	VOID UpdateAbPlotTab();
+	VOID UpdateBdPlotTab();
 	VOID UpdateJqPlotTab();
 	VOID UpdateBossHpPlotTab();
 	VOID UpdateBossHpPlotCombo();
@@ -123,12 +137,14 @@ public:
 
 	VOID AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement);
 	VOID AddAbData(DOUBLE DPS, DOUBLE time);
+	VOID AddBdData(DOUBLE DPS, DOUBLE time);
 	VOID AddJqData(BYTE stack, DOUBLE time);
 	VOID AddAnnonation(string content);
 	VOID AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time);
 
 	VOID OpenWindow();
 	VOID Update();
+	VOID Start();
 	VOID End();
 	VOID Clear();
 

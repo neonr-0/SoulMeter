@@ -6,7 +6,8 @@
 #define SWSPACKETMAKER SWSPacketMaker::getInstance()
 
 #ifdef _DEBUG
-#define DEBUG_CREATESPACKET 0
+#define DEBUG_SEND_CREATESPACKET 0
+#define DEBUG_SEND_DISPLAYPKT 0
 #endif
 
 class SWSPacketMaker : public Singleton<SWSPacketMaker> {

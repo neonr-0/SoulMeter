@@ -57,6 +57,13 @@ enum StatType {
 	// 0x45 ~ 0x4A : soulstone resist
 
 };
+
+enum SpecialStatType {
+
+	BossDamage = 0x04
+
+};
+
 #pragma pack(push, 1)
 typedef struct _SWPACKETDAMAGE_DAMAGETYPE {
 	unsigned int MISS : 1; // Gamnabit 0x01

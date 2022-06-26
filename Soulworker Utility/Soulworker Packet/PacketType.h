@@ -10,6 +10,8 @@
 /* 0x03 */
 #include ".\Soulworker Packet\SWPacketStatChange.h"
 #include ".\Soulworker Packet\SWPacketDead.h"
+#include ".\Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.h"
+
 /* 0x04 */
 #include ".\Soulworker Packet\SWPacketWorldChange.h"
 #include ".\Soulworker Packet\SWPacketMazeStart.h"
@@ -68,20 +70,25 @@
 enum RecvOPcode {
 	HEARTBEAT = 0x0106,
 
+	/* 0x03 */
 	STATCHANGE = 0x0334,
 	DEAD = 0x0341,
+	CHARACTER_UPDATE_SPECIAL_OPTION_LIST = 0x0347,
 
+	/* 0x04 */
 	WORLDCHANGE = 0x0402,
 	MAZESTART = 0x0408,
 	SPAWNED_CHARINFO = 0x0411,
 	IN_INFO_MONSTER = 0x0415,	
 	OTHER_INFOS_MONSTER = 0x0423,
 
+	/* 0x05 */
 	STARTMOVE = 0x0502,
 	STOPMOVE = 0x0504,
 	JUMP = 0x0506,
 	CANCEL_WITHMOVE = 0x0511,
  
+	/* 0x06 */
 	DODGE = 0x0607,
 	USESKILL = 0x0609,
 	OTHER_USESKILL = 0x0610,
@@ -92,9 +99,11 @@ enum RecvOPcode {
 	AKASIC = 0x067b,
 	COOLDOWN = 0x067c,
 
+	/* 0x07 */
 	CHAT = 0x0701,
 	CHAT_WHISPER = 0x0702,
 
+	/* 0x11 */
 	MAZEEND = 0x1175,
 
 	/* 0x12 Party */
@@ -106,8 +115,10 @@ enum RecvOPcode {
 	MONSTER_KILLED = 0x1711,
 	AGGRO_CHANGED = 0x1722,
 
+	/* 0x23 */
 	GESTURE_USED = 0x2301,
 
+	/* 0x2e */
 	POS = 0x2e09,
 };
 

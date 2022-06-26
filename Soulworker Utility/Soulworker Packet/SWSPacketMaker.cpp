@@ -3,6 +3,7 @@
 #include ".\Soulworker Packet\SWSPacketMaker.h"
 #include ".\Soulworker Packet\SWCrypt.h"
 #include ".\Packet Capture\PacketParser.h"
+#include ".\UI\PlayerTable.h"
 
 SWSHEADER* SWSPacketMaker::GetSWSHeader(IPv4Packet* packet) {
 
@@ -35,7 +36,8 @@ VOID SWSPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, cons
 		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 16)];
 	}
 #else
-	SWCRYPT.DecryptPacket(data + start, size - start, keyIndex);
+	SWCrypt crypt;
+	crypt.DecryptPacket(data + start, size - start, keyIndex);
 #endif
 }
 
@@ -52,20 +54,21 @@ VOID SWSPacketMaker::CreateSWSPacket(IPv4Packet* packet) {
 	SWSPacket* swpacket = nullptr;
 	DAMAGEMETER.GetLock();
 	{
-		switch (_byteswap_ushort(swheader->_op)) {
-		case (USHORT)SendOPCode::HEARTBEAT:
-			swpacket = new SWSPacketHeartbeat(swheader, data);
+		switch ((SendOPCode)_byteswap_ushort(swheader->_op)) {
+		case SendOPCode::HEARTBEAT:
+			//swpacket = new SWSPacketHeartbeat(swheader, data);
+			PLAYERTABLE._lastSendTimestamp = packet->_ts;
 			break;
-		case 0x0501:
-			break;
-		case 0x0503:
-			break;
-		case 0x0522:
-			break;
-		case (USHORT)SendOPCode::DODGE_USE:
+		//case 0x0501:
+		//	break;
+		//case 0x0503:
+		//	break;
+		//case 0x0522:
+		//	break;
+		case SendOPCode::DODGE_USE:
 			swpacket = new SWSPacketMyDodgeUsed(swheader, data);
 			break;
-		case (USHORT)SendOPCode::SKILL_USE:
+		case SendOPCode::SKILL_USE:
 			swpacket = new SWSPacketMySkillUsed(swheader, data);
 			break;
 		default:
@@ -74,7 +77,7 @@ VOID SWSPacketMaker::CreateSWSPacket(IPv4Packet* packet) {
 		}
 
 		if (swpacket != nullptr) {
-#if DEBUG_CREATESPACKET == 1 // && defined(_DEBUG)
+#if DEBUG_SEND_CREATESPACKET == 1
 			swpacket->Debug();
 #endif
 			// Todo

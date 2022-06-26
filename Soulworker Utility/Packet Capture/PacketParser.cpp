@@ -170,9 +170,9 @@ BOOL PacketParser::Reassambly(IPv4Packet* packet, BOOL isRecv) {
 		IPv4Packet* test = segmentationPacket->GetData();
 		Log::WriteLogA(const_cast<CHAR*>("[%s] [Reassambly Success] [datalength = %d]"), isRecv ? "RECV" : "SEND", test->_datalength);
 
-		//for (int i = 0; i < test->_datalength; i++)
-		//	Log::WriteLogNoDate(L"%02x ", test->_data[i]);
-		//Log::WriteLogNoDate(L"\n");
+		for (int i = 0; i < test->_datalength; i++)
+			Log::WriteLogNoDate(L"%02x ", test->_data[i]);
+		Log::WriteLogNoDate(L"\n");
 #endif
 		if (isRecv)
 			SWPACKETMAKER.CreateSWPacket(segmentationPacket->GetData());

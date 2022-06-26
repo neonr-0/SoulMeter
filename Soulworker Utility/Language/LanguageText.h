@@ -43,12 +43,14 @@ enum TEXT_ENUM_LIST
 	STR_TABLE_SOUL_GAUGE,
 	STR_TABLE_ATTACK_SPEED,
 	STR_TABLE_ARMOR_BREAK,
+	STR_TABLE_BOSS_DAMAGE,
 	STR_TABLE_STAMINA,
 	STR_TABLE_SOUL_VAPOR,
 	STR_TABLE_SOULSTONE_PERCENT,
 	STR_TABLE_SOULSTONE_PROC,
 	STR_TABLE_SOULSTONE_DAMAGE,
 	STR_TABLE_AVERAGE_AB,
+	STR_TABLE_AVERAGE_BD,
 	STR_TABLE_MISS,
 	STR_TABLE_MISS_RATE,
 	STR_TABLE_PARTIAL,
@@ -112,14 +114,12 @@ enum TEXT_ENUM_LIST
 	STR_CHAR_NABI,
 
 	/* PLOTWINDOW */
+	STR_PLOTWINDOW_TIME_SEC,
 	STR_PLOTWINDOW_DPSGRAPH,
-	STR_PLOTWINDOW_DPSGRAPH_TIME_SEC,
 	STR_PLOTWINDOW_ABGRAPH,
-	STR_PLOTWINDOW_ABGRAPH_TIME_SEC,
+	STR_PLOTWINDOW_BDGRAPH,
 	STR_PLOTWINDOW_JQGRAPH,
-	STR_PLOTWINDOW_JQGRAPH_TIME_SEC,
 	STR_PLOTWINDOW_BOSSHPGRAPH,
-	STR_PLOTWINDOW_BOSSHPGRAPH_TIME_SEC,
 	STR_PLOTWINDOW_BOSSHPGRAPH_UNIT,
 	STR_PLOTWINDOW_COMBATLOG,
 
@@ -506,6 +506,19 @@ const TEXT_LIST _allTextList[] = {
 		}
 	},
 	{
+		STR_TABLE_BOSS_DAMAGE,
+		{
+			{
+				EN_US,
+				u8"BD"
+			},
+			{
+				ZH_TW,
+				u8"B傷"
+			}
+		}
+	},
+	{
 		STR_TABLE_STAMINA,
 		{
 			{
@@ -580,6 +593,19 @@ const TEXT_LIST _allTextList[] = {
 			{
 				ZH_TW,
 				u8"均貫"
+			}
+		}
+	},
+	{
+		STR_TABLE_AVERAGE_BD,
+		{
+			{
+				EN_US,
+				u8"Avg.BD"
+			},
+			{
+				ZH_TW,
+				u8"均B傷"
 			}
 		}
 	},
@@ -1331,6 +1357,19 @@ const TEXT_LIST _allTextList[] = {
 
 	/* PLOTWINDOW */
 	{
+		STR_PLOTWINDOW_TIME_SEC,
+		{
+			{
+				EN_US,
+				u8"Time(sec)"
+			},
+			{
+				ZH_TW,
+				u8"時間(秒)"
+			}
+		}
+	},
+	{
 		STR_PLOTWINDOW_DPSGRAPH,
 		{
 			{
@@ -1340,19 +1379,6 @@ const TEXT_LIST _allTextList[] = {
 			{
 				ZH_TW,
 				u8"DPS變化圖"
-			}
-		}
-	},
-	{
-		STR_PLOTWINDOW_DPSGRAPH_TIME_SEC,
-		{
-			{
-				EN_US,
-				u8"Time(sec)"
-			},
-			{
-				ZH_TW,
-				u8"時間(秒)"
 			}
 		}
 	},
@@ -1370,15 +1396,15 @@ const TEXT_LIST _allTextList[] = {
 		}
 	},
 	{
-		STR_PLOTWINDOW_ABGRAPH_TIME_SEC,
+		STR_PLOTWINDOW_BDGRAPH,
 		{
 			{
 				EN_US,
-				u8"Time(sec)"
+				u8"BD Graph"
 			},
 			{
 				ZH_TW,
-				u8"時間(秒)"
+				u8"B傷變化圖"
 			}
 		}
 	},
@@ -1396,19 +1422,6 @@ const TEXT_LIST _allTextList[] = {
 		}
 	},
 	{
-		STR_PLOTWINDOW_JQGRAPH_TIME_SEC,
-		{
-			{
-				EN_US,
-				u8"Time(sec)"
-			},
-			{
-				ZH_TW,
-				u8"時間(秒)"
-			}
-		}
-	},
-	{
 		STR_PLOTWINDOW_BOSSHPGRAPH,
 		{
 			{
@@ -1418,19 +1431,6 @@ const TEXT_LIST _allTextList[] = {
 			{
 				ZH_TW,
 				u8"Boss血量變化圖"
-			}
-		}
-	},
-	{
-		STR_PLOTWINDOW_BOSSHPGRAPH_TIME_SEC,
-		{
-			{
-				EN_US,
-				u8"Time(sec)"
-			},
-			{
-				ZH_TW,
-				u8"時間(秒)"
 			}
 		}
 	},

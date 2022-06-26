@@ -55,12 +55,16 @@ private:
 	FLOAT _currentHP = 0.0;
 	FLOAT _maxAttack = 0.0;
 	FLOAT _critDamage = 0.0;
+	FLOAT _bossDamage = 0.0;
 public:
 	UINT32 _id = 0;
 	CHAR _name[MAX_NAME_LEN];
 	BYTE _job = 0;
 	UINT64 _avgABSum = 0;
 	UINT64 _avgABPreviousTime = 0;
+
+	UINT64 _avgBDSum = 0;
+	UINT64 _avgBDPreviousTime = 0;
 
 	BOOL _gear90EffectStarted = false;
 	UINT64 _gear90Sum = 0;
@@ -86,6 +90,8 @@ public:
 		_job = 0;
 		_avgABSum = 0;
 		_avgABPreviousTime = 0;
+		_avgBDSum = 0;
+		_avgBDPreviousTime = 0;
 	}
 
 	VOID UpdateStat(USHORT statType, FLOAT statValue) {
@@ -132,10 +138,29 @@ public:
 		case StatType::CritDamage:
 			_critDamage = statValue;
 			break;
+
 		default:
+			//Log::WriteLog(_T("[DEBUG] [statType = %x], [statValue = %f]\n"), statType, statValue);
 			break;
 		}
 	}
+
+	VOID UpdateSpecialStat(USHORT statType, FLOAT statValue) {
+		switch (statType) {
+		case SpecialStatType::BossDamage:
+			if (DAMAGEMETER.isRun()) {
+				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime());
+				_avgBDSum += static_cast<UINT64>((time - _avgBDPreviousTime) * _bossDamage);
+				_avgBDPreviousTime = time;
+			}
+			_bossDamage = statValue;
+			break;
+		default:
+			//Log::WriteLog(_T("[DEBUG] [statType = %x], [statValue = %f]\n"), statType, statValue);
+			break;
+		}
+	}
+
 	VOID MeterSuspended() {
 		UINT64 currentTime = (UINT64)DAMAGEMETER.GetTime();
 
@@ -143,8 +168,10 @@ public:
 		_avgABSum += static_cast<UINT64>((currentTime - _avgABPreviousTime) * correctedAB);
 		_avgABPreviousTime = currentTime;
 
-
+		_avgBDSum += static_cast<UINT64>((currentTime - _avgBDPreviousTime) * _bossDamage);
+		_avgBDPreviousTime = currentTime;
 	}
+
 	VOID MeterReseted() {
 		auto player = DAMAGEMETER.GetPlayerInfo(_id);
 		if (player != DAMAGEMETER.end()) {
@@ -160,6 +187,10 @@ public:
 				currentAB = currentAB > 100.0 ? 100.0 : currentAB; // 
 				UINT64 calculatedAvgAB = static_cast<UINT64>((_avgABSum + avgTimeDifference * currentAB));
 				(*player)->SetHistoryAvgAB((DOUBLE)calculatedAvgAB / currentTime);
+
+				avgTimeDifference = currentTime - _avgBDPreviousTime;
+				UINT64 calculatedAvgBD = static_cast<UINT64>((_avgBDSum + avgTimeDifference * _bossDamage));
+				(*player)->SetHistoryAvgBD((DOUBLE)calculatedAvgBD / currentTime);
 
 				// 
 				if (_gear90EffectStarted) {
@@ -209,6 +240,9 @@ public:
 
 		_avgABSum = 0;
 		_avgABPreviousTime = 0;
+
+		_avgBDSum = 0;
+		_avgBDPreviousTime = 0;
 
 		_gear90EffectStarted = false;
 		_gear90Sum = 0;
@@ -413,6 +447,7 @@ public:
 	}
 
 	FLOAT GetStat(USHORT statType) {
+
 		switch (statType) {
 		case StatType::SG:
 			return _sg;
@@ -430,6 +465,16 @@ public:
 			return _maxAttack;
 		case StatType::CritDamage:
 			return _critDamage;
+		}
+
+		return -1;
+	}
+
+	FLOAT GetSpecialStat(USHORT statType) {
+
+		switch (statType) {
+		case SpecialStatType::BossDamage:
+			return _bossDamage;
 		}
 
 		return -1;
@@ -496,7 +541,8 @@ public:
 	const CHAR* GetPlayerName(UINT32 id);
 	BYTE GetPlayerJob(UINT32 id);
 
-	VOID UpdateStat(UINT32 id, USHORT statType, FLOAT statValue);
+	VOID UpdateSpecialStat(UINT32 id, USHORT statType, FLOAT statValue);
+	VOID UpdateStat(UINT32 id, USHORT statType, FLOAT statValue, BOOL isSpecial = FALSE);
 
 	VOID SetMyID(UINT32 id);
 

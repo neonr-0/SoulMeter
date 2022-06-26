@@ -111,7 +111,7 @@ typedef struct _TCPHEADER {
 	USHORT dest_port;				//  port
 	ULONG seq_number;				//  
 	ULONG ack_number;				// ack 
-	//little endian begin
+	//little endian begin 18
 	USHORT reserved1 : 4;			// reserved
 	USHORT length : 4;				// 
 	USHORT fin : 1;					// FIN
@@ -133,9 +133,9 @@ typedef struct _IPV4PACKET {
 	IPHEADER* _ipHeader;
 	TCPHEADER* _tcpHeader;
 	const UCHAR* _data;
-	const UCHAR* _oriData;
 	SIZE_T _datalength;
-	SIZE_T _oriDataLength;
+	BOOL _isRecv;
+	UINT64 _ts;
 }IPv4Packet;
 
 #pragma pack(pop)
