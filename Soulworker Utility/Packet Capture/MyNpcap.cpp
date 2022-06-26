@@ -155,7 +155,9 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	IPv4Packet* packet = new IPv4Packet;
 	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, header->caplen);
 
-	//Log::WriteLogA("[MyNpcap::ReceiveCallback] CapLen: %d, Length: %d", header->caplen, header->len);
+#if _DEBUG
+	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ: %lu", packet->_tcpHeader->seq_number);
+#endif
 
 	mutex* pMutex = nullptr;
 	mutex* pQueueMutex = nullptr;

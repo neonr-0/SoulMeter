@@ -134,9 +134,12 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			//swpacket = new SWPacketChat(swheader, data);
 			break;
 
-			/* 0x11 */
+			/* 0x11 Maze*/
 		case RecvOPcode::MAZEEND:
 			swpacket = new SWPacketMazeEnd(swheader, data);
+			break;
+		case RecvOPcode::MAZE_UPDATE_STATE:
+			swpacket = new SWPacketMazeUpdateState(swheader, data);
 			break;
 
 			/* 0x12 Party */

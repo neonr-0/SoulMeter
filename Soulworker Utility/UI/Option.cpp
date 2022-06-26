@@ -9,7 +9,7 @@
 
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
-	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false),
+	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false), _isSoloRankMode(FALSE),
 	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _selectedLang(LANGMANAGER.GetCurrentLang())
 {
 	
@@ -53,6 +53,7 @@ BOOL UiOption::ShowFontSelector() {
 	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_SOLO_MODE), (bool*)&_isSoloMode);
 	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_HIDE_NAME), (bool*)&_hideName);
 	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED), (bool*)&_saveDataWhenBossDied);
+	ImGui::Checkbox(LANGMANAGER.GetText(STR_OPTION_SOLO_RANK_MODE), (bool*)&_isSoloRankMode);
 
 	return TRUE;
 }
@@ -371,6 +372,10 @@ BOOL UiOption::GetOption() {
 		attr->QueryIntValue(&_selectedLang);
 		ChangeLang();
 	}
+
+	attr = ele->FindAttribute("IsSoloRankMode");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_isSoloRankMode);
 
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1M = %d")), _is1M);
@@ -724,6 +729,7 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("DoHideName", _hideName);
 	option->SetAttribute("SaveDataWhenBossDied", _saveDataWhenBossDied);
 	option->SetAttribute("UseLang", _selectedLang);
+	option->SetAttribute("IsSoloRankMode", _isSoloRankMode);
 
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -892,6 +898,10 @@ const BOOL& UiOption::isTopMost()
 const BOOL& UiOption::isSaveDataWhenBossDied()
 {
 	return _saveDataWhenBossDied;
+}
+
+const BOOL& UiOption::isSoloRankMode() {
+	return _isSoloRankMode;
 }
 
 VOID UiOption::Update() {

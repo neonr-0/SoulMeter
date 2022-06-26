@@ -100,6 +100,7 @@ enum TEXT_ENUM_LIST
 	STR_OPTION_COMBO_LANG,
 	STR_OPTION_COMBO_LANG_EN,
 	STR_OPTION_COMBO_LANG_ZH,
+	STR_OPTION_SOLO_RANK_MODE,
 
 	/* CHAR NAME */
 	STR_CHAR_UNKNOWN,
@@ -1219,6 +1220,19 @@ const TEXT_LIST _allTextList[] = {
 			{
 				ZH_TW,
 				u8"中文(繁體)"
+			}
+		}
+	},
+	{
+		STR_OPTION_SOLO_RANK_MODE,
+		{
+			{
+				EN_US,
+				u8"Solo rank mode"
+			},
+			{
+				ZH_TW,
+				u8"單人排名模式"
 			}
 		}
 	},

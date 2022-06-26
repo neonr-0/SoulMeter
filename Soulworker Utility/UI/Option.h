@@ -38,6 +38,7 @@ private:
 	BOOL _isTopMost;
 	BOOL _saveDataWhenBossDied;
 	INT32 _selectedLang;
+	BOOL _isSoloRankMode;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
@@ -75,6 +76,7 @@ public:
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
 	const BOOL& isSaveDataWhenBossDied();
+	const BOOL& isSoloRankMode();
 
 	BOOL ToggleTopMost();
 

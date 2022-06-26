@@ -124,6 +124,9 @@
     <Filter Include="PacketCapture\Npcap">
       <UniqueIdentifier>{dcf9be27-94cf-400c-9bec-3277288e8c35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWPacket\Packet\0x11 Maze">
+      <UniqueIdentifier>{45651462-a456-4dfd-8f66-4a71442b2066}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -252,9 +255,6 @@
     <ClInclude Include="Soulworker Packet\SWPacketMazeStart.h">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClInclude>
-    <ClInclude Include="Soulworker Packet\SWPacketMazeEnd.h">
-      <Filter>SWPacket\Packet\0x04 World</Filter>
-    </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketStatChange.h">
       <Filter>SWPacket\Packet\0x03</Filter>
     </ClInclude>
@@ -362,6 +362,15 @@
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.h">
       <Filter>SWPacket\Packet\0x03</Filter>
+    </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketMazeEnd.h">
+      <Filter>SWPacket\Packet\0x11 Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketMazeUpdateState.h">
+      <Filter>SWPacket\Packet\0x11 Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="Damage Meter\MapList.h">
+      <Filter>Damge Meter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -491,9 +500,6 @@
     <ClCompile Include="Soulworker Packet\SWPacketMazeStart.cpp">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClCompile>
-    <ClCompile Include="Soulworker Packet\SWPacketMazeEnd.cpp">
-      <Filter>SWPacket\Packet\0x04 World</Filter>
-    </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketStatChange.cpp">
       <Filter>SWPacket\Packet\0x03</Filter>
     </ClCompile>
@@ -592,6 +598,12 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.cpp">
       <Filter>SWPacket\Packet\0x03</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketMazeEnd.cpp">
+      <Filter>SWPacket\Packet\0x11 Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketMazeUpdateState.cpp">
+      <Filter>SWPacket\Packet\0x11 Maze</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

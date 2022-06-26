@@ -179,6 +179,7 @@
     <ClInclude Include="Buff Meter\Buff.h" />
     <ClInclude Include="Damage Meter\Damage Meter.h" />
     <ClInclude Include="Damage Meter\History.h" />
+    <ClInclude Include="Damage Meter\MapList.h" />
     <ClInclude Include="Damage Meter\MonsterList.h" />
     <ClInclude Include="Damage Meter\MySQLite.h" />
     <ClInclude Include="Damage Meter\SWDamageMonster.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketMaker.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMazeEnd.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMazeStart.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketMazeUpdateState.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMonsterKilled.h" />
     <ClInclude Include="Soulworker Packet\SWPacketInInfoMonster.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMonsterStatUpdate.h" />
@@ -290,6 +292,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketMaker.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMazeEnd.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMazeStart.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketMazeUpdateState.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMonsterKilled.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketInInfoMonster.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMonsterStatUpdate.cpp" />
