@@ -77,7 +77,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		{
 			if (skipCheckSEQ || itr->first == *nextSEQ) {
 #if DEBUG_CAPTURE_SORT == 1
-				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] [skipCheckSEQ:%s] Find Packet SEQ %lu", pti->isRecv ? "RECV" : "SEND", skipCheckSEQ ? "YES" : "NO", itr->first);
+				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] [skipCheckSEQ:%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", skipCheckSEQ ? "YES" : "NO", itr->first, itr->second->_packet->_datalength);
 #endif
 				pi = itr->second;
 				queue->erase(itr);

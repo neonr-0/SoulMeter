@@ -156,7 +156,7 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, header->caplen);
 
 #if _DEBUG
-	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ: %lu", packet->_tcpHeader->seq_number);
+	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
 #endif
 
 	mutex* pMutex = nullptr;
@@ -193,9 +193,9 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 
 	PacketInfo* pi = new PacketInfo;
 	pi->_packet = packet;
-	
 
-	if (packet->_datalength > 0 && header->caplen >= 64)
+	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
+	if (packet->_datalength > 0 && packet->_tcpHeader->ack && ((packet->_isRecv && header->caplen > 60) || (!packet->_isRecv && header->caplen > 54)))
 	{
 		pQueueMutex->lock();
 		if (packet->_isRecv)

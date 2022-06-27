@@ -12,7 +12,7 @@ using namespace std;
 #define DEBUG_CAPTURE_IP 0
 #define DEBUG_CAPTURE_TCP 0
 #define DEBUG_CAPTURE_DATA 0
-#define DEBUG_CAPTURE_SORT 0
+#define DEBUG_CAPTURE_SORT 1
 #endif
 
 struct PacketInfo

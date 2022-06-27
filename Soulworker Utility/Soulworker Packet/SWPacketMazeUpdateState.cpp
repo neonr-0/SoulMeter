@@ -12,7 +12,7 @@ VOID SWPacketMazeUpdateState::Do() {
 
 	SWPacketMazeUpdateStatePacket* packet = (SWPacketMazeUpdateStatePacket*)(_data + sizeof(SWHEADER));
 	
-	if (!UIOPTION.isSoloRankMode() || rankMap.find((UINT32)DAMAGEMETER.GetWorldID()) == rankMap.end())
+	if (!UIOPTION.isSoloRankMode() || rankMap.find((UINT32)DAMAGEMETER.GetWorldID()) == rankMap.end() || packet->_state != 1)
 		return;
 
 	switch (packet->_stateID)
