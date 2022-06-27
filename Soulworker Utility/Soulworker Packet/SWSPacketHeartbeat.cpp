@@ -3,13 +3,18 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\UI\PlayerTable.h"
 
-SWSPacketHeartbeat::SWSPacketHeartbeat(SWSHEADER* swheader, BYTE* data) {
+SWSPacketHeartbeat::SWSPacketHeartbeat(SWSHEADER* swheader, BYTE* data, UINT64 ts) {
 	_swheader = swheader;
 	_data = data;
+	_ts = ts;
 }
 
 VOID SWSPacketHeartbeat::Do() {
-	PLAYERTABLE._lastSendTimestamp = GetCurrentTimeStamp();
+	_SWSPACKET_HEARTBEAT* hbData = (_SWSPACKET_HEARTBEAT*)(_data + sizeof(SWSHEADER));
+
+	PLAYERTABLE._lastSendTimestamp = _ts;
+	PLAYERTABLE._tick = hbData->_tick;
+
 	return;
 }
 

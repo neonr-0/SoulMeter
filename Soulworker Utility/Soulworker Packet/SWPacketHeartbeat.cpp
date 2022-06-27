@@ -2,12 +2,16 @@
 #include ".\Soulworker Packet\SWPacketHeartbeat.h"
 #include ".\UI\PlayerTable.h"
 
-SWPacketHeartbeat::SWPacketHeartbeat(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
-
+SWPacketHeartbeat::SWPacketHeartbeat(SWHEADER* swheader, BYTE* data, UINT64 ts) : SWPacket(swheader, data), _ts(ts) {
 }
 
 VOID SWPacketHeartbeat::Do() {
-	PLAYERTABLE._ping = GetCurrentTimeStamp() - PLAYERTABLE._lastSendTimestamp;
+	
+	SWPACKETHEARTBEAT* hbData = (SWPACKETHEARTBEAT*)(_data + sizeof(SWHEADER));
+	if (PLAYERTABLE._tick == hbData->_tick) {
+		PLAYERTABLE._ping = _ts - PLAYERTABLE._lastSendTimestamp;
+	}
+
 }
 
 VOID SWPacketHeartbeat::Log() {

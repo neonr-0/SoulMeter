@@ -66,8 +66,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		switch (_byteswap_ushort(swheader->_op)) {
 			/* 0x01*/
 		case RecvOPcode::HEARTBEAT: 
-			//swpacket = new SWPacketHeartbeat(swheader, data);
-			PLAYERTABLE._ping = packet->_ts - PLAYERTABLE._lastSendTimestamp;
+			swpacket = new SWPacketHeartbeat(swheader, data, packet->_ts);
 			break;
 
 			/*0x03*/

@@ -56,8 +56,7 @@ VOID SWSPacketMaker::CreateSWSPacket(IPv4Packet* packet) {
 	{
 		switch ((SendOPCode)_byteswap_ushort(swheader->_op)) {
 		case SendOPCode::HEARTBEAT:
-			//swpacket = new SWSPacketHeartbeat(swheader, data);
-			PLAYERTABLE._lastSendTimestamp = packet->_ts;
+			swpacket = new SWSPacketHeartbeat(swheader, data, packet->_ts);
 			break;
 		//case 0x0501:
 		//	break;

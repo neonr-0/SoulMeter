@@ -15,14 +15,13 @@ typedef struct _SWSPACKET_HEARTBEAT {
 
 class SWSPacketHeartbeat : public SWSPacket {
 protected:
-	SWSHEADER* _swheader;
-	BYTE* _data;
+	UINT64 _ts;
 
 	SWSPacketHeartbeat() {}
 	SWSPacketHeartbeat(SWSPacket& other) {}
 
 public:
-	SWSPacketHeartbeat(SWSHEADER* swheader, BYTE* data);
+	SWSPacketHeartbeat(SWSHEADER* swheader, BYTE* data, UINT64 ts);
 	virtual ~SWSPacketHeartbeat() {}
 
 	virtual VOID Debug();
