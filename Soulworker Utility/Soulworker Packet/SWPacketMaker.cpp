@@ -53,6 +53,13 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 
 	Decrypt(data, swheader->_size, sizeof(SWHEADER) - 3, swheader->key);
 
+#if DEBUG_RECV_DISPLAY_ALL_PKT == 1
+	Log::WriteLogA("OP : %04x\tsize : %04x", swheader->_op, swheader->_size);
+	for (int i = 0; i < swheader->_size; i++)
+		Log::WriteLogNoDate(L"%02x ", data[i]);
+	Log::WriteLogNoDate(L"\n\n");
+#endif
+
 	SWPacket* swpacket = nullptr;
 	DAMAGEMETER.GetLock();
 	{

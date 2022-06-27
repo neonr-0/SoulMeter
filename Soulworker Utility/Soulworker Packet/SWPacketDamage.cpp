@@ -82,7 +82,7 @@ VOID SWPacketDamage::Do() {
 			DAMAGEMETER.AddDamage(player->_playerID, monster->_totalDMG, monster->_soulstoneDMG, (SWPACKETDAMAGE_DAMAGETYPE)(monster->_damageType),
 				player->_maxCombo, monster->_monsterID, player->_skillID);
 
-			if (monster->_remainHP <= 0 && (!UIOPTION.isSoloRankMode() || rankMap.find((UINT32)DAMAGEMETER.GetWorldID()) == rankMap.end())) {
+			if (monster->_remainHP <= 0 && (!UIOPTION.isSoloRankMode() || rankMap.find(DAMAGEMETER.GetWorldID()) == rankMap.end())) {
 				BOOL isEndId = false;
 				if (endIdList.find(db2) != endIdList.end() || db->_type == 4)
 					isEndId = true;

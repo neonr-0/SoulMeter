@@ -177,11 +177,26 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLe
 	packet->_tcpHeader->seq_number = _byteswap_ulong(packet->_tcpHeader->seq_number);
 	packet->_tcpHeader->src_port = _byteswap_ushort(packet->_tcpHeader->src_port);
 	packet->_tcpHeader->dest_port = _byteswap_ushort(packet->_tcpHeader->dest_port);
+	packet->_isRecv = (packet->_tcpHeader->src_port == 10200);
 
-	packet->_datalength = capLen - (14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 	packet->_data = (pkt + 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 
-	packet->_isRecv = (packet->_tcpHeader->src_port == 10200);
+	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
+	// 0 = padding
+	BOOL isDataPacket = (packet->_isRecv && capLen > 60) || (!packet->_isRecv && capLen > 54);
+	if (isDataPacket || *packet->_data != 0x0)
+	{
+		packet->_datalength = capLen - (14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+		// Find padding length
+		if (!isDataPacket) {
+			UCHAR* pos = (UCHAR*)memchr(packet->_data, 0, packet->_datalength);
+			if (pos != NULL)
+				packet->_datalength = pos - packet->_data;
+		}
+	}
+	else {
+		packet->_datalength = 0;
+	}
 
 	packet->_ts = GetCurrentTimeStamp();
 

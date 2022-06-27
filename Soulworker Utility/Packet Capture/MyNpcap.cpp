@@ -194,8 +194,7 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	PacketInfo* pi = new PacketInfo;
 	pi->_packet = packet;
 
-	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
-	if (packet->_datalength > 0 && packet->_tcpHeader->ack && ((packet->_isRecv && header->caplen > 60) || (!packet->_isRecv && header->caplen > 54)))
+	if (packet->_datalength > 0 && packet->_tcpHeader->ack)
 	{
 		pQueueMutex->lock();
 		if (packet->_isRecv)

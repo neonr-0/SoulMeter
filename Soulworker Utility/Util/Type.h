@@ -136,6 +136,7 @@ typedef struct _IPV4PACKET {
 	SIZE_T _datalength;
 	BOOL _isRecv;
 	UINT64 _ts;
+	BOOL _bypassLenCheck;
 }IPv4Packet;
 
 #pragma pack(pop)

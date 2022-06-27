@@ -2,7 +2,7 @@
 #include "pch.h"
 #include <unordered_set>
 
-static unordered_set<UINT32> rankMap({
+static unordered_set<USHORT> rankMap({
 
 	/* AL */
 	21073,
