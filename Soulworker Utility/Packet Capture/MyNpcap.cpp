@@ -197,10 +197,7 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	if (packet->_datalength > 0 && packet->_tcpHeader->ack)
 	{
 		pQueueMutex->lock();
-		if (packet->_isRecv)
-			PACKETCAPTURE.GetRecvQueue()->emplace(packet->_tcpHeader->seq_number, pi);
-		else
-			PACKETCAPTURE.GetSendQueue()->emplace(packet->_tcpHeader->seq_number, pi);
+		PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
 		pQueueMutex->unlock();
 	}
 	else

@@ -91,14 +91,12 @@ public:
 			return "Windivert";
 	}
 
-	unordered_map<ULONG, PacketInfo*>* GetRecvQueue()
+	VOID InsertQueue(ULONG seq, PacketInfo* pi, BOOL isRecv)
 	{
-		return &_recvPacketQueue;
-	}
-
-	unordered_map<ULONG, PacketInfo*>* GetSendQueue()
-	{
-		return &_sendPacketQueue;
+		if (isRecv)
+			_recvPacketQueue[seq] = pi;
+		else
+			_sendPacketQueue[seq] = pi;
 	}
 
 	mutex* GetRecvQueueMutex()

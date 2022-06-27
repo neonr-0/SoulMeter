@@ -78,10 +78,7 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 			PacketInfo* pi = new PacketInfo;
 			pi->_packet = packet;
 
-			if (packet->_isRecv)
-				PACKETCAPTURE.GetRecvQueue()->emplace(packet->_tcpHeader->seq_number, pi);
-			else
-				PACKETCAPTURE.GetSendQueue()->emplace(packet->_tcpHeader->seq_number, pi);
+			PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
 		}
 
 	} while (false);
