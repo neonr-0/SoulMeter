@@ -192,8 +192,6 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLe
 			UCHAR* pos = (UCHAR*)memchr(packet->_data, 0, packet->_datalength);
 			if (pos != NULL)
 				packet->_datalength = pos - packet->_data;
-			else
-				packet->_datalength = 0;
 		}
 	}
 	else {
