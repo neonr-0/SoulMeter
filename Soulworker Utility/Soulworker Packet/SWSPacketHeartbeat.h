@@ -15,7 +15,7 @@ typedef struct _SWSPACKET_HEARTBEAT {
 
 class SWSPacketHeartbeat : public SWSPacket {
 protected:
-	UINT64 _ts;
+	INT64 _ts;
 
 	SWSPacketHeartbeat() {}
 	SWSPacketHeartbeat(SWSPacket& other) {}

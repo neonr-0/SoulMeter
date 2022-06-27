@@ -79,7 +79,7 @@ public:
 
 	BOOL Init();
 	static VOID ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt);
-	static VOID ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLen);
+	static VOID ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr* pkthdr);
 
 	static VOID ClearPacketInfo(PacketInfo* pi);
 

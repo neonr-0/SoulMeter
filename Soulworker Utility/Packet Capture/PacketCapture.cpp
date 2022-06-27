@@ -166,7 +166,7 @@ VOID PacketCapture::ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt)
 	packet->_pkt = pkt;
 }
 
-VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLen)
+VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr* pkthdr)
 {
 	packet->_ethernetHeader = (ETHERNETHEADER*)pkt;
 
@@ -182,11 +182,11 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLe
 	packet->_data = (pkt + 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 
 	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
-	// 0 = padding
-	BOOL isDataPacket = (packet->_isRecv && capLen > 60) || (!packet->_isRecv && capLen > 54);
-	if (isDataPacket || *packet->_data != 0x0)
+	// 0 = padding(only Recv)
+	BOOL isDataPacket = (packet->_isRecv && pkthdr->caplen > 60) || (!packet->_isRecv && pkthdr->caplen > 54);
+	if (isDataPacket || (packet->_isRecv && *packet->_data != 0x0))
 	{
-		packet->_datalength = capLen - (14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+		packet->_datalength = pkthdr->caplen - (14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 		// Find padding length
 		if (!isDataPacket) {
 			UCHAR* pos = (UCHAR*)memchr(packet->_data, 0, packet->_datalength);
@@ -198,7 +198,14 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, UINT32 capLe
 		packet->_datalength = 0;
 	}
 
-	packet->_ts = GetCurrentTimeStamp();
+	CHAR tmp[128] = { 0 };
+
+	auto old_uses = std::to_string(pkthdr->ts.tv_usec);
+	// padding zero
+	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
+
+	sprintf_s(tmp, "%d%s", pkthdr->ts.tv_sec, new_usec.c_str());
+	packet->_ts = atoll(tmp) / 1000;
 
 	packet->_pkt = pkt;
 }

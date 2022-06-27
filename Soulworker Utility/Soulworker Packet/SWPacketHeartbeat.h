@@ -14,7 +14,7 @@ class SWPacketHeartbeat : public SWPacket {
 protected:
 	SWPacketHeartbeat() {}
 
-	UINT64 _ts;
+	INT64 _ts;
 
 public:
 	SWPacketHeartbeat(SWHEADER* swheader, BYTE* data, UINT64 ts);

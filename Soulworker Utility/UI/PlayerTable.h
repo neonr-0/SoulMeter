@@ -48,12 +48,15 @@ public:
 	VOID ClearTable();
 	VOID ResizeTalbe();
 
-	ULONG64 _lastSendTimestamp = 0;
-	ULONG64 _ping = 0;
+	LONG64 _lastSendTimestamp = 0;
+	LONG64 _ping = 0;
 	UINT32 _tick = 0;
+	BOOL _isNewestVersion = TRUE;
 
 	FLOAT GetTableTime()
 	{
 		return _tableTime;
 	}
+
+	VOID CheckUpdate();
 };

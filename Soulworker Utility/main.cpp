@@ -3,6 +3,7 @@
 #include ".\Damage Meter/Damage Meter.h"
 #include ".\UI\UiWindow.h"
 #include ".\Damage Meter\MySQLite.h"
+#include ".\UI\PlayerTable.h"
 
 #if defined(DEBUG) || defined(_DEBUG)
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console" )
@@ -26,6 +27,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		_wsetlocale(LC_ALL, L"en-US.UTF8");
 		LANGMANAGER.SetCurrentLang(EN_US);
 		break;
+	}
+
+	PLAYERTABLE.CheckUpdate();
+
+	if (SWCRYPT.LoadSWCrypt()) {
+		Log::WriteLog(const_cast<LPTSTR>(_T("Load SWCrypt.dll Failed")));
+		exit(-1);
 	}
 
 	if (!SWDB.Init()) {

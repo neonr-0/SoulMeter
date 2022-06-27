@@ -6,6 +6,7 @@
 # Decrypt
 SWCrypt.cpp
 SWCrypt.h
+SWCrypt.dll
 
 # Backup Files
 *.bak

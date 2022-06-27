@@ -153,7 +153,7 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	sprintf_s(tmp, "%d%d", header->ts.tv_sec, header->ts.tv_usec);
 
 	IPv4Packet* packet = new IPv4Packet;
-	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, header->caplen);
+	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, (pcap_pkthdr*)header);
 
 #if _DEBUG
 	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);

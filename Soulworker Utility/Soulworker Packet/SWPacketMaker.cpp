@@ -1,7 +1,6 @@
 #include "pch.h"
 #include ".\Soulworker Packet\PacketType.h"
 #include ".\Soulworker Packet\SWPacketMaker.h"
-#include ".\Soulworker Packet\SWCrypt.h"
 #include ".\Packet Capture\PacketParser.h"
 #include ".\UI\PlayerTable.h"
 
@@ -38,8 +37,7 @@ VOID SWPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, const
 		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 0xF)];
 	}
 #else
-	SWCrypt crypt;
-	crypt.DecryptPacket(data + start, size - start, keyIndex);
+	SWCRYPT.SWDecrypt(data + start, size - start, keyIndex);
 #endif
 }
 

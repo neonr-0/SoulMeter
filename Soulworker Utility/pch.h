@@ -1,7 +1,12 @@
 #pragma once
 
+#ifndef PCH_H
+#define PCH_H
+
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
+
+#define APP_VERSION "1.3.1.1"
 
 #include <Windows.h>
 
@@ -54,3 +59,21 @@
 #include ".\Util\MultiThreadSync.h"
 #include ".\Util\MemoryPool.h"
 #include ".\Language\Language.h"
+
+// SWCrypt
+#include ".\SWCrypt\SWCryptDLL.h"
+
+// Openssl
+#if _DEBUG
+#pragma comment(lib, "libcrypto64MTd.lib")
+#pragma comment(lib, "libssl64MTd.lib")
+#else
+#pragma comment(lib, "libcrypto64MT.lib")
+#pragma comment(lib, "libssl64MT.lib")
+#endif
+
+// Http
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include ".\Third Party\http\httplib.h"
+
+#endif

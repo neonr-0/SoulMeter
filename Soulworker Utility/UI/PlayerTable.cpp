@@ -86,13 +86,15 @@ VOID PlayerTable::Update() {
 		if (!UIOPTION.isOption())
 			windowFlag = windowFlag | ImGuiWindowFlags_NoResize;
 
-		CHAR title[256] = { 0 };
+		CHAR title[512] = { 0 };
 
-		sprintf_s(title, 256, "%s - %02d:%02d.%01d [v1.3.1.0_@ga0321(%s)] Ping: %lldms  ###DamageMeter", 
+		sprintf_s(title, 512, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] Ping: %lldms %s ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
+			APP_VERSION,
 			PACKETCAPTURE.GetType(),
-			_ping
+			_ping,
+			!_isNewestVersion ? LANGMANAGER.GetText(TEXT_ENUM_LIST::STR_MENU_OUT_OF_DATE) : ""
 		);
 
 		ImGui::Begin(title, 0, windowFlag);
@@ -934,5 +936,19 @@ VOID PlayerTable::ShowSelectedTable() {
 		if ((*itr)->_isSelected == TRUE) {
 			(*itr)->_specificInfo->Update(&(*itr)->_isSelected, itr - _selectInfo.begin());
 		}
+	}
+}
+
+VOID PlayerTable::CheckUpdate()
+{
+	httplib::Client cli("https://raw.githubusercontent.com");
+
+	auto res = cli.Get("/ga0321/SoulMeter/master/VERSION");
+	
+	if (res->status == 200) {
+		_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
+	}
+	else {
+		Log::WriteLogA("[CheckUpdate] Can't get version from remote");
 	}
 }

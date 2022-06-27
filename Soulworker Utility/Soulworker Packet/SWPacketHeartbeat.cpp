@@ -8,10 +8,10 @@ SWPacketHeartbeat::SWPacketHeartbeat(SWHEADER* swheader, BYTE* data, UINT64 ts) 
 VOID SWPacketHeartbeat::Do() {
 	
 	SWPACKETHEARTBEAT* hbData = (SWPACKETHEARTBEAT*)(_data + sizeof(SWHEADER));
+
 	if (PLAYERTABLE._tick == hbData->_tick) {
 		PLAYERTABLE._ping = _ts - PLAYERTABLE._lastSendTimestamp;
 	}
-
 }
 
 VOID SWPacketHeartbeat::Log() {
