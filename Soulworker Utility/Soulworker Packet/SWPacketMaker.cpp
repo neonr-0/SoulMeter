@@ -3,6 +3,7 @@
 #include ".\Soulworker Packet\SWPacketMaker.h"
 #include ".\Packet Capture\PacketParser.h"
 #include ".\UI\PlayerTable.h"
+#include ".\SWCrypt\SWCryptDLL.h"
 
 SWHEADER* SWPacketMaker::GetSWHeader(IPv4Packet* packet) {
 

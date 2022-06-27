@@ -7,7 +7,7 @@
 
 DWORD MyNpcap::LoadNpcapDlls() {
 
-	DWORD error = ERROR_NOT_FOUND;
+	DWORD error = ERROR_SUCCESS;
 
 	do {
 		TCHAR npcap_dir[MAX_PATH + 3];
@@ -29,25 +29,21 @@ DWORD MyNpcap::LoadNpcapDlls() {
 			break;
 		}
 
-		_tcscat_s(npcap_dir, MAX_PATH + 3, L"\\*");
-
-		WIN32_FIND_DATA ffd;
-		HANDLE hFind = FindFirstFile(npcap_dir, &ffd);
-
-		if (INVALID_HANDLE_VALUE == hFind)
-		{
-			error = ERROR_NOT_FOUND;
+		HINSTANCE hDLL = LoadLibrary(L"wpcap.dll");
+		if (hDLL == NULL) {
+			Log::WriteLog(const_cast<LPTSTR>(_T("LoadLibrary wpcap.dll failed. %x")), GetLastError());
+			error = ERROR_API_UNAVAILABLE;
+			break;
+		}
+		
+		void* pWpcap = GetProcAddress(hDLL, "pcap_compile");
+		if (pWpcap == NULL) {
+			Log::WriteLog(const_cast<LPTSTR>(_T("GetProcAddress wpcap.dll failed. %x")), GetLastError());
+			error = ERROR_API_UNAVAILABLE;
 			break;
 		}
 
-		do
-		{
-			if (wcscmp(ffd.cFileName, L"wpcap.dll") == 0) {
-				error = ERROR_SUCCESS;
-				break;
-			}
-
-		} while (FindNextFile(hFind, &ffd) != 0);
+		FreeLibrary(hDLL);
 
 	} while (false);
 

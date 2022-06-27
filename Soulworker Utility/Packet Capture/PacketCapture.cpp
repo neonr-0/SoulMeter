@@ -8,10 +8,13 @@
 BOOL PacketCapture::Init() {
 
 	BOOL error = FALSE;
+	DWORD errorCode = 0;
 
 	_useType = CaptureType::_NPCAP;
-	if (NPCAP.Init())
+	if ((errorCode = NPCAP.Init())) {
+		//Log::WriteLog(const_cast<LPTSTR>(_T("Error in Init %d")), errorCode);
 		error = TRUE;
+	}
 
 	if (error) {
 		_useType = CaptureType::_WINDIVERT;

@@ -33,13 +33,15 @@ public:
 
             if (hDLL == NULL) {
                 error = ERROR_NOT_FOUND;
+                Log::WriteLogA("[LoadSWCrypt] LoadLibrary Failed %d", GetLastError());
                 break;
             }
             else {
                 pSWCreateCrypt = (CREATE_SWCRYPT)GetProcAddress(hDLL, "CreateSWCrypt");
                 if (pSWCreateCrypt == NULL)
                 {
-                    error = ERROR_NOT_FOUND;
+                    error = ERROR_FAILED_DRIVER_ENTRY;
+                    Log::WriteLogA("[LoadSWCrypt] GetProcAddress Failed %d", GetLastError());
                     break;
                 }
             }

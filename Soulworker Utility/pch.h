@@ -60,9 +60,6 @@
 #include ".\Util\MemoryPool.h"
 #include ".\Language\Language.h"
 
-// SWCrypt
-#include ".\SWCrypt\SWCryptDLL.h"
-
 // Openssl
 #if _DEBUG
 #pragma comment(lib, "libcrypto64MTd.lib")
