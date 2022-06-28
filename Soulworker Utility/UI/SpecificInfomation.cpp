@@ -59,7 +59,10 @@ VOID SpecificInformation::Update(BOOL* open, INT64 index) {
 
 VOID SpecificInformation::UpdateSkillInfo() {
 	
-	if(ImGui::BeginTabItem(LANGMANAGER.GetText(STR_SPECIFICINFO_SKILL)))
+	CHAR label[128] = { 0 };
+	sprintf_s(label, "%s###DetailSkill", LANGMANAGER.GetText(STR_SPECIFICINFO_SKILL));
+
+	if(ImGui::BeginTabItem(label))
 	{
 		UpdateMonsterCombo();
 		
@@ -77,7 +80,9 @@ VOID SpecificInformation::UpdateSkillInfo() {
 
 VOID SpecificInformation::UpdateSkillTotalInfo() {
 
-	if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_SPECIFICINFO_TOTAL)))
+	CHAR label[128] = { 0 };
+	sprintf_s(label, "%s###DetailSkill", LANGMANAGER.GetText(STR_SPECIFICINFO_TOTAL));
+	if (ImGui::BeginTabItem(label))
 	{
 		ImGui::OutlineText::PushOutlineText(ImGui::IMGUIOUTLINETEXT(UIOPTION.GetOutlineColor(), 1));
 		ImGui::TextAlignCenter::SetTextAlignCenter();
@@ -157,7 +162,10 @@ VOID SpecificInformation::UpdateMonsterCombo() {
 		comboPreview = (*monster)->GetName();
 	}
 
-	if(ImGui::BeginCombo(LANGMANAGER.GetText(STR_SPECIFICINFO_MONSTER), comboPreview, ImGuiComboFlags_HeightLarge)) {
+
+	CHAR label[128] = { 0 };
+	sprintf_s(label, "%s###DetailMonster", LANGMANAGER.GetText(STR_SPECIFICINFO_MONSTER));
+	if(ImGui::BeginCombo(label, comboPreview, ImGuiComboFlags_HeightLarge)) {
 	
 		for (auto itr = (*player)->begin(); itr != (*player)->end(); itr++) {
 			
@@ -311,7 +319,9 @@ VOID SpecificInformation::UpdateBuffMeter() {
 
 	BUFFMETER.GetLock();
 	{
-		if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_SPECIFICINFO_BUFF_AND_DEBUFF)))
+		CHAR label[128] = { 0 };
+		sprintf_s(label, "%s###DetailBuffDeBuff", LANGMANAGER.GetText(STR_SPECIFICINFO_BUFF_AND_DEBUFF));
+		if (ImGui::BeginTabItem(label))
 		{
 			ImGui::OutlineText::PushOutlineText(ImGui::IMGUIOUTLINETEXT(UIOPTION.GetOutlineColor(), 1));
 			ImGui::TextAlignCenter::SetTextAlignCenter();

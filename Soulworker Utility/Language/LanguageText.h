@@ -251,11 +251,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Graph###MeowGraph"
+				u8"Graph"
 			},
 			{
 				ZH_TW,
-				u8"圖表###MeowGraph"
+				u8"圖表"
 			}
 		}
 	},
@@ -866,11 +866,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Option###Option"
+				u8"Option"
 			},
 			{
 				ZH_TW,
-				u8"設定###Option"
+				u8"設定"
 			}
 		}
 	},
@@ -1191,11 +1191,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Table###TabTable"
+				u8"Table"
 			},
 			{
 				ZH_TW,
-				u8"表單###TabTable"
+				u8"表單"
 			}
 		}
 	},
@@ -1204,11 +1204,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Hotkey###TabHotKey"
+				u8"Hotkey"
 			},
 			{
 				ZH_TW,
-				u8"熱鍵###TabHotKey"
+				u8"熱鍵"
 			}
 		}
 	},
@@ -1509,11 +1509,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Details###DetailDetails"
+				u8"Details"
 			},
 			{
 				ZH_TW,
-				u8"詳細資料###DetailDetails"
+				u8"詳細資料"
 			}
 		}
 	},
@@ -1522,11 +1522,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Skill###DetailSkill"
+				u8"Skill"
 			},
 			{
 				ZH_TW,
-				u8"技能###DetailSkill"
+				u8"技能"
 			}
 		}
 	},
@@ -1535,11 +1535,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Monster###DetailMonster"
+				u8"Monster"
 			},
 			{
 				ZH_TW,
-				u8"怪物###DetailMonster"
+				u8"怪物"
 			}
 		}
 	},
@@ -1548,11 +1548,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Buff/Debuff###DetailBuffDeBuff"
+				u8"Buff/Debuff"
 			},
 			{
 				ZH_TW,
-				u8"增益/減益狀態###DetailBuffDeBuff"
+				u8"增益/減益狀態"
 			}
 		}
 	},
@@ -1561,11 +1561,11 @@ const TEXT_LIST _allTextList[] = {
 		{
 			{
 				EN_US,
-				u8"Total Skill###SpecificinfoTotal"
+				u8"Total Skill"
 			},
 			{
 				ZH_TW,
-				u8"技能統計###SpecificinfoTotal"
+				u8"技能統計"
 			}
 		}
 	},

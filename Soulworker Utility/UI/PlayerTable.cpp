@@ -942,14 +942,35 @@ VOID PlayerTable::ShowSelectedTable() {
 
 VOID PlayerTable::CheckUpdate()
 {
-	httplib::Client cli("https://raw.githubusercontent.com");
 
-	auto res = cli.Get("/ga0321/SoulMeter/master/VERSION");
-	
-	if (res->status == 200) {
-		_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
-	}
-	else {
+	DWORD error = ERROR_SUCCESS;
+
+	do
+	{
+
+		for (BYTE i = 0; i < 2; i++) 
+		{
+
+			CHAR url[128] = { 0 };
+
+			// raw Github CDN for china
+			sprintf_s(url, "https://raw.githubusercontent%s.com", i == 1 ? "s" : "");
+
+			httplib::Client cli(url);
+
+			auto res = cli.Get("/ga0321/SoulMeter/master/VERSION");
+
+			if (res != nullptr && res.error() == httplib::Error::Success && res->status == 200) {
+				_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
+			}
+			else {
+				error = ERROR_NOT_FOUND;
+			}
+		}
+
+	} while (false);
+
+	if (error != ERROR_SUCCESS)
 		Log::WriteLogA("[CheckUpdate] Can't get version from remote");
-	}
+
 }

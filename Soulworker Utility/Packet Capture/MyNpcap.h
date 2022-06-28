@@ -9,7 +9,7 @@ using namespace std;
 #define NPCAP_FILTER_RULE "ip and (src port 10200 or dst port 10200)"
 
 #if _DEBUG
-#define DEBUG_NPCAP_SORT 1
+#define DEBUG_NPCAP_SORT 0
 #endif
 
 class MyNpcap : public Singleton<MyNpcap> {

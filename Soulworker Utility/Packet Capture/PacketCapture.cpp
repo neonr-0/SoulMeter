@@ -182,10 +182,13 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr*
 	packet->_tcpHeader->dest_port = _byteswap_ushort(packet->_tcpHeader->dest_port);
 	packet->_isRecv = (packet->_tcpHeader->src_port == 10200);
 
-	packet->_data = (pkt + 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
+	USHORT packetHeaderLen = 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4;
+
+	packet->_data = (pkt + packetHeaderLen);
 
 	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
-	if ((packet->_isRecv && pkthdr->caplen > 60) || (!packet->_isRecv && pkthdr->caplen > 54))
+	// 14 eth + 20 ip + 20 tcp = 54
+	if (pkthdr->caplen > packetHeaderLen)
 	{
 		packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 	}

@@ -149,7 +149,10 @@ VOID PlotWindow::Update()
 {
 	if (_isOpen) {
 
-		ImGui::Begin(LANGMANAGER.GetText(STR_MENU_MEOW), &_isOpen, ImGuiWindowFlags_None);
+		CHAR label[128] = { 0 };
+		sprintf_s(label, "%s###MeowGraph", LANGMANAGER.GetText(STR_MENU_MEOW));
+
+		ImGui::Begin(label, &_isOpen, ImGuiWindowFlags_None);
 
 		if (ImGui::BeginTabBar(u8"PlotWindowTab"))
 		{

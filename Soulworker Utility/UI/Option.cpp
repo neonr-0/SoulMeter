@@ -221,7 +221,10 @@ VOID UiOption::OpenOption() {
 		PLAYERTABLE.ResizeTalbe();
 	}
 
-	ImGui::Begin(LANGMANAGER.GetText(STR_OPTION_WINDOWS_NAME), 0, ImGuiWindowFlags_None);
+	CHAR label[128] = { 0 };
+	sprintf_s(label, "%s###Option", LANGMANAGER.GetText(STR_OPTION_WINDOWS_NAME));
+
+	ImGui::Begin(label, 0, ImGuiWindowFlags_None);
 
 		if (ImGui::Button(LANGMANAGER.GetText(STR_OPTION_ADD_TEST_VALUE))) {
 			Helper();
@@ -253,14 +256,17 @@ VOID UiOption::OpenOption() {
 		ImGui::PopItemWidth();
 
 		if (ImGui::BeginTabBar("##tabs")) {
-			if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_OPTION_TAB_TABLE_SETTING))) {
+			CHAR label[128] = {0};
+			sprintf_s(label, "%s###TabTable", LANGMANAGER.GetText(STR_OPTION_TAB_TABLE_SETTING));
+			if (ImGui::BeginTabItem(label)) {
 				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
 				ShowTableOption();
 				ImGui::PopItemWidth();
 				ImGui::EndTabItem();
 			}
 
-			if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_OPTION_TAB_HOTKEY_SETTING))) {
+			sprintf_s(label, "%s###TabHotKey", LANGMANAGER.GetText(STR_OPTION_TAB_HOTKEY_SETTING));
+			if (ImGui::BeginTabItem(label)) {
 				ShowHotkeySetting();
 				ImGui::EndTabItem();
 			}
