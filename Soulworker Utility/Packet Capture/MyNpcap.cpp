@@ -152,7 +152,7 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, (pcap_pkthdr*)header);
 
 #if _DEBUG
-	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
+	//Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
 #endif
 
 	mutex* pMutex = nullptr;

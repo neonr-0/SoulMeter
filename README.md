@@ -3,16 +3,16 @@
 
 快捷鍵 CTRL + DEL : 清除資料
 
-本程式運行方式為通過第三方軟體擷取網路卡中的遊戲封包，並透過SWCrypt.dll進行封包解密後分析資料
+本程式運作方式為通過第三方軟體擷取網路卡中的遊戲封包，並透過SWCrypt.dll進行封包解密後分析資料
 
 目前支援的擷取封包第三方軟體: *Npcap(推薦)、WinDivert(預設)
 
-*Npcap: 下載Npcap installer並安裝Npcap後自動啟用(https://npcap.com/#download)
+*Npcap: 下載Npcap installer並安裝Npcap後自動啟用([https://npcap.com/#download](https://npcap.com/#download))
 
 
 注意事項
 ---------------------
-使用本程式前需於進入副本前開啟，使用本程式造成之後果請自行負責
+使用本程式前需於進入副本前開啟，使用本程式造成之風險請自行負責
 
 請盡量不要於遊戲內談論關於此程式的事情
 
@@ -31,7 +31,7 @@ This software is used third party software to capture network packet and use SWC
 
 Supported capture software: *Npcap(Recommend), WinDivert
 
-*Npcap: Download Npcap installer and install will be enable(https://npcap.com/#download)
+*Npcap: Download Npcap installer and install will be enable([https://npcap.com/#download](https://npcap.com/#download))
 
 Notice
 ---------------------
