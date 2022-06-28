@@ -27,6 +27,7 @@ enum TEXT_ENUM_LIST
 	STR_MENU_FIT_ALL_COLUMN,
 	STR_MENU_RESET_ORDER,
 	STR_MENU_OUT_OF_DATE,
+	STR_MENU_PING,
 
 	/* TABLE */
 	STR_TABLE_YOU,
@@ -320,6 +321,19 @@ const TEXT_LIST _allTextList[] = {
 			{
 				ZH_TW,
 				u8"(有新版本!)"
+			}
+		}
+	},
+	{
+		STR_MENU_PING,
+		{
+			{
+				EN_US,
+				u8"Ping"
+			},
+			{
+				ZH_TW,
+				u8"延遲"
 			}
 		}
 	},

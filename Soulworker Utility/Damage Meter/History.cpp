@@ -2,10 +2,8 @@
 #include ".\Damage Meter\History.h"
 #include ".\Damage Meter\Damage Meter.h"
 
-VOID _HISTORYINFO::Setup(vector<SWDamagePlayer*>& history, vector<PLAYERBUF*>& buffHistory, PlotInfo* plotHistory, UINT32 worldID, ULONG64 time) {
-	_history = history;
-	_buffHistory = buffHistory;
-	_plotHistory = plotHistory;
+VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time) {
+	_historyData = historyData;
 	_worldID = worldID;
 	_time = time;
 	GetLocalTime(&_saveTime);
@@ -13,16 +11,30 @@ VOID _HISTORYINFO::Setup(vector<SWDamagePlayer*>& history, vector<PLAYERBUF*>& b
 
 VOID _HISTORYINFO::Clear(){
 	
-	for (auto itr = _history.begin(); itr != _history.end(); itr++)
+	if (_historyData == nullptr)
+		return;
+
+	for (auto itr = _historyData->_playerHistory.begin(); itr != _historyData->_playerHistory.end(); itr++)
 		delete (*itr);
 
-	for (auto itr = _buffHistory.begin(); itr != _buffHistory.end(); itr++)
+	for (auto itr = _historyData->_ownerHistory.begin(); itr != _historyData->_ownerHistory.end(); itr++)
 		delete (*itr);
 
-	_history.clear();
-	_buffHistory.clear();
-	delete _plotHistory;
-	_plotHistory = nullptr;
+	for (auto itr = _historyData->_dbHistory.begin(); itr != _historyData->_dbHistory.end(); itr++)
+		delete (*itr);
+
+	for (auto itr = _historyData->_buffHistory.begin(); itr != _historyData->_buffHistory.end(); itr++)
+		delete (*itr);
+
+	_historyData->_playerHistory.clear();
+	_historyData->_ownerHistory.clear();
+	_historyData->_dbHistory.clear();
+	_historyData->_buffHistory.clear();
+	delete _historyData->_plotHistory;
+
+	delete _historyData;
+	_historyData = nullptr;
+
 	_worldID = 0;
 	ZeroMemory(&_saveTime, sizeof(SYSTEMTIME));
 
@@ -39,10 +51,10 @@ VOID SWDamageMeterHistory::ClearHistory(INT index) {
 	_historys[index].Clear();
 }
 
-VOID SWDamageMeterHistory::push_back(vector<SWDamagePlayer*>& playerInfo, std::vector<PLAYERBUF*>& playerBuffInfo, PlotInfo* playerPlotInfo) {
+VOID SWDamageMeterHistory::push_back(HISTORY_DATA* historyData) {
 
 	ClearHistory(_curIndex % HISTORY_SIZE);
-	_historys[_curIndex++ % HISTORY_SIZE].Setup(playerInfo, playerBuffInfo, playerPlotInfo, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime());
+	_historys[_curIndex++ % HISTORY_SIZE].Setup(historyData, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime());
 }
 
 const HISTORY_INFO& SWDamageMeterHistory::operator[](INT index) {

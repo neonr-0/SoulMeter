@@ -577,4 +577,6 @@ public:
 	{
 		return _historyID;
 	}
+
+	VOID ClearInfo();
 };

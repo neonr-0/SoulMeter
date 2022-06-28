@@ -538,22 +538,27 @@ VOID SWDamageMeter::Clear() {
 
 	if (!_historyMode) {
 		if (_playerInfo.size() > 0) {
-			HISTORY.push_back(_playerInfo, BUFFMETER.GetPlayerInfo(), PLOTWINDOW.GetPlotInfo());
+
+			HISTORY_DATA* hd = new HISTORY_DATA;
+			hd->_playerHistory = _playerInfo;
+			hd->_ownerHistory = _ownerInfo;
+			hd->_dbHistory = _dbInfo;
+			hd->_buffHistory = BUFFMETER.GetPlayerInfo();
+			hd->_plotHistory = PLOTWINDOW.GetPlotInfo();
+
+			HISTORY.push_back(hd);
 			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 				itr->second->MeterReseted();
 			}
-			_playerInfo.clear();
 		}
 		_mazeEnd = FALSE;
+		ClearInfo();
 	}
 	else {
 		Restore();
 		_historyMode = FALSE;
 	}
 	_timer.Stop();
-	PLOTWINDOW.Clear();
-	BUFFMETER.Clear();
-	_aggroedId = 0;
 }
 
 VOID SWDamageMeter::Toggle() {
@@ -584,7 +589,19 @@ VOID SWDamageMeter::Restore() {
 	if (!_historyMode)
 		return;
 
+	ClearInfo();
+}
+
+VOID SWDamageMeter::ClearInfo()
+{
 	_playerInfo.clear();
+	_ownerInfo.clear();
+	_dbInfo.clear();
+
+	PLOTWINDOW.Clear();
+	BUFFMETER.Clear();
+	_aggroedId = 0;
+
 	_historyID = -1;
 }
 
@@ -595,12 +612,16 @@ VOID SWDamageMeter::SetHistory(INT index) {
 	}
 
 	auto history = HISTORY[index];
-	_playerInfo = history._history;
+
+	_playerInfo = history._historyData->_playerHistory;
+	_ownerInfo = history._historyData->_ownerHistory;
+	_dbInfo = history._historyData->_dbHistory;
+	BUFFMETER.SetPlayerInfo(history._historyData->_buffHistory);
+	PLOTWINDOW.SetPlotInfo(history._historyData->_plotHistory);
+
 	_historyWorldID = history._worldID;
 	_historyTime = history._time;
 	_historyID = index;
-	BUFFMETER.SetPlayerInfo(history._buffHistory);
-	PLOTWINDOW.SetPlotInfo(history._plotHistory);
 
 	_historyMode = TRUE;
 }

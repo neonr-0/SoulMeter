@@ -1,13 +1,21 @@
 靈魂行者Steam版本傷害計算器
 ---
 
-快捷鍵 CTRL + DEL : 清除資料
-
 本程式運作方式為通過第三方軟體擷取網路卡中的遊戲封包，並透過SWCrypt.dll進行封包解密後分析資料
 
 目前支援的擷取封包第三方軟體: *Npcap(推薦)、WinDivert(預設)
 
 *Npcap: 下載Npcap installer並安裝Npcap後自動啟用([https://npcap.com/#download](https://npcap.com/#download))
+
+
+
+操作方法
+---------------------
+
+快捷鍵 CTRL + DEL : 清除資料
+
+右鍵標題欄可查看更多功能
+
 
 
 注意事項
@@ -25,13 +33,22 @@
 Soulworker DPS Meter for Global Server
 ---
 
-CTRL + DEL : Reset
-
 This software is used third party software to capture network packet and use SWCrypt.dll to decrypt packet
 
 Supported capture software: *Npcap(Recommend), WinDivert
 
 *Npcap: Download Npcap installer and install will be enable([https://npcap.com/#download](https://npcap.com/#download))
+
+
+
+How to use
+---------------------
+
+CTRL + DEL : Reset
+
+Right click title bar can display more feature
+
+
 
 Notice
 ---------------------

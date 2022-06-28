@@ -88,11 +88,12 @@ VOID PlayerTable::Update() {
 
 		CHAR title[512] = { 0 };
 
-		sprintf_s(title, 512, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] Ping: %lldms %s ###DamageMeter", 
+		sprintf_s(title, 512, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] %s: %lldms %s ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			APP_VERSION,
 			PACKETCAPTURE.GetType(),
+			LANGMANAGER.GetText(TEXT_ENUM_LIST::STR_MENU_PING),
 			_ping,
 			!_isNewestVersion ? LANGMANAGER.GetText(TEXT_ENUM_LIST::STR_MENU_OUT_OF_DATE) : ""
 		);
