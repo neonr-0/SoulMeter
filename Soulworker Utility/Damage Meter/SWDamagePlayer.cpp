@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include ".\Damage Meter\SWDamageMonster.h"
 #include ".\Damage Meter\SWDamagePlayer.h"
 #include ".\Damage Meter\Damage Meter.h"
@@ -333,7 +333,8 @@ VOID SWDamagePlayer::AddGetDamage(UINT64 totalDMG, SWPACKETDAMAGE_DAMAGETYPE dam
 	_getHitAll++;
 	if (totalDMG > 0) {
 		_getHit++;
-		// 
+		// 검은 장판, 미니종복의 중복 (둘다 경직 없음)
+		// Tenebris black water and unk
 		if (skillID != 1313101016 && skillID != 1313101113) {
 			_getHitBS++;
 		}

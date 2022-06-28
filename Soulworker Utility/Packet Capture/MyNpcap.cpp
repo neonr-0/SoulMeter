@@ -31,7 +31,7 @@ DWORD MyNpcap::LoadNpcapDlls() {
 
 		HINSTANCE hDLL = LoadLibrary(L"wpcap.dll");
 		if (hDLL == NULL) {
-			Log::WriteLog(const_cast<LPTSTR>(_T("LoadLibrary wpcap.dll failed. %x")), GetLastError());
+			//Log::WriteLog(const_cast<LPTSTR>(_T("LoadLibrary wpcap.dll failed. %x")), GetLastError());
 			error = ERROR_API_UNAVAILABLE;
 			break;
 		}
