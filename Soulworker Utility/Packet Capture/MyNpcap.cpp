@@ -151,8 +151,11 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	IPv4Packet* packet = new IPv4Packet;
 	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, (pcap_pkthdr*)header);
 
-#if _DEBUG
+#if DEBUG_NPCAP_SORT == 1
 	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
+	for (SIZE_T i = 0; i < header->caplen; i++)
+		Log::WriteLogNoDate(L"%02X", pkt_data[i]);
+	Log::WriteLogNoDate(L"\n\n");
 #endif
 
 	recursive_mutex* pMutex = nullptr;
@@ -166,10 +169,16 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 
 	pMutex->lock();
 	if (packet->_tcpHeader->syn) {
+#if DEBUG_NPCAP_SORT == 1
+		Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, ClearQueue", packet->_tcpHeader->seq_number);
+#endif
 		PACKETCAPTURE.ClearQueue(packet->_isRecv);
 		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number + 1, packet->_isRecv);
 	}
 	else if (!PACKETCAPTURE.isInitRecv() || !PACKETCAPTURE.isInitSend()) {
+#if DEBUG_NPCAP_SORT == 1
+		Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, %s", packet->_tcpHeader->seq_number, packet->_isRecv ? "isInitRecv" : "isInitSend");
+#endif
 		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number, packet->_isRecv);
 	}
 

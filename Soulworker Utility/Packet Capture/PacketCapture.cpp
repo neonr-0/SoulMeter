@@ -185,17 +185,9 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr*
 	packet->_data = (pkt + 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 
 	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
-	// 0 = padding(only Recv)
-	BOOL isDataPacket = (packet->_isRecv && pkthdr->caplen > 60) || (!packet->_isRecv && pkthdr->caplen > 54);
-	if (isDataPacket || (packet->_isRecv && *packet->_data != 0x0))
+	if ((packet->_isRecv && pkthdr->caplen > 60) || (!packet->_isRecv && pkthdr->caplen > 54))
 	{
-		packet->_datalength = pkthdr->caplen - (14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
-		// Find padding length
-		if (!isDataPacket) {
-			UCHAR* pos = (UCHAR*)memchr(packet->_data, 0, packet->_datalength);
-			if (pos != NULL)
-				packet->_datalength = pos - packet->_data;
-		}
+		packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 	}
 	else {
 		packet->_datalength = 0;
