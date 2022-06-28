@@ -1,4 +1,5 @@
 靈魂行者Steam版本傷害計算器
+---
 
 快捷鍵 CTRL + DEL : 清除資料
 
@@ -6,7 +7,7 @@
 
 目前支援的擷取封包第三方軟體: *Npcap(推薦)、WinDivert(預設)
 
-*NPCap: 下載Npcap installer並安裝Npcap後自動啟用(https://npcap.com/#download)
+*Npcap: 下載Npcap installer並安裝Npcap後自動啟用(https://npcap.com/#download)
 
 
 注意事項
@@ -15,16 +16,18 @@
 
 請盡量不要於遊戲內談論關於此程式的事情
 
+問題回報及功能建議群組: https://discord.gg/3pvVXybhX8
 
 特別感謝 @Nyanchii
 
 
 ---
 Soulworker DPS Meter for Global Server
+---
 
 CTRL + DEL : Reset
 
-This software is use third party software to capture network packet and use SWCrypt.dll to decrypt packet
+This software is used third party software to capture network packet and use SWCrypt.dll to decrypt packet
 
 Supported capture software: *Npcap(Recommend), WinDivert
 
@@ -36,6 +39,8 @@ You need to run dps meter before entering maze
 
 Also, USE AT YOUR OWN RISK
 I recommend not to talk about dps meter at in-game public chat
+
+Issue and suggest: https://discord.gg/3pvVXybhX8
 
 Special thanks @Nyanchii
 
