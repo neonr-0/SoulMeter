@@ -12,7 +12,7 @@ using namespace std;
 #define DEBUG_CAPTURE_IP 0
 #define DEBUG_CAPTURE_TCP 0
 #define DEBUG_CAPTURE_DATA 0
-#define DEBUG_CAPTURE_SORT 0
+#define DEBUG_CAPTURE_SORT 1
 #endif
 
 struct PacketInfo
@@ -51,11 +51,9 @@ private:
 
 	CaptureType _useType;
 
-	mutex _recvMutex;
-	mutex _sendMutex;
+	recursive_mutex _recvMutex;
+	recursive_mutex _sendMutex;
 
-	mutex _recvQueueMutex;
-	mutex _sendQueueMutex;
 	BOOL _stopCapture;
 
 	BOOL _isInitRecv;
@@ -71,10 +69,6 @@ public:
 		_recvMutex.unlock();
 		_sendMutex.lock();
 		_sendMutex.unlock();
-		_recvQueueMutex.lock();
-		_recvQueueMutex.unlock();
-		_sendQueueMutex.lock();
-		_sendQueueMutex.unlock();
 	}
 
 	BOOL Init();
@@ -93,28 +87,24 @@ public:
 
 	VOID InsertQueue(ULONG seq, PacketInfo* pi, BOOL isRecv)
 	{
-		if (isRecv)
+		if (isRecv) {
+			_recvMutex.lock();
 			_recvPacketQueue[seq] = pi;
-		else
+			_recvMutex.unlock();
+		}
+		else {
+			_sendMutex.lock();
 			_sendPacketQueue[seq] = pi;
+			_sendMutex.unlock();
+		}
 	}
 
-	mutex* GetRecvQueueMutex()
-	{
-		return &_recvQueueMutex;
-	}
-
-	mutex* GetSendQueueMutex()
-	{
-		return &_sendQueueMutex;
-	}
-
-	mutex* GetRecvMutex()
+	recursive_mutex* GetRecvMutex()
 	{
 		return &_recvMutex;
 	}
 
-	mutex* GetSendMutex()
+	recursive_mutex* GetSendMutex()
 	{
 		return &_sendMutex;
 	}

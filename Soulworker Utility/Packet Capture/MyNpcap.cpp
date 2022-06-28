@@ -152,50 +152,34 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, (pcap_pkthdr*)header);
 
 #if _DEBUG
-	//Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
+	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
 #endif
 
-	mutex* pMutex = nullptr;
-	mutex* pQueueMutex = nullptr;
+	recursive_mutex* pMutex = nullptr;
 	ULONG* SEQ = nullptr;
 	if (packet->_isRecv) {
 		pMutex = PACKETCAPTURE.GetRecvMutex();
-		pQueueMutex = PACKETCAPTURE.GetRecvQueueMutex();
 	}
 	else {
 		pMutex = PACKETCAPTURE.GetSendMutex();
-		pQueueMutex = PACKETCAPTURE.GetSendQueueMutex();
 	}
 
+	pMutex->lock();
 	if (packet->_tcpHeader->syn) {
-		PACKETCAPTURE.SetPause(TRUE);
-		pMutex->lock();
-
 		PACKETCAPTURE.ClearQueue(packet->_isRecv);
 		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number + 1, packet->_isRecv);
-
-		pMutex->unlock();
-		PACKETCAPTURE.SetPause(FALSE);
 	}
 	else if (!PACKETCAPTURE.isInitRecv() || !PACKETCAPTURE.isInitSend()) {
-		PACKETCAPTURE.SetPause(TRUE);
-		pMutex->lock();
-
 		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number, packet->_isRecv);
-
-		pMutex->unlock();
-		PACKETCAPTURE.SetPause(FALSE);
 	}
-
-	PacketInfo* pi = new PacketInfo;
-	pi->_packet = packet;
 
 	if (packet->_datalength > 0 && packet->_tcpHeader->ack)
 	{
-		pQueueMutex->lock();
+		PacketInfo* pi = new PacketInfo;
+		pi->_packet = packet;
+
 		PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
-		pQueueMutex->unlock();
 	}
-	else
-		PACKETCAPTURE.ClearPacketInfo(pi);
+	pMutex->unlock();
+	
 }

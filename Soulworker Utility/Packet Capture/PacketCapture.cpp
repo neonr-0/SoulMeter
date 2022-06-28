@@ -48,7 +48,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 
 	unordered_map<ULONG, PacketInfo*>* queue = nullptr;
 	ULONG* nextSEQ = nullptr;
-	mutex* mutex = nullptr;
+	recursive_mutex* mutex = nullptr;
 
 	if (pti->isRecv) {
 		queue = &_this->_recvPacketQueue;
@@ -69,7 +69,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 	{
 		PacketInfo* pi = nullptr;
 
-		if (_this->_pauseParse) 
+		if (_this->_pauseParse || queue->empty())
 		{
 			Sleep(100);
 			continue;
@@ -79,14 +79,15 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		for (auto itr = queue->begin(); itr != queue->end(); itr++) 
 		{
 			if (skipCheckSEQ || itr->first == *nextSEQ) {
+				pi = itr->second;
 #if DEBUG_CAPTURE_SORT == 1
 				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] [skipCheckSEQ:%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", skipCheckSEQ ? "YES" : "NO", itr->first, itr->second->_packet->_datalength);
 #endif
-				pi = itr->second;
 				queue->erase(itr);
 				break;
 			}
 		}
+		mutex->unlock();
 
 		if (pi != nullptr) {
 			*nextSEQ += static_cast<ULONG>(pi->_packet->_datalength);
@@ -102,7 +103,6 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		else {
 			Sleep(10);
 		}
-		mutex->unlock();
 	}
 
 	return 0;
