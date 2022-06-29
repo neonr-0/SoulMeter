@@ -163,7 +163,6 @@ VOID PlotWindow::Update()
 				UpdateJqPlotTab();
 				UpdateBossHpPlotTab();
 			}
-			UTILLWINDOW.Update();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

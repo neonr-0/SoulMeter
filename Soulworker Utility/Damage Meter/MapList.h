@@ -5,7 +5,7 @@
 static unordered_set<USHORT> rankMap({
 
 	/* AL */
-	21073,
+	//21073,
 
 	/* HH */
 	22016,

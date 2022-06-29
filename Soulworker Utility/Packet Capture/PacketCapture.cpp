@@ -87,13 +87,16 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 				break;
 			}
 		}
+#if DEBUG_CAPTURE_QUEUE == 1
+		Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Queue length: %d", pti->isRecv ? "RECV" : "SEND", queue->size());
+#endif
 		mutex->unlock();
 
 		if (pi != nullptr) {
 			*nextSEQ += static_cast<ULONG>(pi->_packet->_datalength);
 
 #if DEBUG_CAPTURE_SORT == 1
-			Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Set next SEQ %lu, Queue length: %d", pti->isRecv ? "RECV" : "SEND", *nextSEQ, queue->size());
+			Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Set next SEQ %lu", pti->isRecv ? "RECV" : "SEND", *nextSEQ);
 #endif
 
 			ParsePacket(_this, pi);

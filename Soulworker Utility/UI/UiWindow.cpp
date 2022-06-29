@@ -213,7 +213,7 @@ VOID UiWindow::Update() {
 	UpdateMainTable();
 
 #ifdef _DEBUG
-	ImGui::ShowMetricsWindow();
+	//ImGui::ShowMetricsWindow();
 #endif
 
 	ImGui::EndFrame();

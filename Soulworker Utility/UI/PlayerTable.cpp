@@ -181,35 +181,6 @@ VOID PlayerTable::BeginPopupMenu() {
 			UIOPTION.ToggleTopMost();
 		}
 
-
-		bool history_open = false;
-		if (HISTORY.GetCurrentIndex() > 0 && !DAMAGEMETER.isRun())
-			history_open = true;
-
-		/*if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
-
-			for (INT i = 0; i < HISTORY_SIZE; i++) {
-
-				if (HISTORY.GetCurrentIndex() - 1 < i)
-					break;
-
-				auto history = HISTORY[i];
-				CHAR label[128] = { 0 };
-
-				CHAR mapName[MAX_MAP_LEN] = { 0 };
-				SWDB.GetMapName(history._worldID, mapName, MAX_MAP_LEN);
-
-				sprintf_s(label, 128, u8"%s %02d:%02d:%02d(%02d:%02d.%01d)", mapName, 
-					history._saveTime.wHour, history._saveTime.wMinute, history._saveTime.wSecond,
-					(UINT)history._time / (60 * 1000), (UINT)(history._time / 1000) % 60, (UINT)history._time % 1000 / 100
-				);
-				if (ImGui::MenuItem(label, 0, DAMAGEMETER.GetCurrentHistoryID() == i)) {
-					DAMAGEMETER.SetHistory(i);
-				}
-			}
-
-			ImGui::EndMenu();
-		}*/
 		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_HISTORY"))) {
 			UTILLWINDOW.OpenWindow();
 		}

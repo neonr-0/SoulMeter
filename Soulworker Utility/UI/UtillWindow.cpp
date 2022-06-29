@@ -15,14 +15,17 @@ VOID UtillWindow::Update()
 	if (!_isOpen)
 		return;
 
-	ImGui::Begin(LANGMANAGER.GetText("STR_MENU_HISTORY"), &_isOpen, ImGuiWindowFlags_None);
+	CHAR label[256] = { 0 };
+	sprintf_s(label, "%s###UtillWindow", LANGMANAGER.GetText("STR_MENU_HISTORY"));
+
+	ImGui::Begin(label, &_isOpen, ImGuiWindowFlags_None);
 	{
 		CHAR searchData[MAX_PATH] = { 0 };
 
 		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
 
 		CHAR label[MAX_PATH] = { 0 };
-		sprintf_s(label, "%s(%d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), HISTORY_SIZE);
+		sprintf_s(label, "%s(%s %d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_MAX"), HISTORY_SIZE);
 		ImGui::Text(label);
 		ImGui::BeginChild("select history", ImVec2(0, 0), true);
 		{
@@ -49,11 +52,11 @@ VOID UtillWindow::Update()
 					CHAR mapName[MAX_MAP_LEN] = { 0 };
 					SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
 
-					CHAR label[MAX_MAP_LEN*5];
-					sprintf_s(label, "%s %02d:%02d:%02d(%02d:%02d.%01d)", 
+					sprintf_s(label, "%s %02d:%02d:%02d(%02d:%02d.%01d)###history%d", 
 						mapName,
 						hi->_saveTime.wHour, hi->_saveTime.wMinute, hi->_saveTime.wSecond,
-						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100
+						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
+						i
 					);
 
 					if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)

@@ -10,7 +10,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#define APP_VERSION "1.3.1.4"
+#define APP_VERSION "1.3.1.4a"
 
 #include <Windows.h>
 
