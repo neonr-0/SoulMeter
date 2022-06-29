@@ -28,7 +28,7 @@ VOID UtillWindow::Update()
 		{
 			auto vector = HISTORY.GetVector();
 
-			if (HISTORY.GetCurrentIndex() != _currentIndex) {
+			if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop()) {
 				HISTORY.GetMutex()->lock();
 
 				if (vector->size() > 0) {

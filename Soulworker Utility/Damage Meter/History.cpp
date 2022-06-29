@@ -42,10 +42,16 @@ VOID _HISTORYINFO::Clear(){
 
 SWDamageMeterHistory::~SWDamageMeterHistory() {
 	
+	_stopAddHistory = true;
+
 	_mutex.lock();
 
-	for (auto itr = _historys.begin(); itr != _historys.end(); itr++)
-		delete *itr;
+	for (auto itr = _historys.begin(); itr != _historys.end(); itr++) {
+		HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
+		hi->Clear();
+
+		delete* itr;
+	}
 
 	_historys.clear();
 
@@ -66,6 +72,11 @@ VOID SWDamageMeterHistory::ClearHistory(INT index) {
 }
 
 VOID SWDamageMeterHistory::push_back(HISTORY_DATA* historyData) {
+
+	if (_stopAddHistory) {
+		delete historyData;
+		return;
+	}
 
 	_mutex.lock();
 

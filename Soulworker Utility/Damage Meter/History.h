@@ -5,7 +5,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 
 #define HISTORY SWDamageMeterHistory::getInstance()
-#define HISTORY_SIZE 50
+#define HISTORY_SIZE 100
 
 struct HISTORY_DATA
 {
@@ -36,6 +36,8 @@ private:
 
 	VOID ClearHistory(INT index);
 
+	BOOL _stopAddHistory = FALSE;
+
 public:
 	SWDamageMeterHistory() : _curIndex(0) {}
 	~SWDamageMeterHistory();
@@ -55,5 +57,10 @@ public:
 	vector<LPVOID>* GetVector()
 	{
 		return &_historys;
+	}
+
+	BOOL isStop()
+	{
+		return _stopAddHistory;
 	}
 };
