@@ -2787,13 +2787,13 @@ void ImGui::TableDrawContextMenu(ImGuiTable* table)
         if (column != NULL)
         {
             const bool can_resize = !(column->Flags & ImGuiTableColumnFlags_NoResize) && column->IsEnabled;
-            if (MenuItem(LANGMANAGER.GetText(STR_MENU_FIT_COLUMN), NULL, false, can_resize))
+            if (MenuItem(LANGMANAGER.GetText("STR_MENU_FIT_COLUMN"), NULL, false, can_resize))
                 TableSetColumnWidthAutoSingle(table, column_n);
         }
 
         const char* size_all_desc;
         if (table->ColumnsEnabledFixedCount == table->ColumnsEnabledCount)
-            size_all_desc = LANGMANAGER.GetText(STR_MENU_FIT_ALL_COLUMN);        // All fixed
+            size_all_desc = LANGMANAGER.GetText("STR_MENU_FIT_ALL_COLUMN");        // All fixed
         else if (table->ColumnsEnabledFixedCount == 0)
             size_all_desc = "Size all columns to default###SizeAll";    // All stretch
         else
@@ -2806,7 +2806,7 @@ void ImGui::TableDrawContextMenu(ImGuiTable* table)
     // Ordering
     if (table->Flags & ImGuiTableFlags_Reorderable)
     {
-        if (MenuItem(LANGMANAGER.GetText(STR_MENU_RESET_ORDER), NULL, false, !table->IsDefaultDisplayOrder))
+        if (MenuItem(LANGMANAGER.GetText("STR_MENU_RESET_ORDER"), NULL, false, !table->IsDefaultDisplayOrder))
             table->IsResetDisplayOrderRequest = true;
         want_separator = true;
     }

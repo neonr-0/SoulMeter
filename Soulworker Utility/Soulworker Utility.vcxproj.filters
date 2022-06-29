@@ -345,9 +345,6 @@
     <ClInclude Include="Language\Language.h">
       <Filter>Language</Filter>
     </ClInclude>
-    <ClInclude Include="Language\LanguageText.h">
-      <Filter>Language</Filter>
-    </ClInclude>
     <ClInclude Include="Packet Capture\PacketParser.h">
       <Filter>PacketCapture</Filter>
     </ClInclude>

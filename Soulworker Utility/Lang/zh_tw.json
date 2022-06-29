@@ -1,8 +1,9 @@
 {
 
     "STR_LANG_NAME": "中文(繁體)",
+    "STR_SQL_SUFFIX": "TC",
 
-    "STR_WORLD_NO_INFORMATION": "未知地區",
+    "STR_WORLD_NO_INFORMATION": "無資料",
     "PLAYER_NAME_CANT_FIND" : "未知玩家",
 
     "STR_MENU_RESUME": "開始/暫停",
@@ -27,7 +28,7 @@
     "STR_TABLE_CRIT_RATE": "暴擊率",
     "STR_TABLE_HIT_PER_SECOND": "擊中/秒",
     "STR_TABLE_CRIT_HIT_PER_SECOND": "暴擊/秒",
-    "STR_TABLE_SKILL_PER_SECOND": "技能使用/秒",
+    "STR_TABLE_SKILL_PER_SECOND": "技能/秒",
     "STR_TABLE_MAX_COMBO": "最高連擊",
     "STR_TABLE_ATTACK_CDMG_SUM": "攻暴和",
     "STR_TABLE_SOUL_GAUGE": "靈魂值",
@@ -66,7 +67,7 @@
     "STR_OPTION_UNIT_1M": "以百萬為單位顯示(M)",
     "STR_OPTION_SOLO_MODE": "單人模式 (只顯示自己的數據)",
     "STR_OPTION_HIDE_NAME": "隱藏名稱",
-    "STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED": "Boss死亡時保存資料並重置",
+    "STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED": "Boss死亡時保存資料並重置(團TA)",
     "STR_OPTION_WINDOW_BORDER_SIZE": "視窗邊框大小",
     "STR_OPTION_CELL_PADDING": "表格間距",
     "STR_OPTION_COLUMN_FONT_SCALE": "表格欄位文字放大倍率",

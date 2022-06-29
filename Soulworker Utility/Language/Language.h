@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include ".\Language\LanguageText.h"
 #include <unordered_map>
 
 #define LANGMANAGER Language::getInstance()
@@ -9,18 +8,21 @@ class Language : public Singleton<Language>
 {
 
 private:
-	unordered_map<TEXT_ENUM_LIST, CHAR*> _textList;
-	SUPPORTED_LANG _currentLang;
+	unordered_map<string, string> _textList;
+	CHAR _currentLang[128] = { 0 };
 
 public:
-	Language() : _currentLang(SUPPORTED_LANG::EN_US) {}
+	Language() : _currentLang("zh_tw.json") {}
 
-	SUPPORTED_LANG GetCurrentLang()
+	const CHAR _langFolder[6] = "Lang/";
+
+	CHAR* GetCurrentLang()
 	{
 		return _currentLang;
 	}
-	VOID SetCurrentLang(SUPPORTED_LANG langID);
-	CHAR* GetText(TEXT_ENUM_LIST text);
-	CHAR* GetSqlLang();
-	CHAR* Language::GetLangName(SUPPORTED_LANG langID);
+	DWORD SetCurrentLang(CHAR* langFile);
+	CHAR* GetText(CHAR* text, unordered_map<string, string>* vector = nullptr);
+	unordered_map<string, string> GetAllLangFile();
+	auto GetLangFile(CHAR* langFile);
+	unordered_map<string, string> MapLangData(CHAR* langFile);
 };

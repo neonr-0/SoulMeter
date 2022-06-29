@@ -76,6 +76,24 @@ inline ULONG64 GetCurrentTimeStamp() {
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
 
+static BOOL file_contents(const std::filesystem::path& path, std::string* str)
+{
+	if (!std::filesystem::is_regular_file(path))
+		return FALSE;
+
+	std::ifstream file(path, std::ios::in | std::ios::binary);
+	if (!file.is_open())
+		return FALSE;
+
+	std::string content{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
+
+	file.close();
+
+	*str = content;
+
+	return TRUE;
+}
+
 #define MAX_BUFFER_LENGTH 1024
 
 #pragma pack(push, 1)

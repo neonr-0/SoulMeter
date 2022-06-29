@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>SoulMeter 1.3.1.3</TargetName>
+    <TargetName>SoulMeter 1.3.1.4</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +128,7 @@
       <AdditionalIncludeDirectories>..\Soulworker Utility\Third Party\openssl\include;..\Soulworker Utility\Third Party\Npcap\Include;..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
@@ -188,7 +188,6 @@
     <ClInclude Include="Damage Meter\SWDamageSkill.h" />
     <ClInclude Include="Damage Meter\Timer.h" />
     <ClInclude Include="Language\Language.h" />
-    <ClInclude Include="Language\LanguageText.h" />
     <ClInclude Include="Packet Capture\MyNpcap.h" />
     <ClInclude Include="Packet Capture\MyWinDivert.h" />
     <ClInclude Include="Packet Capture\PacketCapture.h" />

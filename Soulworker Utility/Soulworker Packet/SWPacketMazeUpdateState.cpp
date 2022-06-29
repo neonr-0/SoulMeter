@@ -25,6 +25,12 @@ VOID SWPacketMazeUpdateState::Do() {
 		DAMAGEMETER.SetMazeState(FALSE);
 		DAMAGEMETER.Start();
 		break;
+		// Play boss animation
+	case 0x02:
+		break;
+		// End boss animation
+	case 0x03:
+		break;
 		// Maze end
 	case 0x04:
 		DAMAGEMETER.SetMazeState(TRUE);
@@ -39,5 +45,5 @@ VOID SWPacketMazeUpdateState::Log() {
 
 VOID SWPacketMazeUpdateState::Debug() {
 	SWPacketMazeUpdateStatePacket* packet = (SWPacketMazeUpdateStatePacket*)(_data + sizeof(SWHEADER));
-	//Log::WriteLogA("[SWPacketMazeUpdateState] stateID = %d, state = %d", packet->_stateID, packet->_state);
+	Log::WriteLogA("[SWPacketMazeUpdateState] stateID = %d, state = %d", packet->_stateID, packet->_state);
 }

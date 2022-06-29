@@ -16,6 +16,10 @@
 
 右鍵標題欄可查看更多功能
 
+左鍵點擊表格內角色名稱可察看詳細資料
+
+option.xml 和 imgui.ini 為使用者設定
+
 
 
 注意事項
@@ -44,9 +48,13 @@ Supported capture software: *Npcap(Recommend), WinDivert
 How to use
 ---------------------
 
-CTRL + DEL : Reset
+Hotkey - CTRL + DEL : Reset
 
 Right click title bar can display more feature
+
+Can get details with left click table of character name row
+
+option.xml and imgui.ini is user settings
 
 
 

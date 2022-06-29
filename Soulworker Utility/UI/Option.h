@@ -37,7 +37,7 @@ private:
 	FLOAT _refreshTime;
 	BOOL _isTopMost;
 	BOOL _saveDataWhenBossDied;
-	INT32 _selectedLang;
+	CHAR _selectedLang[128] = { 0 };
 	BOOL _isSoloRankMode;
 
 	BOOL ShowTableOption();
@@ -52,6 +52,8 @@ private:
 	BOOL SetBasicOption();
 
 	BOOL _open;
+
+	unordered_map<string, string> _allLangList = LANGMANAGER.GetAllLangFile();
 
 public:
 	UiOption();

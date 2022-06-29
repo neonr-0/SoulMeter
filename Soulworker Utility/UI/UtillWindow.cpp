@@ -36,7 +36,7 @@ VOID UtillWindow::Update()
 	//	ImGui::EndChild();
 	//	ImGui::End();
 	//}
-	if (_isOpen) {
+	/*if (_isOpen) {
 		if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_PLOTWINDOW_COMBATLOG)))
 		{
 			ImGui::BeginChild("Scrolling");
@@ -48,7 +48,7 @@ VOID UtillWindow::Update()
 
 			ImGui::EndTabItem();
 		}
-	}
+	}*/
 }
 
 UtillWindow::UtillWindow()

@@ -3,10 +3,11 @@
 #ifndef PCH_H
 #define PCH_H
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#define APP_VERSION "1.3.1.3"
+#define APP_VERSION "1.3.1.4"
 
 #include <Windows.h>
 
@@ -25,6 +26,8 @@
 #include <vector>
 #include <algorithm>
 #include <codecvt>
+#include <filesystem>
+#include <fstream> 
 
 // IMGUI
 #include "imgui\imgui.h"
@@ -72,5 +75,9 @@
 // Http
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include ".\Third Party\http\httplib.h"
+
+// Json
+#include ".\Util\json.hpp"
+using json = nlohmann::json;
 
 #endif

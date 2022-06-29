@@ -1,57 +1,108 @@
 #include "pch.h"
 #include "Language.h"
 
-VOID Language::SetCurrentLang(SUPPORTED_LANG langID)
+auto Language::GetLangFile(CHAR* langFile)
 {
-	if (langID > SUPPORTED_LANG_LEN)
-		assert(FALSE);
+	// parse path
+	CHAR path[MAX_PATH] = { 0 };
+	sprintf_s(path, "%s%s", _langFolder, langFile);
 
-	_currentLang = langID;
+	json j;
 
-	for (auto& itr : _allTextList) {
+	do
+	{
+		// get raw data
+		std::string langRaw;
+		if (!file_contents(std::filesystem::path(path), &langRaw)) {
+			Log::WriteLogA("[Language::SetCurrentLang] Lang file %s not found.", langFile);
+			break;
+		}
 
-		for (auto& itr2 : itr._vector) {
-			if (itr2._lang != _currentLang)
-				continue;
-			if (_textList.find(itr._enum) == _textList.end())
-				_textList.emplace(itr._enum, itr2._text);
-			else
-				_textList[itr._enum] = itr2._text;
+		// parse raw to json
+		auto langData = json::parse(langRaw);
+		if (langData.empty()) {
+			Log::WriteLogA("[Language::SetCurrentLang] Lang file %s is empty.", langFile);
+			break;
+		}
+
+		j = langData;
+
+	} while (false);
+
+	return j;
+}
+
+unordered_map<string, string> Language::MapLangData(CHAR* langFile)
+{
+	unordered_map<string, string> list;
+
+	// get json data
+	auto langData = GetLangFile(langFile);
+	if (!langData.empty()) {
+		for (json::iterator itr = langData.begin(); itr != langData.end(); itr++) 
+			list[itr.key()] = itr.value().get<std::string>();
+	}
+
+	return list;
+}
+
+DWORD Language::SetCurrentLang(CHAR* langFile)
+{
+	DWORD error = ERROR_SUCCESS;
+
+	do {
+
+		// get json data
+		auto newLang = MapLangData(langFile);
+		if (newLang.empty()) {
+			error = ERROR_NOT_FOUND;
+			break;
+		}
+
+		// set current lang
+		strcpy_s(_currentLang, langFile);
+
+		_textList = newLang;
+
+	} while (false);
+
+	return error;
+}
+
+CHAR* Language::GetText(CHAR* text, unordered_map<string, string>* vector)
+{
+	if (vector == nullptr)
+		vector = &_textList;
+	
+	if (vector->find(text) == vector->end()) {
+		Log::WriteLogA("[Language::GetText] Lang text %s not found.", text);
+		return text;
+	}
+
+	return (CHAR*)vector->at(text).c_str();
+}
+
+unordered_map<string, string> Language::GetAllLangFile()
+{
+	unordered_map<string, string> list;
+
+	for (auto& p : std::filesystem::directory_iterator(_langFolder)) {
+		if (p.is_regular_file()) {
+			if (p.path().extension().string() == ".json") {
+
+				string fileName = p.path().filename().string();
+
+				auto langData = MapLangData((CHAR*)fileName.c_str());
+
+				if (!langData.empty()) {
+
+					CHAR* langName = GetText("STR_LANG_NAME", &langData);
+
+					list.emplace(fileName, langName);
+				}
+			}
 		}
 	}
 
-	if (sizeof(_allTextList) / sizeof(*_allTextList) != STR_ALL_LENGTH)
-		assert(FALSE);
-}
-
-CHAR* Language::GetText(TEXT_ENUM_LIST text)
-{
-	if (text >= STR_ALL_LENGTH || _textList.find(text) == _textList.end())
-		assert(FALSE);
-
-	return _textList.at(text);
-}
-
-CHAR* Language::GetSqlLang()
-{
-	switch (_currentLang)
-	{
-	case ZH_TW:
-		return "TC";
-	case EN_US:
-	default:
-		return "EN";
-	}
-}
-
-CHAR* Language::GetLangName(SUPPORTED_LANG langID)
-{
-	switch (langID)
-	{
-	case ZH_TW:
-		return GetText(STR_OPTION_COMBO_LANG_ZH);
-	case EN_US:
-	default:
-		return GetText(STR_OPTION_COMBO_LANG_EN);
-	}
+	return list;
 }
