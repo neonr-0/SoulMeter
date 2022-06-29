@@ -172,7 +172,6 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 #if DEBUG_NPCAP_SORT == 1
 		Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, ClearQueue", packet->_tcpHeader->seq_number);
 #endif
-		PACKETCAPTURE.ClearQueue(packet->_isRecv);
 		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number + 1, packet->_isRecv);
 	}
 	else if (!PACKETCAPTURE.isInitRecv() || !PACKETCAPTURE.isInitSend()) {

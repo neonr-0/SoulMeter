@@ -1,22 +1,8 @@
 #include "pch.h"
 #include "UtillWindow.h"
+#include ".\Damage Meter\History.h"
+#include ".\Damage Meter\MySQLite.h"
 
-
-VOID UtillWindow::AddLog(string log)
-{
-	SYSTEMTIME SystemTime;
-	GetLocalTime(&SystemTime);
-	sprintf_s(CurrentDate, 32, "[%2d:%2d:%2d] ",
-		SystemTime.wHour,
-		SystemTime.wMinute,
-		SystemTime.wSecond);
-	log.insert(0, CurrentDate);
-	logList.push_back(log);
-
-	if (logList.size() > 200) {
-		logList.pop_front();
-	}
-}
 
 VOID UtillWindow::OpenWindow()
 {
@@ -25,30 +11,67 @@ VOID UtillWindow::OpenWindow()
 
 VOID UtillWindow::Update()
 {
-	//if (_isOpen) {
-	//	ImGui::Begin(u8"", &_isOpen, ImGuiWindowFlags_None);
-	//	
-	//	ImGui::BeginChild("Scrolling");
-	//	std::list<string>::iterator it;
-	//	for (it = logList.begin(); it != logList.end(); it++)
-	//		ImGui::Text(it->c_str());
-	//	ImGui::SetScrollHere(1.0f);
-	//	ImGui::EndChild();
-	//	ImGui::End();
-	//}
-	/*if (_isOpen) {
-		if (ImGui::BeginTabItem(LANGMANAGER.GetText(STR_PLOTWINDOW_COMBATLOG)))
-		{
-			ImGui::BeginChild("Scrolling");
-			std::list<string>::iterator it;
-			for (it = logList.begin(); it != logList.end(); it++)
-				ImGui::Text(it->c_str());
-			ImGui::SetScrollHere(1.0f);
-			ImGui::EndChild();
 
-			ImGui::EndTabItem();
+	if (!_isOpen)
+		return;
+
+	ImGui::Begin(LANGMANAGER.GetText("STR_MENU_HISTORY"), &_isOpen, ImGuiWindowFlags_None);
+	{
+		CHAR searchData[MAX_PATH] = { 0 };
+
+		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
+
+		CHAR label[MAX_PATH] = { 0 };
+		sprintf_s(label, "%s(%d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), HISTORY_SIZE);
+		ImGui::Text(label);
+		ImGui::BeginChild("select history", ImVec2(0, 0), true);
+		{
+			auto vector = HISTORY.GetVector();
+
+			if (HISTORY.GetCurrentIndex() != _currentIndex) {
+				HISTORY.GetMutex()->lock();
+
+				if (vector->size() > 0) {
+					_hi = *vector;
+					_currentIndex = HISTORY.GetCurrentIndex();
+				}
+				DAMAGEMETER.SetCurrentHistoryId(-1);
+
+				HISTORY.GetMutex()->unlock();
+			}
+
+			if (_hi.size() > 0) {
+				INT32 i = 0;
+				for (auto itr = _hi.rbegin(); itr != _hi.rend(); itr++)
+				{
+					HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
+
+					CHAR mapName[MAX_MAP_LEN] = { 0 };
+					SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
+
+					CHAR label[MAX_MAP_LEN*5];
+					sprintf_s(label, "%s %02d:%02d:%02d(%02d:%02d.%01d)", 
+						mapName,
+						hi->_saveTime.wHour, hi->_saveTime.wMinute, hi->_saveTime.wSecond,
+						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100
+					);
+
+					if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)
+						continue;
+
+					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i)) {
+						if (!DAMAGEMETER.isRun()) {
+							DAMAGEMETER.SetCurrentHistoryId(i);
+							DAMAGEMETER.SetHistory((LPVOID)hi);
+						}
+					}
+					i++;
+				}
+			}
+			ImGui::EndChild();
 		}
-	}*/
+	}
+	ImGui::End();
 }
 
 UtillWindow::UtillWindow()

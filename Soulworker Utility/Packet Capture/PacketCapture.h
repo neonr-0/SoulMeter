@@ -99,6 +99,14 @@ public:
 		}
 	}
 
+	BOOL QueueIsEmpty(BOOL isRecv)
+	{
+		if (isRecv)
+			return _recvPacketQueue.empty();
+		else
+			return _sendPacketQueue.empty();
+	}
+
 	recursive_mutex* GetRecvMutex()
 	{
 		return &_recvMutex;

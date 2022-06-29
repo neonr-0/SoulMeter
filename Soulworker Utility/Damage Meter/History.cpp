@@ -41,34 +41,42 @@ VOID _HISTORYINFO::Clear(){
 }
 
 SWDamageMeterHistory::~SWDamageMeterHistory() {
-	for (INT i = 0; i < HISTORY_SIZE; i++) {
-		_historys[i].Clear();
-	}
+	
+	_mutex.lock();
+
+	for (auto itr = _historys.begin(); itr != _historys.end(); itr++)
+		delete *itr;
+
+	_historys.clear();
+
+	_mutex.unlock();
 }
 
 VOID SWDamageMeterHistory::ClearHistory(INT index) {
 
-	_historys[index].Clear();
+	if (index > 0) {
+		auto ptr = _historys.begin();
+
+		HISTORY_INFO* hi = (HISTORY_INFO*)*ptr;
+		hi->Clear();
+
+		delete* ptr;
+		_historys.erase(ptr);
+	}
 }
 
 VOID SWDamageMeterHistory::push_back(HISTORY_DATA* historyData) {
 
-	ClearHistory(_curIndex % HISTORY_SIZE);
-	_historys[_curIndex++ % HISTORY_SIZE].Setup(historyData, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime());
-}
+	_mutex.lock();
 
-const HISTORY_INFO& SWDamageMeterHistory::operator[](INT index) {
-	
-	if (index >= HISTORY_SIZE || index < 0)
-		assert(FALSE);
+	ClearHistory(_curIndex / HISTORY_SIZE);
 
-	return _historys[index];
-}
+	HISTORY_INFO* hi = new HISTORY_INFO;
+	hi->Setup(historyData, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime());
 
-SIZE_T SWDamageMeterHistory::size() {
+	_historys.push_back(hi);
 
-	if (_curIndex > HISTORY_SIZE)
-		return HISTORY_SIZE;
-	else
-		return _curIndex % HISTORY_SIZE;
+	_curIndex++;
+
+	_mutex.unlock();
 }

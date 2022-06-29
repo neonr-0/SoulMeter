@@ -186,7 +186,7 @@ VOID PlayerTable::BeginPopupMenu() {
 		if (HISTORY.GetCurrentIndex() > 0 && !DAMAGEMETER.isRun())
 			history_open = true;
 
-		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
+		/*if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
 
 			for (INT i = 0; i < HISTORY_SIZE; i++) {
 
@@ -209,10 +209,12 @@ VOID PlayerTable::BeginPopupMenu() {
 			}
 
 			ImGui::EndMenu();
+		}*/
+		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_HISTORY"))) {
+			UTILLWINDOW.OpenWindow();
 		}
 
 		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_MEOW"))) {
-			//UTILLWINDOW.OpenWindow();
 			PLOTWINDOW.OpenWindow();
 		}
 

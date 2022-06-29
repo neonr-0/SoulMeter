@@ -608,6 +608,7 @@ VOID SWDamageMeter::Restore() {
 	if (!_historyMode)
 		return;
 
+	_currentHistoryId = -1;
 	ClearInfo();
 }
 
@@ -623,27 +624,27 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	PLOTWINDOW.Clear();
 	BUFFMETER.Clear();
 	_aggroedId = 0;
-
-	_historyID = -1;
 }
 
-VOID SWDamageMeter::SetHistory(INT index) {
+VOID SWDamageMeter::SetHistory(LPVOID pHi) {
+
+	if (pHi == nullptr)
+		return;
+
+	HISTORY_INFO* hi = (HISTORY_INFO*)pHi;
 
 	if (!_historyMode) {
 		Clear();
 	}
 
-	auto history = HISTORY[index];
+	_playerInfo = hi->_historyData->_playerHistory;
+	_ownerInfo = hi->_historyData->_ownerHistory;
+	_dbInfo = hi->_historyData->_dbHistory;
+	BUFFMETER.SetPlayerInfo(hi->_historyData->_buffHistory);
+	PLOTWINDOW.SetPlotInfo(hi->_historyData->_plotHistory);
 
-	_playerInfo = history._historyData->_playerHistory;
-	_ownerInfo = history._historyData->_ownerHistory;
-	_dbInfo = history._historyData->_dbHistory;
-	BUFFMETER.SetPlayerInfo(history._historyData->_buffHistory);
-	PLOTWINDOW.SetPlotInfo(history._historyData->_plotHistory);
-
-	_historyWorldID = history._worldID;
-	_historyTime = history._time;
-	_historyID = index;
+	_historyWorldID = hi->_worldID;
+	_historyTime = hi->_time;
 
 	_historyMode = TRUE;
 }

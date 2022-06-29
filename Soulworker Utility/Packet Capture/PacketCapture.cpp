@@ -188,13 +188,7 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr*
 
 	// http://en.wikipedia.org/wiki/Ethernet_frame#Payload
 	// 14 eth + 20 ip + 20 tcp = 54
-	if (pkthdr->caplen > packetHeaderLen)
-	{
-		packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
-	}
-	else {
-		packet->_datalength = 0;
-	}
+	packet->_datalength = packet->_ipHeader->length - (packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4);
 
 	CHAR tmp[128] = { 0 };
 

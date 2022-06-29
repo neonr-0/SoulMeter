@@ -493,7 +493,6 @@ private:
 
 	USHORT _historyWorldID;
 	ULONG64 _historyTime;
-	INT32 _historyID;
 
 	UINT32 _aggroedId;
 
@@ -508,8 +507,10 @@ private:
 
 	recursive_mutex _mutex;
 
+	INT32 _currentHistoryId = -1;
+
 public:
-	SWDamageMeter() :  _historyID(-1), _myID(0), _worldID(0), _mazeEnd(0), _historyMode(0), _historyWorldID(0), _historyTime(0) {}
+	SWDamageMeter() :   _myID(0), _worldID(0), _mazeEnd(0), _historyMode(0), _historyWorldID(0), _historyTime(0) {}
 	~SWDamageMeter();
 
 	VOID GetLock();
@@ -570,13 +571,18 @@ public:
 
 	VOID SetMazeState(BOOL end);
 
-	VOID SetHistory(INT index);
+	VOID SetHistory(LPVOID hi);
 	BOOL isHistoryMode();
 
-	INT32 GetCurrentHistoryID()
+	VOID ClearInfo(BOOL clear = TRUE);
+
+	INT32 GetCurrentHistoryId()
 	{
-		return _historyID;
+		return _currentHistoryId;
 	}
 
-	VOID ClearInfo(BOOL clear = TRUE);
+	VOID SetCurrentHistoryId(INT32 id)
+	{
+		_currentHistoryId = id;
+	}
 };

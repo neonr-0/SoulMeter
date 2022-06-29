@@ -5,7 +5,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 
 #define HISTORY SWDamageMeterHistory::getInstance()
-#define HISTORY_SIZE 10
+#define HISTORY_SIZE 50
 
 struct HISTORY_DATA
 {
@@ -29,9 +29,11 @@ public:
 
 class SWDamageMeterHistory : public Singleton<SWDamageMeterHistory> {
 private:
-	HISTORY_INFO _historys[HISTORY_SIZE];
+	vector<LPVOID> _historys;
 	INT _curIndex = 0;
 	
+	recursive_mutex _mutex;
+
 	VOID ClearHistory(INT index);
 
 public:
@@ -39,10 +41,19 @@ public:
 	~SWDamageMeterHistory();
 
 	VOID push_back(HISTORY_DATA* historyData);
-	SIZE_T size();
-	const HISTORY_INFO& operator[](INT index);
+
 	INT GetCurrentIndex()
 	{
 		return _curIndex;
+	}
+
+	recursive_mutex* GetMutex()
+	{
+		return &_mutex;
+	}
+
+	vector<LPVOID>* GetVector()
+	{
+		return &_historys;
 	}
 };
