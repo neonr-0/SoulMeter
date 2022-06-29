@@ -536,6 +536,7 @@ VOID SWDamageMeter::Start() {
 
 VOID SWDamageMeter::Clear() {
 
+	BOOL clearOwnerAndDB = true;
 	if (!_historyMode) {
 		if (_playerInfo.size() > 0) {
 
@@ -550,9 +551,27 @@ VOID SWDamageMeter::Clear() {
 			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 				itr->second->MeterReseted();
 			}
+
+			if (UIOPTION.isSaveDataWhenBossDied()) {
+				_ownerInfo.clear();
+				for (auto itr = hd->_ownerHistory.begin(); itr != hd->_ownerHistory.end(); itr++) {
+					SW_OWNER_ID_STRUCT* newOwner = new SW_OWNER_ID_STRUCT;
+					memcpy_s(newOwner, sizeof(SW_OWNER_ID_STRUCT), *itr, sizeof(SW_OWNER_ID_STRUCT));
+					_ownerInfo.push_back(newOwner);
+				}
+
+				_dbInfo.clear();
+				for (auto itr = hd->_dbHistory.begin(); itr != hd->_dbHistory.end(); itr++) {
+					SW_DB2_STRUCT* newDB = new SW_DB2_STRUCT;
+					memcpy_s(newDB, sizeof(SW_DB2_STRUCT), *itr, sizeof(SW_DB2_STRUCT));
+					_dbInfo.push_back(newDB);
+				}
+
+				clearOwnerAndDB = false;
+			}
 		}
 		_mazeEnd = FALSE;
-		ClearInfo();
+		ClearInfo(clearOwnerAndDB);
 	}
 	else {
 		Restore();
@@ -592,11 +611,14 @@ VOID SWDamageMeter::Restore() {
 	ClearInfo();
 }
 
-VOID SWDamageMeter::ClearInfo()
+VOID SWDamageMeter::ClearInfo(BOOL clear)
 {
 	_playerInfo.clear();
-	_ownerInfo.clear();
-	_dbInfo.clear();
+	
+	if (clear) {
+		_ownerInfo.clear();
+		_dbInfo.clear();
+	}
 
 	PLOTWINDOW.Clear();
 	BUFFMETER.Clear();
