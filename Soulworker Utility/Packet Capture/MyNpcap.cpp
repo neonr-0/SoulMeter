@@ -35,7 +35,7 @@ DWORD MyNpcap::LoadNpcapDlls() {
 			error = ERROR_API_UNAVAILABLE;
 			break;
 		}
-		
+
 		void* pWpcap = GetProcAddress(hDLL, "pcap_compile");
 		if (pWpcap == NULL) {
 			Log::WriteLog(const_cast<LPTSTR>(_T("GetProcAddress wpcap.dll failed. %x")), GetLastError());
@@ -110,7 +110,11 @@ DWORD MyNpcap::Init() {
 			if (Filter(device))
 				continue;
 
-			CreateThread(NULL, 0, CreatePcapLoop, device, 0, NULL);
+			ThreadInfo* ti = new ThreadInfo;
+			ti->_device = device;
+			ti->_thisl = this;
+
+			CreateThread(NULL, 0, CreatePcapLoop, ti, 0, NULL);
 		}
 
 		pcap_freealldevs(alldevs);
@@ -122,23 +126,27 @@ DWORD MyNpcap::Init() {
 
 DWORD MyNpcap::CreatePcapLoop(LPVOID pAlldevs)
 {
-	pcap_t* device = (pcap_t*)pAlldevs;
+	ThreadInfo* ti = (ThreadInfo*)pAlldevs;
 
-	//int res;
-	//pcap_pkthdr* header = nullptr;
-	//const unsigned char* pkt_data = nullptr;
-	pcap_loop(device, 0, ReceiveCallback, nullptr);
-	//while ((res = pcap_next_ex(device, &header, &pkt_data)) >= 0) 
-	//{
-	//	ReceiveCallback(nullptr, header, pkt_data);
-	//}
+	pcap_loop(ti->_device, 0, ReceiveCallback, nullptr);
+	/*int res;
+	pcap_pkthdr* header = nullptr;
+	const unsigned char* pkt_data = nullptr;
+	while (TRUE)
+	{
+		res = pcap_next_ex(ti->_device, &header, &pkt_data);
+		if (res == 1)
+			ReceiveCallback((u_char*)ti->_thisl, header, pkt_data);
+		else
+			Sleep(10);
+	}*/
 
 	return 0;
 }
 
 VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, const u_char* pkt_data) {
 
-	if (prc != nullptr || pkt_data == nullptr || header == nullptr || PACKETCAPTURE.isStopCaptue()) {
+	if (prc != nullptr || pkt_data == nullptr || header == nullptr || PACKETCAPTURE.isStopCapture()) {
 		return;
 	}
 
@@ -153,9 +161,11 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 
 #if DEBUG_NPCAP_SORT == 1
 	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
-	for (SIZE_T i = 0; i < header->caplen; i++)
-		Log::WriteLogNoDate(L"%02X", pkt_data[i]);
-	Log::WriteLogNoDate(L"\n\n");
+	//if (header->caplen > 1300) {
+	//	for (SIZE_T i = 0; i < header->caplen; i++)
+	//		Log::WriteLogNoDate(L"%02X", pkt_data[i]);
+	//	Log::WriteLogNoDate(L"\n\n");
+	//}
 #endif
 
 	recursive_mutex* pMutex = nullptr;
@@ -185,9 +195,10 @@ VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, con
 	{
 		PacketInfo* pi = new PacketInfo;
 		pi->_packet = packet;
+		pi->_ts = GetCurrentTimeStamp();
 
 		PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
 	}
 	pMutex->unlock();
-	
+
 }

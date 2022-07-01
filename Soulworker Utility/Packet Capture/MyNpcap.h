@@ -15,6 +15,12 @@ using namespace std;
 class MyNpcap : public Singleton<MyNpcap> {
 private:
 
+	struct ThreadInfo
+	{
+		pcap_t* _device;
+		MyNpcap* _thisl;
+	};
+
 	DWORD LoadNpcapDlls();
 	DWORD Filter(pcap_t* device);
 

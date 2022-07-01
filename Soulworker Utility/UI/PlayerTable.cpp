@@ -86,15 +86,19 @@ VOID PlayerTable::Update() {
 		if (!UIOPTION.isOption())
 			windowFlag = windowFlag | ImGuiWindowFlags_NoResize;
 
-		CHAR title[512] = { 0 };
+		CHAR loss[128] = { 0 };
+		if (PACKETCAPTURE.GetMode() == (INT32)CaptureType::_NPCAP)
+			sprintf_s(loss, 128, "%s: %lld", LANGMANAGER.GetText("STR_MENU_LOSS"), PACKETCAPTURE.GetLoss());
 
-		sprintf_s(title, 512, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] %s: %lldms %s ###DamageMeter", 
+		CHAR title[1024] = { 0 };
+		sprintf_s(title, 1024, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] %s: %lldms %s %s ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			APP_VERSION,
 			PACKETCAPTURE.GetType(),
 			LANGMANAGER.GetText("STR_MENU_PING"),
 			_ping,
+			loss,
 			!_isNewestVersion ? LANGMANAGER.GetText("STR_MENU_OUT_OF_DATE") : ""
 		);
 

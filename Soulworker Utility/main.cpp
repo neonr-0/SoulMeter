@@ -55,13 +55,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			break;
 		}
 
-		if ((errorCode = PACKETCAPTURE.Init())) {
-			Log::WriteLog(const_cast<LPTSTR>(_T("Init PacketCapture Failed %d")), errorCode);
-			sprintf_s(errorMsg, "Init PacketCapture failed.");
-			break;
-		}
-
 		if (UIWINDOW.Init(1, 1, 1, 1)) {
+			if ((errorCode = PACKETCAPTURE.Init())) {
+				Log::WriteLog(const_cast<LPTSTR>(_T("Init PacketCapture Failed %d")), errorCode);
+				sprintf_s(errorMsg, "Init PacketCapture failed.");
+				break;
+			}
 			UIWINDOW.Run();
 		}
 		else {

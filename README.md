@@ -3,7 +3,7 @@
 
 本程式運作方式為通過第三方軟體擷取網路卡中的遊戲封包，並透過SWCrypt.dll進行封包解密後分析資料
 
-目前支援的擷取封包第三方軟體: *Npcap(推薦)、WinDivert(預設)
+目前支援的擷取封包第三方軟體: *Npcap(不推薦於網路不穩定的情況使用)、WinDivert(預設)
 
 *Npcap: 下載Npcap installer並安裝Npcap後自動啟用([https://npcap.com/#download](https://npcap.com/#download))
 
@@ -39,7 +39,7 @@ Soulworker DPS Meter for Global Server
 
 This software is used third party software to capture network packet and use SWCrypt.dll to decrypt packet
 
-Supported capture software: *Npcap(Recommend), WinDivert
+Supported capture software: *Npcap(Not recommended this if network is not stable), WinDivert
 
 *Npcap: Download Npcap installer and install will be enable([https://npcap.com/#download](https://npcap.com/#download))
 

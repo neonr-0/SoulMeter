@@ -39,11 +39,14 @@ private:
 	BOOL _saveDataWhenBossDied;
 	CHAR _selectedLang[128] = { 0 };
 	BOOL _isSoloRankMode;
+	INT32 _captureMode;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
 	VOID ShowLangSelector();
 	VOID ChangeLang();
+
+	VOID ShowCaptureModeSelector();
 
 	VOID Helper();
 
@@ -79,6 +82,7 @@ public:
 	const BOOL& isTopMost();
 	const BOOL& isSaveDataWhenBossDied();
 	const BOOL& isSoloRankMode();
+	const INT32& GetCaptureMode();
 
 	BOOL ToggleTopMost();
 

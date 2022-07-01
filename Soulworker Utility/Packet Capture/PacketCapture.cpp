@@ -3,36 +3,32 @@
 #include ".\Packet Capture\PacketParser.h"
 #include ".\Packet Capture\MyWinDivert.h"
 #include ".\Packet Capture\MyNpcap.h"
-#include ".\UI\Option.h"
 
 BOOL PacketCapture::Init() {
 
 	BOOL error = FALSE;
 	DWORD errorCode = 0;
 
-	_useType = CaptureType::_NPCAP;
-	if ((errorCode = NPCAP.Init())) {
-		//Log::WriteLog(const_cast<LPTSTR>(_T("Error in Init %d")), errorCode);
-		error = TRUE;
-	}
+	_useMode = UIOPTION.GetCaptureMode();
 
-	if (error) {
-		_useType = CaptureType::_WINDIVERT;
-		error = WINDIVERT.Init(_handle) > 0;
-	}
+	if (_useMode == (INT32)CaptureType::_NPCAP) {
+		error = NPCAP.Init() > 0;
+		if (!error) {
+			for (BYTE i = 0; i < 2; i++)
+			{
+				ParseThreadInfo* pti = new ParseThreadInfo;
+				pti->isRecv = (i == 0);
+				pti->_this = this;
 
-	if (!error) {
-		for (BYTE i = 0; i < 2; i++)
-		{
-			ParseThreadInfo* pti = new ParseThreadInfo;
-			pti->isRecv = (i == 0);
-			pti->_this = this;
-
-			HANDLE ct = CreateThread(NULL, 0, PacketRoute, pti, 0, NULL);
-			if (ct == nullptr)
-				return FALSE;
+				HANDLE ct = CreateThread(NULL, 0, PacketRoute, pti, 0, NULL);
+				if (ct == nullptr)
+					return FALSE;
+			}
 		}
 	}
+
+	if (error || _useMode == (INT32)CaptureType::_WINDIVERT)
+		error = WINDIVERT.Init(_handle) > 0;
 
 	return error;
 }
@@ -46,28 +42,28 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		return -1;
 	}
 
-	unordered_map<ULONG, PacketInfo*>* queue = nullptr;
+	map<ULONG, PacketInfo*>* queue = nullptr;
 	ULONG* nextSEQ = nullptr;
 	recursive_mutex* mutex = nullptr;
 
-	if (pti->isRecv) {
-		queue = &_this->_recvPacketQueue;
-		nextSEQ = &_this->_nextRecvSEQ;
-		mutex = &_this->_recvMutex;
-	}
-	else {
-		queue = &_this->_sendPacketQueue;
-		nextSEQ = &_this->_nextSendSEQ;
-		mutex = &_this->_sendMutex;
-	}
-
-	BOOL skipCheckSEQ = FALSE;
-	if (_this->_useType == CaptureType::_WINDIVERT)
-		skipCheckSEQ = TRUE;
-
+	INT32 retry = 0;
+	INT32 packetOffset = 0;
+	UCHAR tmpPacket[2048] = { 0 };
+	SIZE_T tmpLen = 2048;
 	while (TRUE)
 	{
 		PacketInfo* pi = nullptr;
+
+		if (pti->isRecv) {
+			queue = &_this->_recvPacketQueue;
+			nextSEQ = &_this->_nextRecvSEQ;
+			mutex = &_this->_recvMutex;
+		}
+		else {
+			queue = &_this->_sendPacketQueue;
+			nextSEQ = &_this->_nextSendSEQ;
+			mutex = &_this->_sendMutex;
+		}
 
 		if (_this->_pauseParse || queue->empty())
 		{
@@ -76,15 +72,46 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		}
 
 		mutex->lock();
-		for (auto itr = queue->begin(); itr != queue->end(); itr++) 
+		for (auto itr = queue->begin(); itr != queue->end(); itr++)
 		{
-			if (skipCheckSEQ || itr->first == *nextSEQ) {
-				pi = itr->second;
+			if (itr->second != nullptr && itr->second->_packet != nullptr)
+			{
+				// Clear over 1 minute packet in queue
+				if (itr->second->_ts + 60000 < GetCurrentTimeStamp()) {
 #if DEBUG_CAPTURE_SORT == 1
-				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] [skipCheckSEQ:%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", skipCheckSEQ ? "YES" : "NO", itr->first, itr->second->_packet->_datalength);
+					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] SEQ = %lu timed out.", pti->isRecv ? "RECV" : "SEND", itr->first);
 #endif
-				queue->erase(itr);
-				break;
+					ClearPacketInfo(itr->second);
+					queue->erase(itr);
+					break;
+				}
+
+				if (itr->first == *nextSEQ) {
+#if DEBUG_CAPTURE_SORT == 1
+					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", itr->first, itr->second->_packet->_datalength);
+#endif
+					pi = itr->second;
+					queue->erase(itr);
+					retry = 0;
+					break;
+				}
+				else if (itr == queue->begin()) {
+					if (retry > 50 && pti->isRecv && itr->first < *nextSEQ)
+					{
+						ULONG itrSEQ = itr->first;
+						PacketInfo* itrPi = itr->second;
+						ULONG offset = *nextSEQ - itrSEQ;
+						// TCP Timeout retransmission
+						if (itrPi->_packet->_datalength > offset && memcmp(itrPi->_packet->_data, tmpPacket + tmpLen - offset, offset) == 0) {
+#if DEBUG_CAPTURE_SORT == 1
+							Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] oldSEQ = %lu, findSEQ = %lu, nextSEQ = %lu, retry = %d", pti->isRecv ? "RECV" : "SEND", *nextSEQ - offset, itrSEQ, *nextSEQ + offset, retry);
+#endif
+							packetOffset = offset;
+							*nextSEQ -= packetOffset;
+							_this->_loss++;
+						}
+					}
+				}
 			}
 		}
 #if DEBUG_CAPTURE_QUEUE == 1
@@ -92,20 +119,37 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 #endif
 		mutex->unlock();
 
-		if (pi != nullptr) {
+		if (pi != nullptr && pi->_packet != nullptr) {
+
 			*nextSEQ += static_cast<ULONG>(pi->_packet->_datalength);
 
+			if (pti->isRecv) {
+				if (packetOffset > 0) {
+					pi->_packet->_datalength -= packetOffset;
+					pi->_packet->_data += packetOffset;
 #if DEBUG_CAPTURE_SORT == 1
-			Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Set next SEQ %lu", pti->isRecv ? "RECV" : "SEND", *nextSEQ);
+					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find packetOffset = %d", pti->isRecv ? "RECV" : "SEND", packetOffset);
 #endif
+					packetOffset = 0;
+				}
+
+#if DEBUG_CAPTURE_SORT == 1
+				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Set next SEQ %lu", pti->isRecv ? "RECV" : "SEND", *nextSEQ);
+#endif
+				tmpLen = pi->_packet->_datalength;
+				ZeroMemory(tmpPacket, 2048);
+				memcpy_s(tmpPacket, tmpLen, pi->_packet->_data, tmpLen);
+			}
 
 			ParsePacket(_this, pi);
-
 			ClearPacketInfo(pi);
 		}
 		else {
-			Sleep(10);
+			retry++;
+			Sleep(100);
+			continue;
 		}
+		retry = 0;
 	}
 
 	return 0;
@@ -174,18 +218,22 @@ VOID PacketCapture::ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt)
 
 VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr* pkthdr)
 {
-	packet->_ethernetHeader = (ETHERNETHEADER*)pkt;
+	SHORT offset = 14;
 
-	packet->_ipHeader = (IPHEADER*)(pkt + 14);
+	packet->_ethernetHeader = (ETHERNETHEADER*)pkt;
+	//if (packet->_ethernetHeader->Type != 8) // check is raw packet
+	//	offset = 0;
+
+	packet->_ipHeader = (IPHEADER*)(pkt + offset);
 	packet->_ipHeader->length = _byteswap_ushort(packet->_ipHeader->length);
 
-	packet->_tcpHeader = (TCPHEADER*)(pkt + 14 + packet->_ipHeader->len * 4);
+	packet->_tcpHeader = (TCPHEADER*)(pkt + offset + packet->_ipHeader->len * 4);
 	packet->_tcpHeader->seq_number = _byteswap_ulong(packet->_tcpHeader->seq_number);
 	packet->_tcpHeader->src_port = _byteswap_ushort(packet->_tcpHeader->src_port);
 	packet->_tcpHeader->dest_port = _byteswap_ushort(packet->_tcpHeader->dest_port);
 	packet->_isRecv = (packet->_tcpHeader->src_port == 10200);
 
-	USHORT packetHeaderLen = 14 + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4;
+	USHORT packetHeaderLen = offset + packet->_ipHeader->len * 4 + packet->_tcpHeader->length * 4;
 
 	packet->_data = (pkt + packetHeaderLen);
 
@@ -247,22 +295,4 @@ VOID PacketCapture::ClearPacketInfo(PacketInfo* pi)
 	delete[] pi->_packet->_pkt;
 	delete pi->_packet;
 	delete pi;
-}
-
-VOID PacketCapture::ClearQueue(BOOL isRecv)
-{
-	unordered_map<ULONG, PacketInfo*>* queue = nullptr;
-
-	if (isRecv) {
-		queue = &_recvPacketQueue;
-	}
-	else {
-		queue = &_sendPacketQueue;
-	}
-
-	for (auto itr = queue->begin(); itr != queue->end(); itr++) {
-		ClearPacketInfo(itr->second);
-	}
-
-	queue->clear();
 }

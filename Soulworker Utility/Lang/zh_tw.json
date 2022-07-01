@@ -18,6 +18,7 @@
     "STR_MENU_RESET_ORDER": "重設排序",
     "STR_MENU_OUT_OF_DATE": "(有新版本!)",
     "STR_MENU_PING": "延遲",
+    "STR_MENU_LOSS": "掉包",
 
     "STR_TABLE_YOU": "我",
     "STR_TABLE_NAME": "名稱",
@@ -89,6 +90,8 @@
     "STR_OPTION_TAB_HOTKEY_SETTING": "熱鍵",
     "STR_OPTION_COMBO_LANG": "語言選擇",
     "STR_OPTION_SOLO_RANK_MODE": "單人排名模式",
+    "STR_OPTION_COMBO_CAPTURE_MODE": "擷取模式",
+    "STR_OPTION_SAVE_WARNING": "重新啟動程式後才會套用變更",
 
     "STR_CHAR_UNKNOWN": "未知玩家",
     "STR_CHAR_HARU": "哈露",

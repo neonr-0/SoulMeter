@@ -59,10 +59,10 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 		WINDIVERT_ADDRESS addr;
 		UINT addrlen = sizeof(WINDIVERT_ADDRESS);
 		UINT recvlen = 0;
+		BYTE* pkt_data = new BYTE[WINDIVERT_MTU_MAX];
 
 		while (TRUE) {
 
-			BYTE* pkt_data = new BYTE[WINDIVERT_MTU_MAX];
 			// Windivert 1.4.2
 			if (!WinDivertRecvEx(_this->_handle, pkt_data, WINDIVERT_MTU_MAX, 0, &addr, &recvlen, NULL)) {
 				// WinDivert 2.2
@@ -72,13 +72,10 @@ DWORD MyWinDivert::ReceiveCallback(LPVOID prc) {
 				continue;
 			}
 
-			IPv4Packet* packet = new IPv4Packet;
-			PACKETCAPTURE.ParseWinDivertStruct(packet, pkt_data);
+			IPv4Packet packet;
+			PACKETCAPTURE.ParseWinDivertStruct(&packet, pkt_data);
 
-			PacketInfo* pi = new PacketInfo;
-			pi->_packet = packet;
-
-			PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
+			PACKETPARSER.Parse(&packet, packet._isRecv);
 		}
 
 	} while (false);

@@ -6,11 +6,12 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Buff Meter\Buff Meter.h"
 #include ".\Damage Meter\MySQLite.h"
+#include ".\Packet Capture\PacketCapture.h"
 
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
 	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false), _isSoloRankMode(FALSE),
-	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3)
+	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT)
 {
 	
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
@@ -218,7 +219,28 @@ VOID UiOption::ChangeLang()
 	DAMAGEMETER.FreeLock();
 }
 
+VOID UiOption::ShowCaptureModeSelector() {
+	const CHAR* comboPreview = PACKETCAPTURE.GetType(&_captureMode);
+
+	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_COMBO_CAPTURE_MODE"));
+	if (ImGui::BeginCombo(u8"###OptionCaptureModeSelector", comboPreview, ImGuiComboFlags_HeightLarge)) {
+
+		if (ImGui::Selectable("Npcap")) {
+			_captureMode = (INT32)CaptureType::_NPCAP;
+		}
+
+		if (ImGui::Selectable("WinDivert")) {
+			_captureMode = (INT32)CaptureType::_WINDIVERT;
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 VOID UiOption::OpenOption() {
+
+	if (!_open)
+		_captureMode = PACKETCAPTURE.GetMode();
 
 	_open = TRUE;
 
@@ -255,7 +277,7 @@ VOID UiOption::OpenOption() {
 			DAMAGEMETER.Suspend();
 		}
 #endif
-
+		ShowCaptureModeSelector();
 		ShowLangSelector();
 		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
 		ShowFontSelector();
@@ -378,6 +400,10 @@ BOOL UiOption::GetOption() {
 	attr = ele->FindAttribute("SaveDataWhenBossDied");
 	if (attr != nullptr)
 		attr->QueryIntValue(&_saveDataWhenBossDied);
+
+	attr = ele->FindAttribute("UseCaptureMode");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_captureMode);
 
 	auto attr2 = ele->FirstChildElement("UseLangFile");
 	if (attr2 != nullptr) {
@@ -748,6 +774,8 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("WindowWidth", _windowWidth);
 	option->SetAttribute("RefreshTime", _refreshTime);
 
+	option->SetAttribute("UseCaptureMode", _captureMode);
+
 	option->InsertNewChildElement("UseLangFile")->SetText(_selectedLang);
 
 
@@ -821,6 +849,12 @@ BOOL UiOption::SaveOption() {
 
 	doc.SaveFile(OPTION_FILE_NAME);
 
+	if (PACKETCAPTURE.GetMode() != _captureMode) {
+		CHAR tmp[256] = { 0 };
+		ANSItoUTF8(LANGMANAGER.GetText("STR_OPTION_SAVE_WARNING"), tmp, 256);
+		MessageBoxA(NULL, tmp, "WARNING", MB_ICONWARNING);
+	}
+
 	return TRUE;
 }
 
@@ -845,6 +879,10 @@ BOOL UiOption::SetBasicOption() {
 	_open = TRUE;
 
 	return TRUE;
+}
+
+const INT32& UiOption::GetCaptureMode() {
+	return _captureMode;
 }
 
 BOOL UiOption::ToggleTopMost() {

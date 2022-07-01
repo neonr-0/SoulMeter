@@ -52,10 +52,10 @@ VOID UtillWindow::Update()
 					CHAR mapName[MAX_MAP_LEN] = { 0 };
 					SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
 
-					sprintf_s(label, "%s %02d:%02d:%02d(%02d:%02d.%01d)###history%d", 
+					sprintf_s(label, "%s - %02d:%02d.%01d (%02d:%02d:%02d)###history%d", 
 						mapName,
-						hi->_saveTime.wHour, hi->_saveTime.wMinute, hi->_saveTime.wSecond,
 						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
+						hi->_saveTime.wHour, hi->_saveTime.wMinute, hi->_saveTime.wSecond,
 						i
 					);
 

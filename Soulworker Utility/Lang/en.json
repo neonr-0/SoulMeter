@@ -18,6 +18,7 @@
     "STR_MENU_RESET_ORDER": "Reset order",
     "STR_MENU_OUT_OF_DATE": "(Find new version!)",
     "STR_MENU_PING": "Ping",
+    "STR_MENU_LOSS": "Loss",
 
     "STR_TABLE_YOU": "YOU",
     "STR_TABLE_NAME": "NAME",
@@ -89,6 +90,8 @@
     "STR_OPTION_TAB_HOTKEY_SETTING": "Hotkey",
     "STR_OPTION_COMBO_LANG": "Lang select",
     "STR_OPTION_SOLO_RANK_MODE": "Solo rank mode",
+    "STR_OPTION_COMBO_CAPTURE_MODE": "Capture mode",
+    "STR_OPTION_SAVE_WARNING": "Please restart app to apply settings",
 
     "STR_CHAR_UNKNOWN": "Unknown",
     "STR_CHAR_HARU": "Haru",
