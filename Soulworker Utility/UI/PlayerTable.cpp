@@ -893,7 +893,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		ImGui::TableNextColumn();
 
 		// Full AB Percent
-		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU") || savedResultFullAB <= 0) {
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
 			sprintf_s(label, 128, "%.0f", ((savedResultFullAB * 1000) / DAMAGEMETER.GetTime()) * 100);
 		}
 		else {
