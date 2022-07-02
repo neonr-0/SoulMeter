@@ -84,6 +84,12 @@ public:
 
 	DOUBLE _losedHp = 0;
 
+	BOOL _fullABStarted = false;
+	UINT64 _fullABStartTime = 0;
+	UINT64 _fullABEndTime = 0;
+	DOUBLE _fullABPrevTime = 0;
+	DOUBLE _fullABTime = 0;
+
 
 	_SW_PLAYER_METADATA() {
 		_id = 0;
@@ -112,13 +118,32 @@ public:
 			_partialDamage = statValue;
 			break;
 		case StatType::ArmorBreak:
+			_armorBreak = statValue;
 			if (DAMAGEMETER.isRun()) {
-				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime());
+				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime()); // timer time
 				FLOAT correctedAB = (_armorBreak > 100) ? 100 : _armorBreak;
 				_avgABSum += static_cast<UINT64>((time - _avgABPreviousTime) * correctedAB);
 				_avgABPreviousTime = time;
+
+				if (_armorBreak >= 100) {
+					if (!_fullABStarted) {
+						_fullABStarted = true;
+						_fullABStartTime = time;
+						_fullABEndTime = time;
+						_fullABPrevTime = _fullABTime;
+					}
+					else {
+						_fullABEndTime = time;
+					}
+				}
+				else {
+					if (_fullABStarted) {
+						_fullABStarted = false;
+						_fullABEndTime = time;
+					}
+				}
+				CalcFullABTime();
 			}
-			_armorBreak = statValue;
 			break;
 		case StatType::CurrentHP:
 			if (_currentHP > 0.0 && _currentHP > statValue) {
@@ -148,12 +173,12 @@ public:
 	VOID UpdateSpecialStat(USHORT statType, FLOAT statValue) {
 		switch (statType) {
 		case SpecialStatType::BossDamage:
+			_bossDamage = statValue;
 			if (DAMAGEMETER.isRun()) {
 				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime());
 				_avgBDSum += static_cast<UINT64>((time - _avgBDPreviousTime) * _bossDamage);
 				_avgBDPreviousTime = time;
 			}
-			_bossDamage = statValue;
 			break;
 		default:
 			//Log::WriteLog(_T("[DEBUG] [statType = %x], [statValue = %f]\n"), statType, statValue);
@@ -170,6 +195,12 @@ public:
 
 		_avgBDSum += static_cast<UINT64>((currentTime - _avgBDPreviousTime) * _bossDamage);
 		_avgBDPreviousTime = currentTime;
+
+		if (_fullABStarted) {
+			_fullABStarted = false;
+			_fullABEndTime = currentTime;
+		}
+		CalcFullABTime();
 	}
 
 	VOID MeterReseted() {
@@ -191,6 +222,13 @@ public:
 				avgTimeDifference = currentTime - _avgBDPreviousTime;
 				UINT64 calculatedAvgBD = static_cast<UINT64>((_avgBDSum + avgTimeDifference * _bossDamage));
 				(*player)->SetHistoryAvgBD((DOUBLE)calculatedAvgBD / currentTime);
+
+				if (_fullABStarted) {
+					_fullABStarted = false;
+					_fullABEndTime = currentTime;
+					CalcFullABTime();
+				}
+				(*player)->SetHistoryABTime(_fullABTime);
 
 				// 
 				if (_gear90EffectStarted) {
@@ -259,6 +297,12 @@ public:
 		_acc02EffectStarted = false;
 		_acc02Sum = 0;
 		_acc02EffectStartedTime = 0;
+
+		_fullABStarted = false;
+		_fullABStartTime = 0;
+		_fullABEndTime = 0;
+		_fullABPrevTime = 0;
+		_fullABTime = 0;
 	}
 
 	VOID HitEnemy() {
@@ -444,6 +488,11 @@ public:
 			return _acc02TimeLapse * ATK;
 		}
 		return 0;
+	}
+
+	VOID CalcFullABTime()
+	{
+		_fullABTime = _fullABPrevTime + ((DOUBLE)(_fullABEndTime - _fullABStartTime) / 1000);
 	}
 
 	FLOAT GetStat(USHORT statType) {

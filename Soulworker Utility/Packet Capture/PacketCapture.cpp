@@ -95,8 +95,8 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 					retry = 0;
 					break;
 				}
-				else if (itr == queue->begin()) {
-					if (retry > 50 && pti->isRecv && itr->first < *nextSEQ)
+				else if (pti->isRecv && itr == queue->begin() && _this->_recvAckQueue.find(*nextSEQ) == _this->_recvAckQueue.end()) {
+					if (retry > 50 && itr->first < *nextSEQ)
 					{
 						ULONG itrSEQ = itr->first;
 						PacketInfo* itrPi = itr->second;

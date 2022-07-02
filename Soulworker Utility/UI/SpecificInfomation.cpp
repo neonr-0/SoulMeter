@@ -111,12 +111,13 @@ VOID SpecificInformation::UpdateSkillTotalTable()
 
 	CHAR table[128] = { 0 };
 	sprintf_s(table, 128, "##skilltotaltable");
-	if (ImGui::BeginTable(table, 2, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
+	if (ImGui::BeginTable(table, 3, ImGuiTableFlags_Resizable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Reorderable)) {
 
 		ImGui::SetWindowFontScale(_columnFontScale);
 
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_NAME"), ImGuiTableColumnFlags_NoReorder | ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoClip | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_SPECIFICINFO_USE_SKILL_COUNTS"), ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_SPECIFICINFO_USE_SKILL_COUNTS_IN_FULL_AB"), ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableHeadersRow();
 
 		CHAR comma[128] = { 0 }; CHAR label[128] = { 0 };
@@ -129,13 +130,17 @@ VOID SpecificInformation::UpdateSkillTotalTable()
 
 			// NAME
 			SWDB.GetSkillName(itr->first, _skillName, SKILL_NAME_LEN);
-
 			ImGui::Text(_skillName);
-
 			ImGui::TableNextColumn();
 
 			// 시전횟수
-			sprintf_s(label, 128, "%d", itr->second);
+			sprintf_s(label, 128, "%d", itr->second->_count);
+			TextCommma(label, comma);
+			ImGui::Text(comma);
+			ImGui::TableNextColumn();
+
+			// In Full AB
+			sprintf_s(label, 128, "%d", itr->second->_in_full_ab_count);
 			TextCommma(label, comma);
 			ImGui::Text(comma);
 		}

@@ -62,7 +62,7 @@ VOID UtillWindow::Update()
 					if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)
 						continue;
 
-					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i)) {
+					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
 						if (!DAMAGEMETER.isRun()) {
 							DAMAGEMETER.SetCurrentHistoryId(i);
 							DAMAGEMETER.SetHistory((LPVOID)hi);

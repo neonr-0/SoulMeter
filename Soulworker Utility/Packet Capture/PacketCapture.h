@@ -12,7 +12,7 @@ using namespace std;
 #define DEBUG_CAPTURE_IP 0
 #define DEBUG_CAPTURE_TCP 0
 #define DEBUG_CAPTURE_DATA 0
-#define DEBUG_CAPTURE_SORT 1
+#define DEBUG_CAPTURE_SORT 0
 #define DEBUG_CAPTURE_QUEUE 0
 #endif
 
@@ -40,6 +40,7 @@ private:
 
 	map<ULONG, PacketInfo*> _recvPacketQueue;
 	map<ULONG, PacketInfo*> _sendPacketQueue;
+	map<ULONG, ULONG> _recvAckQueue;
 
 	ULONG _nextRecvSEQ;
 	ULONG _nextSendSEQ;
@@ -116,6 +117,29 @@ public:
 		}
 	}
 
+	VOID InsertRecvAckQueue(ULONG seq)
+	{
+		if (_pauseParse)
+			return;
+
+		_recvMutex.lock();
+		_recvAckQueue[seq] += 1;
+		_recvMutex.unlock();
+	}
+
+	VOID ClearRecvAckQueue(ULONG belowSEQ)
+	{
+		if (_pauseParse)
+			return;
+
+		_recvMutex.lock();
+		for (auto itr = _recvAckQueue.begin(); itr != _recvAckQueue.end(); itr++) {
+			if (itr->first < belowSEQ)
+				itr = _recvAckQueue.erase(itr);
+		}
+		_recvMutex.unlock();
+	}
+
 	recursive_mutex* GetRecvMutex()
 	{
 		return &_recvMutex;
@@ -125,8 +149,6 @@ public:
 	{
 		return &_sendMutex;
 	}
-
-	VOID ClearQueue(BOOL isRecv);
 
 	VOID SetSEQ(ULONG l, BOOL isRecv)
 	{

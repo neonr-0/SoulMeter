@@ -20,8 +20,12 @@ SWDamagePlayer::~SWDamagePlayer() {
 	for (auto itr = _monsterInfo.begin(); itr != _monsterInfo.end(); itr++) {
 		delete (*itr);
 	}
-
 	_monsterInfo.clear();
+
+	for (auto itr = skillCounts.begin(); itr != skillCounts.end(); itr++)
+		delete itr->second;
+
+	skillCounts.clear();
 }
 
 BOOL SWDamagePlayer::SortFunction(SWDamagePlayer* playerA, SWDamagePlayer* playerB) {
@@ -227,6 +231,16 @@ vector<SWDamageMonster*>::const_iterator SWDamagePlayer::GetMonsterInfo(UINT id)
 	return itr;
 }
 
+DOUBLE SWDamagePlayer::GetHistoryABTime()
+{
+	return _historyABTime;
+}
+
+VOID SWDamagePlayer::SetHistoryABTime(DOUBLE historyABTime)
+{
+	_historyABTime = historyABTime;
+}
+
 VOID SWDamagePlayer::SetHistoryAvgAB(DOUBLE historyAvgAB)
 {
 	_historyAvgAB = historyAvgAB;
@@ -310,12 +324,25 @@ VOID SWDamagePlayer::AddSkillUsed(UINT32 skillId)
 {
 	_skillCounts++;
 
+	BOOL isInFullAB = false;
+	auto metadata = DAMAGEMETER.GetPlayerMetaData(_id);
+	if (metadata != nullptr) {
+		isInFullAB = metadata->_fullABStarted;
+	}
+
 	if (skillCounts.find(skillId) == skillCounts.end()) {
-		skillCounts.insert(std::make_pair(skillId, 1));
+		SkillCount* pSc = new SkillCount;
+		pSc->_count = 1;
+		pSc->_in_full_ab_count = (isInFullAB ? 1 : 0);
+
+		skillCounts.insert({ skillId, pSc });
 		return;
 	}
 
-	skillCounts[skillId] = skillCounts[skillId] + 1;
+	SkillCount* pSc = skillCounts[skillId];
+	pSc->_count += 1;
+	if (isInFullAB)
+		pSc->_in_full_ab_count += 1;
 }
 
 VOID SWDamagePlayer::AddDodgeUsed()

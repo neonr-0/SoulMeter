@@ -209,7 +209,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	if (ImGui::BeginTable("###Player Table", 38, tableFlags)) {
+	if (ImGui::BeginTable("###Player Table", 39, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
 		columnFlags |= ImGuiTableColumnFlags_NoSort;
@@ -254,6 +254,7 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_LOSED_HP"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DODGE_COUNT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DEATH"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_TIME"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		//ImGuiTableColumnFlags_WidthStretch
 
 
@@ -870,6 +871,21 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 
 		// Death Counter
 		sprintf_s(label, 128, "%u", (*itr)->GetDeathCount());
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
+
+		// Full AB Time
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
+			if (DAMAGEMETER.isHistoryMode()) {
+				sprintf_s(label, 128, "%.1f", (*itr)->GetHistoryABTime());
+			}
+			else {
+				sprintf_s(label, 128, "%.1f", playerMetaData->_fullABTime);
+			}
+		}
+		else {
+			sprintf_s(label, 128, "-");
+		}
 		ImGui::Text(label);
 		ImGui::TableNextColumn();
 

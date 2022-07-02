@@ -8,6 +8,11 @@ using namespace std;
 
 #define DEBUG_DAMAGE_PLAYER 0
 
+struct SkillCount {
+	USHORT _count;
+	USHORT _in_full_ab_count;
+};
+
 class SWDamagePlayer : public MemoryPool<SWDamagePlayer, 30> {
 private:
 	UINT32 _id;
@@ -52,6 +57,8 @@ private:
 	DOUBLE _historyLosedHP = 0.0;
 	BYTE _JqStack = 0;
 
+	DOUBLE _historyABTime = 0;
+
 	vector<SWDamageMonster*> _monsterInfo;
 	VOID InsertMonsterInfo(UINT32 monsterID, UINT64 damage, UINT64 critDamage, USHORT hitCount, USHORT critHitCount, UINT32 skillID);
 	VOID Sort();
@@ -66,7 +73,7 @@ public:
 	SWDamagePlayer(UINT32 id);
 	~SWDamagePlayer();
 
-	map<UINT32, USHORT> skillCounts;
+	map<UINT32, SkillCount*> skillCounts;
 
 	static BOOL SortFunction(SWDamagePlayer* playerA, SWDamagePlayer* playerB);
 
@@ -94,6 +101,9 @@ public:
 	USHORT GetSkillUsed();
 	USHORT GetDodgeUsed();
 	USHORT GetDeathCount();
+
+	DOUBLE GetHistoryABTime();
+	VOID SetHistoryABTime(DOUBLE historyABTime);
 
 	VOID SetHistoryAvgAB(DOUBLE historyAvgAB);
 	DOUBLE GetHistoryAvgAB();
