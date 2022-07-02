@@ -82,8 +82,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] SEQ = %lu timed out.", pti->isRecv ? "RECV" : "SEND", itr->first);
 #endif
 					ClearPacketInfo(itr->second);
-					queue->erase(itr);
-					break;
+					itr = queue->erase(itr);
 				}
 
 				if (itr->first == *nextSEQ) {
@@ -95,7 +94,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 					retry = 0;
 					break;
 				}
-				else if (pti->isRecv && itr == queue->begin() && _this->_recvAckQueue.find(*nextSEQ) == _this->_recvAckQueue.end()) {
+				else if (pti->isRecv && itr == queue->begin()) {
 					if (retry > 50 && itr->first < *nextSEQ)
 					{
 						ULONG itrSEQ = itr->first;
@@ -112,6 +111,8 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 						}
 					}
 				}
+				if (itr == queue->end())
+					break;
 			}
 		}
 #if DEBUG_CAPTURE_QUEUE == 1
@@ -229,6 +230,7 @@ VOID PacketCapture::ParseNpcapStruct(IPv4Packet* packet, BYTE* pkt, pcap_pkthdr*
 
 	packet->_tcpHeader = (TCPHEADER*)(pkt + offset + packet->_ipHeader->len * 4);
 	packet->_tcpHeader->seq_number = _byteswap_ulong(packet->_tcpHeader->seq_number);
+	packet->_tcpHeader->ack_number = _byteswap_ulong(packet->_tcpHeader->ack_number);
 	packet->_tcpHeader->src_port = _byteswap_ushort(packet->_tcpHeader->src_port);
 	packet->_tcpHeader->dest_port = _byteswap_ushort(packet->_tcpHeader->dest_port);
 	packet->_isRecv = (packet->_tcpHeader->src_port == 10200);

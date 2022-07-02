@@ -61,6 +61,7 @@
     "STR_TABLE_DEATH": "Death",
     "STR_TABLE_DURATION": "Duration",
     "STR_TABLE_FULL_AB_TIME": "Full.AB(s)",
+    "STR_TABLE_FULL_AB_PERCENT": "Full.AB(%)",
 
     "STR_OPTION_WINDOWS_NAME": "Option",
     "STR_OPTION_FONTSCALE": "Font Scale",

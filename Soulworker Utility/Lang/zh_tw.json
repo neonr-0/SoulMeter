@@ -61,6 +61,7 @@
     "STR_TABLE_DEATH": "死亡",
     "STR_TABLE_DURATION": "持續時間",
     "STR_TABLE_FULL_AB_TIME": "滿貫(秒)",
+    "STR_TABLE_FULL_AB_PERCENT": "滿貫(%)",
 
     "STR_OPTION_WINDOWS_NAME": "設定",
     "STR_OPTION_FONTSCALE": "文字放大倍率",

@@ -209,7 +209,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	if (ImGui::BeginTable("###Player Table", 39, tableFlags)) {
+	if (ImGui::BeginTable("###Player Table", 40, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
 		columnFlags |= ImGuiTableColumnFlags_NoSort;
@@ -255,6 +255,7 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DODGE_COUNT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DEATH"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_TIME"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		//ImGuiTableColumnFlags_WidthStretch
 
 
@@ -874,14 +875,26 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		ImGui::Text(label);
 		ImGui::TableNextColumn();
 
+		static DOUBLE savedResultFullAB = 0;
 		// Full AB Time
 		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
 			if (DAMAGEMETER.isHistoryMode()) {
-				sprintf_s(label, 128, "%.1f", (*itr)->GetHistoryABTime());
+				savedResultFullAB = (*itr)->GetHistoryABTime();
 			}
 			else {
-				sprintf_s(label, 128, "%.1f", playerMetaData->_fullABTime);
+				savedResultFullAB = playerMetaData->_fullABTime;
 			}
+			sprintf_s(label, 128, "%.1f", savedResultFullAB);
+		}
+		else {
+			sprintf_s(label, 128, "-");
+		}
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
+
+		// Full AB Percent
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU") || savedResultFullAB <= 0) {
+			sprintf_s(label, 128, "%.0f", ((savedResultFullAB * 1000) / DAMAGEMETER.GetTime()) * 100);
 		}
 		else {
 			sprintf_s(label, 128, "-");
