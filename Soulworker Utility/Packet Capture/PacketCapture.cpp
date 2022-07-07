@@ -76,15 +76,6 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		{
 			if (itr->second != nullptr && itr->second->_packet != nullptr)
 			{
-				// Clear over 1 minute packet in queue
-				if (itr->second->_ts + 60000 < GetCurrentTimeStamp()) {
-#if DEBUG_CAPTURE_SORT == 1
-					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] SEQ = %lu timed out.", pti->isRecv ? "RECV" : "SEND", itr->first);
-#endif
-					ClearPacketInfo(itr->second);
-					itr = queue->erase(itr);
-				}
-
 				if (itr->first == *nextSEQ) {
 #if DEBUG_CAPTURE_SORT == 1
 					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", itr->first, itr->second->_packet->_datalength);

@@ -10,7 +10,9 @@
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#define APP_VERSION "1.3.1.5a"
+#define APP_VERSION "1.3.1.6"
+#define SWMAGIC 7
+#define SWCONSTVALUE 1
 
 #include <Windows.h>
 

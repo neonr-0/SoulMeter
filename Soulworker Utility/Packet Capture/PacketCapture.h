@@ -20,8 +20,6 @@ struct PacketInfo
 {
 	IPv4Packet* _packet;
 	UINT64 _ts;
-	ULONG _ackNo;
-	BOOL _isAck;
 };
 
 enum class CaptureType
