@@ -13,9 +13,16 @@ static unordered_set<UINT32> pauseIdList({
 	31301001, // Flemma P1
 	31301002, // Flemma P2
 
+	/* VS Solo */
+	33301001, // Flemma P1
+	33301002, // Flemma P2
+
 	/* BS */
 	31310101, // Tenebris P1
-	31310103 // BS Hard Phase 1
+	31310103, // BS Hard Phase 1
+
+	/* BS Solo */
+	32320101, // Tenebris P1
 
 	});
 
@@ -30,13 +37,19 @@ static unordered_set<UINT32> endIdList({
 	/* VS */
 	31301003, // Flemma P3
 
+	/* VS Solo */
+	33301003, // Flemma P3
+
 	/* BS */
 	31310102, // Tenebris P2
 	31310107, // Tenebris Hard P2
 
+	/* BS Solo */
+	32320102, // Tenebris P2
+
 	/* RANK */
-	32308101, // Raphakumba Solo
-	32301001, // Flemma Solo
+	32308101, // Raphakumba Rank
+	32301001, // Flemma Rank
 
 	});
 
@@ -87,6 +100,13 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 	31310116, 31310117, // Flame of Tenebris
 	31310151, 31310152, 31310153, 31310154, // Mobs
 	31310192, // Reward box
+
+	/* BS Solo */
+	32320103, 32320104, 32320105, 32320106, // Mobs
+	32320107, 32320108, 32320109, 32320114, // Fake Tenebris
+	32320110, 32320111, // Flame of Tenebris
+	32320112,  // Hazy Beam
+	32320113, 32320115, // Reward box
 
 	/* BSVH */
 	31310118, 31310119, // Desire Energy Fragment, Hazy Beam

@@ -109,6 +109,12 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 			bypassCheck = true;
 		}
 	}
+	// BS Solo
+	if (worldID == 24018) {
+		if (db2 == 32320101 || db2 == 32320102) {
+			bypassCheck = true;
+		}
+	}
 
 	// Ignore object, Ex: car
 	if (bypassCheck || (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end() && db->_type != 6)) {

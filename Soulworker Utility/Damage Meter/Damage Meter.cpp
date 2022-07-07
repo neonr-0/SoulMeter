@@ -76,6 +76,13 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 				return;
 			}
 		}
+
+		// BS Solo
+		if (GetWorldID() == 24018) {
+			if ((monsterId != 32320101) && (monsterId != 32320102)) {
+				return;
+			}
+		}
 	}
 
 	Start();
