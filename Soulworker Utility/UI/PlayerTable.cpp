@@ -968,6 +968,7 @@ VOID PlayerTable::CheckUpdate()
 
 			if (res != nullptr && res.error() == httplib::Error::Success && res->status == 200) {
 				_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
+				break;
 			}
 			else {
 				error = ERROR_NOT_FOUND;

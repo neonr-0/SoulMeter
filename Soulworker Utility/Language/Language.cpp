@@ -19,13 +19,11 @@ auto Language::GetLangFile(CHAR* langFile)
 		}
 
 		// parse raw to json
-		auto langData = json::parse(langRaw);
-		if (langData.empty()) {
+		j = json::parse(langRaw);
+		if (j.empty()) {
 			Log::WriteLogA("[Language::SetCurrentLang] Lang file %s is empty.", langFile);
 			break;
 		}
-
-		j = langData;
 
 	} while (false);
 
