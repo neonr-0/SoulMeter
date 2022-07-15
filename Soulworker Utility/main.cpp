@@ -21,7 +21,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	do
 	{
-
 		const UINT codePage = GetACP();
 		switch (codePage) {
 		case 936: // ZH-CN
@@ -36,36 +35,36 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		}
 
 		if (errorCode) {
-			Log::WriteLog(const_cast<LPTSTR>(_T("Init lang file failed. %d")), errorCode);
-			sprintf_s(errorMsg, "Init Lang failed.");
+			sprintf_s(errorMsg, "Init Lang failed. err: %lu", errorCode);
+			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 		PLAYERTABLE.CheckUpdate();
 
 		if ((errorCode = SWCRYPT.LoadSWCrypt())) {
-			Log::WriteLog(const_cast<LPTSTR>(_T("Load SWCrypt.dll Failed %d")), errorCode);
-			sprintf_s(errorMsg, "Load SWCrypt.dll failed.");
+			sprintf_s(errorMsg, "Load SWCrypt.dll failed, err: %lu", errorCode);
+			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 		if (!SWDB.Init()) {
-			Log::WriteLog(const_cast<LPTSTR>(_T("InitDB Failed")));
 			sprintf_s(errorMsg, "Init database failed.");
+			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 		if (UIWINDOW.Init(1, 1, 1, 1)) {
 			if ((errorCode = PACKETCAPTURE.Init())) {
-				Log::WriteLog(const_cast<LPTSTR>(_T("Init PacketCapture Failed %d")), errorCode);
-				sprintf_s(errorMsg, "Init PacketCapture failed.");
+				sprintf_s(errorMsg, "Init PacketCapture failed, err: %lu", errorCode);
+				Log::WriteLogA(errorMsg);
 				break;
 			}
 			UIWINDOW.Run();
 		}
 		else {
-			Log::WriteLog(const_cast<LPTSTR>(_T("Init UIWINDOW Failed")));
 			sprintf_s(errorMsg, "Init UI failed.");
+			Log::WriteLogA(errorMsg);
 			break;
 		}
 
@@ -73,7 +72,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	if (errorCode) {
 		MessageBoxA(0, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK);
-		exit(1);
 	}
 
 	MiniDump::End();

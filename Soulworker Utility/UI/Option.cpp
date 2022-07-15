@@ -31,7 +31,8 @@ UiOption::UiOption()  :
 	strcpy_s(_selectedLang, LANGMANAGER.GetCurrentLang());
 }
 
-UiOption::~UiOption() {
+UiOption::~UiOption() 
+{
 	
 }
 
@@ -40,7 +41,7 @@ BOOL UiOption::ShowFontSelector() {
 	ImFont* font_current = ImGui::GetFont();
 
 	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_FONTSCALE_DESC"));
-	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_FONTSCALE"), &_fontScale, 0.005f, 0.3f, 2.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_FONTSCALE"), &_fontScale, 0.005f, 0.3f, 2.0f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
 
 	font_current->Scale = _fontScale;
 
@@ -69,10 +70,10 @@ BOOL UiOption::ShowTableOption() {
 	style.WindowBorderSize = _windowBorderSize;
 	ImGui::SliderFloat2(LANGMANAGER.GetText("STR_OPTION_CELL_PADDING"), (float*)&_cellPadding, 0.0f, 20.0f, "%.0f");
 	style.CellPadding = _cellPadding;
-	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_COLUMN_FONT_SCALE"), &_columnFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
-	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_TABLE_FONT_SCALE"), &_tableFontScale, 0.005f, 0.3f, 2.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_COLUMN_FONT_SCALE"), &_columnFontScale, 0.005f, 0.3f, 2.0f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
+	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_TABLE_FONT_SCALE"), &_tableFontScale, 0.005f, 0.3f, 2.0f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
 	ImGui::Separator();
-	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_TABLE_REFRESH_TIME"), &_refreshTime, 0.005f, 0.1f, 1.0f, "%.1f");
+	ImGui::DragFloat(LANGMANAGER.GetText("STR_OPTION_TABLE_REFRESH_TIME"), &_refreshTime, 0.005f, 0.1f, 1.0f, "%.1f", ImGuiSliderFlags_AlwaysClamp);
 	ImGui::Separator();
 	ImGui::ColorEdit4("##ColorText", (FLOAT*)&_textColor, ImGuiColorEditFlags_None); 
 	ImGui::SameLine(); 	ImGui::Text(ImGui::GetStyleColorName(0));
@@ -310,6 +311,8 @@ VOID UiOption::Init() {
 	if (!GetOption()) {
 		SetBasicOption();
 	}
+
+	_inited = true;
 }
 
 BOOL UiOption::GetOption() {
@@ -745,6 +748,10 @@ BOOL UiOption::GetOption() {
 }
 
 BOOL UiOption::SaveOption() {
+
+	if (!_inited)
+		return false;
+
 	tinyxml2::XMLDocument doc;
 
 	tinyxml2::XMLDeclaration* dec = doc.NewDeclaration();

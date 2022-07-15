@@ -7,6 +7,9 @@
 #include ".\Damage Meter\MySQLite.h"
 
 SWDamageMeter::~SWDamageMeter() {
+
+	BOOL canLock = _mutex.try_lock();
+
 	if (_historyMode)
 		Restore();
 

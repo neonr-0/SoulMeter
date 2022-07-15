@@ -554,7 +554,7 @@ private:
 
 	Timer _timer;
 
-	recursive_mutex _mutex;
+	mutex _mutex;
 
 	INT32 _currentHistoryId = -1;
 

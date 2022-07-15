@@ -197,8 +197,9 @@ VOID PlayerTable::BeginPopupMenu() {
 			UIOPTION.OpenOption();
 		}
 
-		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_EXIT")))
-			exit(1);
+		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_EXIT"))) {
+			PostMessage(UIWINDOW.GetHWND(), WM_CLOSE, 0, 0);
+		}
 
 		ImGui::EndPopup();
 	}
@@ -978,6 +979,6 @@ VOID PlayerTable::CheckUpdate()
 	} while (false);
 
 	if (error != ERROR_SUCCESS)
-		Log::WriteLogA("[CheckUpdate] Can't get version from remote");
+		Log::WriteLogA("[CheckUpdate] Can't get version from remote, err: %lu", ERROR_SUCCESS);
 
 }

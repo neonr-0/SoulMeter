@@ -33,6 +33,8 @@ private:
 
 	VOID UpdateMainTable();
 
+	BOOL _isExit = false;
+
 public:
 	UiWindow();
 	~UiWindow();

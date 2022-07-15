@@ -2557,6 +2557,23 @@ const ImWchar*  ImFontAtlas::GetGlyphRangesChineseFull()
     return &ranges[0];
 }
 
+const ImWchar* ImFontAtlas::GetGlyphRangesChineseAndKoreaFull()
+{
+    static const ImWchar ranges[] =
+    {
+        0x0020, 0x00FF, // Basic Latin + Latin Supplement
+        0x2000, 0x206F, // General Punctuation
+        0x3000, 0x30FF, // CJK Symbols and Punctuations, Hiragana, Katakana
+        0x3131, 0x3163, // Korean alphabets
+        0xAC00, 0xD7A3, // Korean characters
+        0x31F0, 0x31FF, // Katakana Phonetic Extensions
+        0xFF00, 0xFFEF, // Half-width characters
+        0x4e00, 0x9FAF, // CJK Ideograms
+        0,
+    };
+    return &ranges[0];
+}
+
 static void UnpackAccumulativeOffsetsIntoRanges(int base_codepoint, const short* accumulative_offsets, int accumulative_offsets_count, ImWchar* out_ranges)
 {
     for (int n = 0; n < accumulative_offsets_count; n++, out_ranges += 2)

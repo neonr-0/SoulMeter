@@ -31,9 +31,8 @@ VOID SWSPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, cons
 
 #if SWMAGIC == 3
 	_size -= sizeof(SWHEADER) + 3;
-	BYTE ecx = data[5];
 	for (UINT i = 0; i < _size; i++) {
-		data[i + start] ^= _keyTable[16 * (ecx % 16) + (i & 16)];
+		data[i + start] ^= _keyTable[16 * (keyIndex % 16) + (i & 0xF)];
 	}
 #else
 	SWCRYPT.SWDecrypt(data + start, size - start, keyIndex);

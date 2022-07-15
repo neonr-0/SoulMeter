@@ -51,10 +51,11 @@ private:
 	VOID Helper();
 
 	BOOL GetOption();
-	BOOL SaveOption();
 	BOOL SetBasicOption();
 
 	BOOL _open;
+
+	BOOL _inited = false;
 
 	unordered_map<string, string> _allLangList = LANGMANAGER.GetAllLangFile();
 
@@ -93,4 +94,6 @@ public:
 	VOID SetWindowWidth(const FLOAT& width);
 
 	const FLOAT& GetRefreshTime();
+
+	BOOL SaveOption();
 };

@@ -60,7 +60,7 @@ BuffMeter::BuffMeter() {
 }
 
 BuffMeter::~BuffMeter() {
-	GetLock();
+	BOOL canLock = _mutex.try_lock();
 	Clear();
 	FreeLock();
 }

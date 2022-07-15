@@ -174,7 +174,7 @@ BOOL UiWindow::SetFontList() {
 		strcat_s(fontPath, path);
 		strcat_s(fontPath, fd.name);
 
-		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseFull());
+		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseAndKoreaFull());
 	} while (_findnext(handle, &fd) != -1);
 	
 	_findclose(handle);
@@ -257,7 +257,10 @@ LRESULT UiWindow::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_SETFOCUS:
 		UIOPTION.SetFramerate(1);
 		break;
+	case WM_QUIT:
+	case WM_CLOSE:
 	case WM_DESTROY:
+		UIOPTION.SaveOption();
 		PostQuitMessage(0);
 		return 0;
 	}
