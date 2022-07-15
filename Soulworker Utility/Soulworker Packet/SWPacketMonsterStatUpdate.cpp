@@ -35,36 +35,20 @@ VOID SWPacketMonsterStatUpdate::Log() {
 
 VOID SWPacketMonsterStatUpdate::Debug() {
 
-	/*Log::WriteLogA("OP : %04x\tsize : %04x", _swheader->_op, _swheader->_size);
-	for (int i = 0; i < _swheader->_size; i++)
-		Log::WriteLogNoDate(L"%02x ", _data[i]);
-	Log::WriteLogNoDate(L"\n");
-
-	SHORT offset = sizeof(SWHEADER);
+	/*SHORT offset = sizeof(SWHEADER);
 	SWPacketMonsterStatUpdatePkt* pkt = (SWPacketMonsterStatUpdatePkt*)(_data + offset);
 	offset += sizeof(SWPacketMonsterStatUpdatePkt);
+
+	Log::WriteLogA("[SWPacketMonsterStatUpdate] MonsterId = %u, StatCount = %d", pkt->_id, pkt->_statCounts);
+
 	for (BYTE i = 0; i < pkt->_statCounts; i++) {
 
 		SWPacketMonsterStatData* pktStatData = (SWPacketMonsterStatData*)(_data + offset);
 		offset += sizeof(SWPacketMonsterStatData);
 
-		UCHAR monsterName[MONSTER_NAME_LEN] = { 0 };
-		SW_DB2_STRUCT* monsterDB = DAMAGEMETER.GetMonsterDB(pkt->_id);
-		if (monsterDB == nullptr)
-			continue;
+		Log::WriteLogNoDate(L"%u : %llu : %.3f\n", pktStatData->_statID, pktStatData->_statVal, pktStatData->_unk01);
 
-		switch (pktStatData->_statID) {
-		case StatType::CurrentHP:
-			PLOTWINDOW.AddBossHpData(pkt->_id, pktStatData->_statVal, PLAYERTABLE.GetTableTime());
-			break;
-		}
-
-		Log::WriteLogA("[SWPacketMonsterStatUpdatePkt] monsterID: %04X, unk01:%.f, statID: %d, statVal: %llu",
-			pkt->_id, 
-			pktStatData->_unk01,
-			pktStatData->_statID, pktStatData->_statVal
-		);
 	}
 
-	Log::WriteLogNoDate(L"\n\n");*/
+	Log::WriteLogNoDate(L"\n");*/
 }

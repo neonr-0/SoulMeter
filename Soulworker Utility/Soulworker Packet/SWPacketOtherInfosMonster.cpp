@@ -36,7 +36,7 @@ VOID SWPacketOtherInfosMonster::Log() {
 
 VOID SWPacketOtherInfosMonster::Debug() {
 
-	SHORT counts = *(_data + sizeof(SWHEADER));
+	/*SHORT counts = *(_data + sizeof(SWHEADER));
 	SHORT offset = sizeof(SWHEADER) + sizeof(counts);
 	for (SHORT i = 0; i < counts; i++) {
 
@@ -50,7 +50,7 @@ VOID SWPacketOtherInfosMonster::Debug() {
 		if (pktFooter->data2Count > 0)
 			offset += (pktFooter->data2Count * sizeof(SWPACKET_IN_INFO_MONSTER2));
 
-		Log::WriteLogA("MonsterID: %d, data1: %d, data2: %d", pktHeader->realDB2, pktHeader->data1Count, pktFooter->data2Count);
-	}
+		Log::WriteLogA("[SWPacketOtherInfosMonster] MonsterID: %u, DB2: %u, data1: %d, data2: %d", pktHeader->id, pktHeader->realDB2, pktHeader->data1Count, pktFooter->data2Count);
+	}*/
 	
 }
