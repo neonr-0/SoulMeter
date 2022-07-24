@@ -62,6 +62,8 @@
     "STR_TABLE_DURATION": "Duration",
     "STR_TABLE_FULL_AB_TIME": "Full.AB(s)",
     "STR_TABLE_FULL_AB_PERCENT": "Full.AB(%)",
+    "STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT": "G.Enli/Skill(%)",
+    "STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT": "T.Enli/Skill(%)",
 
     "STR_OPTION_WINDOWS_NAME": "Option",
     "STR_OPTION_FONTSCALE": "Font Scale",
@@ -128,7 +130,9 @@
 
     "STR_UTILLWINDOW_SEARCH": "Search",
     "STR_UTILLWINDOW_HISTORY_MAX": "MAX",
+    "STR_UTILLWINDOW_HISTORY_DELETE_SELECTED": "Delete selected",
 
-    "STR_SAVEDATA_VERSION_ERROR": "Savedata version not match, please delete SoulMeter.dat"
+    "STR_SAVEDATA_VERSION_ERROR": "Savedata version not match, please delete SoulMeter.dat",
+    "STR_SAVEDATA_MULTIPLE_ERROR": "Don't open multiple DPS in same folder"
 
 }

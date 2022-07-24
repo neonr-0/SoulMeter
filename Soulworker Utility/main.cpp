@@ -64,6 +64,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 					if (errorCode == ERROR_FILE_CORRUPT) {
 						ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
 					}
+					else if (errorCode == ERROR_FILE_SYSTEM_LIMITATION) {
+						ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_MULTIPLE_ERROR"), errorMsg, sizeof(errorMsg));
+					}
 					break;
 				}
 			}

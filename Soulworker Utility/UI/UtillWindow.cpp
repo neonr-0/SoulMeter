@@ -21,12 +21,34 @@ VOID UtillWindow::Update()
 	ImGui::Begin(label, &_isOpen, ImGuiWindowFlags_None);
 	{
 		CHAR searchData[MAX_PATH] = { 0 };
-
 		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
 
 		CHAR label[MAX_PATH] = { 0 };
 		sprintf_s(label, "%s(%s %d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_MAX"), HISTORY_SIZE);
 		ImGui::Text(label);
+
+		const float ItemSpacing = ImGui::GetStyle().ItemSpacing.x;
+		static float ButtonWidth = 120.0f;
+		float pos = ButtonWidth + ItemSpacing;
+		ImGui::SameLine(ImGui::GetWindowWidth() - pos);
+		if (ImGui::Button(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_DELETE_SELECTED")))
+		{
+			HISTORY.GetMutex()->lock();
+			DAMAGEMETER.GetLock();
+			{
+				if (!DAMAGEMETER.isRun() && DAMAGEMETER.isHistoryMode() && DAMAGEMETER.GetCurrentHistoryId() > 0)
+				{
+					HISTORY_INFO* HI = (HISTORY_INFO*)DAMAGEMETER.GetHistoryHI();
+					DAMAGEMETER.Clear();
+
+					HISTORY.ClearHistory(HI, FALSE);
+					_currentIndex = -1;
+				}
+				DAMAGEMETER.FreeLock();
+				HISTORY.GetMutex()->unlock();
+			}
+		}
+
 		ImGui::BeginChild("select history", ImVec2(0, 0), true);
 		{
 			auto vector = HISTORY.GetVector();
@@ -34,7 +56,7 @@ VOID UtillWindow::Update()
 			if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop()) {
 				HISTORY.GetMutex()->lock();
 
-				if (vector->size() > 0) {
+				if (vector->size() >= 0) {
 					_hi = *vector;
 					_currentIndex = HISTORY.GetCurrentIndex();
 				}

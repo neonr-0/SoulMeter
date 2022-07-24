@@ -708,6 +708,7 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	BUFFMETER.Clear();
 	_aggroedId = 0;
 	_currentHistoryId = -1;
+	_historyHI = nullptr;
 }
 
 VOID SWDamageMeter::SetHistory(LPVOID pHi) {
@@ -730,6 +731,7 @@ VOID SWDamageMeter::SetHistory(LPVOID pHi) {
 	_historyWorldID = hi->_worldID;
 	_historyTime = hi->_time;
 	_historyMyID = hi->_myID;
+	_historyHI = hi;
 
 	_historyMode = TRUE;
 }

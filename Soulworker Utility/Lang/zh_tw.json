@@ -62,6 +62,8 @@
     "STR_TABLE_DURATION": "持續時間",
     "STR_TABLE_FULL_AB_TIME": "滿貫(秒)",
     "STR_TABLE_FULL_AB_PERCENT": "滿貫(%)",
+    "STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT": "紅啟蒙/技能(%)",
+    "STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT": "紫啟蒙/技能(%)",
 
     "STR_OPTION_WINDOWS_NAME": "設定",
     "STR_OPTION_FONTSCALE": "文字放大倍率",
@@ -128,7 +130,9 @@
 
     "STR_UTILLWINDOW_SEARCH": "搜尋",
     "STR_UTILLWINDOW_HISTORY_MAX": "上限",
+    "STR_UTILLWINDOW_HISTORY_DELETE_SELECTED": "刪除選中",
 
-    "STR_SAVEDATA_VERSION_ERROR": "存檔版本不符，請手動刪除 SoulMeter.dat"
+    "STR_SAVEDATA_VERSION_ERROR": "存檔版本不符，請手動刪除 SoulMeter.dat",
+    "STR_SAVEDATA_MULTIPLE_ERROR": "請勿於同一資料夾內打開多個DPS"
 
 }

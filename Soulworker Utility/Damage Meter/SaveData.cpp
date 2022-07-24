@@ -55,12 +55,12 @@ DWORD SWSaveData::Init()
 BOOL SWSaveData::Load()
 {
 	LONG64 fileSize = GetCurrentLength();
+	LONG64 processedHistory = 0;
 	// file version
 	if (fileSize >= sizeof(_saveVersion))
 	{
 		LONG64 offset = 0;
 		UINT32 fileVersion = 0;
-		LONG64 processedHistory = 0;
 
 		ReadData((UCHAR*)&fileVersion, sizeof(_saveVersion), offset);
 		offset += sizeof(_saveVersion);
@@ -78,17 +78,21 @@ BOOL SWSaveData::Load()
 			processedHistory++;
 		}
 
-		_inited = TRUE;
+	}
+	else {
+		_fileNotExist = TRUE;
+	}
 
+	_inited = TRUE;
+
+	if (processedHistory > 0)
+	{
 		LONG64 clearCount = processedHistory - HISTORY_SIZE;
 #if DEBUG_SAVEDATA_DELETE == 1
 		Log::WriteLogA("[SWSaveData::Load] Loaded data = %llu", processedHistory);
 #endif
 		if (clearCount > 0)
 			Delete(-1, clearCount);
-	}
-	else {
-		_fileNotExist = TRUE;
 	}
 
 	return true;

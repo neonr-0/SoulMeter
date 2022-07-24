@@ -77,21 +77,29 @@ SWDamageMeterHistory::~SWDamageMeterHistory() {
 	_mutex.unlock();
 }
 
-VOID SWDamageMeterHistory::ClearHistory(HISTORY_INFO* pHI)
+VOID SWDamageMeterHistory::ClearHistory(HISTORY_INFO* pHI, BOOL deleteFirst)
 {
 	if (pHI == nullptr)
 	{
 		pHI = (HISTORY_INFO*)*_historys.begin();
 	}
 
-	if (pHI->_isSaveData && UIOPTION.isUseSaveData())
+	auto itr = find(_historys.begin(), _historys.end(), (LPVOID)pHI);
+
+	if (UIOPTION.isUseSaveData())
 	{
-		SAVEDATA.Delete(1);
+		LONG64 index = 0;
+		if (deleteFirst)
+			index = 1;
+		else {
+			if (itr != _historys.end())
+				index = (itr - _historys.begin()) + 1;
+		}
+
+		SAVEDATA.Delete(index);
 	}
 
 	pHI->Clear();
-
-	auto itr = find(_historys.begin(), _historys.end(), (LPVOID)pHI);
 
 	if (itr != _historys.end())
 	{

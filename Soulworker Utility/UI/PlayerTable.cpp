@@ -190,7 +190,7 @@ VOID PlayerTable::BeginPopupMenu() {
 		}
 
 		bool history_open = false;
-		if (HISTORY.GetCurrentIndex() > 0)
+		if (HISTORY.GetVector()->size() > 0)
 			history_open = true;
 
 		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
@@ -243,7 +243,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	if (ImGui::BeginTable("###Player Table", 40, tableFlags)) {
+	if (ImGui::BeginTable("###Player Table", 42, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
 		columnFlags |= ImGuiTableColumnFlags_NoSort;
@@ -290,6 +290,8 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DEATH"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_TIME"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		//ImGuiTableColumnFlags_WidthStretch
 
 
@@ -929,13 +931,33 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 
 		// Full AB Percent
 		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
-			sprintf_s(label, 128, "%.0f", ((savedResultFullAB * 1000) / DAMAGEMETER.GetTime()) * 100);
+			sprintf_s(label, 128, "%.0f", ((DOUBLE)(savedResultFullAB * 1000) / DAMAGEMETER.GetTime()) * 100);
 		}
 		else {
 			sprintf_s(label, 128, "-");
 		}
 		ImGui::Text(label);
 		ImGui::TableNextColumn();
+
+		// Enli/Skill(%)
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) != LANGMANAGER.GetText("STR_TABLE_YOU") || _tableTime == 0 || (*itr)->GetSkillUsed() <= 0) {
+			sprintf_s(label, 128, "-");
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+
+			sprintf_s(label, 128, "-");
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+		}
+		else {
+			sprintf_s(label, 128, "%.0f", ((DOUBLE)(*itr)->GetGigaEnlighten() / (*itr)->GetSkillUsed()) * 100);
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+
+			sprintf_s(label, 128, "%.0f", ((DOUBLE)(*itr)->GetTeraEnlighten() / (*itr)->GetSkillUsed()) * 100);
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+		}
 
 		//  (etc)
 		PLOTWINDOW.AddJqData((*itr)->GetJqStack(), _tableTime);

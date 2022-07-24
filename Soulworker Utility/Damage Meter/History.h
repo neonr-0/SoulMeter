@@ -50,7 +50,7 @@ public:
 	~SWDamageMeterHistory();
 
 	VOID push_back(HISTORY_INFO* pHi);
-	VOID ClearHistory(HISTORY_INFO* pHI = nullptr);
+	VOID ClearHistory(HISTORY_INFO* pHI = nullptr, BOOL deleteFirst = TRUE);
 
 	VOID UnSerialization(const _tHistory* pHistory);
 

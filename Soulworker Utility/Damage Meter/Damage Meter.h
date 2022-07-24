@@ -643,6 +643,7 @@ private:
 	USHORT _historyWorldID;
 	ULONG64 _historyTime;
 	UINT32 _historyMyID;
+	LPVOID _historyHI;
 
 	UINT32 _aggroedId;
 
@@ -741,5 +742,10 @@ public:
 	VOID SetTestMode()
 	{
 		_testMode = TRUE;
+	}
+
+	LPVOID GetHistoryHI()
+	{
+		return _historyHI;
 	}
 };
