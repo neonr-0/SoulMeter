@@ -171,7 +171,7 @@ VOID SWSaveData::Delete(LONG64 index, LONG64 clearCount)
 		
 		do
 		{
-			if (!_inited)
+			if (!_inited || !_saveFile.is_open())
 				break;
 
 			LONG64 currentSize = GetCurrentLength();

@@ -91,18 +91,28 @@ VOID SWPacketDamage::Do() {
 				if (endIdList.find(db2) != endIdList.end() || db->_type == 4)
 					isEndId = true;
 
-				if (UIOPTION.isSaveDataWhenBossDied() && saveDataAndResetIdList.find(db2) != saveDataAndResetIdList.end()) {
-					DAMAGEMETER.Clear();
-					DAMAGEMETER.SetMazeState(isEndId);
+				if (UIOPTION.isTeamTALF()) {
+					BOOL skipClear = false;
+					// only edgar+queen
+					if (UIOPTION.TeamTALFMode() == 2)
+					{
+						if (monster->_monsterID == 31309101)
+							DAMAGEMETER.SetTestMode();
+						else
+							skipClear = true;
+					}
+					if (!skipClear) {
+						DAMAGEMETER.Clear();
+						DAMAGEMETER.SetMazeState(isEndId);
+					}
 				}
-				else {
-					if (pauseIdList.find(db2) != pauseIdList.end()) {
-						DAMAGEMETER.Suspend();
-					}
-					else if (isEndId) {
-						DAMAGEMETER.SetMazeState(TRUE);
-						DAMAGEMETER.Suspend();
-					}
+
+				if (pauseIdList.find(db2) != pauseIdList.end()) {
+					DAMAGEMETER.Suspend();
+				}
+				else if (isEndId) {
+					DAMAGEMETER.SetMazeState(TRUE);
+					DAMAGEMETER.Suspend();
 				}
 			}
 		}

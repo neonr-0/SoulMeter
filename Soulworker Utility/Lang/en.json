@@ -70,7 +70,6 @@
     "STR_OPTION_UNIT_1M": "Unit - 1M",
     "STR_OPTION_SOLO_MODE": "Solo Mode (Only show my data)",
     "STR_OPTION_HIDE_NAME": "Hide Name",
-    "STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED": "Save data and reset when BOSS died(Team TA)",
     "STR_OPTION_WINDOW_BORDER_SIZE": "Window Border Size",
     "STR_OPTION_CELL_PADDING": "Cell Padding",
     "STR_OPTION_COLUMN_FONT_SCALE": "Column Font Scale",
@@ -94,6 +93,10 @@
     "STR_OPTION_SOLO_RANK_MODE": "Solo rank mode",
     "STR_OPTION_COMBO_CAPTURE_MODE": "Capture mode",
     "STR_OPTION_SAVE_WARNING": "Please restart app to apply settings",
+    "STR_OPTION_TEAMTA_LUNARFALL": "TeamTA LunarFall mode",
+    "STR_OPTION_TEAMTA_OPTION_1": "Clear everytime",
+    "STR_OPTION_TEAMTA_OPTION_2": "Edgar + Queen",
+    "STR_OPTION_USE_SAVEDATA": "Auto save history to file",
 
     "STR_CHAR_UNKNOWN": "Unknown",
     "STR_CHAR_HARU": "Haru",

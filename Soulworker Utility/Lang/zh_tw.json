@@ -70,7 +70,6 @@
     "STR_OPTION_UNIT_1M": "以百萬為單位顯示(M)",
     "STR_OPTION_SOLO_MODE": "單人模式 (只顯示自己的數據)",
     "STR_OPTION_HIDE_NAME": "隱藏名稱",
-    "STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED": "Boss死亡時保存資料並重置(團TA)",
     "STR_OPTION_WINDOW_BORDER_SIZE": "視窗邊框大小",
     "STR_OPTION_CELL_PADDING": "表格間距",
     "STR_OPTION_COLUMN_FONT_SCALE": "表格欄位文字放大倍率",
@@ -94,6 +93,10 @@
     "STR_OPTION_SOLO_RANK_MODE": "單人排名模式",
     "STR_OPTION_COMBO_CAPTURE_MODE": "擷取模式",
     "STR_OPTION_SAVE_WARNING": "重新啟動程式後才會套用變更",
+    "STR_OPTION_TEAMTA_LUNARFALL": "女王團隊TA模式",
+    "STR_OPTION_TEAMTA_OPTION_1": "每次清除",
+    "STR_OPTION_TEAMTA_OPTION_2": "小丑+女王",
+    "STR_OPTION_USE_SAVEDATA": "自動保存歷史紀錄到檔案",
 
     "STR_CHAR_UNKNOWN": "未知玩家",
     "STR_CHAR_HARU": "哈露",

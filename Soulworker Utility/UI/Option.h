@@ -36,10 +36,13 @@ private:
 	FLOAT _windowWidth;
 	FLOAT _refreshTime;
 	BOOL _isTopMost;
-	BOOL _saveDataWhenBossDied;
+	BOOL _teamTA_LF;
+	INT32 _teamTA_LF_Mode = 1;
 	CHAR _selectedLang[128] = { 0 };
 	BOOL _isSoloRankMode;
 	INT32 _captureMode;
+	BOOL _isUseSaveData;
+	BOOL _oriIsUseSaveData;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
@@ -47,6 +50,7 @@ private:
 	VOID ChangeLang();
 
 	VOID ShowCaptureModeSelector();
+	VOID ShowTeamTALFSelector();
 
 	VOID Helper();
 
@@ -81,9 +85,11 @@ public:
 	const BOOL& isSoloMode();
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
-	const BOOL& isSaveDataWhenBossDied();
+	const BOOL& isTeamTALF();
+	const INT32& TeamTALFMode();
 	const BOOL& isSoloRankMode();
 	const INT32& GetCaptureMode();
+	const BOOL& isUseSaveData();
 
 	BOOL ToggleTopMost();
 
@@ -95,5 +101,5 @@ public:
 
 	const FLOAT& GetRefreshTime();
 
-	BOOL SaveOption();
+	BOOL SaveOption(BOOL skipWarning = FALSE);
 };

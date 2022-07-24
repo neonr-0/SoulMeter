@@ -260,7 +260,7 @@ LRESULT UiWindow::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_QUIT:
 	case WM_CLOSE:
 	case WM_DESTROY:
-		UIOPTION.SaveOption();
+		UIOPTION.SaveOption(TRUE);
 		PostQuitMessage(0);
 		return 0;
 	}

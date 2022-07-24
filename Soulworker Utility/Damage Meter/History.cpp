@@ -17,7 +17,7 @@ VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time
 		_saveTime = saveTime;
 	}
 
-	if (!isSaveData)
+	if (!isSaveData && UIOPTION.isUseSaveData())
 	{
 		flatbuffers::FlatBufferBuilder fbb(1024);
 		fbb.Finish(Serialization(fbb, historyData));
@@ -84,7 +84,7 @@ VOID SWDamageMeterHistory::ClearHistory(HISTORY_INFO* pHI)
 		pHI = (HISTORY_INFO*)*_historys.begin();
 	}
 
-	if (pHI->_isSaveData)
+	if (pHI->_isSaveData && UIOPTION.isUseSaveData())
 	{
 		SAVEDATA.Delete(1);
 	}

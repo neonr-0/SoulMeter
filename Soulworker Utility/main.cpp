@@ -57,12 +57,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				sprintf_s(errorMsg, "Init PacketCapture failed, err: %lu", errorCode);
 				break;
 			}
-			if ((errorCode = SAVEDATA.Init())) {
-				sprintf_s(errorMsg, "Init SaveData failed, err: %lu", errorCode);
-				if (errorCode == ERROR_FILE_CORRUPT) {
-					ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
+			if (UIOPTION.isUseSaveData())
+			{
+				if ((errorCode = SAVEDATA.Init())) {
+					sprintf_s(errorMsg, "Init SaveData failed, err: %lu", errorCode);
+					if (errorCode == ERROR_FILE_CORRUPT) {
+						ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
+					}
+					break;
 				}
-				break;
 			}
 			UIWINDOW.Run();
 		}

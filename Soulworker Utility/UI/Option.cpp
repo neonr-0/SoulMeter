@@ -10,8 +10,8 @@
 
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
-	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _saveDataWhenBossDied(false), _isSoloRankMode(FALSE),
-	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT)
+	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
+	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE)
 {
 	
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
@@ -56,8 +56,8 @@ BOOL UiOption::ShowFontSelector() {
 	}
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_MODE"), (bool*)&_isSoloMode);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SAVE_DATA_AND_RESET_WHEN_BOSS_DIED"), (bool*)&_saveDataWhenBossDied);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_USE_SAVEDATA"), (bool*)&_isUseSaveData);
 
 	return TRUE;
 }
@@ -240,6 +240,34 @@ VOID UiOption::ShowCaptureModeSelector() {
 	}
 }
 
+VOID UiOption::ShowTeamTALFSelector()
+{
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_TEAMTA_LUNARFALL"), (bool*)&_teamTA_LF);
+	const CHAR* comboPreview = nullptr;
+	if (_teamTA_LF_Mode == 1)
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_1");
+	else
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_2");
+	if (ImGui::BeginCombo(u8"###OptionTALF", comboPreview, ImGuiComboFlags_HeightLargest))
+	{
+
+		CHAR label[128] = { 0 };
+
+		for (INT32 i = 1; i <= 2; i++)
+		{
+			if (i == 1)
+				sprintf_s(label, 128, "%s##OptionTALF1", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_1"));
+			else
+				sprintf_s(label, 128, "%s##OptionTALF2", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_2"));
+			if (ImGui::Selectable(label)) {
+				_teamTA_LF_Mode = i;
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 VOID UiOption::OpenOption() {
 
 	if (!_open)
@@ -285,6 +313,7 @@ VOID UiOption::OpenOption() {
 		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
 		ShowFontSelector();
 		ImGui::PopItemWidth();
+		ShowTeamTALFSelector();
 
 		if (ImGui::BeginTabBar("##tabs")) {
 			CHAR label[128] = {0};
@@ -402,9 +431,13 @@ BOOL UiOption::GetOption() {
 		return FALSE;
 	attr->QueryIntValue(&_isTopMost);
 
-	attr = ele->FindAttribute("SaveDataWhenBossDied");
+	attr = ele->FindAttribute("TeamTA_LF");
 	if (attr != nullptr)
-		attr->QueryIntValue(&_saveDataWhenBossDied);
+		attr->QueryIntValue(&_teamTA_LF);
+
+	attr = ele->FindAttribute("TeamTA_LF_Mode");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_teamTA_LF_Mode);
 
 	attr = ele->FindAttribute("UseCaptureMode");
 	if (attr != nullptr)
@@ -419,6 +452,12 @@ BOOL UiOption::GetOption() {
 	attr = ele->FindAttribute("IsSoloRankMode");
 	if (attr != nullptr)
 		attr->QueryIntValue(&_isSoloRankMode);
+
+	attr = ele->FindAttribute("IsUseSaveData");
+	if (attr != nullptr) {
+		attr->QueryIntValue(&_isUseSaveData);
+		attr->QueryIntValue(&_oriIsUseSaveData);
+	}
 
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1M = %d")), _is1M);
@@ -749,7 +788,7 @@ BOOL UiOption::GetOption() {
 	return TRUE;
 }
 
-BOOL UiOption::SaveOption() {
+BOOL UiOption::SaveOption(BOOL skipWarning) {
 
 	if (!_inited)
 		return false;
@@ -774,8 +813,10 @@ BOOL UiOption::SaveOption() {
 	option->SetAttribute("M", _is1M);
 	option->SetAttribute("IsSoloMode", _isSoloMode);
 	option->SetAttribute("DoHideName", _hideName);
-	option->SetAttribute("SaveDataWhenBossDied", _saveDataWhenBossDied);
+	option->SetAttribute("TeamTA_LF", _teamTA_LF);
+	option->SetAttribute("TeamTA_LF_Mode", _teamTA_LF_Mode);
 	option->SetAttribute("IsSoloRankMode", _isSoloRankMode);
+	option->SetAttribute("IsUseSaveData", _isUseSaveData);
 
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -858,10 +899,13 @@ BOOL UiOption::SaveOption() {
 
 	doc.SaveFile(OPTION_FILE_NAME);
 
-	if (PACKETCAPTURE.GetMode() != _captureMode) {
-		CHAR tmp[256] = { 0 };
-		ANSItoUTF8(LANGMANAGER.GetText("STR_OPTION_SAVE_WARNING"), tmp, 256);
-		MessageBoxA(NULL, tmp, "WARNING", MB_ICONWARNING);
+	if (!skipWarning)
+	{
+		if (PACKETCAPTURE.GetMode() != _captureMode || _oriIsUseSaveData != _isUseSaveData) {
+			CHAR tmp[256] = { 0 };
+			ANSItoUTF8(LANGMANAGER.GetText("STR_OPTION_SAVE_WARNING"), tmp, 256);
+			MessageBoxA(NULL, tmp, "WARNING", MB_ICONWARNING);
+		}
 	}
 
 	return TRUE;
@@ -955,13 +999,23 @@ const BOOL& UiOption::isTopMost()
 	return _isTopMost;
 }
 
-const BOOL& UiOption::isSaveDataWhenBossDied()
+const BOOL& UiOption::isTeamTALF()
 {
-	return _saveDataWhenBossDied;
+	return _teamTA_LF;
+}
+
+const INT32& UiOption::TeamTALFMode()
+{
+	return _teamTA_LF_Mode;
 }
 
 const BOOL& UiOption::isSoloRankMode() {
 	return _isSoloRankMode;
+}
+
+const BOOL& UiOption::isUseSaveData()
+{
+	return _isUseSaveData;
 }
 
 VOID UiOption::Update() {

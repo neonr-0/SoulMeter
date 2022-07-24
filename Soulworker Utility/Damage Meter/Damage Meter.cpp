@@ -634,7 +634,7 @@ VOID SWDamageMeter::Clear() {
 			else {
 				HISTORY.push_back(pHI);
 
-				if (UIOPTION.isSaveDataWhenBossDied()) {
+				if (UIOPTION.isTeamTALF()) {
 					_dbInfo.clear();
 					for (auto itr = hd->_dbHistory.begin(); itr != hd->_dbHistory.end(); itr++) {
 						SW_DB2_STRUCT* newDB = new SW_DB2_STRUCT;
@@ -707,6 +707,7 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	PLOTWINDOW.Clear();
 	BUFFMETER.Clear();
 	_aggroedId = 0;
+	_currentHistoryId = -1;
 }
 
 VOID SWDamageMeter::SetHistory(LPVOID pHi) {
