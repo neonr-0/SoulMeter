@@ -3,28 +3,37 @@
 #include ".\Buff Meter\Buff Meter.h"
 #include ".\UI\PlotWindow.h"
 #include ".\Damage Meter\Damage Meter.h"
+#include ".\Third Party\FlatBuffers\include\SW_HISTORY_.h"
+
+using namespace std;
+using namespace SoulMeterFBS::History;
 
 #define HISTORY SWDamageMeterHistory::getInstance()
-#define HISTORY_SIZE 100
+#define HISTORY_SIZE 50
 
 struct HISTORY_DATA
 {
 	vector<SWDamagePlayer*> _playerHistory;
-	vector<SW_OWNER_ID_STRUCT*> _ownerHistory;
 	vector<SW_DB2_STRUCT*> _dbHistory;
 	vector<PLAYERBUF*> _buffHistory;
 	PlotInfo* _plotHistory;
+	unordered_map<UINT32, SWDamageMeter::SW_PLAYER_METADATA*> _playerMetadata;
+	string _extInfo;
 };
 
 typedef struct _HISTORYINFO {
 public:
 	UINT32 _worldID;
-	SYSTEMTIME _saveTime;
+	SYSTEMTIME* _saveTime;
 	ULONG64 _time;
 	HISTORY_DATA* _historyData;
+	UINT32 _myID;
+	BOOL _isSaveData = FALSE;
 
-	VOID Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time);
+	VOID Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData = FALSE, SYSTEMTIME* saveTime = nullptr);
 	VOID Clear();
+
+	flatbuffers::Offset<_tHistory> Serialization(flatbuffers::FlatBufferBuilder& fbb, HISTORY_DATA* historyData);
 }HISTORY_INFO;
 
 class SWDamageMeterHistory : public Singleton<SWDamageMeterHistory> {
@@ -34,15 +43,16 @@ private:
 	
 	recursive_mutex _mutex;
 
-	VOID ClearHistory(INT index);
-
 	BOOL _stopAddHistory = FALSE;
 
 public:
 	SWDamageMeterHistory() : _curIndex(0) {}
 	~SWDamageMeterHistory();
 
-	VOID push_back(HISTORY_DATA* historyData);
+	VOID push_back(HISTORY_INFO* pHi);
+	VOID ClearHistory(HISTORY_INFO* pHI = nullptr);
+
+	VOID UnSerialization(const _tHistory* pHistory);
 
 	INT GetCurrentIndex()
 	{

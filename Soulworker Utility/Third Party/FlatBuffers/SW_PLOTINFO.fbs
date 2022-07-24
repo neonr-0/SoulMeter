@@ -1,0 +1,29 @@
+include "STRUCT.fbs";
+
+namespace SoulMeterFBS.History;
+
+table _tPlotInfo {
+  _meta:[_tMetaInfo];
+
+  _dps_list:[_tIntDoubleList];
+  _dps_time_list:[_tIntDoubleList];
+
+  _ab_list:[double];
+  _ab_time_list:[double];
+
+  _bd_list:[double];
+  _bd_time_list:[double];
+
+  _jq_list:[double];
+  _jq_time_list:[double];
+
+  _boss_hp_list:[_tIntDoubleList];
+  _boss_time_list:[_tIntDoubleList];
+}
+
+table _tMetaInfo {
+  _id:uint;
+  _name:string;
+}
+
+root_type _tPlotInfo;

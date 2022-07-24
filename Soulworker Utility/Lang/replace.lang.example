@@ -1,0 +1,21 @@
+1.Please create `replace.lang` file in Lang folder.
+2.The following is an example for replace `STR_WORLD_NO_INFORMATION` and `STR_MENU_RESUME`
+
+{
+    "STR_WORLD_NO_INFORMATION": "CHANGE THIS TO YOU WANT TEXT",
+    "STR_MENU_RESUME": "CHANGE THIS TO YOU WANT TEXT"
+}
+
+Tips. don't put `,` in last text line
+
+==
+
+1.請於Lang資料夾中創建 `replace.lang` 檔案
+2.以下為替換`STR_WORLD_NO_INFORMATION` 和 `STR_MENU_RESUME` 的範例
+
+{
+    "STR_WORLD_NO_INFORMATION": "改成你要替換的文字",
+    "STR_MENU_RESUME": "改成你要替換的文字"
+}
+
+提示. 請勿添加`,`於最後一行的文字

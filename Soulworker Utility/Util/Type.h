@@ -28,6 +28,7 @@ inline BOOL UTF16toUTF8(_In_ WCHAR* src, _Out_ CHAR* dest, _In_ SIZE_T destLen) 
 
 	return TRUE;
 }
+
 inline BOOL ANSItoUTF8(_In_ CHAR* src, _Out_ CHAR* dest, _In_ INT32 destLen) {
 
 	if (src == nullptr || dest == nullptr)
@@ -54,6 +55,7 @@ inline BOOL ANSItoUTF8(_In_ CHAR* src, _Out_ CHAR* dest, _In_ INT32 destLen) {
 
 	return TRUE;
 }
+
 inline BOOL TextCommma(_In_ CHAR* src, _Out_ CHAR* dest) {
 
 	if (src == nullptr || dest == nullptr) {
@@ -72,6 +74,7 @@ inline BOOL TextCommma(_In_ CHAR* src, _Out_ CHAR* dest) {
 
 	return TRUE;
 }
+
 inline ULONG64 GetCurrentTimeStamp() {
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }

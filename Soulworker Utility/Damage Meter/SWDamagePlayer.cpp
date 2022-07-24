@@ -63,6 +63,8 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 {
 	//Log::WriteLog(const_cast<LPTSTR>(_T("[PLAYER] [DamageType = %d]")), damageType.CRIT);
 
+	if (DAMAGEMETER.isHistoryMode())
+		return;
 
 	// Skip not in db monster
 	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
@@ -328,6 +330,9 @@ DOUBLE SWDamagePlayer::GetHistoryLosedHP()
 
 VOID SWDamagePlayer::AddSkillUsed(UINT32 skillId)
 {
+	if (DAMAGEMETER.isHistoryMode())
+		return;
+
 	_skillCounts++;
 
 	BOOL isInFullAB = false;

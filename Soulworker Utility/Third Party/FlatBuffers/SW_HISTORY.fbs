@@ -1,0 +1,39 @@
+include "SW_DAMAGE_PLAYER.fbs";
+include "SW_BUFF.fbs";
+include "SW_PLOTINFO.fbs";
+include "SW_PLAYER_METADATA.fbs";
+
+namespace SoulMeterFBS.History;
+
+table _tDB2_Struct {
+  _id:uint;
+  _db2:uint;
+  _type:int;
+}
+
+struct _sTime {
+    year:ushort;
+    month:ushort;
+    day_of_week:ushort;
+    day:ushort;
+    hour:ushort;
+    minute:ushort;
+    second:ushort;
+    milliseconds:ushort;
+}
+
+table _tHistory {
+  _word_id:uint;
+  _save_time:_sTime;
+  _time:ulong;
+  _my_id:uint;
+  _ext_info:string;
+
+  _damage_player:[_tDamagePlayer];
+  _db2_struct:[_tDB2_Struct];
+  _player_buff:[_tBuff];
+  _plot_info:_tPlotInfo;
+  _player_meta:[_tPlayerMetaData];
+}
+
+root_type _tHistory;

@@ -16,6 +16,9 @@ _PLAYERBUFF::~_PLAYERBUFF(){
 
 VOID _PLAYERBUFF::AddBuff(USHORT buffid, BYTE stack) {
 	
+	if (_isHistoryMode)
+		return;
+
 	BOOL find = FALSE;
 
 	for (auto itr = _buffInfo.begin(); itr != _buffInfo.end(); itr++) {
@@ -34,10 +37,13 @@ VOID _PLAYERBUFF::AddBuff(USHORT buffid, BYTE stack) {
 		_buffInfo.push_back(new Buff(buffid, stack));
 }
 
-VOID _PLAYERBUFF::EndBuff(USHORT buffid) {
+VOID _PLAYERBUFF::EndBuff(USHORT buffid, BOOL endAll) {
+
+	if (_isHistoryMode)
+		return;
 
 	for (auto itr = _buffInfo.begin(); itr != _buffInfo.end(); itr++) {
-		if ((*itr)->GetBuffID() == buffid) {
+		if ((*itr)->GetBuffID() == buffid || endAll) {
 			(*itr)->InActive();
 		}
 	}
@@ -69,6 +75,7 @@ VOID BuffMeter::Clear() {
 	//for (auto itr = _playerBuffInfo.begin(); itr != _playerBuffInfo.end(); itr++)
 	//	delete* itr;
 
+	_historyMode = false;
 	_playerBuffInfo.clear();
 }
 
@@ -77,10 +84,14 @@ std::vector<PLAYERBUF*> BuffMeter::GetPlayerInfo() {
 }
 
 VOID BuffMeter::SetPlayerInfo(std::vector<PLAYERBUF*> it) {
+	_historyMode = true;
 	_playerBuffInfo = it;
 }
 
 VOID BuffMeter::AddBuff(UINT32 playerID, USHORT buffid, BYTE stack) {
+
+	if (_historyMode)
+		return;
 
 	for (auto itr = _playerBuffInfo.begin(); itr != _playerBuffInfo.end(); itr++) {
 		if ((*itr)->GetPlayerID() == playerID) {
@@ -92,14 +103,22 @@ VOID BuffMeter::AddBuff(UINT32 playerID, USHORT buffid, BYTE stack) {
 	_playerBuffInfo.push_back(new PLAYERBUF(playerID, buffid, stack));
 }
 
-VOID BuffMeter::EndBuff(UINT32 playerID, USHORT buffid) {
+VOID BuffMeter::EndBuff(UINT32 playerID, USHORT buffid, BOOL endAll) {
+
+	if (_historyMode)
+		return;
 
 	for (auto itr = _playerBuffInfo.begin(); itr != _playerBuffInfo.end(); itr++) {
-		if ((*itr)->GetPlayerID() == playerID) {
-			(*itr)->EndBuff(buffid);
+		if ((*itr)->GetPlayerID() == playerID || endAll) {
+			(*itr)->EndBuff(buffid, endAll);
 			return;
 		}
 	}
+}
+
+VOID BuffMeter::EndAllBuff() {
+
+	EndBuff(0, 0, TRUE);
 }
 
 vector<PLAYERBUF*>::const_iterator BuffMeter::find(UINT32 playerID) {

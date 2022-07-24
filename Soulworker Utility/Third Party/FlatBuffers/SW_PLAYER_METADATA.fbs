@@ -1,0 +1,46 @@
+namespace SoulMeterFBS.History;
+
+table _tPlayerMetaData {
+  _armorbreak:float;
+  _sg:float;
+  _stamina:float;
+  _sv:float;
+  _attackspeed:float;
+  _partialdamage:float;
+  _maxhp:float;
+  _currenthp:float;
+  _maxattack:float;
+  _critdamage:float;
+  _bossdamage:float;
+
+  _id:uint;
+  _name:string;
+  _job:byte;
+
+  _avg_ab_sum:ulong;
+  _avg_ab_previous_time:ulong;
+
+  _avg_bd_sum:ulong;
+  _avg_bd_previous_time:ulong;
+
+  _gear90_sum:ulong;
+  _gear90_effect_started_time:ulong;
+
+  _gear50_sum:ulong;
+  _gear50_effect_started_time:ulong;
+
+  _acc01_sum:ulong;
+  _acc01_effect_started_time:ulong;
+
+  _acc02_sum:ulong;
+  _acc02_effect_started_time:ulong;
+
+  _losedhp:double;
+
+  _fullab_start_time:ulong;
+  _fullab_end_time:ulong;
+  _fullab_prev_time:double;
+  _fullab_time:double;
+}
+
+root_type _tPlayerMetaData;

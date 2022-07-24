@@ -44,7 +44,7 @@ VOID UtillWindow::Update()
 			}
 
 			if (_hi.size() > 0) {
-				INT32 i = 0;
+				INT32 i = 1;
 				for (auto itr = _hi.rbegin(); itr != _hi.rend(); itr++)
 				{
 					HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
@@ -52,10 +52,16 @@ VOID UtillWindow::Update()
 					CHAR mapName[MAX_MAP_LEN] = { 0 };
 					SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
 
-					sprintf_s(label, "%s - %02d:%02d.%01d (%02d:%02d:%02d)###history%d", 
+					CHAR extInfo[128] = { 0 };
+					if (hi->_historyData->_extInfo.length() > 0)
+						sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
+
+					sprintf_s(label, "%d.[%02d/%02d %02d:%02d:%02d] %s%s - %02d:%02d.%01d###history%d", 
+						i,
+						hi->_saveTime->wMonth, hi->_saveTime->wDay,hi->_saveTime->wHour, hi->_saveTime->wMinute, hi->_saveTime->wSecond,
+						extInfo,
 						mapName,
 						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
-						hi->_saveTime.wHour, hi->_saveTime.wMinute, hi->_saveTime.wSecond,
 						i
 					);
 

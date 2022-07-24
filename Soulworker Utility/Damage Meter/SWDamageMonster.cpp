@@ -13,8 +13,7 @@ SWDamageMonster::SWDamageMonster(UINT32 id, UINT32 db2, UINT64 damage, UINT64 cr
 	_hitCount = hitCount;
 	_critHitCount = critHitCount;
 
-	ZeroMemory(_name, MONSTER_NAME_LEN);
-	SWDB.GetMonsterName(db2, _name, MONSTER_NAME_LEN);
+	SetNameFromDB();
 
 	SWDB.GetMonsterType(db2, &_type);
 
@@ -33,6 +32,12 @@ SWDamageMonster::~SWDamageMonster() {
 	}
 
 	_skillinfo.clear();
+}
+
+VOID SWDamageMonster::SetNameFromDB()
+{
+	ZeroMemory(_name, MONSTER_NAME_LEN);
+	SWDB.GetMonsterName(_db2, _name, MONSTER_NAME_LEN);
 }
 
 BOOL SWDamageMonster::SortFunction(SWDamageMonster* monsterA, SWDamageMonster* monsterB) {

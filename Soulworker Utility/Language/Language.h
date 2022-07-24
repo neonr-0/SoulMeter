@@ -23,6 +23,6 @@ public:
 	DWORD SetCurrentLang(CHAR* langFile);
 	CHAR* GetText(CHAR* text, unordered_map<string, string>* vector = nullptr);
 	unordered_map<string, string> GetAllLangFile();
-	auto GetLangFile(CHAR* langFile);
-	unordered_map<string, string> MapLangData(CHAR* langFile);
+	auto GetLangFile(CHAR* langFile, BOOL outputERROR = TRUE);
+	unordered_map<string, string> MapLangData(CHAR* langFile, BOOL useReplace = TRUE);
 };

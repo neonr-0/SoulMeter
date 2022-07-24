@@ -127,6 +127,9 @@
     <Filter Include="SWPacket\Packet\0x11 Maze">
       <UniqueIdentifier>{45651462-a456-4dfd-8f66-4a71442b2066}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Damge Meter\History">
+      <UniqueIdentifier>{68509aa2-5d39-4f11-ab5a-86562f577bb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -200,9 +203,6 @@
     </ClInclude>
     <ClInclude Include="UI\DX Input.h">
       <Filter>UI\DirectX11</Filter>
-    </ClInclude>
-    <ClInclude Include="Damage Meter\History.h">
-      <Filter>Damge Meter</Filter>
     </ClInclude>
     <ClInclude Include="UI\SpecificInfomation.h">
       <Filter>UI\Window\UI</Filter>
@@ -372,6 +372,15 @@
     <ClInclude Include="Third Party\http\httplib.h">
       <Filter>Utiliry\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Damage Meter\FlatBufferUtil.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Damage Meter\History.h">
+      <Filter>Damge Meter\History</Filter>
+    </ClInclude>
+    <ClInclude Include="Damage Meter\SaveData.h">
+      <Filter>Damge Meter\History</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -442,9 +451,6 @@
     </ClCompile>
     <ClCompile Include="UI\DX Input.cpp">
       <Filter>UI\DirectX11</Filter>
-    </ClCompile>
-    <ClCompile Include="Damage Meter\History.cpp">
-      <Filter>Damge Meter</Filter>
     </ClCompile>
     <ClCompile Include="UI\SpecificInfomation.cpp">
       <Filter>UI\Window\UI</Filter>
@@ -601,6 +607,12 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketMazeUpdateState.cpp">
       <Filter>SWPacket\Packet\0x11 Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Damage Meter\History.cpp">
+      <Filter>Damge Meter\History</Filter>
+    </ClCompile>
+    <ClCompile Include="Damage Meter\SaveData.cpp">
+      <Filter>Damge Meter\History</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

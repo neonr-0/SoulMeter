@@ -124,6 +124,8 @@
     "STR_SPECIFICINFO_BUFF_NAME": "BUFF",
 
     "STR_UTILLWINDOW_SEARCH": "Search",
-    "STR_UTILLWINDOW_HISTORY_MAX": "MAX"
+    "STR_UTILLWINDOW_HISTORY_MAX": "MAX",
+
+    "STR_SAVEDATA_VERSION_ERROR": "Savedata version not match, please delete SoulMeter.dat"
 
 }

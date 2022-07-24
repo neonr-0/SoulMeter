@@ -1,11 +1,7 @@
 #pragma once
 #include "pch.h"
 
-#ifdef SWCRYPT_EXPORTS
-#define SWCRYPT_API __declspec(dllexport)
-#else
 #define SWCRYPT_API __declspec(dllimport)
-#endif
 
 class ISWCrypt
 {
@@ -20,8 +16,11 @@ typedef ISWCrypt* (*CREATE_SWCRYPT) ();
 
 class SWCrypt : public Singleton<SWCrypt>
 {
+private:
+    ISWCrypt* _pSWCryptRecv = nullptr;
+    ISWCrypt* _pSWCryptSend = nullptr;
+
 public:
-    CREATE_SWCRYPT pSWCreateCrypt = nullptr;
 
     DWORD LoadSWCrypt()
     {
@@ -37,26 +36,37 @@ public:
                 break;
             }
             else {
-                pSWCreateCrypt = (CREATE_SWCRYPT)GetProcAddress(hDLL, "CreateSWCrypt");
+                CREATE_SWCRYPT pSWCreateCrypt = (CREATE_SWCRYPT)GetProcAddress(hDLL, "CreateSWCrypt");
                 if (pSWCreateCrypt == NULL)
                 {
                     error = ERROR_FAILED_DRIVER_ENTRY;
                     Log::WriteLogA("[LoadSWCrypt] GetProcAddress Failed %d", GetLastError());
                     break;
                 }
+                _pSWCryptRecv = pSWCreateCrypt();
+                _pSWCryptSend = pSWCreateCrypt();
+                if (_pSWCryptRecv == NULL || _pSWCryptSend == NULL) 
+                {
+                    error = ERROR_FAILED_DRIVER_ENTRY;
+                    Log::WriteLogA("[LoadSWCrypt] CreateCryptPtr Failed %d", GetLastError());
+                    break;
+                }
+
             }
         } while (false);
 
         return error;
     }
 
-    VOID SWDecrypt(UCHAR* packet, INT32 pktLen, INT32 keyIndex)
+    VOID SWDecrypt(UCHAR* packet, INT32 pktLen, INT32 keyIndex, BOOL isRecv)
     {
-        ISWCrypt* pSWCrypt = pSWCreateCrypt();
-        if (pSWCrypt == NULL) {
-            return;
-        }
+        ISWCrypt* pSWCrypt = nullptr;
+        
+        if (isRecv)
+            pSWCrypt = _pSWCryptRecv;
+        else
+            pSWCrypt = _pSWCryptSend;
+
         pSWCrypt->Decrypt(packet, pktLen, keyIndex);
-        pSWCrypt->Destory();
     }
 };

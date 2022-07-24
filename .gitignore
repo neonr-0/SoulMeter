@@ -17,6 +17,7 @@ SWCrypt.dll
 *.xml
 *.dmp
 *.log
+*.dat
 
 #Npcap
 [Nn]pcap/

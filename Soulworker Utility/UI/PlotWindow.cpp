@@ -8,6 +8,8 @@
 
 VOID PlotWindow::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement)
 {
+	if (_historyMode)
+		return;
 	if (_pi == nullptr)
 		_pi = new PlotInfo();
 
@@ -16,6 +18,9 @@ VOID PlotWindow::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool i
 
 VOID PlotInfo::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isFirstElement)
 {
+	if (_isHistoryMode)
+		return;
+
 	if (isFirstElement) {
 		if (_lastTime == time) {
 			_allowed = false;
@@ -61,6 +66,8 @@ VOID PlotInfo::AddData(UINT32 id, string name, DOUBLE DPS, DOUBLE time, bool isF
 
 VOID PlotWindow::AddAbData(DOUBLE DPS, DOUBLE time)
 {
+	if (_historyMode)
+		return;
 	if (_pi == nullptr)
 		_pi = new PlotInfo();
 	_pi->AddAbData(DPS, time);
@@ -68,6 +75,9 @@ VOID PlotWindow::AddAbData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotInfo::AddAbData(DOUBLE DPS, DOUBLE time)
 {
+	if (_isHistoryMode)
+		return;
+
 	if (_abLastTime == time) {
 		return;
 	}
@@ -79,6 +89,8 @@ VOID PlotInfo::AddAbData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotWindow::AddBdData(DOUBLE DPS, DOUBLE time)
 {
+	if (_historyMode)
+		return;
 	if (_pi == nullptr)
 		_pi = new PlotInfo();
 	_pi->AddBdData(DPS, time);
@@ -86,6 +98,9 @@ VOID PlotWindow::AddBdData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotInfo::AddBdData(DOUBLE DPS, DOUBLE time)
 {
+	if (_isHistoryMode)
+		return;
+
 	if (_bdLastTime == time) {
 		return;
 	}
@@ -97,6 +112,8 @@ VOID PlotInfo::AddBdData(DOUBLE DPS, DOUBLE time)
 
 VOID PlotWindow::AddJqData(BYTE stack, DOUBLE time)
 {
+	if (_historyMode)
+		return;
 	if (_pi == nullptr)
 		_pi = new PlotInfo();
 	_pi->AddJqData(stack, time);
@@ -104,6 +121,9 @@ VOID PlotWindow::AddJqData(BYTE stack, DOUBLE time)
 
 VOID PlotInfo::AddJqData(BYTE stack, DOUBLE time)
 {
+	if (_isHistoryMode)
+		return;
+
 	if (_jqLastTime == time) {
 		return;
 	}
@@ -113,22 +133,11 @@ VOID PlotInfo::AddJqData(BYTE stack, DOUBLE time)
 	_jqTimeList.push_back(time);
 }
 
-VOID PlotWindow::AddAnnonation(string content)
-{
-	if (_pi == nullptr)
-		_pi = new PlotInfo();
-	_pi->AddAnnonation(content);
-}
-
-VOID PlotInfo::AddAnnonation(string content)
-{
-	_annonXList.push_back(_abTimeList.back());
-	_annonYList.push_back(_abList.back());
-	_annonContentList.push_back(content);
-}
-
 VOID PlotWindow::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
 {
+	if (_historyMode)
+		return;
+
 	if (_pi == nullptr)
 		_pi = new PlotInfo();
 	_pi->AddBossHpData(id, HP, time);
@@ -136,6 +145,14 @@ VOID PlotWindow::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
 
 VOID PlotInfo::AddBossHpData(UINT32 id, UINT64 HP, DOUBLE time)
 {
+	if (_isHistoryMode)
+		return;
+
+	if (_bhLastTime == time) {
+		return;
+	}
+	_bhLastTime = time;
+
 	_bossHpList[id].push_back(static_cast<double>(HP / 1000000));
 	_bossTimeList[id].push_back(time);
 }
@@ -235,9 +252,6 @@ VOID PlotWindow::UpdateAbPlotTab()
 	{
 		auto _abTimeList = _pi->GetABTimeList();
 		auto _abList = _pi->GetABList();
-		auto _annonXList = _pi->GetAnnonXList();
-		auto _annonYList = _pi->GetAnnonYList();
-		auto _annonContentList = _pi->GetAnnonContentList();
 		size_t currentSize = _abTimeList.size();
 
 		DOUBLE startX = 0.0;
@@ -258,11 +272,6 @@ VOID PlotWindow::UpdateAbPlotTab()
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_ABGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(LANGMANAGER.GetText("STR_TABLE_YOU"), _abTimeList.data(), _abList.data(), static_cast<INT>(_abList.size()));
-			auto itr = _annonXList.begin();
-			for (; itr != _annonXList.end(); itr++) {
-				size_t currentIndex = itr - _annonXList.begin();
-				ImPlot::Annotate(_annonXList.at(currentIndex), _annonYList.at(currentIndex), ImVec2(15, 15), ImVec4(0.30f, 0.30f, 0.30f, 0.84f), _annonContentList.at(currentIndex).c_str());
-			}
 			ImPlot::EndPlot();
 		}
 		ImGui::EndTabItem();
@@ -275,9 +284,6 @@ VOID PlotWindow::UpdateBdPlotTab()
 	{
 		auto _bdTimeList = _pi->GetBDTimeList();
 		auto _bdList = _pi->GetBDList();
-		auto _annonXList = _pi->GetAnnonXList();
-		auto _annonYList = _pi->GetAnnonYList();
-		auto _annonContentList = _pi->GetAnnonContentList();
 		size_t currentSize = _bdTimeList.size();
 		if (currentSize > 0) {
 			// 
@@ -314,11 +320,6 @@ VOID PlotWindow::UpdateBdPlotTab()
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_BDGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(LANGMANAGER.GetText("STR_TABLE_YOU"), _bdTimeList.data(), _bdList.data(), static_cast<INT>(_bdList.size()));
-			auto itr = _annonXList.begin();
-			for (; itr != _annonXList.end(); itr++) {
-				size_t currentIndex = itr - _annonXList.begin();
-				ImPlot::Annotate(_annonXList.at(currentIndex), _annonYList.at(currentIndex), ImVec2(15, 15), ImVec4(0.30f, 0.30f, 0.30f, 0.84f), _annonContentList.at(currentIndex).c_str());
-			}
 			ImPlot::EndPlot();
 		}
 		ImGui::EndTabItem();
@@ -465,12 +466,14 @@ VOID PlotWindow::Clear()
 	_end = false;
 	_pi = nullptr;
 	_selectedBossHpComboID = -1;
+	_historyMode = false;
 }
 
 VOID PlotWindow::SetPlotInfo(PlotInfo* p_pi)
 {
 	_pi = p_pi;
 	_end = true;
+	_historyMode = true;
 }
 
 PlotInfo* PlotWindow::GetPlotInfo()

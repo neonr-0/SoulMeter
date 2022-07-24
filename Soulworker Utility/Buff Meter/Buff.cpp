@@ -6,7 +6,7 @@ Buff::Buff(USHORT buffID, BYTE stack) : _buffID(buffID), _stack(stack) {
 	_timePoint = std::chrono::system_clock::now();
 	_time = 0;
 
-	SWDB.GetBuffName(buffID, _name, BUFF_NAME_LEN);
+	SetNameFromDB();
 
 	CHAR stackName[8] = { 0 };
 	sprintf_s(stackName, 8, "(%d)", stack);
@@ -14,7 +14,14 @@ Buff::Buff(USHORT buffID, BYTE stack) : _buffID(buffID), _stack(stack) {
 	strcat_s(_name, BUFF_NAME_LEN, stackName);
 }
 
+VOID Buff::SetNameFromDB()
+{
+	SWDB.GetBuffName(_buffID, _name, BUFF_NAME_LEN);
+}
+
 VOID Buff::Update() {
+	if (_isHistoryMode)
+		return;
 
 	if (_isActive) {
 		std::chrono::duration<FLOAT> time;
@@ -25,11 +32,16 @@ VOID Buff::Update() {
 }
 
 VOID Buff::Active() {
+	if (_isHistoryMode)
+		return;
+
 	_timePoint = std::chrono::system_clock::now();
 	_isActive = TRUE;
 }
 
 VOID Buff::InActive() {
+	if (_isHistoryMode)
+		return;
 
 	if (_isActive) {
 		std::chrono::duration<FLOAT> time;

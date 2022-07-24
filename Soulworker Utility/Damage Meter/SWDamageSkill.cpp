@@ -1,6 +1,5 @@
 #include "pch.h"
 #include ".\Damage Meter\SWDamageSkill.h"
-#include ".\Damage Meter\MySQLite.h"
 
 SWDamageSkill::SWDamageSkill(UINT32 id, UINT64 damage, UINT64 critDamage, USHORT hitCount, USHORT critHitCount){
 	_id = id;
@@ -9,12 +8,17 @@ SWDamageSkill::SWDamageSkill(UINT32 id, UINT64 damage, UINT64 critDamage, USHORT
 	_hitCount = hitCount;
 	_critHitCount = critHitCount;
 
-	ZeroMemory(_name, SKILL_NAME_LEN);
-	SWDB.GetSkillName(id, _name, SKILL_NAME_LEN);
+	SetNameFromDB();
 
 #if DEBUG_DAMAGE_SKILL == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("\t\t[SKILL] [ID = %d] [NAME = %s] [DMG = %llu] [cirDMG = %llu] [hitCount = %d] [cirtHitCount = %d]")), _id, _name,_damage, _critDamage, _hitCount, _critHitCount);
 #endif
+}
+
+VOID SWDamageSkill::SetNameFromDB()
+{
+	ZeroMemory(_name, SKILL_NAME_LEN);
+	SWDB.GetSkillName(_id, _name, SKILL_NAME_LEN);
 }
 
 BOOL SWDamageSkill::SortFunction(SWDamageSkill* skillA, SWDamageSkill* skillB) {

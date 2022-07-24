@@ -5,6 +5,7 @@
 #include ".\Damage Meter\MySQLite.h"
 #include ".\UI\PlayerTable.h"
 #include ".\SWCrypt\SWCryptDLL.h"
+#include ".\Damage Meter\SaveData.h"
 
 #if defined(DEBUG) || defined(_DEBUG)
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console" )
@@ -17,7 +18,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	MiniDump::Begin();
 
 	DWORD errorCode = 0;
-	CHAR errorMsg[128] = { 0 };
+	CHAR errorMsg[512] = { 0 };
 
 	do
 	{
@@ -36,7 +37,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		if (errorCode) {
 			sprintf_s(errorMsg, "Init Lang failed. err: %lu", errorCode);
-			Log::WriteLogA(errorMsg);
 			break;
 		}
 
@@ -44,34 +44,38 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		if ((errorCode = SWCRYPT.LoadSWCrypt())) {
 			sprintf_s(errorMsg, "Load SWCrypt.dll failed, err: %lu", errorCode);
-			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 		if (!SWDB.Init()) {
 			sprintf_s(errorMsg, "Init database failed.");
-			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 		if (UIWINDOW.Init(1, 1, 1, 1)) {
 			if ((errorCode = PACKETCAPTURE.Init())) {
 				sprintf_s(errorMsg, "Init PacketCapture failed, err: %lu", errorCode);
-				Log::WriteLogA(errorMsg);
+				break;
+			}
+			if ((errorCode = SAVEDATA.Init())) {
+				sprintf_s(errorMsg, "Init SaveData failed, err: %lu", errorCode);
+				if (errorCode == ERROR_FILE_CORRUPT) {
+					ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
+				}
 				break;
 			}
 			UIWINDOW.Run();
 		}
 		else {
 			sprintf_s(errorMsg, "Init UI failed.");
-			Log::WriteLogA(errorMsg);
 			break;
 		}
 
 	} while (false);
 
 	if (errorCode) {
-		MessageBoxA(0, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK);
+		MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK);
+		Log::WriteLogA(errorMsg);
 	}
 
 	MiniDump::End();

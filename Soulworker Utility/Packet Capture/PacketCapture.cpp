@@ -85,7 +85,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 					retry = 0;
 					break;
 				}
-				else if (pti->isRecv && itr == queue->begin()) {
+				/*else if (pti->isRecv && itr == queue->begin()) {
 					if (retry > 50 && itr->first < *nextSEQ)
 					{
 						ULONG itrSEQ = itr->first;
@@ -101,7 +101,7 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 							_this->_loss++;
 						}
 					}
-				}
+				}*/
 				if (itr == queue->end())
 					break;
 			}

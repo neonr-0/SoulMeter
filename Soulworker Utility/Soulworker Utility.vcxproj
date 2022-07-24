@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -153,7 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Soulworker Utility\Third Party\Npcap\Include;..\Soulworker Utility\Third Party\openssl\include;..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Soulworker Utility\Third Party\Npcap\Include;..\Soulworker Utility\Third Party\openssl\include;..\Soulworker Utility;..\Soulworker Utility\Third Party;..\Soulworker Utility\Third Party\imgui;..\Soulworker Utility\Third Party\FlatBuffers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -179,10 +179,12 @@
     <ClInclude Include="Buff Meter\Buff Meter.h" />
     <ClInclude Include="Buff Meter\Buff.h" />
     <ClInclude Include="Damage Meter\Damage Meter.h" />
+    <ClInclude Include="Damage Meter\FlatBufferUtil.h" />
     <ClInclude Include="Damage Meter\History.h" />
     <ClInclude Include="Damage Meter\MapList.h" />
     <ClInclude Include="Damage Meter\MonsterList.h" />
     <ClInclude Include="Damage Meter\MySQLite.h" />
+    <ClInclude Include="Damage Meter\SaveData.h" />
     <ClInclude Include="Damage Meter\SWDamageMonster.h" />
     <ClInclude Include="Damage Meter\SWDamagePlayer.h" />
     <ClInclude Include="Damage Meter\SWDamageSkill.h" />
@@ -264,6 +266,7 @@
     <ClCompile Include="Damage Meter\Damage Meter.cpp" />
     <ClCompile Include="Damage Meter\History.cpp" />
     <ClCompile Include="Damage Meter\MySQLite.cpp" />
+    <ClCompile Include="Damage Meter\SaveData.cpp" />
     <ClCompile Include="Damage Meter\SWDamageMonster.cpp" />
     <ClCompile Include="Damage Meter\SWDamagePlayer.cpp" />
     <ClCompile Include="Damage Meter\SWDamageSkill.cpp" />

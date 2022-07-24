@@ -1,0 +1,14 @@
+namespace SoulMeterFBS.History;
+
+table _tBuff {
+  _id:uint;
+  _buff_info:[_tBuffInfo];
+}
+
+table _tBuffInfo {
+  _buff_id:ushort;
+  _stack:byte;
+  _time:float;
+}
+
+root_type _tBuff;

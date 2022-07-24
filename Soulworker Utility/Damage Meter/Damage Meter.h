@@ -6,8 +6,11 @@
 #include ".\UI\PlotWindow.h"
 #include ".\Damage Meter\MonsterList.h"
 #include ".\UI\Option.h"
-using namespace std;
 #include <unordered_map>
+#include ".\Third Party\FlatBuffers\include\SW_HISTORY_.h"
+
+using namespace std;
+using namespace SoulMeterFBS::History;
 
 #define MAX_NAME_LEN 64
 //#define MAX_MAP_LEN 32
@@ -129,18 +132,13 @@ public:
 					if (!_fullABStarted) {
 						_fullABStarted = true;
 						_fullABStartTime = time;
-						_fullABEndTime = time;
 						_fullABPrevTime = _fullABTime;
 					}
-					else {
-						_fullABEndTime = time;
-					}
+					_fullABEndTime = time;
 				}
-				else {
-					if (_fullABStarted) {
-						_fullABStarted = false;
-						_fullABEndTime = time;
-					}
+				else if (_fullABStarted) {
+					_fullABStarted = false;
+					_fullABEndTime = time;
 				}
 				CalcFullABTime();
 			}
@@ -490,9 +488,12 @@ public:
 		return 0;
 	}
 
-	VOID CalcFullABTime()
+	VOID CalcFullABTime(UINT64 endTime = NULL)
 	{
-		_fullABTime = _fullABPrevTime + ((DOUBLE)(_fullABEndTime - _fullABStartTime) / 1000);
+		if (endTime == NULL || _armorBreak < 100)
+			endTime = _fullABEndTime;
+
+		_fullABTime = _fullABPrevTime + ((DOUBLE)(endTime - _fullABStartTime) / 1000);
 	}
 
 	FLOAT GetStat(USHORT statType) {
@@ -529,12 +530,111 @@ public:
 		return -1;
 	}
 
+	VOID Serialization(flatbuffers::FlatBufferBuilder& fbb, std::vector<flatbuffers::Offset<_tPlayerMetaData>>& vPlayerMetaData)
+	{
+		auto fcsName = fbb.CreateString(_name);
+
+		_tPlayerMetaDataBuilder tpmdb(fbb);
+
+		tpmdb.add__armorbreak(GetStat(StatType::ArmorBreak));
+		tpmdb.add__sg(GetStat(StatType::SG));
+		tpmdb.add__stamina(GetStat(StatType::Stamina));
+		tpmdb.add__sv(GetStat(StatType::SV));
+		tpmdb.add__attackspeed(GetStat(StatType::AttackSpeed));
+		tpmdb.add__partialdamage(GetStat(StatType::PartialDamage));
+		tpmdb.add__maxhp(GetStat(StatType::MaxHP));
+		tpmdb.add__currenthp(GetStat(StatType::CurrentHP));
+		tpmdb.add__maxattack(GetStat(StatType::MaxAttack));
+		tpmdb.add__critdamage(GetStat(StatType::CritDamage));
+
+		tpmdb.add__bossdamage(GetSpecialStat(SpecialStatType::BossDamage));
+
+		tpmdb.add__id(_id);
+		tpmdb.add__name(fcsName);
+		tpmdb.add__job(_job);
+
+		tpmdb.add__avg_ab_sum(_avgABSum);
+		tpmdb.add__avg_ab_previous_time(_avgABPreviousTime);
+
+		tpmdb.add__avg_bd_sum(_avgBDSum);
+		tpmdb.add__avg_bd_previous_time(_avgBDPreviousTime);
+
+		tpmdb.add__gear90_sum(_gear90Sum);
+		tpmdb.add__gear90_effect_started_time(_gear90EffectStartedTime);
+
+		tpmdb.add__gear50_sum(_gear50Sum);
+		tpmdb.add__gear50_effect_started_time(_gear50EffectStartedTime);
+
+		tpmdb.add__acc01_sum(_acc01Sum);
+		tpmdb.add__acc01_effect_started_time(_acc01EffectStartedTime);
+
+		tpmdb.add__acc02_sum(_acc02Sum);
+		tpmdb.add__acc02_effect_started_time(_acc02EffectStartedTime);
+
+		tpmdb.add__losedhp(_losedHp);
+
+		tpmdb.add__fullab_start_time(_fullABStartTime);
+		tpmdb.add__fullab_end_time(_fullABEndTime);
+		tpmdb.add__fullab_prev_time(_fullABPrevTime);
+		tpmdb.add__fullab_time(_fullABTime);
+
+		vPlayerMetaData.push_back(tpmdb.Finish());
+	}
+
+	VOID UnSerialization(const _tPlayerMetaData* tPlayerMetaData)
+	{
+		_armorBreak = tPlayerMetaData->_armorbreak();
+		_sg = tPlayerMetaData->_sg();
+		_stamina = tPlayerMetaData->_stamina();
+		_sv = tPlayerMetaData->_sv();
+		_attackSpeed = tPlayerMetaData->_attackspeed();
+		_partialDamage = tPlayerMetaData->_partialdamage();
+		_maxHP = tPlayerMetaData->_maxhp();
+		_currentHP = tPlayerMetaData->_currenthp();
+		_maxAttack = tPlayerMetaData->_maxattack();
+		_critDamage = tPlayerMetaData->_critdamage();
+		_bossDamage = tPlayerMetaData->_bossdamage();
+
+		_id = tPlayerMetaData->_id();
+		strcpy_s(_name, tPlayerMetaData->_name()->c_str());
+		_job = tPlayerMetaData->_job();
+
+		_avgABSum = tPlayerMetaData->_avg_ab_sum();
+		_avgABPreviousTime = tPlayerMetaData->_avg_ab_previous_time();
+
+		_avgBDSum = tPlayerMetaData->_avg_bd_sum();
+		_avgBDPreviousTime = tPlayerMetaData->_avg_bd_previous_time();
+
+		_gear90Sum = tPlayerMetaData->_gear90_sum();
+		_gear90EffectStartedTime = tPlayerMetaData->_gear90_effect_started_time();
+
+		_gear50Sum = tPlayerMetaData->_gear50_sum();
+		_gear50EffectStartedTime = tPlayerMetaData->_gear50_effect_started_time();
+
+		_acc01Sum = tPlayerMetaData->_acc01_sum();
+		_acc01EffectStartedTime = tPlayerMetaData->_acc01_effect_started_time();
+
+		_acc02Sum = tPlayerMetaData->_acc02_sum();
+		_acc02EffectStartedTime = tPlayerMetaData->_acc02_effect_started_time();
+
+		_losedHp = tPlayerMetaData->_losedhp();
+
+		_fullABStartTime = tPlayerMetaData->_fullab_start_time();
+		_fullABEndTime = tPlayerMetaData->_fullab_end_time();
+		_fullABPrevTime = tPlayerMetaData->_fullab_prev_time();
+		_fullABTime = tPlayerMetaData->_fullab_time();
+	}
+
 }SW_PLAYER_METADATA;
 private:
 	vector<SWDamagePlayer*> _playerInfo;
 	vector<SW_OWNER_ID_STRUCT*> _ownerInfo;
 	vector<SW_DB2_STRUCT*> _dbInfo;
 	unordered_map<UINT32, SW_PLAYER_METADATA*> _playerMetadata;
+
+	vector<SWDamagePlayer*> _historyPlayerInfo;
+	vector<SW_DB2_STRUCT*> _historyDbInfo;
+	unordered_map<UINT32, SW_PLAYER_METADATA*> _historyPlayerMetadata;
 
 	CHAR _mapName[MAX_MAP_LEN];
 	UINT32 _myID;
@@ -557,6 +657,10 @@ private:
 	mutex _mutex;
 
 	INT32 _currentHistoryId = -1;
+
+	BOOL _testMode = FALSE;
+
+	UINT32 _historyMyID;
 
 public:
 	SWDamageMeter() :   _myID(0), _worldID(0), _mazeEnd(0), _historyMode(0), _historyWorldID(0), _historyTime(0) {}
@@ -623,7 +727,7 @@ public:
 	VOID SetHistory(LPVOID hi);
 	BOOL isHistoryMode();
 
-	VOID ClearInfo(BOOL clear = TRUE);
+	VOID ClearInfo(BOOL clear = FALSE);
 
 	INT32 GetCurrentHistoryId()
 	{
@@ -633,5 +737,10 @@ public:
 	VOID SetCurrentHistoryId(INT32 id)
 	{
 		_currentHistoryId = id;
+	}
+
+	VOID SetTestMode()
+	{
+		_testMode = TRUE;
 	}
 };

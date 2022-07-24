@@ -29,15 +29,15 @@ VOID SWPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, const
 
 	if (data == nullptr || size < 0 || start < 0)
 		return;
-	UINT32 _size = size;
-
+	
 #if SWMAGIC == 3
+	UINT32 _size = size;
 	_size -= sizeof(SWHEADER) + 3;
 	for (UINT i = 0; i < _size; i++) {
 		data[i + start] ^= _keyTable[16 * (keyIndex % 16) + (i & 0xF)];
 	}
 #else
-	SWCRYPT.SWDecrypt(data + start, size - start, keyIndex);
+	SWCRYPT.SWDecrypt(data + start, size - start, keyIndex, TRUE);
 #endif
 }
 

@@ -1,0 +1,6 @@
+namespace SoulMeterFBS.History;
+
+table _tIntDoubleList {
+  _f:uint;
+  _s:[double];
+}

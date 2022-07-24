@@ -182,6 +182,8 @@ VOID UiOption::Helper() {
 		BUFFMETER.AddBuff(id, buff[id % 4], 1 + id);
 		helper++;
 	}
+
+	DAMAGEMETER.SetTestMode();
 }
 
 VOID UiOption::ShowLangSelector() {

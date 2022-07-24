@@ -124,6 +124,8 @@
     "STR_SPECIFICINFO_BUFF_NAME": "效果",
 
     "STR_UTILLWINDOW_SEARCH": "搜尋",
-    "STR_UTILLWINDOW_HISTORY_MAX": "上限"
+    "STR_UTILLWINDOW_HISTORY_MAX": "上限",
+
+    "STR_SAVEDATA_VERSION_ERROR": "存檔版本不符，請手動刪除 SoulMeter.dat"
 
 }

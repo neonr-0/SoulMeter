@@ -1,0 +1,82 @@
+namespace SoulMeterFBS.History;
+
+table _tDamagePlayer {
+  _id:uint;
+  _damage:ulong;
+  _soulstonedamage:ulong;
+  _hitcount:ushort;
+  _crithitcount:ushort;
+
+  _maxcombo:ushort;
+  _hitcountforcritrate:ushort;
+  _crithitcountforcritrate:ushort;
+  _misscount:ushort;
+  _soulstonecount:ushort;
+
+  _damageforsoulstone:ulong;
+  _soulstonedamageforsoulstone:ulong;
+  _hitcountforarmorbreak:ushort;
+  _armorbreak:float;
+  _sg:float;
+
+  _stamina:float;
+  _sv:float;
+  _attackspeed:float;
+  _partialdamage:float;
+  _gethitall:ushort;
+
+  _gethit:ushort;
+  _gethitbs:ushort;
+  _gethitmissed:ushort;
+  _gethitmissedreal:ushort;
+  _enlightensum:float;
+
+  _gigaenlightenproc:ushort;
+  _teraenlightenproc:ushort;
+  _skillcounts:ushort;
+  _dodgecounts:ushort;
+  _deathcounts:ushort;
+
+  _historyavgab:double;
+  _historyavgbd:double;
+  _historygear90:double;
+  _historygear50:double;
+  _historyacc01:double;
+  
+  _historyacc02:double;
+  _historylosedhp:double;
+  _jqstack:ubyte;
+  _historyabtime:double;
+
+  _monsterinfo:[_tDamageMonster];
+  _skillcount:[_tSkillCount];
+}
+
+table _tSkillCount {
+  _id:uint;
+  _count:ushort;
+  _in_full_ab_count:ushort;
+}
+
+table _tDamageMonster {
+  _id:uint;
+  _db2:uint;
+  _damage:ulong;
+  _critdamage:ulong;
+  _hitcount:ushort;
+  _crithitcount:ushort;
+  _type:int;
+
+  _skillinfo:[_tDamageSkill];
+}
+
+table _tDamageSkill {
+  _id:uint;
+  _damage:ulong;
+  _critdamage:ulong;
+  _hitcount:ushort;
+  _crithitcount:ushort;
+  _skillcasts:ushort;
+}
+
+root_type _tDamagePlayer;

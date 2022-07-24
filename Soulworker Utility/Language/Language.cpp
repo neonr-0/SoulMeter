@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Language.h"
 
-auto Language::GetLangFile(CHAR* langFile)
+auto Language::GetLangFile(CHAR* langFile, BOOL outputERROR)
 {
 	// parse path
 	CHAR path[MAX_PATH] = { 0 };
@@ -14,14 +14,16 @@ auto Language::GetLangFile(CHAR* langFile)
 		// get raw data
 		std::string langRaw;
 		if (!file_contents(std::filesystem::path(path), &langRaw)) {
-			Log::WriteLogA("[Language::SetCurrentLang] Lang file %s not found.", langFile);
+			if (outputERROR)
+				Log::WriteLogA("[Language::SetCurrentLang] Lang file %s not found.", langFile);
 			break;
 		}
 
 		// parse raw to json
 		j = json::parse(langRaw);
 		if (j.empty()) {
-			Log::WriteLogA("[Language::SetCurrentLang] Lang file %s is empty.", langFile);
+			if (outputERROR)
+				Log::WriteLogA("[Language::SetCurrentLang] Lang file %s is empty.", langFile);
 			break;
 		}
 
@@ -30,15 +32,26 @@ auto Language::GetLangFile(CHAR* langFile)
 	return j;
 }
 
-unordered_map<string, string> Language::MapLangData(CHAR* langFile)
+unordered_map<string, string> Language::MapLangData(CHAR* langFile, BOOL useReplace)
 {
 	unordered_map<string, string> list;
 
 	// get json data
 	auto langData = GetLangFile(langFile);
-	if (!langData.empty()) {
+	if (!langData.empty()) 
+	{
 		for (json::iterator itr = langData.begin(); itr != langData.end(); itr++) 
 			list[itr.key()] = itr.value().get<std::string>();
+
+		if (useReplace)
+		{
+			auto replaceData = GetLangFile("replace.lang", FALSE);
+			if (!replaceData.empty())
+			{
+				for (json::iterator itr = replaceData.begin(); itr != replaceData.end(); itr++)
+					list[itr.key()] = itr.value().get<std::string>();
+			}
+		}
 	}
 
 	return list;
@@ -51,7 +64,7 @@ DWORD Language::SetCurrentLang(CHAR* langFile)
 	do {
 
 		// get json data
-		auto newLang = MapLangData(langFile);
+		auto newLang = MapLangData(langFile, TRUE);
 		if (newLang.empty()) {
 			error = ERROR_NOT_FOUND;
 			break;
