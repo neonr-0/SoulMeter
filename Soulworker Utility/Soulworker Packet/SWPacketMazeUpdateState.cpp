@@ -44,6 +44,6 @@ VOID SWPacketMazeUpdateState::Log() {
 }
 
 VOID SWPacketMazeUpdateState::Debug() {
-	SWPacketMazeUpdateStatePacket* packet = (SWPacketMazeUpdateStatePacket*)(_data + sizeof(SWHEADER));
-	Log::WriteLogA("[SWPacketMazeUpdateState] stateID = %d, state = %d", packet->_stateID, packet->_state);
+	/*SWPacketMazeUpdateStatePacket* packet = (SWPacketMazeUpdateStatePacket*)(_data + sizeof(SWHEADER));
+	Log::WriteLogA("[SWPacketMazeUpdateState] stateID = %d, state = %d", packet->_stateID, packet->_state);*/
 }

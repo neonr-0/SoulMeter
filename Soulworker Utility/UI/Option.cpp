@@ -1015,6 +1015,8 @@ const BOOL& UiOption::isSoloRankMode() {
 
 const BOOL& UiOption::isUseSaveData()
 {
+	if (_oriIsUseSaveData != _isUseSaveData)
+		return _oriIsUseSaveData;
 	return _isUseSaveData;
 }
 
