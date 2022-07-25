@@ -45,11 +45,16 @@ unordered_map<string, string> Language::MapLangData(CHAR* langFile, BOOL useRepl
 
 		if (useReplace)
 		{
-			auto replaceData = GetLangFile("replace.lang", FALSE);
-			if (!replaceData.empty())
-			{
-				for (json::iterator itr = replaceData.begin(); itr != replaceData.end(); itr++)
-					list[itr.key()] = itr.value().get<std::string>();
+			try {
+				auto replaceData = GetLangFile("replace.lang", FALSE);
+				if (!replaceData.empty())
+				{
+					for (json::iterator itr = replaceData.begin(); itr != replaceData.end(); itr++)
+						list[itr.key()] = itr.value().get<std::string>();
+				}
+			}
+			catch (...) {
+				Log::WriteLogA("[Language::MapLangData] Load replace.lang failed.");
 			}
 		}
 	}
@@ -62,12 +67,20 @@ DWORD Language::SetCurrentLang(CHAR* langFile)
 	DWORD error = ERROR_SUCCESS;
 
 	do {
+		unordered_map<string, string> newLang;
 
 		// get json data
-		auto newLang = MapLangData(langFile, TRUE);
-		if (newLang.empty()) {
-			error = ERROR_NOT_FOUND;
-			break;
+		try {
+			newLang = MapLangData(langFile, TRUE);
+			if (newLang.empty()) {
+				error = ERROR_NOT_FOUND;
+				break;
+			}
+		}
+		catch (...)
+		{
+			Log::WriteLogA("[Language::SetCurrentLang] Load lang error.");
+			error = ERROR_ACCESS_DENIED;
 		}
 
 		// set current lang
@@ -103,13 +116,18 @@ unordered_map<string, string> Language::GetAllLangFile()
 
 				string fileName = p.path().filename().string();
 
-				auto langData = MapLangData((CHAR*)fileName.c_str());
+				try {
+					auto langData = MapLangData((CHAR*)fileName.c_str());
 
-				if (!langData.empty()) {
+					if (!langData.empty()) {
 
-					CHAR* langName = GetText("STR_LANG_NAME", &langData);
+						CHAR* langName = GetText("STR_LANG_NAME", &langData);
 
-					list.emplace(fileName, langName);
+						list.emplace(fileName, langName);
+					}
+				}
+				catch (...) {
+					Log::WriteLogA("[Language::SetCurrentLang] Load lang file %s failed.", fileName.c_str());
 				}
 			}
 		}
