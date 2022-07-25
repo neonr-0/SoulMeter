@@ -39,7 +39,7 @@ DWORD SWSaveData::Init()
 			}
 		}
 
-		if (!_inited)
+		if (!_inited && error == ERROR_SUCCESS)
 		{
 			if (!Load()) {
 				error = ERROR_FILE_CORRUPT;
