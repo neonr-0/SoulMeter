@@ -634,7 +634,7 @@ VOID SWDamageMeter::Clear() {
 			else {
 				HISTORY.push_back(pHI);
 
-				if (UIOPTION.isTeamTALF()) {
+				if (UIOPTION.isTeamTALF() && GetWorldID() == 22061) {
 					_dbInfo.clear();
 					for (auto itr = hd->_dbHistory.begin(); itr != hd->_dbHistory.end(); itr++) {
 						SW_DB2_STRUCT* newDB = new SW_DB2_STRUCT;
@@ -694,12 +694,15 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 {
 	if (!_historyMode) {
 		_playerInfo.clear();
-		for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++)
-			delete (itr->second);
-		_playerMetadata.clear();
 	}
 
 	if (clear) {
+		if (!_historyMode)
+		{
+			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++)
+				delete (itr->second);
+		}
+		_playerMetadata.clear();
 		_ownerInfo.clear();
 		_dbInfo.clear();
 	}

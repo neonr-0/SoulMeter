@@ -124,3 +124,14 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 	1091101 // Bomb Wick(Nabi)
 
 	});
+
+static unordered_set<UINT32> LunarFallBossListId({
+
+	701, 702, // Trainning Master
+
+	/* LF */
+	31309101, // Azure Force. Arculus
+	31309102, // Azure Force. Edgar
+	31309151, // Junk Queen
+
+	});

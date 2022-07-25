@@ -91,14 +91,12 @@ VOID SWPacketDamage::Do() {
 				if (endIdList.find(db2) != endIdList.end() || db->_type == 4)
 					isEndId = true;
 
-				if (UIOPTION.isTeamTALF()) {
+				if (UIOPTION.isTeamTALF() && DAMAGEMETER.GetWorldID() == 22061 && LunarFallBossListId.find(db2) != LunarFallBossListId.end()) {
 					BOOL skipClear = false;
 					// only edgar+queen
 					if (UIOPTION.TeamTALFMode() == 2)
 					{
-						if (monster->_monsterID == 31309101)
-							DAMAGEMETER.SetTestMode();
-						else
+						if (db2 != 31309101)
 							skipClear = true;
 					}
 					if (!skipClear) {
