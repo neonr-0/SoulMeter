@@ -51,53 +51,53 @@ VOID UtillWindow::Update()
 
 		ImGui::BeginChild("select history", ImVec2(0, 0), true);
 		{
-			auto vector = HISTORY.GetVector();
+			HISTORY.GetMutex()->lock();
+			{
+				auto vector = HISTORY.GetVector();
 
-			if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop()) {
-				HISTORY.GetMutex()->lock();
-
-				if (vector->size() >= 0) {
-					_hi = *vector;
-					_currentIndex = HISTORY.GetCurrentIndex();
-				}
-				DAMAGEMETER.SetCurrentHistoryId(-1);
-
-				HISTORY.GetMutex()->unlock();
-			}
-
-			if (_hi.size() > 0) {
-				INT32 i = 1;
-				for (auto itr = _hi.rbegin(); itr != _hi.rend(); itr++)
-				{
-					HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
-
-					CHAR mapName[MAX_MAP_LEN] = { 0 };
-					SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
-
-					CHAR extInfo[128] = { 0 };
-					if (hi->_historyData->_extInfo.length() > 0)
-						sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
-
-					sprintf_s(label, "%d.[%02d/%02d %02d:%02d:%02d] %s%s - %02d:%02d.%01d###history%d", 
-						i,
-						hi->_saveTime->wMonth, hi->_saveTime->wDay,hi->_saveTime->wHour, hi->_saveTime->wMinute, hi->_saveTime->wSecond,
-						extInfo,
-						mapName,
-						(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
-						i
-					);
-
-					if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)
-						continue;
-
-					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
-						if (!DAMAGEMETER.isRun()) {
-							DAMAGEMETER.SetCurrentHistoryId(i);
-							DAMAGEMETER.SetHistory((LPVOID)hi);
-						}
+				if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop()) {
+					if (vector->size() >= 0) {
+						_hi = *vector;
+						_currentIndex = HISTORY.GetCurrentIndex();
 					}
-					i++;
+					DAMAGEMETER.SetCurrentHistoryId(-1);
 				}
+
+				if (_hi.size() > 0) {
+					INT32 i = 1;
+					for (auto itr = _hi.rbegin(); itr != _hi.rend(); itr++)
+					{
+						HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
+
+						CHAR mapName[MAX_MAP_LEN] = { 0 };
+						SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
+
+						CHAR extInfo[128] = { 0 };
+						if (hi->_historyData->_extInfo.length() > 0)
+							sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
+
+						sprintf_s(label, "%d.[%02d/%02d %02d:%02d:%02d] %s%s - %02d:%02d.%01d###history%d",
+							i,
+							hi->_saveTime->wMonth, hi->_saveTime->wDay, hi->_saveTime->wHour, hi->_saveTime->wMinute, hi->_saveTime->wSecond,
+							extInfo,
+							mapName,
+							(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
+							i
+						);
+
+						if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)
+							continue;
+
+						if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
+							if (!DAMAGEMETER.isRun()) {
+								DAMAGEMETER.SetCurrentHistoryId(i);
+								DAMAGEMETER.SetHistory((LPVOID)hi);
+							}
+						}
+						i++;
+					}
+				}
+				HISTORY.GetMutex()->unlock();
 			}
 			ImGui::EndChild();
 		}

@@ -194,30 +194,34 @@ VOID PlayerTable::BeginPopupMenu() {
 			history_open = true;
 
 		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
-			INT32 i = 0;
-			for (auto itr = HISTORY.GetVector()->rbegin(); itr != HISTORY.GetVector()->rend(); itr++) 
+			HISTORY.GetMutex()->lock();
 			{
-				i++;
+				INT32 i = 0;
+				for (auto itr = HISTORY.GetVector()->rbegin(); itr != HISTORY.GetVector()->rend(); itr++)
+				{
+					i++;
 
-				HISTORY_INFO* pHI = (HISTORY_INFO*)*itr;
+					HISTORY_INFO* pHI = (HISTORY_INFO*)*itr;
 
-				CHAR label[512] = { 0 };
-				CHAR mapName[MAX_MAP_LEN] = { 0 };
-				SWDB.GetMapName(pHI->_worldID, mapName, MAX_MAP_LEN);
+					CHAR label[512] = { 0 };
+					CHAR mapName[MAX_MAP_LEN] = { 0 };
+					SWDB.GetMapName(pHI->_worldID, mapName, MAX_MAP_LEN);
 
-				sprintf_s(label, "%d.[%02d:%02d:%02d] %s - %02d:%02d.%01d###history%d",
-					i,
-					pHI->_saveTime->wHour, pHI->_saveTime->wMinute, pHI->_saveTime->wSecond,
-					mapName,
-					(UINT)pHI->_time / (60 * 1000), (UINT)(pHI->_time / 1000) % 60, (UINT)pHI->_time % 1000 / 100,
-					i
-				);
-				if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
-					if (!DAMAGEMETER.isRun()) {
-						DAMAGEMETER.SetCurrentHistoryId(i);
-						DAMAGEMETER.SetHistory((LPVOID)pHI);
+					sprintf_s(label, "%d.[%02d:%02d:%02d] %s - %02d:%02d.%01d###history%d",
+						i,
+						pHI->_saveTime->wHour, pHI->_saveTime->wMinute, pHI->_saveTime->wSecond,
+						mapName,
+						(UINT)pHI->_time / (60 * 1000), (UINT)(pHI->_time / 1000) % 60, (UINT)pHI->_time % 1000 / 100,
+						i
+					);
+					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
+						if (!DAMAGEMETER.isRun()) {
+							DAMAGEMETER.SetCurrentHistoryId(i);
+							DAMAGEMETER.SetHistory((LPVOID)pHI);
+						}
 					}
 				}
+				HISTORY.GetMutex()->unlock();
 			}
 			ImGui::EndMenu();
 		}
