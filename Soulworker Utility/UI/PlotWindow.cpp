@@ -197,6 +197,8 @@ VOID PlotWindow::UpdatePlotTab()
 			UINT32 firstId = metaInfos.front()->_id;
 			UINT32 lastId = metaInfos.back()->_id;
 			size_t currentSize = timeList[firstId].size();
+			if (currentSize <= 0)
+				return;
 
 			// 
 			DOUBLE startX = 0.0;
@@ -253,6 +255,8 @@ VOID PlotWindow::UpdateAbPlotTab()
 		auto _abTimeList = _pi->GetABTimeList();
 		auto _abList = _pi->GetABList();
 		size_t currentSize = _abTimeList.size();
+		if (currentSize <= 0)
+			return;
 
 		DOUBLE startX = 0.0;
 		DOUBLE endX = 5.0;
@@ -333,6 +337,9 @@ VOID PlotWindow::UpdateJqPlotTab()
 		auto _jqTimeList = _pi->GetJQTimeList();
 		auto _jqList = _pi->GetJQList();
 		size_t currentSize = _jqTimeList.size();
+		if (currentSize <= 0)
+			return;
+
 		DOUBLE startX = 0.0;
 		DOUBLE endX = 5.0;
 		if (currentSize > 45) {
@@ -411,7 +418,8 @@ VOID PlotWindow::UpdateBossHpPlotGraph()
 	auto bossHpList = _pi->GetBossHpList();
 	if (timeList.size() > 0) {
 		size_t currentSize = timeList[_selectedBossHpComboID].size();
-
+		if (currentSize <= 0)
+			return;
 		// 
 		DOUBLE startX = 0.0;
 		if (currentSize > 45) {

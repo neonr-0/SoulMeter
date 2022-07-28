@@ -92,7 +92,7 @@ VOID UtillWindow::Update()
 			ImGui::SameLine(pos);
 			if (ImGui::Button(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_LOAD")))
 			{
-				if (!DAMAGEMETER.isRun() && HISTORY.size() > 0)
+				if (!DAMAGEMETER.isRun())
 				{
 					_fileDialogOpen = true;
 					_fileDialogInfo.type = ImGuiFileDialogType_OpenFile;
@@ -108,12 +108,13 @@ VOID UtillWindow::Update()
 				{
 					DAMAGEMETER.GetLock();
 					{
-						if (!DAMAGEMETER.isRun() && HISTORY.size() > 0)
+						if (!DAMAGEMETER.isRun())
 						{
 							DAMAGEMETER.Clear();
 							if (_fileDialogInfo.type == ImGuiFileDialogType_SaveFile)
 							{
-								SAVEDATA.Clone(_fileDialogInfo.resultPath.generic_string());
+								if (HISTORY.size() > 0)
+									SAVEDATA.Clone(_fileDialogInfo.resultPath.generic_string());
 							}
 							else if (_fileDialogInfo.type == ImGuiFileDialogType_OpenFile)
 							{

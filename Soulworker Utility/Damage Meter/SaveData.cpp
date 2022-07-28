@@ -306,18 +306,19 @@ VOID SWSaveData::Delete(LONG64 index, LONG64 clearCount)
 
 VOID SWSaveData::Clone(string filename)
 {
-	_mutex.lock();
-
-	if (_saveFile.is_open())
+	BOOL isLock = _mutex.try_lock();
 	{
-		_saveFile.close();
+		if (_saveFile.is_open())
+		{
+			_saveFile.close();
 
-		std::filesystem::copy(_saveFileName, filename);
+			std::filesystem::copy(_saveFileName, filename);
 
-		Init(_saveFileName);
+			Init(_saveFileName);
+		}
+		if (isLock)
+			_mutex.unlock();
 	}
-
-	_mutex.unlock();
 }
 
 VOID SWSaveData::WriteData(UCHAR* buf, LONG64 size, fstream* pFS)
