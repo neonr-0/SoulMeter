@@ -7,7 +7,8 @@ class UtillWindow : public Singleton<UtillWindow> {
 private:
 	bool _isOpen = false;
 
-	vector<LPVOID> _hi;
+	ImFileDialogInfo _fileDialogInfo;
+	bool _fileDialogOpen = false;
 
 	INT32 _currentIndex = 0;
 

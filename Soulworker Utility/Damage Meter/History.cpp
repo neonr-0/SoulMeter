@@ -2,6 +2,7 @@
 #include ".\Damage Meter\History.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Damage Meter\SaveData.h"
+#include ".\UI\UiWindow.h"
 
 VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData, SYSTEMTIME* saveTime) {
 	_historyData = historyData;
@@ -63,22 +64,43 @@ SWDamageMeterHistory::~SWDamageMeterHistory() {
 	
 	_stopAddHistory = true;
 
-	_mutex.lock();
+	BOOL a = _mutex.try_lock();
 
+	ClearVector();
+
+	_mutex.unlock();
+}
+
+VOID SWDamageMeterHistory::ClearAll()
+{
+	CHAR label[256] = { 0 };
+	ANSItoUTF8(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_CLEARALL_CONFIRM"), label, sizeof(label));
+
+	if (MessageBoxA(UIWINDOW.GetHWND(), label, "WARNING", MB_ICONWARNING | MB_YESNO | MB_TOPMOST) == IDYES)
+	{
+		SAVEDATA.Delete(-1, HISTORY_SIZE);
+
+		ClearVector();
+	}
+}
+
+VOID SWDamageMeterHistory::ClearVector()
+{
 	for (auto itr = _historys.begin(); itr != _historys.end(); itr++) {
 		HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
 		hi->Clear();
 
 		delete (*itr);
 	}
-
 	_historys.clear();
-
-	_mutex.unlock();
+	_curIndex = 0;
 }
 
 VOID SWDamageMeterHistory::ClearHistory(HISTORY_INFO* pHI, BOOL deleteFirst)
 {
+	if (_historys.begin() == _historys.end())
+		return;
+
 	if (pHI == nullptr)
 	{
 		pHI = (HISTORY_INFO*)*_historys.begin();
@@ -104,26 +126,32 @@ VOID SWDamageMeterHistory::ClearHistory(HISTORY_INFO* pHI, BOOL deleteFirst)
 	if (itr != _historys.end())
 	{
 		_historys.erase(itr);
-		delete pHI;
 	}
+
+	delete pHI;
 }
 
 VOID SWDamageMeterHistory::push_back(HISTORY_INFO* pHi) {
 
-	if (_stopAddHistory) {
-		return;
+	BOOL canLock = _mutex.try_lock();
+	{
+		do
+		{
+			if (_stopAddHistory) {
+				break;
+			}
+
+			if (_curIndex >= HISTORY_SIZE)
+				ClearHistory();
+
+			_historys.push_back(pHi);
+
+			_curIndex++;
+		} while (false);
+
+		if (canLock)
+			_mutex.unlock();
 	}
-
-	_mutex.lock();
-
-	if (_curIndex >= HISTORY_SIZE)
-		ClearHistory();
-
-	_historys.push_back(pHi);
-
-	_curIndex++;
-
-	_mutex.unlock();
 }
 
 flatbuffers::Offset<_tHistory> _HISTORYINFO::Serialization(flatbuffers::FlatBufferBuilder& fbb, HISTORY_DATA* historyData)
@@ -252,5 +280,10 @@ VOID SWDamageMeterHistory::UnSerialization(const _tHistory* pHistory)
 	HISTORY_INFO* pHI = new HISTORY_INFO;
 	pHI->Setup(pHD, pHistory->_word_id(), pHistory->_time(), pHistory->_my_id(), TRUE, pSysTime);
 
-	push_back(pHI);
+	BOOL canLock = _mutex.try_lock();
+	{
+		push_back(pHI);
+		if (canLock)
+			_mutex.unlock();
+	}
 }

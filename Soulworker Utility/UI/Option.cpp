@@ -904,7 +904,7 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 		if (PACKETCAPTURE.GetMode() != _captureMode || _oriIsUseSaveData != _isUseSaveData) {
 			CHAR tmp[256] = { 0 };
 			ANSItoUTF8(LANGMANAGER.GetText("STR_OPTION_SAVE_WARNING"), tmp, 256);
-			MessageBoxA(NULL, tmp, "WARNING", MB_ICONWARNING);
+			MessageBoxA(UIWINDOW.GetHWND(), tmp, "WARNING", MB_ICONWARNING | MB_TOPMOST);
 		}
 	}
 

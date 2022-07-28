@@ -11,12 +11,23 @@ SWSaveData::~SWSaveData()
 	FreeLock();
 }
 
-DWORD SWSaveData::Init()
+VOID SWSaveData::Reset()
+{
+	_inited = false;
+	_saveFile.close();
+	_saveFile.clear();
+}
+
+DWORD SWSaveData::Init(string fileName)
 {
 	DWORD error = ERROR_FILE_NOT_FOUND;
 
 	do
 	{
+		if (fileName.size() == 0)
+			_saveFileName = _oriSaveFileName;
+		else
+			_saveFileName = fileName;
 		// Open save data, set deny read/write
 		while (TRUE)
 		{
@@ -41,7 +52,13 @@ DWORD SWSaveData::Init()
 
 		if (!_inited && error == ERROR_SUCCESS)
 		{
-			if (!Load()) {
+			try {
+				if (!Load()) {
+					throw "Load failed";
+				}
+			}
+			catch (...)
+			{
 				error = ERROR_FILE_CORRUPT;
 				break;
 			}
@@ -108,8 +125,9 @@ VOID SWSaveData::ReadSaveData(LONG64& offset)
 		ReadData(pSaveData, dataSize, offset);
 		offset += dataSize;
 
-		auto tHistory = Get_tHistory(pSaveData);
-		HISTORY.UnSerialization(tHistory);
+		HISTORY.UnSerialization(Get_tHistory(pSaveData));
+
+		delete[] pSaveData;
 	}
 }
 
@@ -134,43 +152,77 @@ LONG64 SWSaveData::GetCurrentLength()
 
 VOID SWSaveData::Save(flatbuffers::FlatBufferBuilder& fbb)
 {
-	GetLock();
+	BOOL isLock = _mutex.try_lock();
 	{
-		if (_saveFile.is_open()) 
+		do
 		{
-			LONG64 size = fbb.GetSize();
-
-			// go to end
-			_saveFile.seekg(0, std::ios::end);
-
-			// write save data version
-			if (_fileNotExist)
+			if (_saveFile.is_open())
 			{
-				_fileNotExist = FALSE;
-				WriteData((UCHAR*)&_saveVersion, sizeof(UINT32));
-			}
+				_saveFile.close();
 
-			// write savedata size
-			WriteData((UCHAR*)&size, sizeof(LONG64));
+				string tmpFileName = _saveFileName + string(".tmp");
 
-			// write savedata
-			WriteData((UCHAR*)fbb.GetBufferPointer(), size);
+				// remove tmp file
+				std::remove(tmpFileName.c_str());
 
-			// flush savedata
-			_saveFile.flush();
+				// copy current save file to tmp
+				std::filesystem::copy(_saveFileName, tmpFileName);
+
+				// open tmp file
+				std::fstream tmpFile;
+				tmpFile.open(tmpFileName, ios::in | ios::out | ios::binary, _SH_DENYRW);
+				if (!tmpFile.is_open())
+				{
+					Log::WriteLogA("[SWSaveData::Save] open tmp file failed");
+					exit(1);
+				}
+
+				// go to end
+				tmpFile.clear();
+				tmpFile.seekp(0, std::ios::end);
+
+				// write save data version
+				if (_fileNotExist)
+				{
+					_fileNotExist = FALSE;
+					WriteData((UCHAR*)&_saveVersion, sizeof(UINT32), &tmpFile);
+				}
+
+				// write savedata size
+				LONG64 size = fbb.GetSize();
+				WriteData((UCHAR*)&size, sizeof(LONG64), &tmpFile);
+
+				// write savedata
+				WriteData((UCHAR*)fbb.GetBufferPointer(), size, &tmpFile);
+
+				// flush tmp file
+				tmpFile.close();
+
+				// delete old savedata and rename tmp file to savedata
+				std::remove(_saveFileName.c_str());
+				if (std::rename(tmpFileName.c_str(), _saveFileName.c_str()))
+				{
+					Log::WriteLogA("[SaveData::Save] rename failed");
+					exit(1);
+				}
+
+				// reopen savedata
+				Init(_saveFileName);
 
 #if DEBUG_SAVEDATA_SAVE == 1
-			Log::WriteLogA("[SWSaveData::Save] Data saved, size = %llu", size);
+				Log::WriteLogA("[SWSaveData::Save] Data saved, size = %llu", size);
 #endif
-		}
+			}
+		} while (false);
 
-		FreeLock();
+		if (isLock)
+			FreeLock();
 	}
 }
 
 VOID SWSaveData::Delete(LONG64 index, LONG64 clearCount)
 {
-	GetLock();
+	BOOL isLock = _mutex.try_lock();
 	{
 		
 		do
@@ -187,6 +239,11 @@ VOID SWSaveData::Delete(LONG64 index, LONG64 clearCount)
 
 			fstream tmpFile;
 			tmpFile.open(tmpFileName, ios::out | ios::binary, _SH_DENYRW);
+			if (!tmpFile.is_open())
+			{
+				Log::WriteLogA("[SWSaveData::Save] open tmp file failed");
+				exit(1);
+			}
 
 			WriteData((UCHAR*)&_saveVersion, sizeof(UINT32), &tmpFile);
 
@@ -230,15 +287,37 @@ VOID SWSaveData::Delete(LONG64 index, LONG64 clearCount)
 			_saveFile.close();
 			tmpFile.close();
 
+			// delete old savedata and rename tmp file to savedata
 			std::remove(_saveFileName.c_str());
 			if (std::rename(tmpFileName.c_str(), _saveFileName.c_str()))
+			{
 				Log::WriteLogA("[SaveData::Delete] rename failed");
+				exit(1);
+			}
 
-			Init();
+			// reopen savedata
+			Init(_saveFileName);
 		} while (false);
 
-		FreeLock();
+		if (isLock)
+			FreeLock();
 	}
+}
+
+VOID SWSaveData::Clone(string filename)
+{
+	_mutex.lock();
+
+	if (_saveFile.is_open())
+	{
+		_saveFile.close();
+
+		std::filesystem::copy(_saveFileName, filename);
+
+		Init(_saveFileName);
+	}
+
+	_mutex.unlock();
 }
 
 VOID SWSaveData::WriteData(UCHAR* buf, LONG64 size, fstream* pFS)

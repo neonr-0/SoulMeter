@@ -190,14 +190,14 @@ VOID PlayerTable::BeginPopupMenu() {
 		}
 
 		bool history_open = false;
-		if (HISTORY.GetVector()->size() > 0)
+		if (HISTORY.size() > 0)
 			history_open = true;
 
 		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
-			HISTORY.GetMutex()->lock();
+			HISTORY.GetLock();
 			{
 				INT32 i = 0;
-				for (auto itr = HISTORY.GetVector()->rbegin(); itr != HISTORY.GetVector()->rend(); itr++)
+				for (auto itr = HISTORY.rbegin(); itr != HISTORY.rend(); itr++)
 				{
 					i++;
 
@@ -221,7 +221,7 @@ VOID PlayerTable::BeginPopupMenu() {
 						}
 					}
 				}
-				HISTORY.GetMutex()->unlock();
+				HISTORY.FreeLock();
 			}
 			ImGui::EndMenu();
 		}

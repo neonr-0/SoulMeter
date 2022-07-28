@@ -381,6 +381,9 @@
     <ClInclude Include="Damage Meter\SaveData.h">
       <Filter>Damge Meter\History</Filter>
     </ClInclude>
+    <ClInclude Include="Third Party\imgui\imgui_filedialog.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -613,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="Damage Meter\SaveData.cpp">
       <Filter>Damge Meter\History</Filter>
+    </ClCompile>
+    <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp">
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -41,6 +41,7 @@
 #include "imgui\Custom.h"
 #include "imgui\implot.h"
 #include "imgui\implot_internal.h"
+#include "imgui\imgui_filedialog.h"
 
 // tinyxml2
 #include "tinyxml2\tinyxml2.h"

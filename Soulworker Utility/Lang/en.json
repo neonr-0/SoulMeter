@@ -131,8 +131,24 @@
     "STR_UTILLWINDOW_SEARCH": "Search",
     "STR_UTILLWINDOW_HISTORY_MAX": "MAX",
     "STR_UTILLWINDOW_HISTORY_DELETE_SELECTED": "Delete selected",
+    "STR_UTILLWINDOW_HISTORY_CLEARALL": "Clear all",
+    "STR_UTILLWINDOW_HISTORY_CLEARALL_CONFIRM": "You sure want to clear this history all data?",
+    "STR_UTILLWINDOW_HISTORY_SAVETO": "SaveTo",
+    "STR_UTILLWINDOW_HISTORY_LOAD": "Load",
+    "STR_UTILLWINDOW_HISTORY_LOAD_FAILED": "Load savedata failed",
 
-    "STR_SAVEDATA_VERSION_ERROR": "Savedata version not match, please delete SoulMeter.dat",
+    "STR_FILEDIALOG_PATH": "Path",
+    "STR_FILEDIALOG_NAME": "Name",
+    "STR_FILEDIALOG_SIZE": "Size",
+    "STR_FILEDIALOG_TYPE": "Type",
+    "STR_FILEDIALOG_DATE": "Date",
+    "STR_FILEDIALOG_OPEN": "Open",
+    "STR_FILEDIALOG_SAVE": "Save",
+    "STR_FILEDIALOG_CANCEL": "Cancel",
+    "STR_FILEDIALOG_TYPE_PARENT": "Parent",
+    "STR_FILEDIALOG_TYPE_DIR": "Directory",
+
+    "STR_SAVEDATA_VERSION_ERROR": "Savedata version not match or file corrupt, please delete SoulMeter.dat",
     "STR_SAVEDATA_MULTIPLE_ERROR": "Don't open multiple DPS in same folder"
 
 }

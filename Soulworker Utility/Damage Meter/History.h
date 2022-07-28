@@ -41,7 +41,7 @@ private:
 	vector<LPVOID> _historys;
 	INT _curIndex = 0;
 	
-	recursive_mutex _mutex;
+	mutex _mutex;
 
 	BOOL _stopAddHistory = FALSE;
 
@@ -51,6 +51,8 @@ public:
 
 	VOID push_back(HISTORY_INFO* pHi);
 	VOID ClearHistory(HISTORY_INFO* pHI = nullptr, BOOL deleteFirst = TRUE);
+	VOID ClearAll();
+	VOID ClearVector();
 
 	VOID UnSerialization(const _tHistory* pHistory);
 
@@ -59,14 +61,39 @@ public:
 		return _curIndex;
 	}
 
-	recursive_mutex* GetMutex()
+	VOID GetLock()
 	{
-		return &_mutex;
+		_mutex.lock();
 	}
 
-	vector<LPVOID>* GetVector()
+	VOID FreeLock()
 	{
-		return &_historys;
+		_mutex.unlock();
+	}
+
+	auto begin()
+	{
+		return _historys.begin();
+	}
+
+	auto end()
+	{
+		return _historys.end();
+	}
+
+	auto rbegin()
+	{
+		return _historys.rbegin();
+	}
+
+	auto rend()
+	{
+		return _historys.rend();
+	}
+
+	const size_t size()
+	{
+		return _historys.size();
 	}
 
 	BOOL isStop()

@@ -238,6 +238,7 @@
     <ClInclude Include="Third Party\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Third Party\imgui\Custom.h" />
     <ClInclude Include="Third Party\imgui\imgui.h" />
+    <ClInclude Include="Third Party\imgui\imgui_filedialog.h" />
     <ClInclude Include="Third Party\imgui\imgui_internal.h" />
     <ClInclude Include="Third Party\imgui\implot.h" />
     <ClInclude Include="Third Party\imgui\implot_internal.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="Third Party\imgui\Custom.cpp" />
     <ClCompile Include="Third Party\imgui\imgui.cpp" />
     <ClCompile Include="Third Party\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp" />
     <ClCompile Include="Third Party\imgui\imgui_tables.cpp" />
     <ClCompile Include="Third Party\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Third Party\imgui\implot.cpp" />

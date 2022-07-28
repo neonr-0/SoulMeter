@@ -18,7 +18,8 @@ class SWSaveData : public Singleton<SWSaveData> {
 
 private:
 	const UINT32 _saveVersion = 1;
-	const string _saveFileName = "SoulMeter.dat";
+	const string _oriSaveFileName = "SoulMeter.dat";
+	string _saveFileName;
 	std::fstream _saveFile;
 
 	BOOL _fileNotExist = FALSE;
@@ -38,10 +39,12 @@ private:
 public:
 	~SWSaveData();
 
-	DWORD Init();
+	DWORD Init(string fileName = "");
 	LONG64 GetCurrentLength();
 	VOID Save(flatbuffers::FlatBufferBuilder& fbb);
 	VOID Delete(LONG64 index, LONG64 clearCount = -1);
+	VOID Clone(string filename);
+	VOID Reset();
 
 	VOID GetLock()
 	{
