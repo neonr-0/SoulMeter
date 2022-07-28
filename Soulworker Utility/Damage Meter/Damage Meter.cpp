@@ -623,7 +623,7 @@ VOID SWDamageMeter::Clear() {
 			hd->_playerMetadata = newHistoryPlayerMeta;
 
 			HISTORY_INFO* pHI = new HISTORY_INFO;
-			pHI->Setup(hd, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime(), DAMAGEMETER.GetMyID(), _testMode);
+			pHI->Setup(hd, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime(), DAMAGEMETER.GetMyID(), _testMode, nullptr, _realClearTime);
 
 			if (_testMode)
 			{
@@ -712,6 +712,7 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	_aggroedId = 0;
 	_currentHistoryId = -1;
 	_historyHI = nullptr;
+	_realClearTime = 0;
 }
 
 VOID SWDamageMeter::SetHistory(LPVOID pHi) {

@@ -636,6 +636,8 @@ private:
 	vector<SW_DB2_STRUCT*> _historyDbInfo;
 	unordered_map<UINT32, SW_PLAYER_METADATA*> _historyPlayerMetadata;
 
+	vector<string> _extInfo;
+
 	CHAR _mapName[MAX_MAP_LEN];
 	UINT32 _myID;
 	USHORT _worldID;
@@ -646,6 +648,7 @@ private:
 	LPVOID _historyHI;
 
 	UINT32 _aggroedId;
+	UINT32 _realClearTime;
 
 	BOOL _mazeEnd;
 	BOOL _historyMode;
@@ -747,5 +750,15 @@ public:
 	LPVOID GetHistoryHI()
 	{
 		return _historyHI;
+	}
+
+	VOID AddExtInfo(string str)
+	{
+		_extInfo.push_back(str);
+	}
+
+	VOID SetRealClearTime(UINT32 t)
+	{
+		_realClearTime = t;
 	}
 };

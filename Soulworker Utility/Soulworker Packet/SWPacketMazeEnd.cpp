@@ -6,9 +6,13 @@ SWPacketMazeEnd::SWPacketMazeEnd(SWHEADER* swheader, BYTE* data) : SWPacket(swhe
 
 }
 
-VOID SWPacketMazeEnd::Do() {
+VOID SWPacketMazeEnd::Do() 
+{
+	SWPACKETCHATMAZEEND* pMazeEnd = (SWPACKETCHATMAZEEND*)(_data + sizeof(SWHEADER));
+
 	DAMAGEMETER.SetMazeState(TRUE);
 	DAMAGEMETER.Suspend();
+	DAMAGEMETER.SetRealClearTime(pMazeEnd->_clearTime);
 }
 
 VOID SWPacketMazeEnd::Log() {
@@ -16,10 +20,7 @@ VOID SWPacketMazeEnd::Log() {
 }
 
 VOID SWPacketMazeEnd::Debug() {
-	//Log::WriteLog(const_cast<LPTSTR>(_T("[TEST] [Maze End]")));
-
-	//Log::MyLog(_T("Maze End\n"));
-	//for (int i = sizeof(SWHEADER); i < _swheader->_size; i++)
-	//	Log::MyLog(_T("%02x "), _data[i]);
-	//Log::MyLog(_T("\n"));
+	/*SWPACKETCHATMAZEEND* pMazeEnd = (SWPACKETCHATMAZEEND*)(_data + sizeof(SWHEADER));
+	Log::WriteLogA("[SWPacketMazeEnd] rank = %d, playScore = %u, clearScore = %u, clearTime = %u",
+		pMazeEnd->_rank, pMazeEnd->_playScore, pMazeEnd->_clearScore, pMazeEnd->_clearTime);*/
 }

@@ -28,9 +28,10 @@ public:
 	ULONG64 _time;
 	HISTORY_DATA* _historyData;
 	UINT32 _myID;
+	UINT32 _realClearTime;
 	BOOL _isSaveData = FALSE;
 
-	VOID Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData = FALSE, SYSTEMTIME* saveTime = nullptr);
+	VOID Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData = FALSE, SYSTEMTIME* saveTime = nullptr, UINT32 realClearTime = 0);
 	VOID Clear();
 
 	flatbuffers::Offset<_tHistory> Serialization(flatbuffers::FlatBufferBuilder& fbb, HISTORY_DATA* historyData);

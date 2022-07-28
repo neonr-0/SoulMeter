@@ -34,6 +34,8 @@ table _tHistory {
   _player_buff:[_tBuff];
   _plot_info:_tPlotInfo;
   _player_meta:[_tPlayerMetaData];
+
+  _real_clear_time:uint;
 }
 
 root_type _tHistory;

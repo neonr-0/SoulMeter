@@ -15,7 +15,7 @@ VOID UtillWindow::Update()
 	if (!_isOpen)
 		return;
 
-	CHAR label[MAX_PATH] = { 0 };
+	CHAR label[1024] = { 0 };
 	sprintf_s(label, "%s###UtillWindow", LANGMANAGER.GetText("STR_MENU_HISTORY"));
 
 	ImGui::Begin(label, &_isOpen, ImGuiWindowFlags_None);
@@ -23,8 +23,11 @@ VOID UtillWindow::Update()
 		CHAR searchData[MAX_PATH] = { 0 };
 		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
 
-		sprintf_s(label, "%s : %s", LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_USING"), SAVEDATA.CurrentSaveDataPath().c_str());
-		ImGui::Text(label);
+		if (UIOPTION.isUseSaveData())
+		{
+			sprintf_s(label, "%s : %s", LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_USING"), SAVEDATA.CurrentSaveDataPath().c_str());
+			ImGui::Text(label);
+		}
 
 		sprintf_s(label, "%s(%s %d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_MAX"), HISTORY_SIZE);
 		ImGui::Text(label);
@@ -165,16 +168,25 @@ VOID UtillWindow::Update()
 						CHAR mapName[MAX_MAP_LEN] = { 0 };
 						SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
 
-						CHAR extInfo[128] = { 0 };
+						CHAR extInfo[256] = { 0 };
 						if (hi->_historyData->_extInfo.length() > 0)
 							sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
 
-						sprintf_s(label, "%d.[%02d/%02d %02d:%02d:%02d] %s%s - %02d:%02d.%01d###history%d",
+						CHAR realClearTime[128] = { 0 };
+						if (hi->_realClearTime > 0)
+						{
+							sprintf_s(realClearTime, "(%02d:%02d.%01d)",
+								(UINT)hi->_realClearTime / 10 % 3600 / 60, (UINT)hi->_realClearTime / 10 % 3600 % 60, (UINT)hi->_realClearTime % 10
+							);
+						}
+
+						sprintf_s(label, "%d.[%02d/%02d %02d:%02d:%02d] %s%s - %02d:%02d.%01d%s###history%d",
 							i,
 							hi->_saveTime->wMonth, hi->_saveTime->wDay, hi->_saveTime->wHour, hi->_saveTime->wMinute, hi->_saveTime->wSecond,
 							extInfo,
 							mapName,
 							(UINT)hi->_time / (60 * 1000), (UINT)(hi->_time / 1000) % 60, (UINT)hi->_time % 1000 / 100,
+							realClearTime,
 							i
 						);
 

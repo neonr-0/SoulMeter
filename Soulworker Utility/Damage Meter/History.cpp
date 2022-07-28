@@ -4,7 +4,7 @@
 #include ".\Damage Meter\SaveData.h"
 #include ".\UI\UiWindow.h"
 
-VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData, SYSTEMTIME* saveTime) {
+VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time, UINT32 myID, BOOL isSaveData, SYSTEMTIME* saveTime, UINT32 realClearTime) {
 	_historyData = historyData;
 	_worldID = worldID;
 	_time = time;
@@ -17,6 +17,7 @@ VOID _HISTORYINFO::Setup(HISTORY_DATA* historyData, UINT32 worldID, ULONG64 time
 	else {
 		_saveTime = saveTime;
 	}
+	_realClearTime = realClearTime;
 
 	if (!isSaveData && UIOPTION.isUseSaveData())
 	{
@@ -209,6 +210,8 @@ flatbuffers::Offset<_tHistory> _HISTORYINFO::Serialization(flatbuffers::FlatBuff
 	thb.add__plot_info(fcvPlotInfo);
 	thb.add__player_meta(fcvPlayerMetaData);
 
+	thb.add__real_clear_time(_realClearTime);
+
 	return thb.Finish();
 }
 
@@ -278,7 +281,7 @@ VOID SWDamageMeterHistory::UnSerialization(const _tHistory* pHistory)
 	pSysTime->wMilliseconds = pHistory->_save_time()->milliseconds();
 
 	HISTORY_INFO* pHI = new HISTORY_INFO;
-	pHI->Setup(pHD, pHistory->_word_id(), pHistory->_time(), pHistory->_my_id(), TRUE, pSysTime);
+	pHI->Setup(pHD, pHistory->_word_id(), pHistory->_time(), pHistory->_my_id(), TRUE, pSysTime, pHistory->_real_clear_time());
 
 	BOOL canLock = _mutex.try_lock();
 	{

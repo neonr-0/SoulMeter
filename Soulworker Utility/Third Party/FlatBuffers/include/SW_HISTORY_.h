@@ -7,10 +7,10 @@
 #include "flatbuffers/flatbuffers.h"
 
 #include "STRUCT_.h"
+#include "SW_DAMAGE_PLAYER_.h"
 #include "SW_BUFF_.h"
 #include "SW_PLAYER_METADATA_.h"
 #include "SW_PLOTINFO_.h"
-#include "SW_DAMAGE_PLAYER_.h"
 
 namespace SoulMeterFBS {
 namespace History {
@@ -155,7 +155,8 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__DB2_STRUCT = 16,
     VT__PLAYER_BUFF = 18,
     VT__PLOT_INFO = 20,
-    VT__PLAYER_META = 22
+    VT__PLAYER_META = 22,
+    VT__REAL_CLEAR_TIME = 24
   };
   uint32_t _word_id() const {
     return GetField<uint32_t>(VT__WORD_ID, 0);
@@ -187,6 +188,9 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>> *_player_meta() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>> *>(VT__PLAYER_META);
   }
+  uint32_t _real_clear_time() const {
+    return GetField<uint32_t>(VT__REAL_CLEAR_TIME, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT__WORD_ID) &&
@@ -209,6 +213,7 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT__PLAYER_META) &&
            verifier.VerifyVector(_player_meta()) &&
            verifier.VerifyVectorOfTables(_player_meta()) &&
+           VerifyField<uint32_t>(verifier, VT__REAL_CLEAR_TIME) &&
            verifier.EndTable();
   }
 };
@@ -247,6 +252,9 @@ struct _tHistoryBuilder {
   void add__player_meta(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>>> _player_meta) {
     fbb_.AddOffset(_tHistory::VT__PLAYER_META, _player_meta);
   }
+  void add__real_clear_time(uint32_t _real_clear_time) {
+    fbb_.AddElement<uint32_t>(_tHistory::VT__REAL_CLEAR_TIME, _real_clear_time, 0);
+  }
   explicit _tHistoryBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -269,9 +277,11 @@ inline flatbuffers::Offset<_tHistory> Create_tHistory(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tDB2_Struct>>> _db2_struct = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tBuff>>> _player_buff = 0,
     flatbuffers::Offset<SoulMeterFBS::History::_tPlotInfo> _plot_info = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>>> _player_meta = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>>> _player_meta = 0,
+    uint32_t _real_clear_time = 0) {
   _tHistoryBuilder builder_(_fbb);
   builder_.add__time(_time);
+  builder_.add__real_clear_time(_real_clear_time);
   builder_.add__player_meta(_player_meta);
   builder_.add__plot_info(_plot_info);
   builder_.add__player_buff(_player_buff);
@@ -295,7 +305,8 @@ inline flatbuffers::Offset<_tHistory> Create_tHistoryDirect(
     const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tDB2_Struct>> *_db2_struct = nullptr,
     const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tBuff>> *_player_buff = nullptr,
     flatbuffers::Offset<SoulMeterFBS::History::_tPlotInfo> _plot_info = 0,
-    const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>> *_player_meta = nullptr) {
+    const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>> *_player_meta = nullptr,
+    uint32_t _real_clear_time = 0) {
   auto _ext_info__ = _ext_info ? _fbb.CreateString(_ext_info) : 0;
   auto _damage_player__ = _damage_player ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tDamagePlayer>>(*_damage_player) : 0;
   auto _db2_struct__ = _db2_struct ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tDB2_Struct>>(*_db2_struct) : 0;
@@ -312,7 +323,8 @@ inline flatbuffers::Offset<_tHistory> Create_tHistoryDirect(
       _db2_struct__,
       _player_buff__,
       _plot_info,
-      _player_meta__);
+      _player_meta__,
+      _real_clear_time);
 }
 
 inline const SoulMeterFBS::History::_tHistory *Get_tHistory(const void *buf) {
