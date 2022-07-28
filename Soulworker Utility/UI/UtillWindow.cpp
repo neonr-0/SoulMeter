@@ -23,13 +23,15 @@ VOID UtillWindow::Update()
 		CHAR searchData[MAX_PATH] = { 0 };
 		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
 
+		sprintf_s(label, "%s : %s", LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_USING"), SAVEDATA.CurrentSaveDataPath().c_str());
+		ImGui::Text(label);
+
 		sprintf_s(label, "%s(%s %d)", LANGMANAGER.GetText("STR_MENU_HISTORY"), LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_MAX"), HISTORY_SIZE);
 		ImGui::Text(label);
 
 		const float ItemSpacing = ImGui::GetStyle().ItemSpacing.x;
 		static float ButtonWidth = 120.0f;
 		float pos = ImGui::GetWindowWidth() - (ButtonWidth + ItemSpacing);
-
 		ImGui::SameLine(pos);
 		if (ImGui::Button(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_DELETE_SELECTED")))
 		{

@@ -55,4 +55,8 @@ public:
 		_mutex.unlock();
 	}
 
+	const string CurrentSaveDataPath()
+	{
+		return _saveFileName;
+	}
 };
