@@ -46,10 +46,6 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 	ULONG* nextSEQ = nullptr;
 	recursive_mutex* mutex = nullptr;
 
-	INT32 retry = 0;
-	INT32 packetOffset = 0;
-	UCHAR tmpPacket[2048] = { 0 };
-	SIZE_T tmpLen = 2048;
 	while (TRUE)
 	{
 		PacketInfo* pi = nullptr;
@@ -72,38 +68,19 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		}
 
 		mutex->lock();
-		for (auto itr = queue->begin(); itr != queue->end(); itr++)
+		auto itr = queue->begin();
+		if (itr->second != nullptr && itr->second->_packet != nullptr)
 		{
-			if (itr->second != nullptr && itr->second->_packet != nullptr)
-			{
-				if (itr->first == *nextSEQ) {
+			if (itr->first == *nextSEQ) {
 #if DEBUG_CAPTURE_SORT == 1
-					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", itr->first, itr->second->_packet->_datalength);
+				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find Packet SEQ %lu, PacketLen = %lu", pti->isRecv ? "RECV" : "SEND", itr->first, itr->second->_packet->_datalength);
 #endif
-					pi = itr->second;
-					queue->erase(itr);
-					retry = 0;
-					break;
-				}
-				/*else if (pti->isRecv && itr == queue->begin()) {
-					if (retry > 50 && itr->first < *nextSEQ)
-					{
-						ULONG itrSEQ = itr->first;
-						PacketInfo* itrPi = itr->second;
-						ULONG offset = *nextSEQ - itrSEQ;
-						// TCP Timeout retransmission
-						if (itrPi->_packet->_datalength > offset && memcmp(itrPi->_packet->_data, tmpPacket + tmpLen - offset, offset) == 0) {
-#if DEBUG_CAPTURE_SORT == 1
-							Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] oldSEQ = %lu, findSEQ = %lu, nextSEQ = %lu, retry = %d", pti->isRecv ? "RECV" : "SEND", *nextSEQ - offset, itrSEQ, *nextSEQ + offset, retry);
-#endif
-							packetOffset = offset;
-							*nextSEQ -= packetOffset;
-							_this->_loss++;
-						}
-					}
-				}*/
-				if (itr == queue->end())
-					break;
+				pi = itr->second;
+				*nextSEQ += static_cast<ULONG>(itr->second->_packet->_datalength);
+				queue->erase(itr);
+			}
+			else if (itr->first < *nextSEQ) {
+				queue->erase(itr);
 			}
 		}
 #if DEBUG_CAPTURE_QUEUE == 1
@@ -112,36 +89,13 @@ DWORD WINAPI PacketCapture::PacketRoute(LPVOID prc)
 		mutex->unlock();
 
 		if (pi != nullptr && pi->_packet != nullptr) {
-
-			*nextSEQ += static_cast<ULONG>(pi->_packet->_datalength);
-
-			if (pti->isRecv) {
-				if (packetOffset > 0) {
-					pi->_packet->_datalength -= packetOffset;
-					pi->_packet->_data += packetOffset;
-#if DEBUG_CAPTURE_SORT == 1
-					Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Find packetOffset = %d", pti->isRecv ? "RECV" : "SEND", packetOffset);
-#endif
-					packetOffset = 0;
-				}
-
-#if DEBUG_CAPTURE_SORT == 1
-				Log::WriteLogA("[DEBUG_CAPTURE_SORT] [%s] Set next SEQ %lu", pti->isRecv ? "RECV" : "SEND", *nextSEQ);
-#endif
-				tmpLen = pi->_packet->_datalength;
-				ZeroMemory(tmpPacket, 2048);
-				memcpy_s(tmpPacket, tmpLen, pi->_packet->_data, tmpLen);
-			}
-
 			ParsePacket(_this, pi);
 			ClearPacketInfo(pi);
 		}
 		else {
-			retry++;
 			Sleep(100);
 			continue;
 		}
-		retry = 0;
 	}
 
 	return 0;
