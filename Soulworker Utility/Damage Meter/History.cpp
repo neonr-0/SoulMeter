@@ -74,15 +74,8 @@ SWDamageMeterHistory::~SWDamageMeterHistory() {
 
 VOID SWDamageMeterHistory::ClearAll()
 {
-	CHAR label[256] = { 0 };
-	ANSItoUTF8(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_CLEARALL_CONFIRM"), label, sizeof(label));
-
-	if (MessageBoxA(UIWINDOW.GetHWND(), label, "WARNING", MB_ICONWARNING | MB_YESNO | MB_TOPMOST) == IDYES)
-	{
-		SAVEDATA.Delete(-1, HISTORY_SIZE);
-
-		ClearVector();
-	}
+	SAVEDATA.Delete(-1, HISTORY_SIZE);
+	ClearVector();
 }
 
 VOID SWDamageMeterHistory::ClearVector()

@@ -20,8 +20,7 @@ VOID UtillWindow::Update()
 
 	ImGui::Begin(label, &_isOpen, ImGuiWindowFlags_None);
 	{
-		CHAR searchData[MAX_PATH] = { 0 };
-		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), searchData, IM_ARRAYSIZE(searchData));
+		ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), _searchData, IM_ARRAYSIZE(_searchData));
 
 		if (UIOPTION.isUseSaveData())
 		{
@@ -64,7 +63,8 @@ VOID UtillWindow::Update()
 			{
 				DAMAGEMETER.GetLock();
 				{
-					if (!DAMAGEMETER.isRun() && HISTORY.size() > 0)
+					ANSItoUTF8(LANGMANAGER.GetText("STR_UTILLWINDOW_HISTORY_CLEARALL_CONFIRM"), label, sizeof(label));
+					if (!DAMAGEMETER.isRun() && HISTORY.size() > 0 && MessageBoxA(UIWINDOW.GetHWND(), label, "WARNING", MB_ICONWARNING | MB_YESNO | MB_TOPMOST) == IDYES)
 					{
 						DAMAGEMETER.Clear();
 						HISTORY.ClearAll();
@@ -160,7 +160,7 @@ VOID UtillWindow::Update()
 				}
 
 				if (HISTORY.size() > 0) {
-					INT32 i = 1;
+					INT32 i = static_cast<INT32>(HISTORY.size());
 					for (auto itr = HISTORY.rbegin(); itr != HISTORY.rend(); itr++)
 					{
 						HISTORY_INFO* hi = (HISTORY_INFO*)*itr;
@@ -190,7 +190,9 @@ VOID UtillWindow::Update()
 							i
 						);
 
-						if (strlen(searchData) > 0 && string(label).find(string(searchData)) == std::string::npos)
+						i--;
+
+						if (strlen(_searchData) > 0 && string(label).find(string(_searchData)) == std::string::npos)
 							continue;
 
 						if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
@@ -199,7 +201,6 @@ VOID UtillWindow::Update()
 								DAMAGEMETER.SetHistory((LPVOID)hi);
 							}
 						}
-						i++;
 					}
 				}
 				HISTORY.FreeLock();

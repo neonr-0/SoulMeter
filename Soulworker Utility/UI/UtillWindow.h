@@ -10,6 +10,7 @@ private:
 	ImFileDialogInfo _fileDialogInfo;
 	bool _fileDialogOpen = false;
 
+	CHAR _searchData[MAX_PATH] = { 0 };
 	INT32 _currentIndex = 0;
 
 

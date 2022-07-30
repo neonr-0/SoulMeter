@@ -196,11 +196,9 @@ VOID PlayerTable::BeginPopupMenu() {
 		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
 			HISTORY.GetLock();
 			{
-				INT32 i = 0;
+				INT32 i = static_cast<INT32>(HISTORY.size());
 				for (auto itr = HISTORY.rbegin(); itr != HISTORY.rend(); itr++)
 				{
-					i++;
-
 					HISTORY_INFO* pHI = (HISTORY_INFO*)*itr;
 
 					CHAR label[512] = { 0 };
@@ -214,6 +212,9 @@ VOID PlayerTable::BeginPopupMenu() {
 						(UINT)pHI->_time / (60 * 1000), (UINT)(pHI->_time / 1000) % 60, (UINT)pHI->_time % 1000 / 100,
 						i
 					);
+
+					i--;
+
 					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
 						if (!DAMAGEMETER.isRun()) {
 							DAMAGEMETER.SetCurrentHistoryId(i);
