@@ -33,7 +33,7 @@ namespace pcpp
 			/** Record length in bytes */
 			TRecLen recordLen;
 			/** Record value (variable size) */
-			uint8_t recordValue[];
+			uint8_t* recordValue;
 		};
 
 		TLVRawData* m_Data;

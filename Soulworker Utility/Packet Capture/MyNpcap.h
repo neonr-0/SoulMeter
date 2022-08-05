@@ -41,9 +41,14 @@ private:
 	static VOID tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie);
 	static VOID tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie);
 
+	VOID StopSniffAllInterface();
+
+	BOOL _inited = FALSE;
 public:
 	MyNpcap() { }
-	~MyNpcap() {}
+	~MyNpcap() {
+		StopSniffAllInterface();
+	}
 
 	DWORD Init();
 };

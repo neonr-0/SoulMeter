@@ -60,6 +60,9 @@ DWORD MyNpcap::Init() {
 			break;
 		}
 
+		if (_inited)
+			StopSniffAllInterface();
+
 		sniffAllInterface(NPCAP_FILTER_RULE);
 
 	} while (false);
@@ -72,6 +75,14 @@ VOID MyNpcap::sniffAllInterface(string bpfFilter)
 	// sniff all interface
 	for (auto itr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().begin(); itr != pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().end(); itr++)
 	{
+		const CHAR* ifName = UIOPTION.GetUseInterface();
+		// skip \DEVICE\NPF_
+		const CHAR* itrIfName = (*itr)->getName().c_str() + 12;
+		if (strcmp(ifName, "ALL") != 0 && strcmp(ifName, itrIfName) != 0)
+			continue;
+		if (strcmp("Loopback", itrIfName) == 0)
+			continue;
+
 		ThreadInfo* ti = new ThreadInfo;
 		ti->_this = this;
 		ti->dev = *itr;
@@ -81,6 +92,20 @@ VOID MyNpcap::sniffAllInterface(string bpfFilter)
 		HANDLE h = CreateThread(NULL, 0, doTcpReassemblyOnLiveTraffic, ti, 0, NULL);
 		if (h != NULL)
 			CloseHandle(h);
+	}
+
+	_inited = TRUE;
+}
+
+VOID MyNpcap::StopSniffAllInterface()
+{
+	for (auto itr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().begin(); itr != pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().end(); itr++)
+	{
+		if ((*itr)->captureActive())
+		{
+			(*itr)->stopCapture();
+			(*itr)->close();
+		}
 	}
 }
 

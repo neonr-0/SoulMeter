@@ -1,4 +1,8 @@
 #include "pch.h"
+#include <winsock2.h>
+#include <ws2ipdef.h>
+#include <iphlpapi.h>
+#include <stdio.h>
 #include ".\UI\Option.h"
 #include ".\UI\HotKey.h"
 #include ".\UI\PlayerTable.h"
@@ -11,7 +15,8 @@
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
 	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
-	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE)
+	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE),
+	_selectedInterface("ALL")
 {
 	
 	_jobBasicColor[0] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(153, 153, 153, 255)));	// Unknown
@@ -268,6 +273,48 @@ VOID UiOption::ShowTeamTALFSelector()
 	}
 }
 
+VOID UiOption::ShowInterfaceSelector() {
+	const CHAR* comboPreview = _selectedInterface;
+
+	if (strcmp(_selectedInterface, "ALL") == 0)
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_ALL");
+
+	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_SELECT_INTERFACE"));
+	if (ImGui::BeginCombo(u8"###OptionInterfaceSelector", comboPreview, ImGuiComboFlags_HeightLarge)) {
+
+		if (ImGui::Selectable(LANGMANAGER.GetText("STR_OPTION_ALL"))) {
+			strcpy_s(_selectedInterface, "ALL");
+			PACKETCAPTURE.Init();
+		}
+
+		PIP_INTERFACE_INFO pInfo = NULL;
+		ULONG ulOutBufLen = 0;
+		DWORD dwRetVal = 0;
+
+		dwRetVal = GetInterfaceInfo(NULL, &ulOutBufLen);
+		if (dwRetVal == ERROR_INSUFFICIENT_BUFFER) {
+			pInfo = (IP_INTERFACE_INFO*)malloc(ulOutBufLen);
+			if (pInfo != NULL) {
+				dwRetVal = GetInterfaceInfo(pInfo, &ulOutBufLen);
+				if (dwRetVal == NO_ERROR) {
+					CHAR interfaceName[MAX_PATH] = { 0 };
+					for (INT32 i = 0; i < pInfo->NumAdapters; i++) {
+						// skip \DEVICE\TCPIP_
+						UTF16toUTF8(pInfo->Adapter[i].Name + 14, interfaceName, MAX_PATH);
+						if (ImGui::Selectable(interfaceName)) {
+							strcpy_s(_selectedInterface, interfaceName);
+							PACKETCAPTURE.Init();
+						}
+					}
+				}
+				free(pInfo);
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
 VOID UiOption::OpenOption() {
 
 	if (!_open)
@@ -309,6 +356,7 @@ VOID UiOption::OpenOption() {
 		}
 #endif
 		ShowCaptureModeSelector();
+		ShowInterfaceSelector();
 		ShowLangSelector();
 		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
 		ShowFontSelector();
@@ -457,6 +505,11 @@ BOOL UiOption::GetOption() {
 	if (attr != nullptr) {
 		attr->QueryIntValue(&_isUseSaveData);
 		attr->QueryIntValue(&_oriIsUseSaveData);
+	}
+
+	attr2 = ele->FirstChildElement("UseInterface");
+	if (attr2 != nullptr) {
+		strcpy_s(_selectedInterface, attr2->GetText());
 	}
 
 #if DEBUG_READ_XML == 1
@@ -828,6 +881,8 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 
 	option->InsertNewChildElement("UseLangFile")->SetText(_selectedLang);
 
+	option->InsertNewChildElement("UseInterface")->SetText(_selectedInterface);
+
 
 	RECT rect;
 	GetWindowRect(UIWINDOW.GetHWND(), &rect);
@@ -1066,4 +1121,8 @@ VOID UiOption::SetWindowWidth(const FLOAT& width) {
 
 const FLOAT& UiOption::GetRefreshTime() {
 	return _refreshTime;
+}
+
+const CHAR* UiOption::GetUseInterface() {
+	return _selectedInterface;
 }

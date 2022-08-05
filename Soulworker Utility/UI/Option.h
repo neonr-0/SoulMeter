@@ -43,6 +43,7 @@ private:
 	INT32 _captureMode;
 	BOOL _isUseSaveData;
 	BOOL _oriIsUseSaveData;
+	CHAR _selectedInterface[MAX_PATH] = { 0 };
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
@@ -51,6 +52,7 @@ private:
 
 	VOID ShowCaptureModeSelector();
 	VOID ShowTeamTALFSelector();
+	VOID ShowInterfaceSelector();
 
 	VOID Helper();
 
@@ -90,6 +92,7 @@ public:
 	const BOOL& isSoloRankMode();
 	const INT32& GetCaptureMode();
 	const BOOL& isUseSaveData();
+	const CHAR* GetUseInterface();
 
 	BOOL ToggleTopMost();
 

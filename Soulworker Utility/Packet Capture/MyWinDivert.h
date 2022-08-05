@@ -17,6 +17,9 @@ private:
 
 	HANDLE _handle;
 
+	BOOL _stop = FALSE;
+	BOOL _inited = FALSE;
+
 public:
 	MyWinDivert() { }
 	~MyWinDivert() {}

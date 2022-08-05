@@ -99,6 +99,8 @@
     "STR_OPTION_TEAMTA_OPTION_1": "每次清除",
     "STR_OPTION_TEAMTA_OPTION_2": "小丑+女王",
     "STR_OPTION_USE_SAVEDATA": "自動保存歷史紀錄到檔案",
+    "STR_OPTION_SELECT_INTERFACE": "擷取的網路卡",
+    "STR_OPTION_ALL": "全部",
 
     "STR_CHAR_UNKNOWN": "未知玩家",
     "STR_CHAR_HARU": "哈露",
