@@ -50,43 +50,9 @@ DWORD MyNpcap::LoadNpcapDlls() {
 	return error;
 }
 
-DWORD MyNpcap::Filter(pcap_t* device) {
-
-	DWORD error = ERROR_SUCCESS;
-
-	do {
-
-		if (device == nullptr) {
-			error = ERROR_INVALID_PARAMETER;
-			break;
-		}
-
-		bpf_program fcode;
-
-		if (pcap_compile(device, &fcode, NPCAP_FILTER_RULE, 1, NULL) < 0) {
-			error = ERROR_API_UNAVAILABLE;
-			Log::WriteLog(const_cast<LPTSTR>(_T("Error in pcap_compile")));
-			break;
-		}
-
-		if (pcap_setfilter(device, &fcode) < 0) {
-			error = ERROR_API_UNAVAILABLE;
-			Log::WriteLog(const_cast<LPTSTR>(_T("Error in pcap_setfilter")));
-			break;
-		}
-
-	} while (false);
-
-	return error;
-}
-
 DWORD MyNpcap::Init() {
 
 	DWORD error = ERROR_SUCCESS;
-
-	pcap_if_t* alldevs = nullptr;
-
-	char temp[MAX_BUFFER_LENGTH] = { 0 };
 
 	do {
 		if (LoadNpcapDlls()) {
@@ -94,115 +60,148 @@ DWORD MyNpcap::Init() {
 			break;
 		}
 
-		if (pcap_findalldevs_ex(const_cast<char*>(PCAP_SRC_IF_STRING), NULL, &alldevs, temp) == -1) {
-			Log::WriteLogA(temp);
-			error = ERROR_API_UNAVAILABLE;
-			break;
-		}
-
-		for (pcap_if_t* d = alldevs; d != nullptr; d = d->next) {
-
-			pcap_t* device = nullptr;
-
-			if ((device = pcap_open(d->name, 65536, PCAP_OPENFLAG_PROMISCUOUS | PCAP_OPENFLAG_NOCAPTURE_RPCAP, 10, NULL, temp)) == NULL)
-				continue;
-
-			if (Filter(device))
-				continue;
-
-			ThreadInfo* ti = new ThreadInfo;
-			ti->_device = device;
-			ti->_thisl = this;
-
-			CreateThread(NULL, 0, CreatePcapLoop, ti, 0, NULL);
-		}
-
-		pcap_freealldevs(alldevs);
+		sniffAllInterface(NPCAP_FILTER_RULE);
 
 	} while (false);
 
 	return error;
 }
 
-DWORD MyNpcap::CreatePcapLoop(LPVOID pAlldevs)
+VOID MyNpcap::sniffAllInterface(string bpfFilter)
 {
-	ThreadInfo* ti = (ThreadInfo*)pAlldevs;
-
-	pcap_loop(ti->_device, 0, ReceiveCallback, nullptr);
-	/*int res;
-	pcap_pkthdr* header = nullptr;
-	const unsigned char* pkt_data = nullptr;
-	while (TRUE)
+	// sniff all interface
+	for (auto itr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().begin(); itr != pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().end(); itr++)
 	{
-		res = pcap_next_ex(ti->_device, &header, &pkt_data);
-		if (res == 1)
-			ReceiveCallback((u_char*)ti->_thisl, header, pkt_data);
-		else
-			Sleep(10);
-	}*/
+		ThreadInfo* ti = new ThreadInfo;
+		ti->_this = this;
+		ti->dev = *itr;
+		ti->bpfFilter = bpfFilter;
+
+		// start capturing packets and do TCP reassembly
+		HANDLE h = CreateThread(NULL, 0, doTcpReassemblyOnLiveTraffic, ti, 0, NULL);
+		if (h != NULL)
+			CloseHandle(h);
+	}
+}
+
+/**
+ * The method responsible for TCP reassembly on live traffic
+ */
+DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
+{
+	ThreadInfo* ti = (ThreadInfo*)param;
+	if (ti == NULL)
+		return -99;
+	MyNpcap* _this = ti->_this;
+
+	// create the TCP reassembly instance
+	pcpp::TcpReassembly tcpReassembly(tcpReassemblyMsgReadyCallback, NULL, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+
+	// try to open device
+	if (!ti->dev->open())
+		return -1;
+
+	// set BPF filter if set by the user
+	if (!ti->bpfFilter.empty())
+	{
+		if (!ti->dev->setFilter(ti->bpfFilter))
+			return -2;
+	}
+
+	// start capturing packets. Each packet arrived will be handled by onPacketArrives method
+	ti->dev->startCapture(_this->onPacketArrives, &tcpReassembly);
+
+	// register the on app close event to print summary stats on app termination
+	bool shouldStop = false;
+	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(_this->onApplicationInterrupted, &shouldStop);
+
+	// run in an endless loop until the user presses ctrl+c
+	while (!shouldStop)
+		pcpp::multiPlatformSleep(1);
+
+	// stop capturing and close the live device
+	ti->dev->stopCapture();
+	ti->dev->close();
+
+	// close all connections which are still opened
+	tcpReassembly.closeAllConnections();
 
 	return 0;
 }
 
-VOID MyNpcap::ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, const u_char* pkt_data) {
+/**
+ * The callback to be called when application is terminated by ctrl-c. Stops the endless while loop
+ */
+void MyNpcap::onApplicationInterrupted(void* cookie)
+{
+	bool* shouldStop = (bool*)cookie;
+	*shouldStop = true;
+}
 
-	if (prc != nullptr || pkt_data == nullptr || header == nullptr || PACKETCAPTURE.isStopCapture()) {
+
+/**
+ * packet capture callback - called whenever a packet arrives on the live device (in live device capturing mode)
+ */
+void MyNpcap::onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie)
+{
+	pcpp::Packet parsedPacket(packet);
+	pcpp::TcpLayer* tcpLayer = parsedPacket.getLayerOfType<pcpp::TcpLayer>();
+
+	if (tcpLayer == NULL)
 		return;
-	}
 
-	BYTE* new_pkt_data = new BYTE[header->caplen];
-	memcpy(new_pkt_data, pkt_data, header->caplen);
-
-	CHAR tmp[128] = { 0 };
-	sprintf_s(tmp, "%d%d", header->ts.tv_sec, header->ts.tv_usec);
-
-	IPv4Packet* packet = new IPv4Packet;
-	PACKETCAPTURE.ParseNpcapStruct(packet, (BYTE*)new_pkt_data, (pcap_pkthdr*)header);
-
-#if DEBUG_NPCAP_SORT == 1
-	Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, CapLen = %lu, Length = %lu", packet->_tcpHeader->seq_number, header->caplen, header->len);
-	//if (header->caplen > 1300) {
-	//	for (SIZE_T i = 0; i < header->caplen; i++)
-	//		Log::WriteLogNoDate(L"%02X", pkt_data[i]);
-	//	Log::WriteLogNoDate(L"\n\n");
-	//}
-#endif
-
-	recursive_mutex* pMutex = nullptr;
-	if (packet->_isRecv) {
-		pMutex = PACKETCAPTURE.GetRecvMutex();
-	}
-	else {
-		pMutex = PACKETCAPTURE.GetSendMutex();
-	}
-
-	pMutex->lock();
-	if (packet->_tcpHeader->syn) {
-#if DEBUG_NPCAP_SORT == 1
-		Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, ClearQueue", packet->_tcpHeader->seq_number);
-#endif
-		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number + 1, packet->_isRecv);
-	}
-	else if (!PACKETCAPTURE.isInitRecv() || !PACKETCAPTURE.isInitSend()) {
-#if DEBUG_NPCAP_SORT == 1
-		Log::WriteLogA("[MyNpcap::ReceiveCallback] SEQ = %lu, %s", packet->_tcpHeader->seq_number, packet->_isRecv ? "isInitRecv" : "isInitSend");
-#endif
-		PACKETCAPTURE.SetSEQ(packet->_tcpHeader->seq_number, packet->_isRecv);
-	}
-
-	if (packet->_datalength > 0 && packet->_tcpHeader->ack)
+	if (tcpLayer->getSrcPort() == 10200)
 	{
-		PacketInfo* pi = new PacketInfo;
-		pi->_packet = packet;
-		pi->_ts = GetCurrentTimeStamp();
+		// get a pointer to the TCP reassembly instance and feed the packet arrived to it
+		pcpp::TcpReassembly* tcpReassembly = (pcpp::TcpReassembly*)tcpReassemblyCookie;
+		tcpReassembly->reassemblePacket(packet);
+	} 
+	else if (tcpLayer->getLayerPayloadSize() > 0)
+	{
+		IPv4Packet packet;
+		packet._data = tcpLayer->getLayerPayload();
+		packet._datalength = tcpLayer->getLayerPayloadSize();
+		packet._isRecv = FALSE;
+		packet._pkt = (BYTE*)packet._data;
+		packet._ts = GetCurrentTimeStamp();
 
-		PACKETCAPTURE.InsertQueue(packet->_tcpHeader->seq_number, pi, packet->_isRecv);
+		PACKETPARSER.Parse(&packet, packet._isRecv);
 	}
-	else {
-		delete packet;
-		delete[] new_pkt_data;
-	}
+}
 
-	pMutex->unlock();
+/**
+ * The callback being called by the TCP reassembly module whenever new data arrives on a certain connection
+ */
+VOID MyNpcap::tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie)
+{
+	CHAR tmp[128] = { 0 };
+	auto old_uses = std::to_string(tcpData.getTimeStamp().tv_usec);
+	// padding zero
+	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
+	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
+	IPv4Packet packet;
+	packet._data = tcpData.getData();
+	packet._datalength = tcpData.getDataLength();
+	packet._isRecv = (tcpData.getConnectionData().srcPort == 10200);
+	packet._pkt = (BYTE*)packet._data;
+	packet._ts = atoll(tmp) / 1000;
+	
+	PACKETPARSER.Parse(&packet, packet._isRecv);
+}
+
+
+/**
+ * The callback being called by the TCP reassembly module whenever a new connection is found. This method adds the connection to the connection manager
+ */
+void MyNpcap::tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie)
+{
+}
+
+
+/**
+ * The callback being called by the TCP reassembly module whenever a connection is ending. This method removes the connection from the connection manager
+ */
+void MyNpcap::tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie)
+{
 }

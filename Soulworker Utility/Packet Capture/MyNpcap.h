@@ -1,6 +1,14 @@
 #pragma once
 
 #include "pch.h"
+
+#include ".\Third Party\PcapPlusPlus\header\TcpReassembly.h"
+#include ".\Third Party\PcapPlusPlus\header\PcapLiveDeviceList.h"
+#include ".\Third Party\PcapPlusPlus\header\PcapLiveDevice.h"
+#include ".\Third Party\PcapPlusPlus\header\SystemUtils.h"
+#include ".\Third Party\PcapPlusPlus\header\PcapPlusPlusVersion.h"
+#include ".\Third Party\PcapPlusPlus\header\LRUList.h"
+#include ".\Third Party\PcapPlusPlus\header\TCPLayer.h"
 using namespace std;
 
 #define NPCAP MyNpcap::getInstance()
@@ -14,20 +22,24 @@ using namespace std;
 
 class MyNpcap : public Singleton<MyNpcap> {
 private:
-
 	struct ThreadInfo
 	{
-		pcap_t* _device;
-		MyNpcap* _thisl;
+		MyNpcap* _this;
+		pcpp::PcapLiveDevice* dev;
+		std::string bpfFilter;
 	};
 
 	DWORD LoadNpcapDlls();
-	DWORD Filter(pcap_t* device);
 
-	static DWORD WINAPI CreatePcapLoop(LPVOID pDevice);
-	static VOID ReceiveCallback(u_char* prc, const struct pcap_pkthdr* header, const u_char* pkt_data);
+	VOID sniffAllInterface(string bpfFilter);
 
-	HANDLE _handle;
+	static DWORD doTcpReassemblyOnLiveTraffic(LPVOID param);
+	static void onApplicationInterrupted(void* cookie);
+	static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie);
+
+	static VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie);
+	static VOID tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie);
+	static VOID tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie);
 
 public:
 	MyNpcap() { }

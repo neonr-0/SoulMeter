@@ -697,12 +697,6 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	}
 
 	if (clear) {
-		if (!_historyMode)
-		{
-			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++)
-				delete (itr->second);
-		}
-		_playerMetadata.clear();
 		_ownerInfo.clear();
 		_dbInfo.clear();
 	}
