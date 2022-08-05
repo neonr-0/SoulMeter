@@ -48,10 +48,18 @@ private:
 	INT32 _useMode;
 
 	UINT64 _loss = 0;
+	UINT64 _prevLossTime = 0;
+	mutex _lossMutex;
+
+	BOOL _stopCapture = FALSE;
 
 public:
 	PacketCapture() {}
-	~PacketCapture() {}
+	~PacketCapture() {
+		_stopCapture = TRUE;
+		BOOL a = _lossMutex.try_lock();
+		_lossMutex.unlock();
+	}
 
 	BOOL Init();
 	static VOID ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt);
@@ -77,5 +85,30 @@ public:
 	const UINT64& GetLoss()
 	{
 		return _loss;
+	}
+
+	VOID UpdateLoss(BOOL add)
+	{
+		if (_stopCapture)
+			return;
+
+		_lossMutex.lock();
+		{
+			ULONG64 time = GetCurrentTimeStamp();
+			// reset loss
+			if (_prevLossTime < time)
+			{
+				_loss = 0;
+				// 10s
+				_prevLossTime = time + 10000;
+			}
+
+			if (add)
+			{
+				_loss++;
+			}
+
+			_lossMutex.unlock();
+		}
 	}
 };

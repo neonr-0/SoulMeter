@@ -87,8 +87,8 @@ VOID PlayerTable::Update() {
 			windowFlag = windowFlag | ImGuiWindowFlags_NoResize;
 
 		CHAR loss[128] = { 0 };
-		//if (PACKETCAPTURE.GetMode() == (INT32)CaptureType::_NPCAP)
-		//	sprintf_s(loss, 128, "%s: %lld", LANGMANAGER.GetText("STR_MENU_LOSS"), PACKETCAPTURE.GetLoss());
+		if (PACKETCAPTURE.GetMode() == (INT32)CaptureType::_NPCAP)
+			sprintf_s(loss, 128, "%s: %lld", LANGMANAGER.GetText("STR_MENU_LOSS"), PACKETCAPTURE.GetLoss());
 
 		CHAR title[1024] = { 0 };
 		sprintf_s(title, 1024, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] %s: %lldms %s %s ###DamageMeter", 

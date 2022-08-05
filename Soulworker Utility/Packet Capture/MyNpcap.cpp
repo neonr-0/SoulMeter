@@ -154,7 +154,8 @@ void MyNpcap::onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev
 	{
 		// get a pointer to the TCP reassembly instance and feed the packet arrived to it
 		pcpp::TcpReassembly* tcpReassembly = (pcpp::TcpReassembly*)tcpReassemblyCookie;
-		tcpReassembly->reassemblePacket(packet);
+		pcpp::TcpReassembly::ReassemblyStatus status = tcpReassembly->reassemblePacket(packet);
+		PACKETCAPTURE.UpdateLoss(status == pcpp::TcpReassembly::ReassemblyStatus::OutOfOrderTcpMessageBuffered);
 	} 
 	else if (tcpLayer->getLayerPayloadSize() > 0)
 	{
