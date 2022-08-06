@@ -124,7 +124,7 @@ public:
 			_armorBreak = statValue;
 			if (DAMAGEMETER.isRun()) {
 				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime()); // timer time
-				FLOAT correctedAB = /*(_armorBreak > 100) ? 100 :*/ _armorBreak;
+				FLOAT correctedAB = (_armorBreak > 100) ? 100 : _armorBreak;
 				_avgABSum += static_cast<UINT64>((time - _avgABPreviousTime) * correctedAB);
 				_avgABPreviousTime = time;
 

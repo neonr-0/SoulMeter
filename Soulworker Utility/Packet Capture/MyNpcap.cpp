@@ -77,10 +77,9 @@ VOID MyNpcap::sniffAllInterface(string bpfFilter)
 	{
 		const CHAR* ifName = UIOPTION.GetUseInterface();
 		// skip \DEVICE\NPF_
-		const CHAR* itrIfName = (*itr)->getName().c_str() + 12;
-		if (strcmp(ifName, "ALL") != 0 && strcmp(ifName, itrIfName) != 0)
+		if (strcmp(ifName, "ALL") != 0 && strcmp(ifName, (*itr)->getName().c_str() + 12) != 0)
 			continue;
-		if (strcmp("Loopback", itrIfName) == 0)
+		if (strcmp("Loopback", (*itr)->getName().c_str() + 12) == 0)
 			continue;
 
 		ThreadInfo* ti = new ThreadInfo;
@@ -104,7 +103,6 @@ VOID MyNpcap::StopSniffAllInterface()
 		if ((*itr)->captureActive())
 		{
 			(*itr)->stopCapture();
-			(*itr)->close();
 		}
 	}
 }
@@ -125,7 +123,7 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	// try to open device
 	if (!ti->dev->open())
 	{
-		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] Open interface failed. Please check your Npcap version is 1.60 or above");
+		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] Open interface failed. Please check your Npcap version is 1.60 or above.");
 		return -1;
 	}
 
@@ -137,19 +135,15 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	}
 
 	// start capturing packets. Each packet arrived will be handled by onPacketArrives method
-	ti->dev->startCapture(_this->onPacketArrives, &tcpReassembly);
+	if (!ti->dev->startCapture(onPacketArrives, &tcpReassembly))
+	{
+		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] startCapture failed. Please check your Npcap version is 1.60 or above.");
+		return -3;
+	}
 
-	// register the on app close event to print summary stats on app termination
-	bool shouldStop = false;
-	pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(_this->onApplicationInterrupted, &shouldStop);
-
-	// run in an endless loop until the user presses ctrl+c
-	while (!shouldStop)
-		pcpp::multiPlatformSleep(1);
-
-	// stop capturing and close the live device
-	ti->dev->stopCapture();
-	ti->dev->close();
+	// run in an endless loop
+	while (ti->dev->captureActive())
+		Sleep(1000);
 
 	// close all connections which are still opened
 	tcpReassembly.closeAllConnections();
@@ -157,25 +151,16 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	return 0;
 }
 
-/**
- * The callback to be called when application is terminated by ctrl-c. Stops the endless while loop
- */
-void MyNpcap::onApplicationInterrupted(void* cookie)
-{
-	bool* shouldStop = (bool*)cookie;
-	*shouldStop = true;
-}
-
 
 /**
  * packet capture callback - called whenever a packet arrives on the live device (in live device capturing mode)
  */
-void MyNpcap::onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie)
+void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie)
 {
 	pcpp::Packet parsedPacket(packet);
 	pcpp::TcpLayer* tcpLayer = parsedPacket.getLayerOfType<pcpp::TcpLayer>();
 
-	if (tcpLayer == NULL)
+	if (tcpLayer == NULL || _stopNpcap)
 		return;
 
 	if (tcpLayer->getSrcPort() == 10200)
@@ -201,7 +186,7 @@ void MyNpcap::onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev
 /**
  * The callback being called by the TCP reassembly module whenever new data arrives on a certain connection
  */
-VOID MyNpcap::tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie)
+VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie)
 {
 	CHAR tmp[128] = { 0 };
 	auto old_uses = std::to_string(tcpData.getTimeStamp().tv_usec);
@@ -223,7 +208,7 @@ VOID MyNpcap::tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStr
 /**
  * The callback being called by the TCP reassembly module whenever a new connection is found. This method adds the connection to the connection manager
  */
-void MyNpcap::tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie)
+void tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie)
 {
 }
 
@@ -231,6 +216,6 @@ void MyNpcap::tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& c
 /**
  * The callback being called by the TCP reassembly module whenever a connection is ending. This method removes the connection from the connection manager
  */
-void MyNpcap::tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie)
+void tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie)
 {
 }

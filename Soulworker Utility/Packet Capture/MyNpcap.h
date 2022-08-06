@@ -20,6 +20,8 @@ using namespace std;
 #define DEBUG_NPCAP_SORT 0
 #endif
 
+static BOOL _stopNpcap = FALSE;
+
 class MyNpcap : public Singleton<MyNpcap> {
 private:
 	struct ThreadInfo
@@ -34,21 +36,21 @@ private:
 	VOID sniffAllInterface(string bpfFilter);
 
 	static DWORD doTcpReassemblyOnLiveTraffic(LPVOID param);
-	static void onApplicationInterrupted(void* cookie);
-	static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie);
-
-	static VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie);
-	static VOID tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie);
-	static VOID tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie);
-
-	VOID StopSniffAllInterface();
 
 	BOOL _inited = FALSE;
+
+	VOID StopSniffAllInterface();
 public:
 	MyNpcap() { }
 	~MyNpcap() {
-		StopSniffAllInterface();
+		_stopNpcap = true;
 	}
 
 	DWORD Init();
 };
+
+static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie);
+
+static VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie);
+static VOID tcpReassemblyConnectionStartCallback(const pcpp::ConnectionData& connectionData, void* userCookie);
+static VOID tcpReassemblyConnectionEndCallback(const pcpp::ConnectionData& connectionData, pcpp::TcpReassembly::ConnectionEndReason reason, void* userCookie);

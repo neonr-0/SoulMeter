@@ -19,7 +19,9 @@ class SWCrypt : public Singleton<SWCrypt>
 private:
     ISWCrypt* _pSWCryptRecv = nullptr;
     ISWCrypt* _pSWCryptSend = nullptr;
-
+    mutex _mutexRecv;
+    mutex _mutexSend;
+    BOOL _stop = FALSE;
 public:
 
     DWORD LoadSWCrypt()
@@ -62,11 +64,36 @@ public:
     {
         ISWCrypt* pSWCrypt = nullptr;
         
-        if (isRecv)
-            pSWCrypt = _pSWCryptRecv;
-        else
-            pSWCrypt = _pSWCryptSend;
+        if (_stop)
+            return;
 
-        pSWCrypt->Decrypt(packet, pktLen, keyIndex);
+        mutex* pMutex = nullptr;
+
+        if (isRecv)
+        {
+            pSWCrypt = _pSWCryptRecv;
+            pMutex = &_mutexRecv;
+        }
+        else
+        {
+            pSWCrypt = _pSWCryptSend;
+            pMutex = &_mutexSend;
+        }
+
+        pMutex->lock();
+        {
+            pSWCrypt->Decrypt(packet, pktLen, keyIndex);
+
+            pMutex->unlock();
+        }
+    }
+
+    ~SWCrypt()
+    {
+        _stop = TRUE;
+        BOOL a = _mutexRecv.try_lock();
+        a = _mutexSend.try_lock();
+        _mutexRecv.unlock();
+        _mutexSend.unlock();
     }
 };
