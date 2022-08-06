@@ -140,7 +140,13 @@ VOID SpecificInformation::UpdateSkillTotalTable()
 			ImGui::TableNextColumn();
 
 			// In Full AB
-			sprintf_s(label, 128, "%d", itr->second->_in_full_ab_count);
+			if ((*player)->GetID() == DAMAGEMETER.GetMyID(TRUE))
+			{
+				sprintf_s(label, 128, "%d", itr->second->_in_full_ab_count);
+			}
+			else {
+				sprintf_s(label, 128, "-");
+			}
 			TextCommma(label, comma);
 			ImGui::Text(comma);
 		}

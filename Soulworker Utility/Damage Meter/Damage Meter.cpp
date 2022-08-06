@@ -474,7 +474,9 @@ VOID SWDamageMeter::SetMyID(UINT32 id) {
 #endif
 }
 
-UINT32 SWDamageMeter::GetMyID() {
+UINT32 SWDamageMeter::GetMyID(BOOL useHistoryID) {
+	if (useHistoryID && _historyMode)
+		return _historyMyID;
 	return _myID;
 }
 

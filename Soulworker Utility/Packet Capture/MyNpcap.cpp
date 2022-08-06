@@ -124,7 +124,10 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 
 	// try to open device
 	if (!ti->dev->open())
+	{
+		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] Open interface failed. Please check your Npcap version is 1.60 or above");
 		return -1;
+	}
 
 	// set BPF filter if set by the user
 	if (!ti->bpfFilter.empty())
@@ -184,7 +187,7 @@ void MyNpcap::onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev
 	} 
 	else if (tcpLayer->getLayerPayloadSize() > 0)
 	{
-		IPv4Packet packet;
+		IPv4Packet packet{};
 		packet._data = tcpLayer->getLayerPayload();
 		packet._datalength = tcpLayer->getLayerPayloadSize();
 		packet._isRecv = FALSE;
@@ -206,7 +209,7 @@ VOID MyNpcap::tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStr
 	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
 	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
-	IPv4Packet packet;
+	IPv4Packet packet{};
 	packet._data = tcpData.getData();
 	packet._datalength = tcpData.getDataLength();
 	packet._isRecv = (tcpData.getConnectionData().srcPort == 10200);
