@@ -149,7 +149,7 @@ typedef struct _TCPHEADER {
 }TCPHEADER;
 
 typedef struct _IPV4PACKET {
-	BYTE* _pkt;
+	BYTE* _pkt; // save packet origin ptr
 	ETHERNETHEADER* _ethernetHeader;
 	IPHEADER* _ipHeader;
 	TCPHEADER* _tcpHeader;

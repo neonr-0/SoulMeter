@@ -62,6 +62,14 @@ DWORD MyNpcap::Init() {
 
 		if (_inited)
 			StopSniffAllInterface();
+		else {
+			for (int i = 0; i < 2; i++)
+			{
+				HANDLE h = CreateThread(NULL, NULL, processQueuePacket, (i == 0 ? (LPVOID)0 : (LPVOID)1), NULL, NULL);
+				if (h != NULL)
+					CloseHandle(h);
+			}
+		}
 
 		sniffAllInterface(NPCAP_FILTER_RULE);
 
@@ -107,6 +115,47 @@ VOID MyNpcap::StopSniffAllInterface()
 	}
 }
 
+DWORD MyNpcap::processQueuePacket(LPVOID param)
+{
+	const BOOL isRecv = param == (LPVOID)1;
+
+	while (TRUE)
+	{
+		if (_stopNpcap)
+			break;
+
+		if (NPCAP.empty(isRecv))
+		{
+			Sleep(100);
+			continue;
+		}
+
+		NPCAP.GetLock(isRecv);
+		{
+			do
+			{
+				auto begin = NPCAP.begin(isRecv);
+				IPv4Packet* pPacket = nullptr;
+				if (begin == NPCAP.end(isRecv))
+				{
+					break;
+				}
+				pPacket = *begin;
+
+				PACKETPARSER.Parse(pPacket, isRecv);
+				NPCAP.erase(isRecv, begin);
+				
+				delete[] pPacket->_pkt;
+				delete pPacket;
+			} while (false);
+
+			NPCAP.FreeLock(isRecv);
+		}
+	}
+
+	return 1;
+}
+
 /**
  * The method responsible for TCP reassembly on live traffic
  */
@@ -118,10 +167,17 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	MyNpcap* _this = ti->_this;
 
 	// create the TCP reassembly instance
-	pcpp::TcpReassembly tcpReassembly(tcpReassemblyMsgReadyCallback, NULL, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+	pcpp::TcpReassembly tcpRecvReassembly(tcpReassemblyMsgReadyCallback, (void*)TRUE, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+	pcpp::TcpReassembly tcpSendReassembly(tcpReassemblyMsgReadyCallback, FALSE, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+	CaptureInfo ci{};
+	ci.recvReassembly = &tcpRecvReassembly;
+	ci.sendReassembly = &tcpSendReassembly;
+
+	pcpp::PcapLiveDevice::DeviceConfiguration config;
+	config.packetBufferTimeoutMs = 100;
 
 	// try to open device
-	if (!ti->dev->open())
+	if (!ti->dev->open(config))
 	{
 		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] Open interface failed. Please check your Npcap version is 1.60 or above.");
 		return -1;
@@ -135,7 +191,7 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	}
 
 	// start capturing packets. Each packet arrived will be handled by onPacketArrives method
-	if (!ti->dev->startCapture(onPacketArrives, &tcpReassembly))
+	if (!ti->dev->startCapture(onPacketArrives, &ci))
 	{
 		Log::WriteLogA("[MyNpcap::doTcpReassemblyOnLiveTraffic] startCapture failed. Please check your Npcap version is 1.60 or above.");
 		return -3;
@@ -146,41 +202,36 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 		Sleep(1000);
 
 	// close all connections which are still opened
-	tcpReassembly.closeAllConnections();
+	tcpRecvReassembly.closeAllConnections();
+	tcpSendReassembly.closeAllConnections();
 
 	return 0;
 }
-
 
 /**
  * packet capture callback - called whenever a packet arrives on the live device (in live device capturing mode)
  */
 void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie)
 {
+	CaptureInfo* pCI = (CaptureInfo*)tcpReassemblyCookie;
 	pcpp::Packet parsedPacket(packet);
 	pcpp::TcpLayer* tcpLayer = parsedPacket.getLayerOfType<pcpp::TcpLayer>();
-
+	pcpp::TcpReassembly* tcpReassembly = pCI->sendReassembly;
+	const BOOL isRecv = tcpLayer->getSrcPort() == 10200;
+	
 	if (tcpLayer == NULL || _stopNpcap)
 		return;
 
-	if (tcpLayer->getSrcPort() == 10200)
+	if (isRecv)
 	{
-		// get a pointer to the TCP reassembly instance and feed the packet arrived to it
-		pcpp::TcpReassembly* tcpReassembly = (pcpp::TcpReassembly*)tcpReassemblyCookie;
-		pcpp::TcpReassembly::ReassemblyStatus status = tcpReassembly->reassemblePacket(packet);
-		PACKETCAPTURE.UpdateLoss(status == pcpp::TcpReassembly::ReassemblyStatus::OutOfOrderTcpMessageBuffered);
-	} 
-	else if (tcpLayer->getLayerPayloadSize() > 0)
-	{
-		IPv4Packet packet{};
-		packet._data = tcpLayer->getLayerPayload();
-		packet._datalength = tcpLayer->getLayerPayloadSize();
-		packet._isRecv = FALSE;
-		packet._pkt = (BYTE*)packet._data;
-		packet._ts = GetCurrentTimeStamp();
-
-		PACKETPARSER.Parse(&packet, packet._isRecv);
+		tcpReassembly = pCI->recvReassembly;
 	}
+
+	// get a pointer to the TCP reassembly instance and feed the packet arrived to it
+	pcpp::TcpReassembly::ReassemblyStatus status = tcpReassembly->reassemblePacket(packet);
+
+	if (isRecv)
+		PACKETCAPTURE.UpdateLoss(status == pcpp::TcpReassembly::ReassemblyStatus::OutOfOrderTcpMessageBuffered);
 }
 
 /**
@@ -188,20 +239,28 @@ void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* t
  */
 VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie)
 {
+	const BOOL isRecv = userCookie == (void*)1;
 	CHAR tmp[128] = { 0 };
 	auto old_uses = std::to_string(tcpData.getTimeStamp().tv_usec);
 	// padding zero
 	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
 	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
-	IPv4Packet packet{};
-	packet._data = tcpData.getData();
-	packet._datalength = tcpData.getDataLength();
-	packet._isRecv = (tcpData.getConnectionData().srcPort == 10200);
-	packet._pkt = (BYTE*)packet._data;
-	packet._ts = atoll(tmp) / 1000;
-	
-	PACKETPARSER.Parse(&packet, packet._isRecv);
+	char* pData = new char[tcpData.getDataLength()];
+	memcpy_s(pData, tcpData.getDataLength(), tcpData.getData(), tcpData.getDataLength());
+
+	IPv4Packet* packet = new IPv4Packet;
+	packet->_data = (const UCHAR*)pData;
+	packet->_datalength = tcpData.getDataLength();
+	packet->_isRecv = isRecv;
+	packet->_ts = atoll(tmp) / 1000;
+	packet->_pkt = (BYTE*)pData;
+
+	NPCAP.GetLock(isRecv);
+	{
+		NPCAP.push_back(isRecv, packet);
+		NPCAP.FreeLock(isRecv);
+	}
 }
 
 
