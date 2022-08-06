@@ -96,7 +96,7 @@ public:
 		{
 			ULONG64 time = GetCurrentTimeStamp();
 			// reset loss
-			if (_prevLossTime < time)
+			if (_prevLossTime < time || _loss == 0)
 			{
 				_loss = 0;
 				// 10s
