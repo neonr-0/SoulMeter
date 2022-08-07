@@ -50,20 +50,6 @@ BOOL UiOption::ShowFontSelector() {
 
 	font_current->Scale = _fontScale;
 
-	if (ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_UNIT_1K"), (bool*)&_is1K)) {
-		if (_is1M)
-			_is1M = FALSE;
-	}
-
-	if (ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_UNIT_1M"), (bool*)&_is1M)) {
-		if (_is1K)
-			_is1K = FALSE;
-	}
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_MODE"), (bool*)&_isSoloMode);
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode);
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_USE_SAVEDATA"), (bool*)&_isUseSaveData);
-
 	return TRUE;
 }
 
@@ -315,6 +301,23 @@ VOID UiOption::ShowInterfaceSelector() {
 	}
 }
 
+VOID UiOption::ShowFeatures()
+{
+	if (ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_UNIT_1K"), (bool*)&_is1K)) {
+		if (_is1M)
+			_is1M = FALSE;
+	}
+
+	if (ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_UNIT_1M"), (bool*)&_is1M)) {
+		if (_is1K)
+			_is1K = FALSE;
+	}
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_MODE"), (bool*)&_isSoloMode);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_USE_SAVEDATA"), (bool*)&_isUseSaveData);
+}
+
 VOID UiOption::OpenOption() {
 
 	if (!_open)
@@ -358,16 +361,22 @@ VOID UiOption::OpenOption() {
 		ShowCaptureModeSelector();
 		ShowInterfaceSelector();
 		ShowLangSelector();
-		ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.2f);
-		ShowFontSelector();
-		ImGui::PopItemWidth();
-		ShowTeamTALFSelector();
 
 		if (ImGui::BeginTabBar("##tabs")) {
 			CHAR label[128] = {0};
+			sprintf_s(label, "%s###TabFeatures", LANGMANAGER.GetText("STR_OPTION_TAB_TABLE_FEATURES"));
+			if (ImGui::BeginTabItem(label)) {
+				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
+				ShowFeatures();
+				ShowTeamTALFSelector();
+				ImGui::PopItemWidth();
+				ImGui::EndTabItem();
+			}
+
 			sprintf_s(label, "%s###TabTable", LANGMANAGER.GetText("STR_OPTION_TAB_TABLE_SETTING"));
 			if (ImGui::BeginTabItem(label)) {
 				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
+				ShowFontSelector();
 				ShowTableOption();
 				ImGui::PopItemWidth();
 				ImGui::EndTabItem();

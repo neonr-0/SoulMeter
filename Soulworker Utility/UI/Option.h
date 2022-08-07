@@ -23,6 +23,7 @@ private:
 
 	FLOAT _fontScale;
 	BOOL ShowFontSelector();
+	VOID ShowFeatures();
 
 	FLOAT _columnFontScale;
 	FLOAT _tableFontScale;
