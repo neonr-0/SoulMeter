@@ -72,7 +72,7 @@ DWORD PacketCapture::ParsePacket(LPVOID prc, PacketInfo* pi)
 	return 0;
 }
 
-VOID PacketCapture::ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt)
+VOID PacketCapture::ParseWinDivertStruct(IPv4Packet* packet, uint8_t* pkt)
 {
 	// IP
 	packet->_ipHeader = (IPHEADER*)(pkt);

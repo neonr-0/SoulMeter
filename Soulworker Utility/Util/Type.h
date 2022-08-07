@@ -149,12 +149,12 @@ typedef struct _TCPHEADER {
 }TCPHEADER;
 
 typedef struct _IPV4PACKET {
-	BYTE* _pkt; // save packet origin ptr
-	ETHERNETHEADER* _ethernetHeader;
-	IPHEADER* _ipHeader;
-	TCPHEADER* _tcpHeader;
-	const UCHAR* _data;
-	SIZE_T _datalength;
+	ETHERNETHEADER* _ethernetHeader; // options
+	IPHEADER* _ipHeader; // options
+	TCPHEADER* _tcpHeader; // options
+	const uint8_t* _pkt; // save packet origin ptr
+	uint8_t* _data;
+	size_t _datalength;
 	BOOL _isRecv;
 	UINT64 _ts;
 }IPv4Packet;

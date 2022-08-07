@@ -731,6 +731,7 @@ public:
 	BOOL isHistoryMode();
 
 	VOID ClearInfo(BOOL clear = FALSE);
+	VOID ClearDB();
 
 	INT32 GetCurrentHistoryId()
 	{

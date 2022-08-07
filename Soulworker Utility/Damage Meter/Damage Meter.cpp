@@ -19,8 +19,7 @@ SWDamageMeter::~SWDamageMeter() {
 	for (auto itr = _ownerInfo.begin(); itr != _ownerInfo.end(); itr++)
 		delete (*itr);
 
-	for (auto itr = _dbInfo.begin(); itr != _dbInfo.end(); itr++)
-		delete (*itr);
+	ClearDB();
 
 	for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++)
 		delete (itr->second);
@@ -603,6 +602,7 @@ VOID SWDamageMeter::Clear() {
 	if (!_historyMode) {
 		if (_playerInfo.size() > 0) {
 			unordered_map<UINT32, SW_PLAYER_METADATA*> newHistoryPlayerMeta;
+			vector<SW_DB2_STRUCT*> newDB;
 			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++) {
 				itr->second->MeterReseted();
 
@@ -616,10 +616,16 @@ VOID SWDamageMeter::Clear() {
 					}
 				}
 			}
+			for (auto itr2 = _dbInfo.begin(); itr2 != _dbInfo.end(); itr2++)
+			{
+				SW_DB2_STRUCT* newStruct = new SW_DB2_STRUCT;
+				memcpy_s(newStruct, sizeof(SW_DB2_STRUCT), *itr2, sizeof(SW_DB2_STRUCT));
+				newDB.push_back(newStruct);
+			}
 
 			HISTORY_DATA* hd = new HISTORY_DATA;
 			hd->_playerHistory = _playerInfo;
-			hd->_dbHistory = _dbInfo;
+			hd->_dbHistory = newDB;
 			hd->_buffHistory = BUFFMETER.GetPlayerInfo();
 			hd->_plotHistory = PLOTWINDOW.GetPlotInfo();
 			hd->_playerMetadata = newHistoryPlayerMeta;
@@ -637,7 +643,8 @@ VOID SWDamageMeter::Clear() {
 				HISTORY.push_back(pHI);
 
 				if (UIOPTION.isTeamTALF() && GetWorldID() == 22061) {
-					_dbInfo.clear();
+					ClearDB();
+
 					for (auto itr = hd->_dbHistory.begin(); itr != hd->_dbHistory.end(); itr++) {
 						SW_DB2_STRUCT* newDB = new SW_DB2_STRUCT;
 						memcpy_s(newDB, sizeof(SW_DB2_STRUCT), *itr, sizeof(SW_DB2_STRUCT));
@@ -700,7 +707,7 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 
 	if (clear) {
 		_ownerInfo.clear();
-		_dbInfo.clear();
+		ClearDB();
 	}
 
 	PLOTWINDOW.Clear();
@@ -709,6 +716,15 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 	_currentHistoryId = -1;
 	_historyHI = nullptr;
 	_realClearTime = 0;
+}
+
+VOID SWDamageMeter::ClearDB()
+{
+	for (auto itr2 = _dbInfo.begin(); itr2 != _dbInfo.end(); itr2++)
+	{
+		delete (*itr2);
+	}
+	_dbInfo.clear();
 }
 
 VOID SWDamageMeter::SetHistory(LPVOID pHi) {

@@ -17,7 +17,7 @@ using namespace std;
 #define NPCAP_FILTER_RULE "ip and (src port 10200 or dst port 10200)"
 
 #if _DEBUG
-#define DEBUG_NPCAP_SORT 0
+#define DEBUG_NPCAP_REASSEMBLY 1
 #endif
 
 static BOOL _stopNpcap = FALSE;
@@ -52,7 +52,6 @@ private:
 
 	BOOL _inited = FALSE;
 
-	VOID StopSniffAllInterface();
 public:
 	MyNpcap() { }
 	~MyNpcap() {
@@ -60,6 +59,7 @@ public:
 	}
 
 	DWORD Init();
+	VOID StopSniffAllInterface();
 };
 
 static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie);

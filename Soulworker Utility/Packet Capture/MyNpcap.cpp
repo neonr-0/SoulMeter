@@ -4,6 +4,7 @@
 #include ".\Packet Capture\PacketCapture.h"
 #include ".\UI\Option.h"
 #include ".\Third Party\Npcap\Include\pcap.h"
+#include ".\Soulworker Packet\PacketType.h"
 
 DWORD MyNpcap::LoadNpcapDlls() {
 
@@ -161,6 +162,12 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	tcpRecvReassembly.closeAllConnections();
 	tcpSendReassembly.closeAllConnections();
 
+	// clear remaining data
+	if (trcRecv._remainingSize > 0)
+		delete[] trcRecv._remainingData;
+	if (trcSend._remainingSize > 0)
+		delete[] trcSend._remainingData;
+
 	return 0;
 }
 
@@ -206,42 +213,76 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
 	IPv4Packet packet{};
-	packet._data = (const UCHAR*)tcpData.getData();
+	packet._data = (uint8_t*)tcpData.getData();
 	packet._datalength = tcpData.getDataLength();
 	if (pTRC->_remainingSize > 0)
 	{
-		if (pTRC->_remainingSize < 65535)
-		{
-			reassembly = TRUE;
-			packet._datalength = pTRC->_remainingSize + tcpData.getDataLength();
-			packet._data = new UCHAR[packet._datalength];
+		reassembly = TRUE;
+		packet._datalength = pTRC->_remainingSize + tcpData.getDataLength();
+		packet._data = new uint8_t[packet._datalength];
 
-			// copy remaining data to buffer
-			memcpy_s((void*)packet._data, packet._datalength, pTRC->_remainingData, pTRC->_remainingSize);
-			// copy current packet to buffer
-			memcpy_s((void*)(packet._data + pTRC->_remainingSize), packet._datalength, tcpData.getData(), tcpData.getDataLength());
+		// copy remaining data to buffer
+		memcpy_s((void*)packet._data, packet._datalength, pTRC->_remainingData, pTRC->_remainingSize);
+		// copy current packet to buffer
+		memcpy_s((void*)(packet._data + pTRC->_remainingSize), packet._datalength, tcpData.getData(), tcpData.getDataLength());
 
-		}
-		else {
-#ifdef _DEBUG
-			Log::WriteLogA("[tcpReassemblyMsgReadyCallback] got _remainingSize limit");
-#endif
-		}
 		delete[] pTRC->_remainingData;
 		pTRC->_remainingSize = 0;
+
+#if DEBUG_NPCAP_REASSEMBLY == 1
+		Log::WriteLogA("[tcpReassemblyMsgReadyCallback] rewrite packet, oldlen = %llu, newlen = %llu", tcpData.getDataLength(), packet._datalength);
+#endif
 	}
 	packet._isRecv = isRecv;
 	packet._ts = atoll(tmp) / 1000;
-	packet._pkt = (BYTE*)packet._data;
+	packet._pkt = packet._data;
 
 	PACKETPARSER.Parse(&packet, isRecv);
 
-	// copy remaining data to cookie
-	if (packet._datalength > 0)
+	int type = 0;
+	size_t maxRemainingLen = sizeof(SWSHEADER);
+	if (isRecv)
+		maxRemainingLen = sizeof(SWHEADER);
+	// check remaining data is SW packet
+	do
 	{
-		pTRC->_remainingData = new uint8_t[packet._datalength];
-		pTRC->_remainingSize = packet._datalength;
-		memcpy_s(pTRC->_remainingData, pTRC->_remainingSize, packet._data, pTRC->_remainingSize);
+		if (packet._datalength > 0 && packet._datalength < maxRemainingLen && *packet._data == SWMAGIC)
+		{
+			// check SWMAGIC second byte
+			if (packet._datalength > 1 && *(packet._data + 1) != 0)
+			{
+				type = 2;
+				break;
+			}
+			// check Length
+			if (packet._datalength > 2 && *(packet._data + 2) == 0)
+			{
+				type = 3;
+				break;
+			}
+
+			pTRC->_remainingData = new uint8_t[packet._datalength];
+			pTRC->_remainingSize = packet._datalength;
+			// copy remaining data to cookie
+			memcpy_s(pTRC->_remainingData, pTRC->_remainingSize, packet._data, pTRC->_remainingSize);
+#if DEBUG_NPCAP_REASSEMBLY == 1
+			Log::WriteLogA("[tcpReassemblyMsgReadyCallback] find remaining data, len = %llu", pTRC->_remainingSize);
+#endif
+		}
+		else if (packet._datalength > 0) {
+			type = 1;
+			break;
+		}
+	} while (false);
+
+	if (type > 0)
+	{
+#if DEBUG_NPCAP_REASSEMBLY == 1
+		Log::WriteLogA("[tcpReassemblyMsgReadyCallback] Skip. type = %d, maybe isnt sw packet, len = %llu", type, packet._datalength);
+		for (int i = 0; i < packet._datalength; i++)
+			Log::WriteLogNoDate(L"%02x ", packet._data[i]);
+		Log::WriteLogNoDate(L"\n\n");
+#endif
 	}
 
 	if (reassembly)

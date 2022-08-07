@@ -63,7 +63,7 @@ public:
 	}
 
 	BOOL Init();
-	static VOID ParseWinDivertStruct(IPv4Packet* packet, BYTE* pkt);
+	static VOID ParseWinDivertStruct(IPv4Packet* packet, uint8_t* pkt);
 
 	static VOID ClearPacketInfo(PacketInfo* pi);
 
