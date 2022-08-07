@@ -47,6 +47,7 @@ private:
 	
 	INT32 _useMode;
 
+	UINT64 _allLoss = 0;
 	UINT64 _loss = 0;
 	UINT64 _prevLossTime = 0;
 	mutex _lossMutex;
@@ -87,6 +88,11 @@ public:
 		return _loss;
 	}
 
+	const UINT64& GetAllLoss()
+	{
+		return _allLoss;
+	}
+
 	VOID UpdateLoss(BOOL add)
 	{
 		if (_stopCapture)
@@ -106,6 +112,7 @@ public:
 			if (add)
 			{
 				_loss++;
+				_allLoss++;
 			}
 
 			_lossMutex.unlock();
