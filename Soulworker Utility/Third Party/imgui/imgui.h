@@ -467,6 +467,7 @@ namespace ImGui
     // - Most widgets return true when the value has been changed or when pressed/selected
     // - You may also use one of the many IsItemXXX functions (e.g. IsItemActive, IsItemHovered, etc.) to query widget state.
     IMGUI_API bool          Button(const char* label, const ImVec2& size = ImVec2(0, 0));   // button
+    IMGUI_API bool          ButtonReplaceVec(const char* label, const ImVec2& size_arg);
     IMGUI_API bool          SmallButton(const char* label);                                 // button with FramePadding=(0,0) to easily embed within text
     IMGUI_API bool          InvisibleButton(const char* str_id, const ImVec2& size, ImGuiButtonFlags flags = 0); // flexible button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
     IMGUI_API bool          ArrowButton(const char* str_id, ImGuiDir dir);                  // square button with an arrow shape
@@ -1521,6 +1522,7 @@ enum ImGuiButtonFlags_
     ImGuiButtonFlags_MouseButtonLeft        = 1 << 0,   // React on left mouse button (default)
     ImGuiButtonFlags_MouseButtonRight       = 1 << 1,   // React on right mouse button
     ImGuiButtonFlags_MouseButtonMiddle      = 1 << 2,   // React on center mouse button
+    ImGuiButtonFlags_ReplaceVec             = 1 << 3,   // Replace the ImVec2 parameter with the calculated size
 
     // [Internal]
     ImGuiButtonFlags_MouseButtonMask_       = ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight | ImGuiButtonFlags_MouseButtonMiddle,

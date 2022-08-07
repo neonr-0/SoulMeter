@@ -100,6 +100,8 @@
     "STR_OPTION_TEAMTA_OPTION_1": "Clear everytime",
     "STR_OPTION_TEAMTA_OPTION_2": "Edgar + Queen",
     "STR_OPTION_USE_SAVEDATA": "Auto save history to file",
+    "STR_OPTION_SELECT_INTERFACE": "Use network interface",
+    "STR_OPTION_ALL": "All",
 
     "STR_CHAR_UNKNOWN": "Unknown",
     "STR_CHAR_HARU": "Haru",
@@ -130,7 +132,7 @@
     "STR_SPECIFICINFO_BUFF_NAME": "BUFF",
 
     "STR_UTILLWINDOW_SEARCH": "Search",
-    "STR_UTILLWINDOW_HISTORY_MAX": "MAX",
+    "STR_UTILLWINDOW_HISTORY_MAX": "Per savedata MAX",
     "STR_UTILLWINDOW_HISTORY_DELETE_SELECTED": "Delete selected",
     "STR_UTILLWINDOW_HISTORY_CLEARALL": "Clear all",
     "STR_UTILLWINDOW_HISTORY_CLEARALL_CONFIRM": "You sure want to clear this history all data?",
