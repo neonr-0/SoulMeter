@@ -190,7 +190,7 @@ VOID UiOption::ShowLangSelector() {
 			CHAR label[MONSTER_NAME_LEN] = { 0 };
 			sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", itr->second.c_str(), i);
 
-			if (ImGui::Selectable(label)) {
+			if (ImGui::Selectable(label, strcmp(_selectedLang, itr->first.c_str()) == 0)) {
 				strcpy_s(_selectedLang, itr->first.c_str());
 				ChangeLang();
 			}
@@ -219,11 +219,11 @@ VOID UiOption::ShowCaptureModeSelector() {
 	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_COMBO_CAPTURE_MODE"));
 	if (ImGui::BeginCombo(u8"###OptionCaptureModeSelector", comboPreview, ImGuiComboFlags_HeightLarge)) {
 
-		if (ImGui::Selectable("Npcap")) {
+		if (ImGui::Selectable("Npcap", _captureMode == (INT32)CaptureType::_NPCAP)) {
 			_captureMode = (INT32)CaptureType::_NPCAP;
 		}
 
-		if (ImGui::Selectable("WinDivert")) {
+		if (ImGui::Selectable("WinDivert", _captureMode == (INT32)CaptureType::_WINDIVERT)) {
 			_captureMode = (INT32)CaptureType::_WINDIVERT;
 		}
 
@@ -250,7 +250,7 @@ VOID UiOption::ShowTeamTALFSelector()
 				sprintf_s(label, 128, "%s##OptionTALF1", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_1"));
 			else
 				sprintf_s(label, 128, "%s##OptionTALF2", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_2"));
-			if (ImGui::Selectable(label)) {
+			if (ImGui::Selectable(label, _teamTA_LF_Mode == i)) {
 				_teamTA_LF_Mode = i;
 			}
 		}
@@ -287,7 +287,7 @@ VOID UiOption::ShowInterfaceSelector() {
 					for (INT32 i = 0; i < pInfo->NumAdapters; i++) {
 						// skip \DEVICE\TCPIP_
 						UTF16toUTF8(pInfo->Adapter[i].Name + 14, interfaceName, MAX_PATH);
-						if (ImGui::Selectable(interfaceName)) {
+						if (ImGui::Selectable(interfaceName, strcmp(interfaceName, _selectedInterface) == 0)) {
 							strcpy_s(_selectedInterface, interfaceName);
 							PACKETCAPTURE.Init();
 						}
