@@ -62,14 +62,6 @@ DWORD MyNpcap::Init() {
 
 		if (_inited)
 			StopSniffAllInterface();
-		else {
-			for (int i = 0; i < 2; i++)
-			{
-				HANDLE h = CreateThread(NULL, NULL, processQueuePacket, (i == 0 ? (LPVOID)0 : (LPVOID)1), NULL, NULL);
-				if (h != NULL)
-					CloseHandle(h);
-			}
-		}
 
 		sniffAllInterface(NPCAP_FILTER_RULE);
 
@@ -113,47 +105,6 @@ VOID MyNpcap::StopSniffAllInterface()
 			(*itr)->stopCapture();
 		}
 	}
-}
-
-DWORD MyNpcap::processQueuePacket(LPVOID param)
-{
-	const BOOL isRecv = param == (LPVOID)1;
-
-	while (TRUE)
-	{
-		if (_stopNpcap)
-			break;
-
-		if (NPCAP.empty(isRecv))
-		{
-			Sleep(100);
-			continue;
-		}
-
-		NPCAP.GetLock(isRecv);
-		{
-			do
-			{
-				auto begin = NPCAP.begin(isRecv);
-				IPv4Packet* pPacket = nullptr;
-				if (begin == NPCAP.end(isRecv))
-				{
-					break;
-				}
-				pPacket = *begin;
-
-				PACKETPARSER.Parse(pPacket, isRecv);
-				NPCAP.erase(isRecv, begin);
-				
-				delete[] pPacket->_pkt;
-				delete pPacket;
-			} while (false);
-
-			NPCAP.FreeLock(isRecv);
-		}
-	}
-
-	return 1;
 }
 
 /**
@@ -246,21 +197,14 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
 	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
-	char* pData = new char[tcpData.getDataLength()];
-	memcpy_s(pData, tcpData.getDataLength(), tcpData.getData(), tcpData.getDataLength());
+	IPv4Packet packet{};
+	packet._data = (const UCHAR*)tcpData.getData();
+	packet._datalength = tcpData.getDataLength();
+	packet._isRecv = isRecv;
+	packet._ts = atoll(tmp) / 1000;
+	packet._pkt = (BYTE*)tcpData.getData();
 
-	IPv4Packet* packet = new IPv4Packet;
-	packet->_data = (const UCHAR*)pData;
-	packet->_datalength = tcpData.getDataLength();
-	packet->_isRecv = isRecv;
-	packet->_ts = atoll(tmp) / 1000;
-	packet->_pkt = (BYTE*)pData;
-
-	NPCAP.GetLock(isRecv);
-	{
-		NPCAP.push_back(isRecv, packet);
-		NPCAP.FreeLock(isRecv);
-	}
+	PACKETPARSER.Parse(&packet, isRecv);
 }
 
 
