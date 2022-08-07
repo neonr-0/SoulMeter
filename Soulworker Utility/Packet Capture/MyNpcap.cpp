@@ -118,8 +118,13 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	MyNpcap* _this = ti->_this;
 
 	// create the TCP reassembly instance
-	pcpp::TcpReassembly tcpRecvReassembly(tcpReassemblyMsgReadyCallback, (void*)TRUE, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
-	pcpp::TcpReassembly tcpSendReassembly(tcpReassemblyMsgReadyCallback, FALSE, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+	TcpReassemblyCookie trcRecv{};
+	trcRecv._isRecv = TRUE;
+	pcpp::TcpReassembly tcpRecvReassembly(tcpReassemblyMsgReadyCallback, &trcRecv, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+	TcpReassemblyCookie trcSend{};
+	trcSend._isRecv = FALSE;
+	pcpp::TcpReassembly tcpSendReassembly(tcpReassemblyMsgReadyCallback, &trcSend, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
+
 	CaptureInfo ci{};
 	ci.recvReassembly = &tcpRecvReassembly;
 	ci.sendReassembly = &tcpSendReassembly;
@@ -190,38 +195,57 @@ void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* t
  */
 VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& tcpData, void* userCookie)
 {
-	const BOOL isRecv = userCookie == (void*)1;
+	TcpReassemblyCookie* pTRC = (TcpReassemblyCookie*)userCookie;
+	const BOOL isRecv = pTRC->_isRecv;
+	BOOL reassembly = FALSE;
+
+	// parse timestamp
 	CHAR tmp[128] = { 0 };
 	auto old_uses = std::to_string(tcpData.getTimeStamp().tv_usec);
-	// padding zero
 	auto new_usec = std::string(6 - min(6, old_uses.length()), '0') + old_uses;
 	sprintf_s(tmp, "%d%s", tcpData.getTimeStamp().tv_sec, new_usec.c_str());
 
 	IPv4Packet packet{};
 	packet._data = (const UCHAR*)tcpData.getData();
 	packet._datalength = tcpData.getDataLength();
+	if (pTRC->_remainingSize > 0)
+	{
+		if (pTRC->_remainingSize < 65535)
+		{
+			reassembly = TRUE;
+			packet._datalength = pTRC->_remainingSize + tcpData.getDataLength();
+			packet._data = new UCHAR[packet._datalength];
+
+			// copy remaining data to buffer
+			memcpy_s((void*)packet._data, packet._datalength, pTRC->_remainingData, pTRC->_remainingSize);
+			// copy current packet to buffer
+			memcpy_s((void*)(packet._data + pTRC->_remainingSize), packet._datalength, tcpData.getData(), tcpData.getDataLength());
+
+		}
+		else {
+#ifdef _DEBUG
+			Log::WriteLogA("[tcpReassemblyMsgReadyCallback] got _remainingSize limit");
+#endif
+		}
+		delete[] pTRC->_remainingData;
+		pTRC->_remainingSize = 0;
+	}
 	packet._isRecv = isRecv;
 	packet._ts = atoll(tmp) / 1000;
-	packet._pkt = (BYTE*)tcpData.getData();
-
-#if _DEBUG
-	if (tcpData.isBytesMissing())
-	{
-		Log::WriteLogA("Find missing data");
-		for (int i = 0; i < packet._datalength; i++)
-			Log::WriteLogNoDate(L"%02x ", packet._pkt[i]);
-		Log::WriteLogNoDate(L"\n\n");
-	}
-	char* encryptData = new char[tcpData.getDataLength()];
-	memcpy_s(encryptData, tcpData.getDataLength(), tcpData.getData(), tcpData.getDataLength());
-	packet._encryptData = (const UCHAR*)encryptData;
-	packet._encryptDataLen = tcpData.getDataLength();
-#endif
+	packet._pkt = (BYTE*)packet._data;
 
 	PACKETPARSER.Parse(&packet, isRecv);
 
-	if (packet._encryptData != nullptr)
-		delete[] packet._encryptData;
+	// copy remaining data to cookie
+	if (packet._datalength > 0)
+	{
+		pTRC->_remainingData = new uint8_t[packet._datalength];
+		pTRC->_remainingSize = packet._datalength;
+		memcpy_s(pTRC->_remainingData, pTRC->_remainingSize, packet._data, pTRC->_remainingSize);
+	}
+
+	if (reassembly)
+		delete[] packet._pkt;
 }
 
 

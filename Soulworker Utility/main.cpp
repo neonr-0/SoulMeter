@@ -6,6 +6,7 @@
 #include ".\UI\PlayerTable.h"
 #include ".\SWCrypt\SWCryptDLL.h"
 #include ".\Damage Meter\SaveData.h"
+#include ".\Packet Capture\PacketParser.h"
 
 #if defined(DEBUG) || defined(_DEBUG)
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console" )

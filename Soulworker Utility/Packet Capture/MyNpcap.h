@@ -22,6 +22,13 @@ using namespace std;
 
 static BOOL _stopNpcap = FALSE;
 
+struct TcpReassemblyCookie
+{
+	BOOL _isRecv;
+	uint8_t* _remainingData;
+	size_t _remainingSize;
+};
+
 struct CaptureInfo
 {
 	pcpp::TcpReassembly* recvReassembly;

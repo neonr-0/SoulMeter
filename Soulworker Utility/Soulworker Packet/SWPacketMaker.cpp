@@ -48,15 +48,6 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 
 	if (swheader == nullptr || data == nullptr)
 	{
-#ifdef _DEBUG
-		Log::WriteLogA("[SWPacketMaker::CreateSWPacket] Packet dropped.");
-		if (packet->_encryptData != nullptr)
-		{
-			for (int i = 0; i < packet->_encryptDataLen; i++)
-				Log::WriteLogNoDate(L"%02x ", packet->_encryptData[i]);
-			Log::WriteLogNoDate(L"\n\n");
-		}
-#endif
 		return;
 	}
 
@@ -90,6 +81,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 
 			/*0x04*/
+			// eSUB_CMD_WORLD_ENTER_RES
 		case RecvOPcode::WORLDCHANGE: //0430
 			swpacket = new SWPacketWorldChange(swheader, data);
 			break;

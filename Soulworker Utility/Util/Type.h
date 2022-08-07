@@ -157,8 +157,6 @@ typedef struct _IPV4PACKET {
 	SIZE_T _datalength;
 	BOOL _isRecv;
 	UINT64 _ts;
-	const UCHAR* _encryptData;
-	SIZE_T _encryptDataLen;
 }IPv4Packet;
 
 #pragma pack(pop)
