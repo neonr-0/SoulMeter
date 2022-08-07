@@ -197,36 +197,36 @@ VOID PlotWindow::UpdatePlotTab()
 			UINT32 firstId = metaInfos.front()->_id;
 			UINT32 lastId = metaInfos.back()->_id;
 			size_t currentSize = timeList[firstId].size();
-			if (currentSize <= 0)
-				return;
-
-			// 
-			DOUBLE startX = 0.0;
-			if (currentSize > 45) {
-				startX = timeList[firstId].at(currentSize - 45);
-			}
-			DOUBLE endX = timeList[firstId].at(currentSize - 1);
-			//
-			DOUBLE startY = 0;
-			DOUBLE endY = 10000;
-			auto itr = dpsList[firstId].begin();
-			if (currentSize > 45) {
-				itr += (dpsList[firstId].size() - 1) - (45 - 1);
-			}
-			for (; itr != dpsList[firstId].end(); itr++) {
-				if (*itr > endY) {
-					endY = *itr;
+			if (currentSize > 0)
+			{
+				// 
+				DOUBLE startX = 0.0;
+				if (currentSize > 45) {
+					startX = timeList[firstId].at(currentSize - 45);
 				}
-			}
-			startY = endY - 7000;
-			if (startY <= 0) {
-				startY = 0;
-			}
-			endY += 1000;
+				DOUBLE endX = timeList[firstId].at(currentSize - 1);
+				//
+				DOUBLE startY = 0;
+				DOUBLE endY = 10000;
+				auto itr = dpsList[firstId].begin();
+				if (currentSize > 45) {
+					itr += (dpsList[firstId].size() - 1) - (45 - 1);
+				}
+				for (; itr != dpsList[firstId].end(); itr++) {
+					if (*itr > endY) {
+						endY = *itr;
+					}
+				}
+				startY = endY - 7000;
+				if (startY <= 0) {
+					startY = 0;
+				}
+				endY += 1000;
 
-			if (!_end) {
-				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-				ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+				if (!_end) {
+					ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+					ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+				}
 			}
 		}
 
@@ -255,22 +255,23 @@ VOID PlotWindow::UpdateAbPlotTab()
 		auto _abTimeList = _pi->GetABTimeList();
 		auto _abList = _pi->GetABList();
 		size_t currentSize = _abTimeList.size();
-		if (currentSize <= 0)
-			return;
+		if (currentSize > 0)
+		{
+			DOUBLE startX = 0.0;
+			DOUBLE endX = 5.0;
+			if (currentSize > 45) {
+				startX = _abTimeList.at(currentSize - 45);
+			}
+			if (currentSize > 0) {
+				endX = _abTimeList.back();
+			}
 
-		DOUBLE startX = 0.0;
-		DOUBLE endX = 5.0;
-		if (currentSize > 45) {
-			startX = _abTimeList.at(currentSize - 45);
+			if (!_end) {
+				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+			}
+			ImPlot::SetNextPlotLimitsY(0.0, 100.0, ImGuiCond_Always);
 		}
-		if (currentSize > 0) {
-			endX = _abTimeList.back();
-		}
-
-		if (!_end) {
-			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-		}
-		ImPlot::SetNextPlotLimitsY(0.0, 100.0, ImGuiCond_Always);
+		
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_ABGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
@@ -337,21 +338,22 @@ VOID PlotWindow::UpdateJqPlotTab()
 		auto _jqTimeList = _pi->GetJQTimeList();
 		auto _jqList = _pi->GetJQList();
 		size_t currentSize = _jqTimeList.size();
-		if (currentSize <= 0)
-			return;
+		if (currentSize > 0)
+		{
+			DOUBLE startX = 0.0;
+			DOUBLE endX = 5.0;
+			if (currentSize > 45) {
+				startX = _jqTimeList.at(currentSize - 45);
+			}
+			if (currentSize > 0) {
+				endX = _jqTimeList.back();
+			}
+			if (!_end) {
+				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+			}
+			ImPlot::SetNextPlotLimitsY(0, 4, ImGuiCond_Always);
+		}
 
-		DOUBLE startX = 0.0;
-		DOUBLE endX = 5.0;
-		if (currentSize > 45) {
-			startX = _jqTimeList.at(currentSize - 45);
-		}
-		if (currentSize > 0) {
-			endX = _jqTimeList.back();
-		}
-		if (!_end) {
-			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-		}
-		ImPlot::SetNextPlotLimitsY(0, 4, ImGuiCond_Always);
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_JQGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
@@ -397,8 +399,8 @@ VOID PlotWindow::UpdateBossHpPlotCombo()
 
 		if (ImGui::BeginCombo("BOSS", comboPreview, ImGuiComboFlags_HeightLarge)) {
 
-			for (auto itr = bossInfos.begin(); itr != bossInfos.end(); itr++) {
-
+			for (auto itr = bossInfos.begin(); itr != bossInfos.end(); itr++) 
+			{
 				CHAR label[MONSTER_NAME_LEN] = { 0 };
 				sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", itr->second, itr->first);
 
@@ -418,35 +420,36 @@ VOID PlotWindow::UpdateBossHpPlotGraph()
 	auto bossHpList = _pi->GetBossHpList();
 	if (timeList.size() > 0) {
 		size_t currentSize = timeList[_selectedBossHpComboID].size();
-		if (currentSize <= 0)
-			return;
-		// 
-		DOUBLE startX = 0.0;
-		if (currentSize > 45) {
-			startX = timeList[_selectedBossHpComboID].at(currentSize - 45);
-		}
-		DOUBLE endX = timeList[_selectedBossHpComboID].at(currentSize - 1);
-		//
-		DOUBLE startY = 0;
-		DOUBLE endY = 100;
-		auto itr = bossHpList[_selectedBossHpComboID].begin();
-		if (currentSize > 45) {
-			itr += (bossHpList[_selectedBossHpComboID].size() - 1) - (45 - 1);
-		}
-		for (; itr != bossHpList[_selectedBossHpComboID].end(); itr++) {
-			if (*itr > endY) {
-				endY = *itr;
+		if (currentSize > 0)
+		{
+			// 
+			DOUBLE startX = 0.0;
+			if (currentSize > 45) {
+				startX = timeList[_selectedBossHpComboID].at(currentSize - 45);
 			}
-		}
-		startY = endY - 7000;
-		if (startY <= 0) {
-			startY = 0;
-		}
-		endY += 100;
+			DOUBLE endX = timeList[_selectedBossHpComboID].at(currentSize - 1);
+			//
+			DOUBLE startY = 0;
+			DOUBLE endY = 100;
+			auto itr = bossHpList[_selectedBossHpComboID].begin();
+			if (currentSize > 45) {
+				itr += (bossHpList[_selectedBossHpComboID].size() - 1) - (45 - 1);
+			}
+			for (; itr != bossHpList[_selectedBossHpComboID].end(); itr++) {
+				if (*itr > endY) {
+					endY = *itr;
+				}
+			}
+			startY = endY - 7000;
+			if (startY <= 0) {
+				startY = 0;
+			}
+			endY += 100;
 
-		if (!_end) {
-			ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-			ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+			if (!_end) {
+				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+				ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+			}
 		}
 	}
 
