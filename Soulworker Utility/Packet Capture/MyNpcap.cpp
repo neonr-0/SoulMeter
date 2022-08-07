@@ -204,7 +204,24 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	packet._ts = atoll(tmp) / 1000;
 	packet._pkt = (BYTE*)tcpData.getData();
 
+#if _DEBUG
+	if (tcpData.isBytesMissing())
+	{
+		Log::WriteLogA("Find missing data");
+		for (int i = 0; i < packet._datalength; i++)
+			Log::WriteLogNoDate(L"%02x ", packet._pkt[i]);
+		Log::WriteLogNoDate(L"\n\n");
+	}
+	char* encryptData = new char[tcpData.getDataLength()];
+	memcpy_s(encryptData, tcpData.getDataLength(), tcpData.getData(), tcpData.getDataLength());
+	packet._encryptData = (const UCHAR*)encryptData;
+	packet._encryptDataLen = tcpData.getDataLength();
+#endif
+
 	PACKETPARSER.Parse(&packet, isRecv);
+
+	if (packet._encryptData != nullptr)
+		delete[] packet._encryptData;
 }
 
 

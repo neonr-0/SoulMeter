@@ -629,7 +629,7 @@ VOID SWDamageMeter::Clear() {
 
 			if (_testMode)
 			{
-				ClearInfo(TRUE);
+				ClearInfo(FALSE);
 				pHI->Clear();
 				delete pHI;
 			}

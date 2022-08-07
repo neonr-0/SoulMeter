@@ -47,7 +47,18 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 	BYTE* data = GetSWData(packet);
 
 	if (swheader == nullptr || data == nullptr)
+	{
+#ifdef _DEBUG
+		Log::WriteLogA("[SWPacketMaker::CreateSWPacket] Packet dropped.");
+		if (packet->_encryptData != nullptr)
+		{
+			for (int i = 0; i < packet->_encryptDataLen; i++)
+				Log::WriteLogNoDate(L"%02x ", packet->_encryptData[i]);
+			Log::WriteLogNoDate(L"\n\n");
+		}
+#endif
 		return;
+	}
 
 	Decrypt(data, swheader->_size, sizeof(SWHEADER) - 3, swheader->key);
 
