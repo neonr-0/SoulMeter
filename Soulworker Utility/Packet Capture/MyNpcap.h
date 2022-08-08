@@ -17,7 +17,7 @@ using namespace std;
 #define NPCAP_FILTER_RULE "ip and (src port 10200 or dst port 10200)"
 
 #if _DEBUG
-#define DEBUG_NPCAP_REASSEMBLY 1
+#define DEBUG_NPCAP_REASSEMBLY 0
 #endif
 
 static BOOL _stopNpcap = FALSE;

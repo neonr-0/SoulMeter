@@ -260,40 +260,24 @@ VOID UiOption::ShowTeamTALFSelector()
 }
 
 VOID UiOption::ShowInterfaceSelector() {
-	const CHAR* comboPreview = _selectedInterface;
+	const CHAR* comboPreview = nullptr;
 
 	if (strcmp(_selectedInterface, "ALL") == 0)
 		comboPreview = LANGMANAGER.GetText("STR_OPTION_ALL");
+	auto find = _interfaceList.find(_selectedInterface);
+	if (find != _interfaceList.end())
+	{
+		comboPreview = find->second.c_str();
+	}
 
 	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_SELECT_INTERFACE"));
-	if (ImGui::BeginCombo(u8"###OptionInterfaceSelector", comboPreview, ImGuiComboFlags_HeightLarge)) {
-
-		if (ImGui::Selectable(LANGMANAGER.GetText("STR_OPTION_ALL"))) {
-			strcpy_s(_selectedInterface, "ALL");
-			PACKETCAPTURE.Init();
-		}
-
-		PIP_INTERFACE_INFO pInfo = NULL;
-		ULONG ulOutBufLen = 0;
-		DWORD dwRetVal = 0;
-
-		dwRetVal = GetInterfaceInfo(NULL, &ulOutBufLen);
-		if (dwRetVal == ERROR_INSUFFICIENT_BUFFER) {
-			pInfo = (IP_INTERFACE_INFO*)malloc(ulOutBufLen);
-			if (pInfo != NULL) {
-				dwRetVal = GetInterfaceInfo(pInfo, &ulOutBufLen);
-				if (dwRetVal == NO_ERROR) {
-					CHAR interfaceName[MAX_PATH] = { 0 };
-					for (INT32 i = 0; i < pInfo->NumAdapters; i++) {
-						// skip \DEVICE\TCPIP_
-						UTF16toUTF8(pInfo->Adapter[i].Name + 14, interfaceName, MAX_PATH);
-						if (ImGui::Selectable(interfaceName, strcmp(interfaceName, _selectedInterface) == 0)) {
-							strcpy_s(_selectedInterface, interfaceName);
-							PACKETCAPTURE.Init();
-						}
-					}
-				}
-				free(pInfo);
+	if (ImGui::BeginCombo(u8"###OptionInterfaceSelector", comboPreview, ImGuiComboFlags_HeightLarge)) 
+	{
+		for (auto itr = _interfaceList.begin(); itr != _interfaceList.end(); itr++)
+		{
+			if (ImGui::Selectable(itr->second.c_str(), strcmp(itr->first.c_str(), _selectedInterface) == 0)) {
+				strcpy_s(_selectedInterface, itr->first.c_str());
+				PACKETCAPTURE.Init();
 			}
 		}
 
@@ -399,6 +383,25 @@ VOID UiOption::Init() {
 	if (!GetOption()) {
 		SetBasicOption();
 	}
+
+	PIP_ADAPTER_INFO pAdapterInfo;
+	pAdapterInfo = (IP_ADAPTER_INFO*)malloc(sizeof(IP_ADAPTER_INFO));
+	ULONG buflen = sizeof(IP_ADAPTER_INFO);
+
+	if (GetAdaptersInfo(pAdapterInfo, &buflen) == ERROR_BUFFER_OVERFLOW) {
+		free(pAdapterInfo);
+		pAdapterInfo = (IP_ADAPTER_INFO*)malloc(buflen);
+	}
+
+	_interfaceList["ALL"] = LANGMANAGER.GetText("STR_OPTION_ALL");
+	if (GetAdaptersInfo(pAdapterInfo, &buflen) == NO_ERROR) {
+		PIP_ADAPTER_INFO pAdapter = pAdapterInfo;
+		while (pAdapter) {
+			_interfaceList[pAdapter->AdapterName] = pAdapter->Description;
+			pAdapter = pAdapter->Next;
+		}
+	}
+	free(pAdapterInfo);
 
 	_inited = true;
 }

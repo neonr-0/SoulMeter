@@ -66,6 +66,8 @@ private:
 
 	unordered_map<string, string> _allLangList = LANGMANAGER.GetAllLangFile();
 
+	map<string, string> _interfaceList;
+
 public:
 	UiOption();
 	~UiOption();
