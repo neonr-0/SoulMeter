@@ -623,6 +623,8 @@ VOID SWDamageMeter::Clear() {
 				newDB.push_back(newStruct);
 			}
 
+			BUFFMETER.EndAllBuff();
+
 			HISTORY_DATA* hd = new HISTORY_DATA;
 			hd->_playerHistory = _playerInfo;
 			hd->_dbHistory = newDB;
