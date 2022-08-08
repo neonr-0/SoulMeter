@@ -12,7 +12,7 @@ SWSHEADER* SWSPacketMaker::GetSWSHeader(IPv4Packet* packet) {
 
 	SWSHEADER* swheader = (SWSHEADER*)(packet->_data);
 
-	if (swheader->_magic != SWMAGIC || swheader->_const_value01 != SWCONSTVALUE)
+	if (swheader->_magic != SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND))
 		return nullptr;
 
 	return swheader;

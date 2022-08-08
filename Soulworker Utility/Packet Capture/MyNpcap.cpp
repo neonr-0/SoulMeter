@@ -260,6 +260,16 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 				type = 3;
 				break;
 			}
+			// check const
+			if (packet._datalength > 4)
+			{
+				const BYTE constVal = *(packet._data + 4);
+				if (constVal != SWCONSTVALUE_RECV && constVal != SWCONSTVALUE_SEND)
+				{
+					type = 4;
+					break;
+				}
+			}
 
 			pTRC->_remainingData = new uint8_t[packet._datalength];
 			pTRC->_remainingSize = packet._datalength;

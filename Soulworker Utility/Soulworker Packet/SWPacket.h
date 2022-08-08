@@ -1,8 +1,5 @@
 #pragma once
 
-
-#define SWCONSTVALUE 1
-
 #pragma pack(push, 1)
 
 typedef struct _SWHEADER { // 9

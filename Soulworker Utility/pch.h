@@ -12,7 +12,8 @@
 
 #define APP_VERSION "1.3.1.9"
 #define SWMAGIC 7
-#define SWCONSTVALUE 1
+#define SWCONSTVALUE_RECV 1
+#define SWCONSTVALUE_SEND 2 // maybe client send request
 
 #include <Windows.h>
 
