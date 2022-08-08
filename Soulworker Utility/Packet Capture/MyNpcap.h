@@ -27,6 +27,7 @@ struct TcpReassemblyCookie
 	BOOL _isRecv;
 	uint8_t* _remainingData;
 	size_t _remainingSize;
+	uint32_t _flowKey;
 };
 
 struct CaptureInfo

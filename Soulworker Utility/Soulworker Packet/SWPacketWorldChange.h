@@ -8,6 +8,9 @@ typedef struct _SWPACKETWORLDCHANGE {
 	UINT32 _id;
 	BYTE _unknwon1[20];
 	USHORT _worldID;
+	BYTE _unknwon2[10];
+	USHORT _serverIPLen;
+	uint8_t _serverIP;
 }SWPACKETWORLDCHANGE;
 
 #pragma pack(pop)

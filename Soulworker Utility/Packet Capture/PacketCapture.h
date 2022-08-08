@@ -54,6 +54,8 @@ private:
 
 	BOOL _stopCapture = FALSE;
 
+	string _serverIP;
+
 public:
 	PacketCapture() {}
 	~PacketCapture() {

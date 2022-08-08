@@ -121,9 +121,11 @@ DWORD MyNpcap::doTcpReassemblyOnLiveTraffic(LPVOID param)
 	// create the TCP reassembly instance
 	TcpReassemblyCookie trcRecv{};
 	trcRecv._isRecv = TRUE;
+	trcRecv._flowKey = 0;
 	pcpp::TcpReassembly tcpRecvReassembly(tcpReassemblyMsgReadyCallback, &trcRecv, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
 	TcpReassemblyCookie trcSend{};
 	trcSend._isRecv = FALSE;
+	trcSend._flowKey = 0;
 	pcpp::TcpReassembly tcpSendReassembly(tcpReassemblyMsgReadyCallback, &trcSend, tcpReassemblyConnectionStartCallback, tcpReassemblyConnectionEndCallback);
 
 	CaptureInfo ci{};
@@ -205,6 +207,7 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	TcpReassemblyCookie* pTRC = (TcpReassemblyCookie*)userCookie;
 	const BOOL isRecv = pTRC->_isRecv;
 	BOOL reassembly = FALSE;
+	BOOL isCurrentFlow = (pTRC->_flowKey == 0 || pTRC->_flowKey == tcpData.getConnectionData().flowKey);
 
 	// parse timestamp
 	CHAR tmp[128] = { 0 };
@@ -215,7 +218,7 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	IPv4Packet packet{};
 	packet._data = (uint8_t*)tcpData.getData();
 	packet._datalength = tcpData.getDataLength();
-	if (pTRC->_remainingSize > 0)
+	if (pTRC->_remainingSize > 0 && isCurrentFlow)
 	{
 		reassembly = TRUE;
 		packet._datalength = pTRC->_remainingSize + tcpData.getDataLength();
@@ -231,6 +234,9 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 
 #if DEBUG_NPCAP_REASSEMBLY == 1
 		Log::WriteLogA("[tcpReassemblyMsgReadyCallback] rewrite packet, oldlen = %llu, newlen = %llu", tcpData.getDataLength(), packet._datalength);
+		for (int i = 0; i < packet._datalength - tcpData.getDataLength(); i++)
+			Log::WriteLogNoDate(L"%02x ", packet._data[i]);
+		Log::WriteLogNoDate(L"\n\n");
 #endif
 	}
 	packet._isRecv = isRecv;
@@ -246,7 +252,7 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	// check remaining data is SW packet
 	do
 	{
-		if (packet._datalength > 0 && packet._datalength < maxRemainingLen && *packet._data == SWMAGIC)
+		if (packet._datalength > 0 && packet._datalength < maxRemainingLen && isCurrentFlow && *packet._data == SWMAGIC)
 		{
 			// check SWMAGIC second byte
 			if (packet._datalength > 1 && *(packet._data + 1) != 0)
@@ -288,11 +294,14 @@ VOID tcpReassemblyMsgReadyCallback(int8_t sideIndex, const pcpp::TcpStreamData& 
 	if (type > 0)
 	{
 #if DEBUG_NPCAP_REASSEMBLY == 1
-		Log::WriteLogA("[tcpReassemblyMsgReadyCallback] Skip. type = %d, maybe isnt sw packet, len = %llu", type, packet._datalength);
+		Log::WriteLogA("[tcpReassemblyMsgReadyCallback] Skip. isCurrentFlow = %d, type = %d, maybe isnt sw packet, len = %llu", (isCurrentFlow ? 1 : 0), type, packet._datalength);
 		for (int i = 0; i < packet._datalength; i++)
 			Log::WriteLogNoDate(L"%02x ", packet._data[i]);
 		Log::WriteLogNoDate(L"\n\n");
 #endif
+	}
+	else {
+		pTRC->_flowKey = tcpData.getConnectionData().flowKey;
 	}
 
 	if (reassembly)
