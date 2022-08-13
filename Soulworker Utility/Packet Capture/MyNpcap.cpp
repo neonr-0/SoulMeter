@@ -99,13 +99,38 @@ VOID MyNpcap::sniffAllInterface(string bpfFilter)
 
 VOID MyNpcap::StopSniffAllInterface()
 {
+	if (UIOPTION.GetCaptureMode() != (INT32)CaptureType::_NPCAP)
+		return;
+
+	_stopIfCount = 0;
+
 	for (auto itr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().begin(); itr != pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().end(); itr++)
 	{
-		if ((*itr)->captureActive())
-		{
-			(*itr)->stopCapture();
-		}
+		// create stop sniff thread
+		HANDLE h = CreateThread(NULL, 0, StopSniffThread, *itr, 0, NULL);
+		if (h != NULL)
+			CloseHandle(h);
 	}
+
+	while (TRUE)
+	{
+		if (_stopIfCount == pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().size())
+			break;
+		else
+			Sleep(100);
+	}
+}
+
+DWORD MyNpcap::StopSniffThread(LPVOID Param)
+{
+	pcpp::PcapLiveDevice* pDevice = (pcpp::PcapLiveDevice*)Param;
+	if (pDevice->captureActive())
+	{
+		pDevice->stopCapture();
+	}
+
+	NPCAP.AddStopIfCount();
+	return 0;
 }
 
 /**

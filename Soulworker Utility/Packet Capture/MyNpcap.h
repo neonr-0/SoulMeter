@@ -53,14 +53,32 @@ private:
 
 	BOOL _inited = FALSE;
 
+	static DWORD StopSniffThread(LPVOID Param);
+
+	INT32 _stopIfCount = 0;
+
+	mutex _mutex;
 public:
 	MyNpcap() { }
 	~MyNpcap() {
 		_stopNpcap = true;
+		BOOL a = _mutex.try_lock();
+		_mutex.unlock();
 	}
 
 	DWORD Init();
 	VOID StopSniffAllInterface();
+	VOID AddStopIfCount()
+	{
+		if (_stopNpcap)
+			return;
+
+		_mutex.lock();
+		{
+			_stopIfCount++;
+			_mutex.unlock();
+		}
+	}
 };
 
 static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* tcpReassemblyCookie);

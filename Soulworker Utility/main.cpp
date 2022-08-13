@@ -89,6 +89,5 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	MiniDump::End();
 
 	ShowWindow(UIWINDOW.GetHWND(), 0);
-	if (UIOPTION.GetCaptureMode() == (INT32)CaptureType::_NPCAP)
-		NPCAP.StopSniffAllInterface();
+	NPCAP.StopSniffAllInterface();
 }
