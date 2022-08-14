@@ -64,7 +64,8 @@ struct _tDamagePlayer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__JQSTACK = 78,
     VT__HISTORYABTIME = 80,
     VT__MONSTERINFO = 82,
-    VT__SKILLCOUNT = 84
+    VT__SKILLCOUNT = 84,
+    VT__HISTORYAGGROTIME = 86
   };
   uint32_t _id() const {
     return GetField<uint32_t>(VT__ID, 0);
@@ -189,6 +190,9 @@ struct _tDamagePlayer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>> *_skillcount() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>> *>(VT__SKILLCOUNT);
   }
+  double _historyaggrotime() const {
+    return GetField<double>(VT__HISTORYAGGROTIME, 0.0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT__ID) &&
@@ -236,6 +240,7 @@ struct _tDamagePlayer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT__SKILLCOUNT) &&
            verifier.VerifyVector(_skillcount()) &&
            verifier.VerifyVectorOfTables(_skillcount()) &&
+           VerifyField<double>(verifier, VT__HISTORYAGGROTIME) &&
            verifier.EndTable();
   }
 };
@@ -367,6 +372,9 @@ struct _tDamagePlayerBuilder {
   void add__skillcount(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>>> _skillcount) {
     fbb_.AddOffset(_tDamagePlayer::VT__SKILLCOUNT, _skillcount);
   }
+  void add__historyaggrotime(double _historyaggrotime) {
+    fbb_.AddElement<double>(_tDamagePlayer::VT__HISTORYAGGROTIME, _historyaggrotime, 0.0);
+  }
   explicit _tDamagePlayerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -420,8 +428,10 @@ inline flatbuffers::Offset<_tDamagePlayer> Create_tDamagePlayer(
     uint8_t _jqstack = 0,
     double _historyabtime = 0.0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tDamageMonster>>> _monsterinfo = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>>> _skillcount = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>>> _skillcount = 0,
+    double _historyaggrotime = 0.0) {
   _tDamagePlayerBuilder builder_(_fbb);
+  builder_.add__historyaggrotime(_historyaggrotime);
   builder_.add__historyabtime(_historyabtime);
   builder_.add__historylosedhp(_historylosedhp);
   builder_.add__historyacc02(_historyacc02);
@@ -508,7 +518,8 @@ inline flatbuffers::Offset<_tDamagePlayer> Create_tDamagePlayerDirect(
     uint8_t _jqstack = 0,
     double _historyabtime = 0.0,
     const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tDamageMonster>> *_monsterinfo = nullptr,
-    const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>> *_skillcount = nullptr) {
+    const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>> *_skillcount = nullptr,
+    double _historyaggrotime = 0.0) {
   auto _monsterinfo__ = _monsterinfo ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tDamageMonster>>(*_monsterinfo) : 0;
   auto _skillcount__ = _skillcount ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tSkillCount>>(*_skillcount) : 0;
   return SoulMeterFBS::History::Create_tDamagePlayer(
@@ -553,7 +564,8 @@ inline flatbuffers::Offset<_tDamagePlayer> Create_tDamagePlayerDirect(
       _jqstack,
       _historyabtime,
       _monsterinfo__,
-      _skillcount__);
+      _skillcount__,
+      _historyaggrotime);
 }
 
 struct _tSkillCount FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

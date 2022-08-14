@@ -93,6 +93,12 @@ public:
 	DOUBLE _fullABPrevTime = 0;
 	DOUBLE _fullABTime = 0;
 
+	BOOL _AggroStarted = false;
+	UINT64 _AggroStartTime = 0;
+	UINT64 _AggroEndTime = 0;
+	DOUBLE _AggroPrevTime = 0;
+	DOUBLE _AggroTime = 0;
+
 
 	_SW_PLAYER_METADATA() {
 		_id = 0;
@@ -184,6 +190,25 @@ public:
 		}
 	}
 
+	VOID UpdateAggroTime(BOOL isSet)
+	{
+		UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime()); // timer time
+
+		if (isSet) {
+			if (!_AggroStarted) {
+				_AggroStarted = true;
+				_AggroStartTime = time;
+				_AggroPrevTime = _AggroTime;
+			}
+			_AggroEndTime = time;
+		}
+		else if (_AggroStarted) {
+			_AggroStarted = false;
+			_AggroEndTime = time;
+		}
+		CalcAggroTime();
+	}
+
 	VOID MeterSuspended() {
 		UINT64 currentTime = (UINT64)DAMAGEMETER.GetTime();
 
@@ -199,17 +224,29 @@ public:
 			_fullABEndTime = currentTime;
 		}
 		CalcFullABTime();
+
+		if (_AggroStarted) {
+			_AggroStarted = false;
+			_AggroEndTime = currentTime;
+		}
+		CalcAggroTime();
 	}
 
 	VOID MeterReseted() {
 		auto player = DAMAGEMETER.GetPlayerInfo(_id);
 		if (player != DAMAGEMETER.end()) {
-			// 
+			UINT64 currentTime = (UINT64)DAMAGEMETER.GetTime();
+
 			(*player)->setHistoryLosedHP(_losedHp);
 
+			if (_AggroStarted) {
+				_AggroStarted = false;
+				_AggroEndTime = currentTime;
+				CalcAggroTime();
+			}
+			(*player)->SetHistoryAggroTime(_AggroTime);
+
 			if (_id == DAMAGEMETER.GetMyID()) {
-				// 
-				UINT64 currentTime = (UINT64)DAMAGEMETER.GetTime();
 
 				UINT64 avgTimeDifference = currentTime - _avgABPreviousTime;
 				DOUBLE currentAB = GetStat(StatType::ArmorBreak);
@@ -267,9 +304,6 @@ public:
 				(*player)->setHistoryBS(1, (DOUBLE)_acc01Sum / currentTime);
 				(*player)->setHistoryBS(2, (DOUBLE)_acc02Sum / currentTime);
 			}
-
-
-
 		}
 
 		_losedHp = 0.0;
@@ -301,6 +335,12 @@ public:
 		_fullABEndTime = 0;
 		_fullABPrevTime = 0;
 		_fullABTime = 0;
+
+		_AggroStarted = false;
+		_AggroStartTime = 0;
+		_AggroEndTime = 0;
+		_AggroPrevTime = 0;
+		_AggroTime = 0;
 	}
 
 	VOID HitEnemy() {
@@ -496,6 +536,14 @@ public:
 		_fullABTime = _fullABPrevTime + ((DOUBLE)(endTime - _fullABStartTime) / 1000);
 	}
 
+	VOID CalcAggroTime(UINT64 endTime = NULL)
+	{
+		if (endTime == NULL || !_AggroStarted)
+			endTime = _AggroEndTime;
+
+		_AggroTime = _AggroPrevTime + ((DOUBLE)(endTime - _AggroStartTime) / 1000);
+	}
+
 	FLOAT GetStat(USHORT statType) {
 
 		switch (statType) {
@@ -553,31 +601,6 @@ public:
 		tpmdb.add__name(fcsName);
 		tpmdb.add__job(_job);
 
-		tpmdb.add__avg_ab_sum(_avgABSum);
-		tpmdb.add__avg_ab_previous_time(_avgABPreviousTime);
-
-		tpmdb.add__avg_bd_sum(_avgBDSum);
-		tpmdb.add__avg_bd_previous_time(_avgBDPreviousTime);
-
-		tpmdb.add__gear90_sum(_gear90Sum);
-		tpmdb.add__gear90_effect_started_time(_gear90EffectStartedTime);
-
-		tpmdb.add__gear50_sum(_gear50Sum);
-		tpmdb.add__gear50_effect_started_time(_gear50EffectStartedTime);
-
-		tpmdb.add__acc01_sum(_acc01Sum);
-		tpmdb.add__acc01_effect_started_time(_acc01EffectStartedTime);
-
-		tpmdb.add__acc02_sum(_acc02Sum);
-		tpmdb.add__acc02_effect_started_time(_acc02EffectStartedTime);
-
-		tpmdb.add__losedhp(_losedHp);
-
-		tpmdb.add__fullab_start_time(_fullABStartTime);
-		tpmdb.add__fullab_end_time(_fullABEndTime);
-		tpmdb.add__fullab_prev_time(_fullABPrevTime);
-		tpmdb.add__fullab_time(_fullABTime);
-
 		vPlayerMetaData.push_back(tpmdb.Finish());
 	}
 
@@ -598,31 +621,6 @@ public:
 		_id = tPlayerMetaData->_id();
 		strcpy_s(_name, tPlayerMetaData->_name()->c_str());
 		_job = tPlayerMetaData->_job();
-
-		_avgABSum = tPlayerMetaData->_avg_ab_sum();
-		_avgABPreviousTime = tPlayerMetaData->_avg_ab_previous_time();
-
-		_avgBDSum = tPlayerMetaData->_avg_bd_sum();
-		_avgBDPreviousTime = tPlayerMetaData->_avg_bd_previous_time();
-
-		_gear90Sum = tPlayerMetaData->_gear90_sum();
-		_gear90EffectStartedTime = tPlayerMetaData->_gear90_effect_started_time();
-
-		_gear50Sum = tPlayerMetaData->_gear50_sum();
-		_gear50EffectStartedTime = tPlayerMetaData->_gear50_effect_started_time();
-
-		_acc01Sum = tPlayerMetaData->_acc01_sum();
-		_acc01EffectStartedTime = tPlayerMetaData->_acc01_effect_started_time();
-
-		_acc02Sum = tPlayerMetaData->_acc02_sum();
-		_acc02EffectStartedTime = tPlayerMetaData->_acc02_effect_started_time();
-
-		_losedHp = tPlayerMetaData->_losedhp();
-
-		_fullABStartTime = tPlayerMetaData->_fullab_start_time();
-		_fullABEndTime = tPlayerMetaData->_fullab_end_time();
-		_fullABPrevTime = tPlayerMetaData->_fullab_prev_time();
-		_fullABTime = tPlayerMetaData->_fullab_time();
 	}
 
 }SW_PLAYER_METADATA;
@@ -707,12 +705,16 @@ public:
 
 	BOOL CheckPlayer(UINT32 id);
 
+	vector<SWDamagePlayer*>* GetPlayerInfoByHistory();
 	vector<SWDamagePlayer*>::const_iterator GetPlayerInfo(UINT32 id);
 	vector<SWDamagePlayer*>::const_iterator begin();
 	vector<SWDamagePlayer*>::const_iterator end();
 	const SIZE_T size();
 
+	unordered_map<UINT32, SW_PLAYER_METADATA*>* GetPlayerMetaDataByHistory();
+
 	SW_PLAYER_METADATA* GetPlayerMetaData(UINT32 id);
+	SW_PLAYER_METADATA* GetPlayerMetaDataIfNotExistsCreate(UINT32 id);
 
 	UINT64 GetPlayerTotalDamage();
 

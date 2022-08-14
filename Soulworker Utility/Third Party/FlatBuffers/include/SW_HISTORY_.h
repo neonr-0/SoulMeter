@@ -7,10 +7,10 @@
 #include "flatbuffers/flatbuffers.h"
 
 #include "STRUCT_.h"
-#include "SW_DAMAGE_PLAYER_.h"
 #include "SW_BUFF_.h"
 #include "SW_PLAYER_METADATA_.h"
 #include "SW_PLOTINFO_.h"
+#include "SW_DAMAGE_PLAYER_.h"
 
 namespace SoulMeterFBS {
 namespace History {

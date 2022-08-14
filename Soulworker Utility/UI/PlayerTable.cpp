@@ -248,7 +248,8 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	if (ImGui::BeginTable("###Player Table", 42, tableFlags)) {
+	const int columnSize = 43;
+	if (ImGui::BeginTable("###Player Table", columnSize, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
 		columnFlags |= ImGuiTableColumnFlags_NoSort;
@@ -297,8 +298,8 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AB_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_AGGRO_TIME_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		//ImGuiTableColumnFlags_WidthStretch
-
 
 		ImGui::TableHeadersRow();
 
@@ -955,14 +956,27 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			ImGui::TableNextColumn();
 		}
 		else {
-			sprintf_s(label, 128, "%.0f", ((DOUBLE)(*itr)->GetGigaEnlighten() / (*itr)->GetSkillUsed()) * 100);
+			sprintf_s(label, 128, "%.1f", ((DOUBLE)(*itr)->GetGigaEnlighten() / (*itr)->GetSkillUsed()) * 100);
 			ImGui::Text(label);
 			ImGui::TableNextColumn();
 
-			sprintf_s(label, 128, "%.0f", ((DOUBLE)(*itr)->GetTeraEnlighten() / (*itr)->GetSkillUsed()) * 100);
+			sprintf_s(label, 128, "%.1f", ((DOUBLE)(*itr)->GetTeraEnlighten() / (*itr)->GetSkillUsed()) * 100);
 			ImGui::Text(label);
 			ImGui::TableNextColumn();
 		}
+
+		// Aggro Percent
+		static DOUBLE savedResultAggroTime = 0;
+		if (DAMAGEMETER.isHistoryMode()) {
+			savedResultAggroTime = (*itr)->GetHistoryAggroTime();
+		}
+		else {
+			playerMetaData->CalcAggroTime(DAMAGEMETER.GetTime());
+			savedResultAggroTime = playerMetaData->_AggroTime;
+		}
+		sprintf_s(label, 128, "%.0f", ((DOUBLE)(savedResultAggroTime * 1000) / DAMAGEMETER.GetTime()) * 100);
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
 
 		//  (etc)
 		PLOTWINDOW.AddJqData((*itr)->GetJqStack(), _tableTime);

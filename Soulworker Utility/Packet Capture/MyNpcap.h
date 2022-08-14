@@ -68,14 +68,17 @@ public:
 
 	DWORD Init();
 	VOID StopSniffAllInterface();
-	VOID AddStopIfCount()
+	VOID AddStopIfCount(BOOL clear = FALSE)
 	{
 		if (_stopNpcap)
 			return;
 
 		_mutex.lock();
 		{
-			_stopIfCount++;
+			if (clear)
+				_stopIfCount = 0;
+			else
+				_stopIfCount++;
 			_mutex.unlock();
 		}
 	}

@@ -17,30 +17,30 @@ table _tPlayerMetaData {
   _name:string;
   _job:byte;
 
-  _avg_ab_sum:ulong;
-  _avg_ab_previous_time:ulong;
+  _avg_ab_sum:ulong (deprecated);
+  _avg_ab_previous_time:ulong (deprecated);
 
-  _avg_bd_sum:ulong;
-  _avg_bd_previous_time:ulong;
+  _avg_bd_sum:ulong (deprecated);
+  _avg_bd_previous_time:ulong (deprecated);
 
-  _gear90_sum:ulong;
-  _gear90_effect_started_time:ulong;
+  _gear90_sum:ulong (deprecated);
+  _gear90_effect_started_time:ulong (deprecated);
 
-  _gear50_sum:ulong;
-  _gear50_effect_started_time:ulong;
+  _gear50_sum:ulong (deprecated);
+  _gear50_effect_started_time:ulong (deprecated);
 
-  _acc01_sum:ulong;
-  _acc01_effect_started_time:ulong;
+  _acc01_sum:ulong (deprecated);
+  _acc01_effect_started_time:ulong (deprecated);
 
-  _acc02_sum:ulong;
-  _acc02_effect_started_time:ulong;
+  _acc02_sum:ulong (deprecated);
+  _acc02_effect_started_time:ulong (deprecated);
 
-  _losedhp:double;
+  _losedhp:double (deprecated);
 
-  _fullab_start_time:ulong;
-  _fullab_end_time:ulong;
-  _fullab_prev_time:double;
-  _fullab_time:double;
+  _fullab_start_time:ulong (deprecated);
+  _fullab_end_time:ulong (deprecated);
+  _fullab_prev_time:double (deprecated);
+  _fullab_time:double (deprecated);
 }
 
 root_type _tPlayerMetaData;

@@ -304,14 +304,8 @@ const CHAR* SWDamageMeter::GetPlayerName(UINT32 id) {
 	if (id == _myID || (_historyMode && id == _historyMyID))
 		return LANGMANAGER.GetText("STR_TABLE_YOU");
 
-	unordered_map<UINT32, SW_PLAYER_METADATA*>* playerMetaData = nullptr;
-	if (_historyMode)
-		playerMetaData = &_historyPlayerMetadata;
-	else
-		playerMetaData = &_playerMetadata;
-
-	auto search = playerMetaData->find(id);
-	if (search == playerMetaData->end()) {
+	auto search = GetPlayerMetaDataByHistory()->find(id);
+	if (search == GetPlayerMetaDataByHistory()->end()) {
 		return LANGMANAGER.GetText("PLAYER_NAME_CANT_FIND");
 	}
 	return search->second->_name;
@@ -319,29 +313,15 @@ const CHAR* SWDamageMeter::GetPlayerName(UINT32 id) {
 
 BYTE SWDamageMeter::GetPlayerJob(UINT32 id) {
 
-	unordered_map<UINT32, SW_PLAYER_METADATA*>* playerMetaData = nullptr;
-	if (_historyMode)
-		playerMetaData = &_historyPlayerMetadata;
-	else
-		playerMetaData = &_playerMetadata;
-
-	auto search = playerMetaData->find(id);
-	if (search == playerMetaData->end()) {
+	auto search = GetPlayerMetaDataByHistory()->find(id);
+	if (search == GetPlayerMetaDataByHistory()->end()) {
 		return PLAYER_JOB_CANT_FIND;
 	}
 	return search->second->_job;
 }
 
-VOID SWDamageMeter::UpdateSpecialStat(UINT32 id, USHORT statType, FLOAT statValue)
+SWDamageMeter::SW_PLAYER_METADATA* SWDamageMeter::GetPlayerMetaDataIfNotExistsCreate(UINT32 id)
 {
-	UpdateStat(id, statType, statValue, TRUE);
-}
-
-VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue, BOOL isSpecial)
-{
-	//if (_historyMode) {
-	//	return;
-	//}
 	SW_PLAYER_METADATA* metaData;
 
 	auto search = _playerMetadata.find(id);
@@ -355,6 +335,22 @@ VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue, BOOL
 	else {
 		metaData = search->second;
 	}
+
+	return metaData;
+}
+
+VOID SWDamageMeter::UpdateSpecialStat(UINT32 id, USHORT statType, FLOAT statValue)
+{
+	UpdateStat(id, statType, statValue, TRUE);
+}
+
+VOID SWDamageMeter::UpdateStat(UINT32 id, USHORT statType, FLOAT statValue, BOOL isSpecial)
+{
+	//if (_historyMode) {
+	//	return;
+	//}
+	
+	SW_PLAYER_METADATA* metaData = GetPlayerMetaDataIfNotExistsCreate(id);
 
 	if (isSpecial)
 		metaData->UpdateSpecialStat(statType, statValue);
@@ -444,19 +440,17 @@ VOID SWDamageMeter::SetAggro(UINT32 id, UINT32 targetedId)
 	}
 
 	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(id);
-	UINT32 db2 = 0;
 	if (db != nullptr) {
-		db2 = db->_db2;
-	}
-	//Log::MyLog("db2 : %u\n", db2);
+		UINT32 db2 = db->_db2;
 
-	if (changeAggroIdList.find(db2) != changeAggroIdList.end()) {
-		//Log::MyLog("id is registered");
-		_aggroedId = targetedId;
-	}
-	else {
-		//Log::MyLog("id is not registered;");
-		//Log::WriteLog(const_cast<LPTSTR>(_T("[SetAggro] not registered [id = %08x] [targetedId = %08x]")), id, targetedId);
+		// usually type 4 only 1 monster
+		if (changeAggroIdList.find(db2) != changeAggroIdList.end() || db->_type == 4) {
+			_aggroedId = targetedId;
+
+			SW_PLAYER_METADATA* metaData = GetPlayerMetaData(targetedId);
+			for (auto itr = _playerMetadata.begin(); itr != _playerMetadata.end(); itr++)
+				itr->second->UpdateAggroTime(metaData == itr->second);
+		}
 	}
 }
 
@@ -486,16 +480,18 @@ BOOL SWDamageMeter::CheckPlayer(UINT32 id) {
 		return FALSE;
 }
 
+vector<SWDamagePlayer*>* SWDamageMeter::GetPlayerInfoByHistory()
+{
+	if (_historyMode)
+		return &_historyPlayerInfo;
+	else
+		return &_playerInfo;
+}
+
 vector<SWDamagePlayer*>::const_iterator SWDamageMeter::GetPlayerInfo(UINT32 id) {
 
-	vector<SWDamagePlayer*>* playerInfo = nullptr;
-	if (_historyMode)
-		playerInfo = &_historyPlayerInfo;
-	else
-		playerInfo = &_playerInfo;
-
-	auto itr = playerInfo->begin();
-	for (; itr != playerInfo->end(); itr++) {
+	auto itr = GetPlayerInfoByHistory()->begin();
+	for (; itr != GetPlayerInfoByHistory()->end(); itr++) {
 		if ((*itr)->GetID() == id) {
 			return itr;
 		}
@@ -506,15 +502,9 @@ vector<SWDamagePlayer*>::const_iterator SWDamageMeter::GetPlayerInfo(UINT32 id) 
 
 UINT64 SWDamageMeter::GetPlayerTotalDamage() {
 
-	vector<SWDamagePlayer*>* playerInfo = nullptr;
-	if (_historyMode)
-		playerInfo = &_historyPlayerInfo;
-	else
-		playerInfo = &_playerInfo;
-
 	UINT64 playerTotalDamage = 0;
 
-	for (auto itr = playerInfo->begin(); itr != playerInfo->end(); itr++) {
+	for (auto itr = GetPlayerInfoByHistory()->begin(); itr != GetPlayerInfoByHistory()->end(); itr++) {
 		playerTotalDamage += (*itr)->GetDamage();
 	}
 
@@ -522,46 +512,29 @@ UINT64 SWDamageMeter::GetPlayerTotalDamage() {
 }
 
 vector<SWDamagePlayer*>::const_iterator SWDamageMeter::begin() {
-	vector<SWDamagePlayer*>* playerInfo = nullptr;
-	if (_historyMode)
-		playerInfo = &_historyPlayerInfo;
-	else
-		playerInfo = &_playerInfo;
-
-	return playerInfo->begin();
+	return GetPlayerInfoByHistory()->begin();
 }
 
 vector<SWDamagePlayer*>::const_iterator SWDamageMeter::end() {
-	vector<SWDamagePlayer*>* playerInfo = nullptr;
-	if (_historyMode)
-		playerInfo = &_historyPlayerInfo;
-	else
-		playerInfo = &_playerInfo;
-
-	return playerInfo->end();
+	return GetPlayerInfoByHistory()->end();
 }
 
 const SIZE_T SWDamageMeter::size() {
-	vector<SWDamagePlayer*>* playerInfo = nullptr;
-	if (_historyMode)
-		playerInfo = &_historyPlayerInfo;
-	else
-		playerInfo = &_playerInfo;
+	return GetPlayerInfoByHistory()->size();
+}
 
-	return playerInfo->size();
+unordered_map<UINT32, SWDamageMeter::SW_PLAYER_METADATA*>* SWDamageMeter::GetPlayerMetaDataByHistory()
+{
+	if (_historyMode)
+		return &_historyPlayerMetadata;
+	else
+		return &_playerMetadata;
 }
 
 SWDamageMeter::SW_PLAYER_METADATA* SWDamageMeter::GetPlayerMetaData(UINT32 id)
 {
-
-	unordered_map<UINT32, SW_PLAYER_METADATA*>* playerMetaData = nullptr;
-	if (_historyMode)
-		playerMetaData = &_historyPlayerMetadata;
-	else
-		playerMetaData = &_playerMetadata;
-
-	auto search = playerMetaData->find(id);
-	if (search == playerMetaData->end()) {
+	auto search = GetPlayerMetaDataByHistory()->find(id);
+	if (search == GetPlayerMetaDataByHistory()->end()) {
 		return nullptr;
 	}
 	return search->second;

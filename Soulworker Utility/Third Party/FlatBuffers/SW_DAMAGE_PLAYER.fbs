@@ -50,6 +50,8 @@ table _tDamagePlayer {
 
   _monsterinfo:[_tDamageMonster];
   _skillcount:[_tSkillCount];
+
+  _historyaggrotime:double;
 }
 
 table _tSkillCount {
