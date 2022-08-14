@@ -103,18 +103,25 @@ VOID MyNpcap::StopSniffAllInterface()
 		return;
 
 	_stopIfCount = 0;
+	size_t createThread = 0;
 
 	for (auto itr = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().begin(); itr != pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().end(); itr++)
 	{
-		// create stop sniff thread
-		HANDLE h = CreateThread(NULL, 0, StopSniffThread, *itr, 0, NULL);
-		if (h != NULL)
-			CloseHandle(h);
+		if ((*itr)->captureActive())
+		{
+			// create stop sniff thread
+			HANDLE h = CreateThread(NULL, 0, StopSniffThread, *itr, 0, NULL);
+			if (h != NULL)
+			{
+				CloseHandle(h);
+				createThread++;
+			}
+		}
 	}
 
 	while (TRUE)
 	{
-		if (_stopIfCount == pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().size())
+		if (_stopIfCount == createThread)
 			break;
 		else
 			Sleep(100);
