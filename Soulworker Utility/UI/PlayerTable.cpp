@@ -185,7 +185,7 @@ VOID PlayerTable::BeginPopupMenu() {
 			UIOPTION.ToggleTopMost();
 		}
 
-		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_HISTORY"))) {
+		if (ImGui::MenuItem(LANGMANAGER.GetText("STR_MENU_UTILL"))) {
 			UTILLWINDOW.OpenWindow();
 		}
 
@@ -565,7 +565,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			
 			ImGui::TableNextColumn();
 			// BD
-			statTmp = playerMetaData->GetSpecialStat(SpecialStatType::BossDamage);
+			statTmp = playerMetaData->GetSpecialStat(SpecialStatType::BossDamageAddRate);
 			sprintf_s(label, 128, "%.1f", statTmp);
 			PLOTWINDOW.AddBdData(statTmp, _tableTime);
 			ImGui::Text(label);
@@ -668,7 +668,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			}
 			else {
 				UINT64 timeDifference = (milliTableTime - playerMetaData->_avgBDPreviousTime);
-				DOUBLE currentBD = playerMetaData->GetSpecialStat(SpecialStatType::BossDamage);
+				DOUBLE currentBD = playerMetaData->GetSpecialStat(SpecialStatType::BossDamageAddRate);
 				UINT64 calculatedAvgBD = static_cast<UINT64>((playerMetaData->_avgBDSum + timeDifference * currentBD));
 
 				savedResultBD = (DOUBLE)calculatedAvgBD / milliTableTime;

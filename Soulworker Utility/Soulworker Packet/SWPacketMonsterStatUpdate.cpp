@@ -4,6 +4,7 @@
 #include ".\PacketInfo.h"
 #include ".\Damage Meter\MySQLite.h"
 #include ".\UI\PlayerTable.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketMonsterStatUpdate::SWPacketMonsterStatUpdate(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -25,6 +26,17 @@ VOID SWPacketMonsterStatUpdate::Do() {
 			break;
 		}
 
+		UINT32 monsterId = 0;
+		SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(pkt->_id);
+		if (db != nullptr) {
+			monsterId = db->_db2;
+		}
+
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = CombatLogType::CHANGED_STATS;
+		pCombatLog->_val1 = pktStatData->_statID;
+		pCombatLog->_val2 = static_cast<DOUBLE>(pktStatData->_statVal);
+		COMBATMETER.Insert(monsterId, CombatType::MONSTER, pCombatLog);
 	}
 
 }

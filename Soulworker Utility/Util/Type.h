@@ -75,6 +75,24 @@ inline BOOL TextCommma(_In_ CHAR* src, _Out_ CHAR* dest) {
 	return TRUE;
 }
 
+inline BOOL TextCommmaIncludeDecimal(_In_ DOUBLE src, _In_ size_t destLen, _Out_ CHAR* dest) 
+{
+	if (dest == nullptr) {
+		return FALSE;
+	}
+
+	char tmp[128] = { 0 };
+	char comma[128] = { 0 };
+	DOUBLE whole = floor(src);
+	DOUBLE decimal = (src - whole) * 10;
+
+	sprintf_s(tmp, "%.0f", whole);
+	TextCommma(tmp, comma);
+	sprintf_s(dest, destLen, "%s.%.0f", comma, decimal);
+
+	return TRUE;
+}
+
 inline ULONG64 GetCurrentTimeStamp() {
 	return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }

@@ -1,0 +1,23 @@
+include "STRUCT.fbs";
+
+namespace SoulMeterFBS.History;
+
+table _tCombat {
+  _id:uint;
+  _type:uint;
+  _combat_log:[_tCombatLog];
+}
+
+table _tCombatInterface {
+  _combat:[_tCombat];
+}
+
+table _tCombatLog {
+  _time:_sTime;
+  _timestamp:long;
+  _log_type:uint;
+  _val1:double;
+  _val2:double;
+}
+
+root_type _tCombatInterface;

@@ -2,6 +2,7 @@
 #include ".\Soulworker Packet\SWPacket.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Soulworker Packet\SWPacketInInfoMonster.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketInInfoMonster::SWPacketInInfoMonster(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -16,7 +17,20 @@ VOID SWPacketInInfoMonster::Do() {
 		SWPACKET_IN_INFO_MONSTER1* pktHeader = (SWPACKET_IN_INFO_MONSTER1*)(_data + offset);
 		offset += sizeof(SWPACKET_IN_INFO_MONSTER1);
 		if (pktHeader->data1Count > 0)
-			offset += (pktHeader->data1Count * sizeof(SWPACKET_IN_INFO_MONSTER_DATA1));
+		{
+			for (int i = 0; i < pktHeader->data1Count; i++)
+			{
+				SWPACKET_IN_INFO_MONSTER_DATA1* pMonsterData = (SWPACKET_IN_INFO_MONSTER_DATA1*)(_data + offset);
+
+				CombatLog* pCombatLog = new CombatLog;
+				pCombatLog->_type = CombatLogType::CHANGED_STATS;
+				pCombatLog->_val1 = pMonsterData->type;
+				pCombatLog->_val2 = pMonsterData->val;
+				COMBATMETER.Insert(pktHeader->realDB2, CombatType::MONSTER, pCombatLog);
+
+				offset += sizeof(SWPACKET_IN_INFO_MONSTER_DATA1);
+			}
+		}
 
 		DAMAGEMETER.InsertOwnerID(pktHeader->id, pktHeader->owner_id);
 		DAMAGEMETER.InsertDB(pktHeader->id, pktHeader->realDB2);

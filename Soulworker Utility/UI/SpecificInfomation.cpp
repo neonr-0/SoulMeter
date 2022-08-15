@@ -183,7 +183,7 @@ VOID SpecificInformation::UpdateMonsterCombo() {
 			CHAR label[MONSTER_NAME_LEN] = { 0 };
 			sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", (*itr)->GetName(), (*itr)->GetID());
 
-			if (ImGui::Selectable(label)) {
+			if (ImGui::Selectable(label, _monsterID_SKILL == (*itr)->GetID())) {
 				_monsterID_SKILL = (*itr)->GetID();
 			}
 		}

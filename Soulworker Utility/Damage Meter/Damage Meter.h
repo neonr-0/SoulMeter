@@ -176,7 +176,7 @@ public:
 
 	VOID UpdateSpecialStat(USHORT statType, FLOAT statValue) {
 		switch (statType) {
-		case SpecialStatType::BossDamage:
+		case SpecialStatType::BossDamageAddRate:
 			_bossDamage = statValue;
 			if (DAMAGEMETER.isRun()) {
 				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime());
@@ -571,7 +571,7 @@ public:
 	FLOAT GetSpecialStat(USHORT statType) {
 
 		switch (statType) {
-		case SpecialStatType::BossDamage:
+		case SpecialStatType::BossDamageAddRate:
 			return _bossDamage;
 		}
 
@@ -595,7 +595,7 @@ public:
 		tpmdb.add__maxattack(GetStat(StatType::MaxAttack));
 		tpmdb.add__critdamage(GetStat(StatType::CritDamage));
 
-		tpmdb.add__bossdamage(GetSpecialStat(SpecialStatType::BossDamage));
+		tpmdb.add__bossdamage(GetSpecialStat(SpecialStatType::BossDamageAddRate));
 
 		tpmdb.add__id(_id);
 		tpmdb.add__name(fcsName);
@@ -688,6 +688,7 @@ public:
 	VOID SetWorldID(USHORT worldID);
 	USHORT GetWorldID();
 	const CHAR* GetWorldName();
+	BOOL isTownMap();
 
 	VOID SetAggro(UINT32 id, UINT32 targetedId);
 	UINT32 GetAggro();

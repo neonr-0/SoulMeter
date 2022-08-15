@@ -6,7 +6,6 @@
 #include ".\Damage Meter\MySQLite.h"
 #include ".\Damage Meter\MapList.h"
 
-
 SWPacketDamage::SWPacketDamage(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
 }

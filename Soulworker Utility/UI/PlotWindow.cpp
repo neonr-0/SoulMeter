@@ -404,7 +404,7 @@ VOID PlotWindow::UpdateBossHpPlotCombo()
 				CHAR label[MONSTER_NAME_LEN] = { 0 };
 				sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", itr->second, itr->first);
 
-				if (ImGui::Selectable(label)) {
+				if (ImGui::Selectable(label, _selectedBossHpComboID == itr->first)) {
 					_selectedBossHpComboID = itr->first;
 				}
 			}

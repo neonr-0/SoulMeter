@@ -2,7 +2,8 @@
 #include ".\Soulworker Packet\SWPacket.h"
 #include ".\Soulworker Packet\SWPacketStatChange.h"
 #include ".\Damage Meter\Damage Meter.h"
-
+#include ".\Combat Meter\Combat.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketStatChange::SWPacketStatChange(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -10,8 +11,7 @@ SWPacketStatChange::SWPacketStatChange(SWHEADER* swheader, BYTE* data) : SWPacke
 
 VOID SWPacketStatChange::Do() {
 
-	USHORT worldID = DAMAGEMETER.GetWorldID();
-	if (worldID == 0 || worldID == 10003 || worldID == 10021 || worldID == 10031 || worldID == 10041 || worldID == 11001 || worldID == 10051 || worldID == 10061 || worldID == 20011) {
+	if (DAMAGEMETER.isTownMap()) {
 		return;
 	}
 
@@ -30,6 +30,13 @@ VOID SWPacketStatChange::Do() {
 		SWPACKETSTATCHANGE_DATA* party_data = (SWPACKETSTATCHANGE_DATA*)p_data;
 		//Log::MyLog(_T("[DEBUG] [ID %08x] [statType = %x], [statValue = %f]\n"), stat_header->_playerID, party_data->_statType, party_data->_statValue);
 		DAMAGEMETER.UpdateStat(stat_header->_playerID, party_data->_statType, party_data->_statValue);
+
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = CombatLogType::CHANGED_STATS;
+		pCombatLog->_val1 = party_data->_statType;
+		pCombatLog->_val2 = party_data->_statValue;
+		COMBATMETER.Insert(stat_header->_playerID, CombatType::PLAYER, pCombatLog);
+
 		p_data += sizeof(SWPACKETSTATCHANGE_DATA);
 	}
 }

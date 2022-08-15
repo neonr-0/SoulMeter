@@ -130,6 +130,9 @@
     <Filter Include="Damge Meter\History">
       <UniqueIdentifier>{68509aa2-5d39-4f11-ab5a-86562f577bb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Damge Meter\Combat Meter">
+      <UniqueIdentifier>{658c129f-87f4-4757-a778-a9a9eac9ff2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -285,9 +288,6 @@
     <ClInclude Include="Soulworker Packet\SWPacketOtherUseSkill.h">
       <Filter>SWPacket\Packet\0x06 Combat</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UtillWindow.h">
-      <Filter>UI\Window</Filter>
-    </ClInclude>
     <ClInclude Include="UI\PlotWindow.h">
       <Filter>UI\Window</Filter>
     </ClInclude>
@@ -383,6 +383,15 @@
     </ClInclude>
     <ClInclude Include="Third Party\imgui\imgui_filedialog.h">
       <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat Meter\CombatMeter.h">
+      <Filter>Damge Meter\Combat Meter</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UtillWindow.h">
+      <Filter>UI\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat Meter\Combat.h">
+      <Filter>Damge Meter\Combat Meter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -536,9 +545,6 @@
     <ClCompile Include="Soulworker Packet\SWPacketOtherUseSkill.cpp">
       <Filter>SWPacket\Packet\0x06 Combat</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UtillWindow.cpp">
-      <Filter>UI\Window</Filter>
-    </ClCompile>
     <ClCompile Include="UI\PlotWindow.cpp">
       <Filter>UI\Window</Filter>
     </ClCompile>
@@ -619,6 +625,15 @@
     </ClCompile>
     <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp">
       <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat Meter\CombatMeter.cpp">
+      <Filter>Damge Meter\Combat Meter</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UtillWindow.cpp">
+      <Filter>UI\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat Meter\Combat.cpp">
+      <Filter>Damge Meter\Combat Meter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

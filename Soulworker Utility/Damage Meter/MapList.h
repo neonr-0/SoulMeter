@@ -14,3 +14,34 @@ static unordered_set<USHORT> rankMap({
 	22017
 
 	});
+
+static unordered_set<USHORT> townMap({
+
+	/* Invalid Map */
+	0,
+
+	/* Rooco Town */
+	10003,
+
+	/* Candus City */
+	10021,
+
+	/* Grace Ciry */
+	10031,
+
+	/* Ruin Fortess */
+	10041,
+
+	/* Golden Citadel */
+	11001,
+
+	/* Grasscover Camp */
+	10051,
+
+	/* Dipluce Horizon */
+	10061,
+
+	/* My Room */
+	20011
+
+	});

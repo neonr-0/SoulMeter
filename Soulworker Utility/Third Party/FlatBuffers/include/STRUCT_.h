@@ -12,6 +12,67 @@ namespace History {
 struct _tIntDoubleList;
 struct _tIntDoubleListBuilder;
 
+struct _sTime;
+
+FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(2) _sTime FLATBUFFERS_FINAL_CLASS {
+ private:
+  uint16_t year_;
+  uint16_t month_;
+  uint16_t day_of_week_;
+  uint16_t day_;
+  uint16_t hour_;
+  uint16_t minute_;
+  uint16_t second_;
+  uint16_t milliseconds_;
+
+ public:
+  _sTime()
+      : year_(0),
+        month_(0),
+        day_of_week_(0),
+        day_(0),
+        hour_(0),
+        minute_(0),
+        second_(0),
+        milliseconds_(0) {
+  }
+  _sTime(uint16_t _year, uint16_t _month, uint16_t _day_of_week, uint16_t _day, uint16_t _hour, uint16_t _minute, uint16_t _second, uint16_t _milliseconds)
+      : year_(flatbuffers::EndianScalar(_year)),
+        month_(flatbuffers::EndianScalar(_month)),
+        day_of_week_(flatbuffers::EndianScalar(_day_of_week)),
+        day_(flatbuffers::EndianScalar(_day)),
+        hour_(flatbuffers::EndianScalar(_hour)),
+        minute_(flatbuffers::EndianScalar(_minute)),
+        second_(flatbuffers::EndianScalar(_second)),
+        milliseconds_(flatbuffers::EndianScalar(_milliseconds)) {
+  }
+  uint16_t year() const {
+    return flatbuffers::EndianScalar(year_);
+  }
+  uint16_t month() const {
+    return flatbuffers::EndianScalar(month_);
+  }
+  uint16_t day_of_week() const {
+    return flatbuffers::EndianScalar(day_of_week_);
+  }
+  uint16_t day() const {
+    return flatbuffers::EndianScalar(day_);
+  }
+  uint16_t hour() const {
+    return flatbuffers::EndianScalar(hour_);
+  }
+  uint16_t minute() const {
+    return flatbuffers::EndianScalar(minute_);
+  }
+  uint16_t second() const {
+    return flatbuffers::EndianScalar(second_);
+  }
+  uint16_t milliseconds() const {
+    return flatbuffers::EndianScalar(milliseconds_);
+  }
+};
+FLATBUFFERS_STRUCT_END(_sTime, 16);
+
 struct _tIntDoubleList FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef _tIntDoubleListBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {

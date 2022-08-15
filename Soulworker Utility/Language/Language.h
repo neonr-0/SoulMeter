@@ -10,6 +10,7 @@ class Language : public Singleton<Language>
 private:
 	unordered_map<string, string> _textList;
 	CHAR _currentLang[128] = { 0 };
+	vector<string> _notFoundText;
 
 public:
 	Language() : _currentLang("zh_tw.json") {}

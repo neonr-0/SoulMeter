@@ -9,6 +9,7 @@
 #include "STRUCT_.h"
 #include "SW_BUFF_.h"
 #include "SW_PLAYER_METADATA_.h"
+#include "SW_COMBAT_.h"
 #include "SW_PLOTINFO_.h"
 #include "SW_DAMAGE_PLAYER_.h"
 
@@ -18,69 +19,8 @@ namespace History {
 struct _tDB2_Struct;
 struct _tDB2_StructBuilder;
 
-struct _sTime;
-
 struct _tHistory;
 struct _tHistoryBuilder;
-
-FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(2) _sTime FLATBUFFERS_FINAL_CLASS {
- private:
-  uint16_t year_;
-  uint16_t month_;
-  uint16_t day_of_week_;
-  uint16_t day_;
-  uint16_t hour_;
-  uint16_t minute_;
-  uint16_t second_;
-  uint16_t milliseconds_;
-
- public:
-  _sTime()
-      : year_(0),
-        month_(0),
-        day_of_week_(0),
-        day_(0),
-        hour_(0),
-        minute_(0),
-        second_(0),
-        milliseconds_(0) {
-  }
-  _sTime(uint16_t _year, uint16_t _month, uint16_t _day_of_week, uint16_t _day, uint16_t _hour, uint16_t _minute, uint16_t _second, uint16_t _milliseconds)
-      : year_(flatbuffers::EndianScalar(_year)),
-        month_(flatbuffers::EndianScalar(_month)),
-        day_of_week_(flatbuffers::EndianScalar(_day_of_week)),
-        day_(flatbuffers::EndianScalar(_day)),
-        hour_(flatbuffers::EndianScalar(_hour)),
-        minute_(flatbuffers::EndianScalar(_minute)),
-        second_(flatbuffers::EndianScalar(_second)),
-        milliseconds_(flatbuffers::EndianScalar(_milliseconds)) {
-  }
-  uint16_t year() const {
-    return flatbuffers::EndianScalar(year_);
-  }
-  uint16_t month() const {
-    return flatbuffers::EndianScalar(month_);
-  }
-  uint16_t day_of_week() const {
-    return flatbuffers::EndianScalar(day_of_week_);
-  }
-  uint16_t day() const {
-    return flatbuffers::EndianScalar(day_);
-  }
-  uint16_t hour() const {
-    return flatbuffers::EndianScalar(hour_);
-  }
-  uint16_t minute() const {
-    return flatbuffers::EndianScalar(minute_);
-  }
-  uint16_t second() const {
-    return flatbuffers::EndianScalar(second_);
-  }
-  uint16_t milliseconds() const {
-    return flatbuffers::EndianScalar(milliseconds_);
-  }
-};
-FLATBUFFERS_STRUCT_END(_sTime, 16);
 
 struct _tDB2_Struct FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef _tDB2_StructBuilder Builder;
@@ -156,7 +96,8 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__PLAYER_BUFF = 18,
     VT__PLOT_INFO = 20,
     VT__PLAYER_META = 22,
-    VT__REAL_CLEAR_TIME = 24
+    VT__REAL_CLEAR_TIME = 24,
+    VT__COMBAT = 26
   };
   uint32_t _word_id() const {
     return GetField<uint32_t>(VT__WORD_ID, 0);
@@ -191,6 +132,9 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t _real_clear_time() const {
     return GetField<uint32_t>(VT__REAL_CLEAR_TIME, 0);
   }
+  const SoulMeterFBS::History::_tCombatInterface *_combat() const {
+    return GetPointer<const SoulMeterFBS::History::_tCombatInterface *>(VT__COMBAT);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT__WORD_ID) &&
@@ -214,6 +158,8 @@ struct _tHistory FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(_player_meta()) &&
            verifier.VerifyVectorOfTables(_player_meta()) &&
            VerifyField<uint32_t>(verifier, VT__REAL_CLEAR_TIME) &&
+           VerifyOffset(verifier, VT__COMBAT) &&
+           verifier.VerifyTable(_combat()) &&
            verifier.EndTable();
   }
 };
@@ -255,6 +201,9 @@ struct _tHistoryBuilder {
   void add__real_clear_time(uint32_t _real_clear_time) {
     fbb_.AddElement<uint32_t>(_tHistory::VT__REAL_CLEAR_TIME, _real_clear_time, 0);
   }
+  void add__combat(flatbuffers::Offset<SoulMeterFBS::History::_tCombatInterface> _combat) {
+    fbb_.AddOffset(_tHistory::VT__COMBAT, _combat);
+  }
   explicit _tHistoryBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -278,9 +227,11 @@ inline flatbuffers::Offset<_tHistory> Create_tHistory(
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tBuff>>> _player_buff = 0,
     flatbuffers::Offset<SoulMeterFBS::History::_tPlotInfo> _plot_info = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>>> _player_meta = 0,
-    uint32_t _real_clear_time = 0) {
+    uint32_t _real_clear_time = 0,
+    flatbuffers::Offset<SoulMeterFBS::History::_tCombatInterface> _combat = 0) {
   _tHistoryBuilder builder_(_fbb);
   builder_.add__time(_time);
+  builder_.add__combat(_combat);
   builder_.add__real_clear_time(_real_clear_time);
   builder_.add__player_meta(_player_meta);
   builder_.add__plot_info(_plot_info);
@@ -306,7 +257,8 @@ inline flatbuffers::Offset<_tHistory> Create_tHistoryDirect(
     const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tBuff>> *_player_buff = nullptr,
     flatbuffers::Offset<SoulMeterFBS::History::_tPlotInfo> _plot_info = 0,
     const std::vector<flatbuffers::Offset<SoulMeterFBS::History::_tPlayerMetaData>> *_player_meta = nullptr,
-    uint32_t _real_clear_time = 0) {
+    uint32_t _real_clear_time = 0,
+    flatbuffers::Offset<SoulMeterFBS::History::_tCombatInterface> _combat = 0) {
   auto _ext_info__ = _ext_info ? _fbb.CreateString(_ext_info) : 0;
   auto _damage_player__ = _damage_player ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tDamagePlayer>>(*_damage_player) : 0;
   auto _db2_struct__ = _db2_struct ? _fbb.CreateVector<flatbuffers::Offset<SoulMeterFBS::History::_tDB2_Struct>>(*_db2_struct) : 0;
@@ -324,7 +276,8 @@ inline flatbuffers::Offset<_tHistory> Create_tHistoryDirect(
       _player_buff__,
       _plot_info,
       _player_meta__,
-      _real_clear_time);
+      _real_clear_time,
+      _combat);
 }
 
 inline const SoulMeterFBS::History::_tHistory *Get_tHistory(const void *buf) {

@@ -50,8 +50,17 @@ VOID _HISTORYINFO::Clear(){
 	_historyData->_buffHistory.clear();
 	_historyData->_playerMetadata.clear();
 
-	_historyData->_plotHistory->Clear();
-	delete _historyData->_plotHistory;
+	if (_historyData->_plotHistory != nullptr)
+	{
+		_historyData->_plotHistory->Clear();
+		delete _historyData->_plotHistory;
+	}
+
+	if (_historyData->_combatIF != nullptr)
+	{
+		_historyData->_combatIF->Clear();
+		delete _historyData->_combatIF;
+	}
 
 	delete _historyData;
 	_historyData = nullptr;
@@ -184,8 +193,10 @@ flatbuffers::Offset<_tHistory> _HISTORYINFO::Serialization(flatbuffers::FlatBuff
 		itr->second->Serialization(fbb, vPlayerMetaData);
 	auto fcvPlayerMetaData = fbb.CreateVector(vPlayerMetaData);
 
-	// _tHistory
+	// _tCombatInterface
+	auto fcvCombatInterface = historyData->_combatIF->Serialization(fbb);
 
+	// _tHistory
 	auto sTime = _sTime(_saveTime->wYear, _saveTime->wMonth, _saveTime->wDayOfWeek, _saveTime->wDay, _saveTime->wHour, _saveTime->wMinute, _saveTime->wSecond, _saveTime->wMilliseconds);
 	auto fcsExtInfo = fbb.CreateString(historyData->_extInfo);
 
@@ -204,6 +215,8 @@ flatbuffers::Offset<_tHistory> _HISTORYINFO::Serialization(flatbuffers::FlatBuff
 	thb.add__player_meta(fcvPlayerMetaData);
 
 	thb.add__real_clear_time(_realClearTime);
+
+	thb.add__combat(fcvCombatInterface);
 
 	return thb.Finish();
 }
@@ -259,6 +272,15 @@ VOID SWDamageMeterHistory::UnSerialization(const _tHistory* pHistory)
 		pHD->_playerMetadata[(*itr)->_id()] = pNewPlayerMeta;
 	}
 
+	// _tCombatInterface
+	if (pHistory->_combat() != nullptr)
+	{
+		CombatInterface* pCombatInterface = new CombatInterface;
+		pCombatInterface->UnSerialization(pHistory->_combat());
+		pHD->_combatIF = pCombatInterface;
+	}
+
+	// _tHistory
 	if (pHistory->_ext_info() != nullptr)
 		pHD->_extInfo = pHistory->_ext_info()->c_str();
 

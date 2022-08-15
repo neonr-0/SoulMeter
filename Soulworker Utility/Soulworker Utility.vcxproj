@@ -178,6 +178,8 @@
   <ItemGroup>
     <ClInclude Include="Buff Meter\Buff Meter.h" />
     <ClInclude Include="Buff Meter\Buff.h" />
+    <ClInclude Include="Combat Meter\Combat.h" />
+    <ClInclude Include="Combat Meter\CombatMeter.h" />
     <ClInclude Include="Damage Meter\Damage Meter.h" />
     <ClInclude Include="Damage Meter\FlatBufferUtil.h" />
     <ClInclude Include="Damage Meter\History.h" />
@@ -264,6 +266,8 @@
   <ItemGroup>
     <ClCompile Include="Buff Meter\Buff Meter.cpp" />
     <ClCompile Include="Buff Meter\Buff.cpp" />
+    <ClCompile Include="Combat Meter\Combat.cpp" />
+    <ClCompile Include="Combat Meter\CombatMeter.cpp" />
     <ClCompile Include="Damage Meter\Damage Meter.cpp" />
     <ClCompile Include="Damage Meter\History.cpp" />
     <ClCompile Include="Damage Meter\MySQLite.cpp" />

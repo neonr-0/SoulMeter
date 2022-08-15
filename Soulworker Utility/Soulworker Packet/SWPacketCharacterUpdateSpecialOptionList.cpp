@@ -3,6 +3,7 @@
 #include ".\Buff Meter\Buff Meter.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\UI\PlotWindow.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketCharacterUpdateSpecialOptionList::SWPacketCharacterUpdateSpecialOptionList(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -10,12 +11,13 @@ SWPacketCharacterUpdateSpecialOptionList::SWPacketCharacterUpdateSpecialOptionLi
 
 VOID SWPacketCharacterUpdateSpecialOptionList::Do() {
 
+	if (DAMAGEMETER.isTownMap()) {
+		return;
+	}
+
 	SHORT offset = sizeof(SWHEADER);
 	SWPacketCharacterUpdateSpecialOptionListHeader* listPacket = (SWPacketCharacterUpdateSpecialOptionListHeader*)(_data + offset);
 	offset += sizeof(SWPacketCharacterUpdateSpecialOptionListHeader);
-
-	if (listPacket->_playerID != DAMAGEMETER.GetMyID())
-		return;
 
 	for (BYTE i = 0; i < listPacket->_listCount; i++)
 	{
@@ -23,6 +25,12 @@ VOID SWPacketCharacterUpdateSpecialOptionList::Do() {
 		offset += sizeof(SWPacketCharacterUpdateSpecialOptionVal);
 
 		DAMAGEMETER.UpdateSpecialStat(listPacket->_playerID, valPacket->_listID, valPacket->_listVal);
+
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = CombatLogType::CHANGED_SPECIAL_STATS;
+		pCombatLog->_val1 = valPacket->_listID;
+		pCombatLog->_val2 = valPacket->_listVal;
+		COMBATMETER.Insert(listPacket->_playerID, CombatType::PLAYER, pCombatLog);
 	}
 }
 

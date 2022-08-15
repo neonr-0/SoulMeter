@@ -4,6 +4,7 @@
 #include ".\UI\PlotWindow.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\Third Party\FlatBuffers\include\SW_HISTORY_.h"
+#include ".\Combat Meter\Combat.h"
 
 using namespace std;
 using namespace SoulMeterFBS::History;
@@ -16,9 +17,10 @@ struct HISTORY_DATA
 	vector<SWDamagePlayer*> _playerHistory;
 	vector<SW_DB2_STRUCT*> _dbHistory;
 	vector<PLAYERBUF*> _buffHistory;
-	PlotInfo* _plotHistory;
+	PlotInfo* _plotHistory = nullptr;
 	unordered_map<UINT32, SWDamageMeter::SW_PLAYER_METADATA*> _playerMetadata;
 	string _extInfo;
+	CombatInterface* _combatIF = nullptr;
 };
 
 typedef struct _HISTORYINFO {

@@ -5,6 +5,9 @@
 #include ".\UI\PlotWindow.h"
 #include ".\Damage Meter\History.h"
 #include ".\Damage Meter\MySQLite.h"
+#include ".\Combat Meter\CombatMeter.h"
+#include ".\UI\UtillWindow.h"
+#include ".\Damage Meter\MapList.h"
 
 SWDamageMeter::~SWDamageMeter() {
 
@@ -91,6 +94,12 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 		}
 	}
 
+	CombatLog* pCombatLog = new CombatLog;
+	pCombatLog->_type = COMBATMETER.ConvertDamageTypeForGiveDamage(damageType);
+	pCombatLog->_val1 = static_cast<DOUBLE>(totalDMG);
+	pCombatLog->_val2 = static_cast<DOUBLE>(soulstoneDMG);
+	COMBATMETER.Insert(id, CombatType::PLAYER, pCombatLog);
+
 	Start();
 	InsertPlayerInfo(id, totalDMG, soulstoneDMG, damageType, maxCombo, monsterID, skillID);
 	Sort();
@@ -100,6 +109,26 @@ VOID SWDamageMeter::AddPlayerGetDamage(UINT32 playerId, UINT64 totalDMG, SWPACKE
 {
 	if (!isRun() || GetTime() == 0)
 		return;
+
+	if (CheckPlayer(playerId))
+	{
+		UINT32 monsterDB2 = 0;
+		SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
+		if (db != nullptr) {
+			monsterDB2 = db->_db2;
+		}
+
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = COMBATMETER.ConvertDamageTypeForTakeDamage(damageType);
+		pCombatLog->_val1 = static_cast<DOUBLE>(totalDMG);
+		COMBATMETER.Insert(playerId, CombatType::PLAYER, pCombatLog);
+
+		pCombatLog = new CombatLog;
+		pCombatLog->_type = COMBATMETER.ConvertDamageTypeForGiveDamage(damageType);
+		pCombatLog->_val1 = static_cast<DOUBLE>(totalDMG);
+		pCombatLog->_val2 = playerId;
+		COMBATMETER.Insert(monsterDB2, CombatType::MONSTER, pCombatLog);
+	}
 
 	auto itr = _playerInfo.begin();
 
@@ -301,7 +330,7 @@ VOID SWDamageMeter::InsertPlayerMetadata(UINT32 id, CHAR* str, BYTE job) {
 }
 
 const CHAR* SWDamageMeter::GetPlayerName(UINT32 id) {
-	if (id == _myID || (_historyMode && id == _historyMyID))
+	if ((_historyMode && id == _historyMyID) || (!_historyMode && id == _myID))
 		return LANGMANAGER.GetText("STR_TABLE_YOU");
 
 	auto search = GetPlayerMetaDataByHistory()->find(id);
@@ -421,6 +450,11 @@ USHORT SWDamageMeter::GetWorldID() {
 		return _worldID;
 	else
 		return _historyWorldID;
+}
+
+BOOL SWDamageMeter::isTownMap() {
+
+	return townMap.find(_worldID) != townMap.end();
 }
 
 const CHAR* SWDamageMeter::GetWorldName() {
@@ -604,6 +638,7 @@ VOID SWDamageMeter::Clear() {
 			hd->_buffHistory = BUFFMETER.GetPlayerInfo();
 			hd->_plotHistory = PLOTWINDOW.GetPlotInfo();
 			hd->_playerMetadata = newHistoryPlayerMeta;
+			hd->_combatIF = COMBATMETER.Get();
 
 			HISTORY_INFO* pHI = new HISTORY_INFO;
 			pHI->Setup(hd, DAMAGEMETER.GetWorldID(), DAMAGEMETER.GetTime(), DAMAGEMETER.GetMyID(), _testMode, nullptr, _realClearTime);
@@ -630,6 +665,10 @@ VOID SWDamageMeter::Clear() {
 				}
 				ClearInfo(clearOwnerAndDB);
 			}
+		}
+		else {
+			// not player data
+			COMBATMETER.Clear(TRUE);
 		}
 		_mazeEnd = FALSE;
 	}
@@ -687,6 +726,10 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 
 	PLOTWINDOW.Clear();
 	BUFFMETER.Clear();
+	COMBATMETER.End();
+	COMBATMETER.Clear();
+	UTILLWINDOW.ClearCombatTemp();
+
 	_aggroedId = 0;
 	_currentHistoryId = -1;
 	_historyHI = nullptr;
@@ -718,6 +761,7 @@ VOID SWDamageMeter::SetHistory(LPVOID pHi) {
 	_historyDbInfo = hi->_historyData->_dbHistory;
 	BUFFMETER.SetPlayerInfo(hi->_historyData->_buffHistory);
 	PLOTWINDOW.SetPlotInfo(hi->_historyData->_plotHistory);
+	COMBATMETER.Set(hi->_historyData->_combatIF);
 
 	_historyWorldID = hi->_worldID;
 	_historyTime = hi->_time;

@@ -4,6 +4,7 @@
 #include ".\Damage Meter\MySQLite.h"
 #include ".\Soulworker Packet\SWPacketOtherUseSkill.h"
 #include ".\UI\UtillWindow.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketOtherUseSkill::SWPacketOtherUseSkill(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -17,6 +18,32 @@ VOID SWPacketOtherUseSkill::Do() {
 	SWPACKET_OTHERUSESKILL* otherSkill = (SWPACKET_OTHERUSESKILL*)(_data + sizeof(SWHEADER));
 
 	DAMAGEMETER.AddSkillUsed(otherSkill->_playerId, otherSkill->_skillId);
+
+	// check id
+	UINT32 userId = otherSkill->_playerId;
+	BOOL isPlayer = TRUE;
+	if (!DAMAGEMETER.CheckPlayer(userId)) {
+		// is summon
+		UINT32 ownerId = DAMAGEMETER.GetOwnerID(userId);
+
+		// is mob
+		if (!DAMAGEMETER.CheckPlayer(ownerId))
+		{
+			SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(userId);
+			if (db != nullptr) {
+				isPlayer = FALSE;
+				userId = db->_db2;
+			}
+		}
+		else {
+			userId = ownerId;
+		}
+	}
+
+	CombatLog* pCombatLog = new CombatLog;
+	pCombatLog->_type = CombatLogType::USED_SKILL;
+	pCombatLog->_val1 = otherSkill->_skillId;
+	COMBATMETER.Insert(userId, isPlayer ? CombatType::PLAYER : CombatType::MONSTER, pCombatLog);
 
 	/*UINT32 userId = otherSkill->_playerId;
 	if (!DAMAGEMETER.CheckPlayer(userId)) {

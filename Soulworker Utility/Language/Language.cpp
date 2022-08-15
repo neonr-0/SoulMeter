@@ -88,6 +88,8 @@ DWORD Language::SetCurrentLang(CHAR* langFile)
 
 		_textList = newLang;
 
+		_notFoundText.clear();
+
 	} while (false);
 
 	return error;
@@ -99,7 +101,12 @@ CHAR* Language::GetText(CHAR* text, unordered_map<string, string>* vector)
 		vector = &_textList;
 	
 	if (vector->find(text) == vector->end()) {
-		Log::WriteLogA("[Language::GetText] Lang text %s not found.", text);
+		string findStr(text);
+		if (std::find(_notFoundText.begin(), _notFoundText.end(), findStr) == _notFoundText.end())
+		{
+			Log::WriteLogA("[Language::GetText] Lang text %s not found.", text);
+			_notFoundText.push_back(findStr);
+		}
 		return text;
 	}
 

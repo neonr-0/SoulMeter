@@ -1,6 +1,7 @@
 #include "pch.h"
 #include ".\Soulworker Packet\SWPacketMonsterKilled.h"
 #include ".\Damage Meter\Damage Meter.h"
+#include ".\Combat Meter\CombatMeter.h"
 
 SWPacketMonsterKilled::SWPacketMonsterKilled(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -15,6 +16,12 @@ VOID SWPacketMonsterKilled::Do() {
 		SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(killed->_killedId);
 		if (db == nullptr)
 			return;
+
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = CombatLogType::CHANGED_STATS;
+		pCombatLog->_val1 = StatType::CurrentHP;
+		pCombatLog->_val2 = 0;
+		COMBATMETER.Insert(db->_db2, CombatType::MONSTER, pCombatLog);
 
 		// BSVH P3
 		if (DAMAGEMETER.GetWorldID() == 22018) {

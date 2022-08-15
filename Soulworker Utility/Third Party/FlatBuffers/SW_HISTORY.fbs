@@ -2,6 +2,7 @@ include "SW_DAMAGE_PLAYER.fbs";
 include "SW_BUFF.fbs";
 include "SW_PLOTINFO.fbs";
 include "SW_PLAYER_METADATA.fbs";
+include "SW_COMBAT.fbs";
 
 namespace SoulMeterFBS.History;
 
@@ -9,17 +10,6 @@ table _tDB2_Struct {
   _id:uint;
   _db2:uint;
   _type:int;
-}
-
-struct _sTime {
-    year:ushort;
-    month:ushort;
-    day_of_week:ushort;
-    day:ushort;
-    hour:ushort;
-    minute:ushort;
-    second:ushort;
-    milliseconds:ushort;
 }
 
 table _tHistory {
@@ -36,6 +26,8 @@ table _tHistory {
   _player_meta:[_tPlayerMetaData];
 
   _real_clear_time:uint;
+
+  _combat:_tCombatInterface;
 }
 
 root_type _tHistory;
