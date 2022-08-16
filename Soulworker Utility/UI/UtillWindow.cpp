@@ -207,67 +207,70 @@ VOID UtillWindow::CombatWindow()
 		CHAR label[1024] = { 0 };
 		auto combatIF = COMBATMETER.Get();
 
-		if (combatIF != nullptr)
+		_mutex.lock();
 		{
-			if (_ci == nullptr)
+			if (combatIF != nullptr)
 			{
-				COMBATMETER.GetLock();
-				{
-					if (combatIF->begin() != combatIF->end())
-						_ci = combatIF->begin()->second;
-
-					COMBATMETER.FreeLock();
-				}
-			}
-
-			if (_ci != nullptr)
-			{
-				ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), _searchData2, IM_ARRAYSIZE(_searchData2));
-
-				sprintf_s(label, "%s###UtillCombatSelector", LANGMANAGER.GetText("STR_UTILLWINDOW_COMBAT_SELECTOR"));
-				if (ImGui::BeginCombo(label, COMBATMETER.GetName(_ci).c_str(), ImGuiComboFlags_HeightLarge))
+				if (_ci == nullptr)
 				{
 					COMBATMETER.GetLock();
 					{
-						for (auto itr = combatIF->begin(); itr != combatIF->end(); itr++)
-						{
-							sprintf_s(label, "%s##%d", COMBATMETER.GetName(itr->second).c_str(), itr->first);
+						if (combatIF->begin() != combatIF->end())
+							_ci = combatIF->begin()->second;
 
-							if (ImGui::Selectable(label, _ci == itr->second)) {
-								_ci = itr->second;
-								ForceUpdateCombatTemp(_ci);
-							}
-						}
 						COMBATMETER.FreeLock();
 					}
-					ImGui::EndCombo();
 				}
 
-				ImGui::BeginChild("display combat log", ImVec2(0, 0), true);
+				if (_ci != nullptr)
 				{
-					if (_ci->size() != _combatTmp.size())
+					ImGui::InputText(LANGMANAGER.GetText("STR_UTILLWINDOW_SEARCH"), _searchData2, IM_ARRAYSIZE(_searchData2));
+
+					sprintf_s(label, "%s###UtillCombatSelector", LANGMANAGER.GetText("STR_UTILLWINDOW_COMBAT_SELECTOR"));
+					if (ImGui::BeginCombo(label, COMBATMETER.GetName(_ci).c_str(), ImGuiComboFlags_HeightLarge))
 					{
 						COMBATMETER.GetLock();
 						{
-							ForceUpdateCombatTemp(_ci);
+							for (auto itr = combatIF->begin(); itr != combatIF->end(); itr++)
+							{
+								sprintf_s(label, "%s##%d", COMBATMETER.GetName(itr->second).c_str(), itr->first);
+
+								if (ImGui::Selectable(label, _ci == itr->second)) {
+									_ci = itr->second;
+									ForceUpdateCombatTemp(_ci);
+								}
+							}
 							COMBATMETER.FreeLock();
 						}
+						ImGui::EndCombo();
 					}
 
-					for (auto itr = _combatTmp.begin(); itr != _combatTmp.end(); itr++)
+					ImGui::BeginChild("display combat log", ImVec2(0, 0), true);
 					{
-						const char* label = itr->second.c_str();
+						if (_ci->size() != _combatTmp.size())
+						{
+							COMBATMETER.GetLock();
+							{
+								ForceUpdateCombatTemp(_ci);
+								COMBATMETER.FreeLock();
+							}
+						}
 
-						if (strlen(_searchData2) > 0 && string(label).find(string(_searchData2)) == std::string::npos)
-							continue;
+						for (auto itr = _combatTmp.begin(); itr != _combatTmp.end(); itr++)
+						{
+							const char* label = itr->second.c_str();
 
-						ImGui::Text(label);
+							if (strlen(_searchData2) > 0 && string(label).find(string(_searchData2)) == std::string::npos)
+								continue;
+
+							ImGui::Text(label);
+						}
+						ImGui::EndChild();
 					}
-					ImGui::EndChild();
 				}
 			}
+			_mutex.unlock();
 		}
-
 		ImGui::EndTabItem();
 	}
 }
@@ -296,8 +299,12 @@ VOID UtillWindow::ForceUpdateCombatTemp(Combat* pCombat)
 
 VOID UtillWindow::ClearCombatTemp()
 {
-	_ci = nullptr;
-	_combatTmp.clear();
+	_mutex.lock();
+	{
+		_ci = nullptr;
+		_combatTmp.clear();
+		_mutex.unlock();
+	}
 }
 
 VOID UtillWindow::Update()
@@ -326,4 +333,6 @@ UtillWindow::UtillWindow()
 
 UtillWindow::~UtillWindow()
 {
+	BOOL a = _mutex.try_lock();
+	_mutex.unlock();
 }

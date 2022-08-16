@@ -26,6 +26,7 @@ private:
 
 	Combat* _ci = nullptr;
 	vector<std::pair<UINT32, string>> _combatTmp;
+	mutex _mutex;
 
 	VOID handleDialogInfo();
 	VOID HistoryWindow();
