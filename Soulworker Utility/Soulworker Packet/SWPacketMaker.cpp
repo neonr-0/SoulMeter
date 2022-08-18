@@ -175,7 +175,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 
 			/* 0x2e Force*/
 			// 8 players party
-		case RecvOPcode::POS: //0430
+		case RecvOPcode::POS: //0817
 			swpacket = new SWPacketPos(swheader, data);
 			break;
 

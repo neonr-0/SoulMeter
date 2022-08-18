@@ -34,7 +34,7 @@ VOID SWPacketMonsterStatUpdate::Do() {
 
 		CombatLog* pCombatLog = new CombatLog;
 		pCombatLog->_type = CombatLogType::CHANGED_STATS;
-		pCombatLog->_val1 = pktStatData->_statID;
+		pCombatLog->_val1 = static_cast<DOUBLE>(pktStatData->_statID);
 		pCombatLog->_val2 = static_cast<DOUBLE>(pktStatData->_statVal);
 		COMBATMETER.Insert(monsterId, CombatType::MONSTER, pCombatLog);
 	}

@@ -80,7 +80,7 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 		}
 
 		// If it is BS normal, only damage to Boss can start/resume timer.
-		if (GetWorldID() == 21018 || GetWorldID() == 23018) {
+		if (GetWorldID() == 21018) {
 			if ((monsterId != 31310101) && (monsterId != 31310102)) {
 				return;
 			}
@@ -89,6 +89,13 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 		// BS Solo
 		if (GetWorldID() == 24018) {
 			if ((monsterId != 32320101) && (monsterId != 32320102)) {
+				return;
+			}
+		}
+
+		// BS Rank
+		if (GetWorldID() == 23018) {
+			if (monsterId != 32310101) {
 				return;
 			}
 		}

@@ -143,6 +143,9 @@ string CombatMeter::GetName(Combat* pCombat)
 	case CombatType::MONSTER:
 		if (SWDB.GetMonsterName(pCombat->GetID(), tmp, sizeof(tmp)))
 			out = tmp;
+#if _DEBUG
+		sprintf_s(tmp, "%s(%u)", tmp, pCombat->GetID());
+#endif
 		break;
 	case CombatType::PLAYER:
 		out = (char*)DAMAGEMETER.GetPlayerName(pCombat->GetID());
