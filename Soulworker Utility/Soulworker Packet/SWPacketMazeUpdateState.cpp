@@ -3,6 +3,7 @@
 #include ".\Damage Meter\Damage Meter.h"
 #include ".\UI\Option.h"
 #include ".\Damage Meter\MapList.h"
+#include ".\Packet Capture\MyNpcap.h"
 
 SWPacketMazeUpdateState::SWPacketMazeUpdateState(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -22,6 +23,7 @@ VOID SWPacketMazeUpdateState::Do() {
 		break;
 		// Maze start
 	case 0x01:
+		NPCAP.AddStopIfCount(TRUE);
 		DAMAGEMETER.SetMazeState(FALSE);
 		DAMAGEMETER.Start();
 		break;

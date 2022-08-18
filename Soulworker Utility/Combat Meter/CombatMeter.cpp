@@ -11,7 +11,7 @@ VOID CombatMeter::Insert(UINT32 id, CombatType type, CombatLog* cl)
 		BOOL success = FALSE;
 		do
 		{
-			if (_historyMode || _isEnd)
+			if (_historyMode || _isEnd || DAMAGEMETER.isTownMap())
 				break;
 
 			if (_ci == nullptr)
@@ -56,7 +56,6 @@ string CombatMeter::ConvertCombatLogVal(CombatLog* pCombatLog, CombatType type)
 
 	switch (pCombatLog->_type)
 	{
-		// 力量 屬性變更為 100.0
 	case CombatLogType::CHANGED_STATS:
 	case CombatLogType::CHANGED_SPECIAL_STATS:
 	{

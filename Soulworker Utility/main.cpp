@@ -18,75 +18,76 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ PSTR szCmdLine, _In_ int iCmdShow) {
 
 	MiniDump::Begin();
-
-	DWORD errorCode = 0;
-	CHAR errorMsg[512] = { 0 };
-
-	do
 	{
-		const UINT codePage = GetACP();
-		switch (codePage) {
-		case 936: // ZH-CN
-		case 950: // ZH-TW
-			_wsetlocale(LC_ALL, L"zh-TW.UTF8");
-			errorCode = LANGMANAGER.SetCurrentLang("zh_tw.json");
-			break;
-		default:
-			_wsetlocale(LC_ALL, L"en-US.UTF8");
-			errorCode = LANGMANAGER.SetCurrentLang("en.json");
-			break;
-		}
+		DWORD errorCode = 0;
+		CHAR errorMsg[512] = { 0 };
 
-		if (errorCode) {
-			sprintf_s(errorMsg, "Init Lang failed. err: %lu", errorCode);
-			break;
-		}
-
-		PLAYERTABLE.CheckUpdate();
-
-		if ((errorCode = SWCRYPT.LoadSWCrypt())) {
-			sprintf_s(errorMsg, "Load SWCrypt.dll failed, err: %lu", errorCode);
-			break;
-		}
-
-		if (!SWDB.Init()) {
-			sprintf_s(errorMsg, "Init database failed.");
-			break;
-		}
-
-		if (UIWINDOW.Init(1, 1, 1, 1)) {
-			if ((errorCode = PACKETCAPTURE.Init())) {
-				sprintf_s(errorMsg, "Init PacketCapture failed, err: %lu", errorCode);
+		do
+		{
+			const UINT codePage = GetACP();
+			switch (codePage) {
+			case 936: // ZH-CN
+			case 950: // ZH-TW
+				_wsetlocale(LC_ALL, L"zh-TW.UTF8");
+				errorCode = LANGMANAGER.SetCurrentLang("zh_tw.json");
+				break;
+			default:
+				_wsetlocale(LC_ALL, L"en-US.UTF8");
+				errorCode = LANGMANAGER.SetCurrentLang("en.json");
 				break;
 			}
-			if (UIOPTION.isUseSaveData())
-			{
-				if ((errorCode = SAVEDATA.Init())) {
-					sprintf_s(errorMsg, "Init SaveData failed, err: %lu", errorCode);
-					if (errorCode == ERROR_FILE_CORRUPT) {
-						ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
-					}
-					else if (errorCode == ERROR_FILE_SYSTEM_LIMITATION) {
-						ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_MULTIPLE_ERROR"), errorMsg, sizeof(errorMsg));
-					}
+
+			if (errorCode) {
+				sprintf_s(errorMsg, "Init Lang failed. err: %lu", errorCode);
+				break;
+			}
+
+			PLAYERTABLE.CheckUpdate();
+
+			if ((errorCode = SWCRYPT.LoadSWCrypt())) {
+				sprintf_s(errorMsg, "Load SWCrypt.dll failed, err: %lu", errorCode);
+				break;
+			}
+
+			if (!SWDB.Init()) {
+				sprintf_s(errorMsg, "Init database failed.");
+				break;
+			}
+
+			if (UIWINDOW.Init(1, 1, 1, 1)) {
+				if ((errorCode = PACKETCAPTURE.Init())) {
+					sprintf_s(errorMsg, "Init PacketCapture failed, err: %lu", errorCode);
 					break;
 				}
+				if (UIOPTION.isUseSaveData())
+				{
+					if ((errorCode = SAVEDATA.Init())) {
+						sprintf_s(errorMsg, "Init SaveData failed, err: %lu", errorCode);
+						if (errorCode == ERROR_FILE_CORRUPT) {
+							ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_VERSION_ERROR"), errorMsg, sizeof(errorMsg));
+						}
+						else if (errorCode == ERROR_FILE_SYSTEM_LIMITATION) {
+							ANSItoUTF8(LANGMANAGER.GetText("STR_SAVEDATA_MULTIPLE_ERROR"), errorMsg, sizeof(errorMsg));
+						}
+						break;
+					}
+				}
+				UIWINDOW.Run();
 			}
-			UIWINDOW.Run();
-		}
-		else {
-			sprintf_s(errorMsg, "Init UI failed.");
-			break;
+			else {
+				sprintf_s(errorMsg, "Init UI failed.");
+				break;
+			}
+
+		} while (false);
+
+		if (errorCode) {
+			MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK | MB_TOPMOST);
+			Log::WriteLogA(errorMsg);
 		}
 
-	} while (false);
-
-	if (errorCode) {
-		MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK | MB_TOPMOST);
-		Log::WriteLogA(errorMsg);
+		MiniDump::End();
 	}
-
-	MiniDump::End();
 
 	ShowWindow(UIWINDOW.GetHWND(), 0);
 	NPCAP.StopSniffAllInterface();

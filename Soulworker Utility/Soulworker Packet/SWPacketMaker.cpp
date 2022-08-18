@@ -30,7 +30,7 @@ VOID SWPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, const
 	if (data == nullptr || size < 0 || start < 0)
 		return;
 	
-#if SWMAGIC == 3
+#if USE_XOR == 1
 	UINT32 _size = size;
 	_size -= sizeof(SWHEADER) + 3;
 	for (UINT i = 0; i < _size; i++) {
@@ -150,7 +150,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 
 			/* 0x12 Party */
-		case RecvOPcode::PARTY: //0430
+		case RecvOPcode::PARTY: //0817
 			swpacket = new SWPacketParty(swheader, data);
 			break;
 		case RecvOPcode::PARTY_LIST_INFO:

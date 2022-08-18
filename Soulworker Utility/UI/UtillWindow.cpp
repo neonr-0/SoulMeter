@@ -205,10 +205,10 @@ VOID UtillWindow::CombatWindow()
 	if (ImGui::BeginTabItem(LANGMANAGER.GetText("STR_UTILLWINDOW_COMBAT")))
 	{
 		CHAR label[1024] = { 0 };
-		auto combatIF = COMBATMETER.Get();
-
 		_mutex.lock();
 		{
+			auto combatIF = COMBATMETER.Get();
+
 			if (combatIF != nullptr)
 			{
 				if (_ci == nullptr)

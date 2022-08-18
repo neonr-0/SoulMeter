@@ -28,7 +28,7 @@ VOID SWSPacketMaker::Decrypt(BYTE* data, const UINT size, const UINT start, cons
 	if (data == nullptr || size < 0 || start < 0)
 		return;
 
-#if SWMAGIC == 3
+#if USE_XOR == 1
 	UINT _size = size;
 	_size -= sizeof(SWHEADER) + 3;
 	for (UINT i = 0; i < _size; i++) {

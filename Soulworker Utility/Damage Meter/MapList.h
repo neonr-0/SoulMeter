@@ -11,7 +11,10 @@ static unordered_set<USHORT> rankMap({
 	22016,
 
 	/* VS */
-	22017
+	22017,
+
+	/* BS */
+	23018,
 
 	});
 
@@ -41,7 +44,10 @@ static unordered_set<USHORT> townMap({
 	/* Dipluce Horizon */
 	10061,
 
+	/* Arcadia Realm */
+	10081,
+
 	/* My Room */
-	20011
+	20011,
 
 	});
