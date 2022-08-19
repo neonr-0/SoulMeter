@@ -3,7 +3,7 @@
 
 本程式運作方式為通過第三方軟體擷取網路卡中的遊戲封包，並透過SWCrypt.dll進行封包解密後分析資料
 
-目前支援的擷取封包第三方軟體: *Npcap(推薦於網路不穩定的情況使用)、WinDivert(預設，於網路或伺服器不穩定的情況下使用可能會導致數據異常)
+目前支援的擷取封包第三方軟體: *Npcap(推薦)、WinDivert(預設，於網路或伺服器不穩定的情況下可能會導致數據異常)
 
 *Npcap: 下載Npcap installer(1.60以上)並安裝Npcap後([https://npcap.com/#download](https://npcap.com/#download))至設定內開啟
 
@@ -24,11 +24,13 @@ option.xml 與 imgui.ini 為使用者設定
 
 注意事項
 ---------------------
-使用本程式前需於進入副本前開啟，使用本程式造成之風險請自行負責
+使用本程式時需於進入副本前開啟，使用本程式造成之風險請自行負責
 
-建議盡量不要於遊戲內公開談論關於本程式
+建議盡量不要於遊戲內公開談論本程式
 
 問題回報及功能建議群組: https://discord.gg/3pvVXybhX8
+
+如果無法開啟，請嘗試安裝此整合包: https://github.com/abbodi1406/vcredist/releases
 
 特別感謝 @Nyanchii、@FeAr
 
@@ -39,7 +41,7 @@ Soulworker DPS Meter for Global Server
 
 This software is used third-party software to capture network raw packet and use SWCrypt.dll to decrypt packet
 
-Supported capture software: *Npcap(Recommended if network is unstable), WinDivert(Default, The data will be incorrect when the network or server is unstable)
+Supported capture software: *Npcap(Recommended), WinDivert(Default, The data will be incorrect when the network or server is unstable)
 
 *Npcap: You need goto setting to enable this and Download Npcap installer(Need 1.60 or above) and install ([https://npcap.com/#download](https://npcap.com/#download))
 
@@ -67,6 +69,8 @@ Also, USE AT YOUR OWN RISK
 I recommend not to talk about dps meter at in-game public chat
 
 Issue and suggest: https://discord.gg/3pvVXybhX8
+
+If you can't open, try install this: https://github.com/abbodi1406/vcredist/releases
 
 Special thanks @Nyanchii, @FeAr
 
