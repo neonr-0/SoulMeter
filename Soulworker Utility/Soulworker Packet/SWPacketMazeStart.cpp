@@ -1,7 +1,7 @@
 #include "pch.h"
 #include ".\Soulworker Packet\SWPacketMazeStart.h"
 #include ".\Damage Meter\Damage Meter.h"
-#include ".\Packet Capture\MyNpcap.h"
+#include ".\Packet Capture\PacketCapture.h"
 
 SWPacketMazeStart::SWPacketMazeStart(SWHEADER* swheader, BYTE* data) : SWPacket(swheader, data) {
 
@@ -9,7 +9,7 @@ SWPacketMazeStart::SWPacketMazeStart(SWHEADER* swheader, BYTE* data) : SWPacket(
 
 VOID SWPacketMazeStart::Do() {
 	DAMAGEMETER.SetMazeState(FALSE);
-	NPCAP.AddStopIfCount(TRUE);
+	PACKETCAPTURE.UpdateLoss(FALSE, TRUE);
 }
 
 VOID SWPacketMazeStart::Log() {

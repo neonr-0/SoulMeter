@@ -95,26 +95,34 @@ public:
 		return _allLoss;
 	}
 
-	VOID UpdateLoss(BOOL add)
+	VOID UpdateLoss(BOOL add, BOOL clear = FALSE)
 	{
 		if (_stopCapture)
 			return;
 
 		_lossMutex.lock();
 		{
-			ULONG64 time = GetCurrentTimeStamp();
-			// reset loss
-			if (_prevLossTime < time || _loss == 0)
+			if (!clear)
 			{
-				_loss = 0;
-				// 10s
-				_prevLossTime = time + 10000;
-			}
+				ULONG64 time = GetCurrentTimeStamp();
+				// reset loss
+				if (_prevLossTime < time || _loss == 0)
+				{
+					_loss = 0;
+					// 10s
+					_prevLossTime = time + 10000;
+				}
 
-			if (add)
-			{
-				_loss++;
-				_allLoss++;
+				if (add)
+				{
+					_loss++;
+					_allLoss++;
+				}
+			}
+			else {
+				_loss = 0;
+				_allLoss = 0;
+				_prevLossTime = 0;
 			}
 
 			_lossMutex.unlock();
