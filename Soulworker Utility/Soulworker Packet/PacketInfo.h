@@ -106,7 +106,10 @@ enum StatType {
 	
 	MAX_STAT = 0x4D,
 
-	END = 0x100
+	UNK_78 = 0x4E,
+	UNK_79 = 0x4F,
+
+	END
 };
 
 // enum EFFECT_STAT_TYPE
@@ -184,7 +187,7 @@ enum SpecialStatType {
 	PrimalDamageAddRate = 0x35,
 	PrimalDamagedDownRate = 0x36,
 
-	End = 0x37
+	End
 };
 
 #pragma pack(push, 1)

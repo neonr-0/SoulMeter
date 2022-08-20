@@ -28,6 +28,15 @@ VOID SWPacketStatChange::Do() {
 
 	for (int i = 0; i < stat_header->_statsCount; i++) {
 		SWPACKETSTATCHANGE_DATA* party_data = (SWPACKETSTATCHANGE_DATA*)p_data;
+
+		if (party_data->_statType >= StatType::END)
+		{
+#if _DEBUG
+			Log::WriteLogA("[SWPacketStatChange] Find Unknown statType = %x, statValue = %f", party_data->_statType, party_data->_statValue);
+#endif
+			continue;
+		}
+
 		//Log::MyLog(_T("[DEBUG] [ID %08x] [statType = %x], [statValue = %f]\n"), stat_header->_playerID, party_data->_statType, party_data->_statValue);
 		DAMAGEMETER.UpdateStat(stat_header->_playerID, party_data->_statType, party_data->_statValue);
 

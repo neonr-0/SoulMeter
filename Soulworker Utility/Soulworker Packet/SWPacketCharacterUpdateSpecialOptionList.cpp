@@ -24,6 +24,14 @@ VOID SWPacketCharacterUpdateSpecialOptionList::Do() {
 		SWPacketCharacterUpdateSpecialOptionVal* valPacket = (SWPacketCharacterUpdateSpecialOptionVal*)(_data + offset);
 		offset += sizeof(SWPacketCharacterUpdateSpecialOptionVal);
 
+		if (valPacket->_listID >= SpecialStatType::End)
+		{
+#if _DEBUG
+			Log::WriteLogA("[SWPacketCharacterUpdateSpecialOptionList] Find Unknown statType = %x, statValue = %f", valPacket->_listID, valPacket->_listVal);
+#endif
+			continue;
+		}
+
 		DAMAGEMETER.UpdateSpecialStat(listPacket->_playerID, valPacket->_listID, valPacket->_listVal);
 
 		CombatLog* pCombatLog = new CombatLog;
