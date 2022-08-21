@@ -28,6 +28,8 @@ private:
 	vector<std::pair<UINT32, string>> _combatTmp;
 	mutex _mutex;
 
+	vector<std::pair<HISTORY_INFO*, string>> _historyTmp;
+
 	VOID handleDialogInfo();
 	VOID HistoryWindow();
 

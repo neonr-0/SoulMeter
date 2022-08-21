@@ -763,6 +763,9 @@ VOID SWDamageMeter::SetHistory(LPVOID pHi) {
 		Clear();
 	}
 
+	if (std::find(HISTORY.begin(), HISTORY.end(), hi) == HISTORY.end())
+		return;
+
 	_historyPlayerInfo = hi->_historyData->_playerHistory;
 	_historyPlayerMetadata = hi->_historyData->_playerMetadata;
 	_historyDbInfo = hi->_historyData->_dbHistory;

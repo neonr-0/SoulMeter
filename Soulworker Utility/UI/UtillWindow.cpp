@@ -139,14 +139,13 @@ VOID UtillWindow::HistoryWindow()
 			}
 		}
 
-		ImGui::BeginChild("select history", ImVec2(0, 0), true);
+		if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop())
 		{
 			HISTORY.GetLock();
 			{
-				if (HISTORY.GetCurrentIndex() != _currentIndex && !HISTORY.isStop()) {
-					_currentIndex = HISTORY.GetCurrentIndex();
-					DAMAGEMETER.SetCurrentHistoryId(-1);
-				}
+				_currentIndex = HISTORY.GetCurrentIndex();
+				DAMAGEMETER.SetCurrentHistoryId(-1);
+				_historyTmp.clear();
 
 				if (HISTORY.size() > 0) {
 					INT32 i = static_cast<INT32>(HISTORY.size());
@@ -181,18 +180,31 @@ VOID UtillWindow::HistoryWindow()
 
 						i--;
 
-						if (strlen(_searchData) > 0 && string(label).find(string(_searchData)) == std::string::npos)
-							continue;
-
-						if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
-							if (!DAMAGEMETER.isRun()) {
-								DAMAGEMETER.SetCurrentHistoryId(i);
-								DAMAGEMETER.SetHistory((LPVOID)hi);
-							}
-						}
+						_historyTmp.push_back(std::pair(hi, string(label)));
 					}
 				}
+
 				HISTORY.FreeLock();
+			}
+		}
+
+		ImGui::BeginChild("select history", ImVec2(0, 0), true);
+		{
+			INT32 i = static_cast<INT32>(_historyTmp.size());
+			for (auto itr = _historyTmp.begin(); itr != _historyTmp.end(); itr++)
+			{
+				if (itr->first == nullptr)
+					continue;
+				if (strlen(_searchData) > 0 && itr->second.find(string(_searchData)) == std::string::npos)
+					continue;
+
+				if (ImGui::Selectable(itr->second.c_str(), DAMAGEMETER.GetHistoryHI() == itr->first) && !DAMAGEMETER.isRun()) {
+					if (!DAMAGEMETER.isRun()) {
+						DAMAGEMETER.Clear();
+						DAMAGEMETER.SetCurrentHistoryId(i);
+						DAMAGEMETER.SetHistory((LPVOID)itr->first);
+					}
+				}
 			}
 			ImGui::EndChild();
 		}
