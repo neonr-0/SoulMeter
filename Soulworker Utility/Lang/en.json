@@ -235,8 +235,8 @@
     "STR_STAT_TYPE_74": "SoulS.PainResist",
     "STR_STAT_TYPE_75": "PvPAttack",
     "STR_STAT_TYPE_76": "PvPDef.",
-    "STR_STAT_TYPE_77": "TYPE_77",
-    "STR_STAT_TYPE_78": "TYPE_78",
+    "STR_STAT_TYPE_77": "MoveSpeed(Ori.)(%%)",
+    "STR_STAT_TYPE_78": "AttackSpeed(Ori.)(%%)",
 
     "STR_SPECIAL_STAT_TYPE_0": "CoolTime(%%)",
     "STR_SPECIAL_STAT_TYPE_1": "PvPIncreaseDamage",

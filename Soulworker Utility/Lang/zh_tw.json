@@ -235,8 +235,8 @@
     "STR_STAT_TYPE_74": "苦痛抵抗力",
     "STR_STAT_TYPE_75": "PvP傷害加成",
     "STR_STAT_TYPE_76": "PvP防禦加成",
-    "STR_STAT_TYPE_77": "TYPE_77",
-    "STR_STAT_TYPE_78": "TYPE_78",
+    "STR_STAT_TYPE_77": "移動速度(修正前)(%%)",
+    "STR_STAT_TYPE_78": "攻擊速度(修正前)(%%)",
 
     "STR_SPECIAL_STAT_TYPE_0": "冷卻時間減少(%%)",
     "STR_SPECIAL_STAT_TYPE_1": "PvP附加傷害",
