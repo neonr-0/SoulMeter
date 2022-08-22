@@ -20,11 +20,15 @@ VOID SWPacketBuffIn::Do() {
 			DAMAGEMETER.BuffIn(buff->_playerID, buff->_buffID, buff->_stack, buff->_giverID);
 			BUFFMETER.AddBuff(buff->_playerID, buff->_buffID, buff->_stack);
 
-			CombatLog* pCombatLog = new CombatLog;
-			pCombatLog->_type = CombatLogType::BUFF_STARTED;
-			pCombatLog->_val1 = buff->_buffID;
-			pCombatLog->_val2 = buff->_stack;
-			COMBATMETER.Insert(buff->_playerID, CombatType::PLAYER, pCombatLog);
+			// Desire, LG loop send this packet BRUH
+			if (buff->_buffID != 43104 && buff->_buffID != 43105)
+			{
+				CombatLog* pCombatLog = new CombatLog;
+				pCombatLog->_type = CombatLogType::BUFF_STARTED;
+				pCombatLog->_val1 = buff->_buffID;
+				pCombatLog->_val2 = buff->_stack;
+				COMBATMETER.Insert(buff->_playerID, CombatType::PLAYER, pCombatLog);
+			}
 		}
 
 		//Log::MyLog(const_cast<LPTSTR>(_T("[DEBUG] [BUFF IN] [PLAYER ID = %08x] [BUFF ID = %d] [BUFF STACK = %d] [DURATION = %f] [GIVER ID = %08x] [Unknown = %u]\n")), buff->_playerID, buff->_buffID, buff->_stack, buff->_duration, buff->_giverID, buff->_unknown01);

@@ -203,6 +203,7 @@
     <ClInclude Include="Soulworker Packet\SWPacket.h" />
     <ClInclude Include="Soulworker Packet\SWPacketAggroChanged.h" />
     <ClInclude Include="Soulworker Packet\SWPacketAkasic.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketBigParty.h" />
     <ClInclude Include="Soulworker Packet\SWPacketBuffIn.h" />
     <ClInclude Include="Soulworker Packet\SWPacketBuffOut.h" />
     <ClInclude Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketCooldown.h" />
     <ClInclude Include="Soulworker Packet\SWPacketDamage.h" />
     <ClInclude Include="Soulworker Packet\SWPacketDead.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketEnterAnimation.h" />
     <ClInclude Include="Soulworker Packet\SWPacketGestureUsed.h" />
     <ClInclude Include="Soulworker Packet\SWPacketHeartbeat.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMaker.h" />
@@ -223,7 +225,6 @@
     <ClInclude Include="Soulworker Packet\SWPacketOtherUseSkill.h" />
     <ClInclude Include="Soulworker Packet\SWPacketParty.h" />
     <ClInclude Include="Soulworker Packet\SWPacketPartyListInfo.h" />
-    <ClInclude Include="Soulworker Packet\SWPacketPos.h" />
     <ClInclude Include="Soulworker Packet\SWPacketSpawnedCharInfo.h" />
     <ClInclude Include="Soulworker Packet\SWPacketStartMove.h" />
     <ClInclude Include="Soulworker Packet\SWPacketStatChange.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="Soulworker Packet\SWPacket.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketAggroChanged.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketAkasic.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketBigParty.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketBuffIn.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketBuffOut.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketCharacterUpdateSpecialOptionList.cpp" />
@@ -295,6 +297,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketCooldown.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketDamage.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketDead.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketEnterAnimation.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketGestureUsed.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketHeartbeat.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMaker.cpp" />
@@ -308,7 +311,6 @@
     <ClCompile Include="Soulworker Packet\SWPacketOtherUseSkill.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketParty.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketPartyListInfo.cpp" />
-    <ClCompile Include="Soulworker Packet\SWPacketPos.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketSpawnedCharInfo.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketStartMove.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketStatChange.cpp" />

@@ -27,7 +27,10 @@ enum CombatLogType
 	TAKE_DAMAGE_CRIT = 32,
 
 	BUFF_STARTED = 40,
-	BUFF_END = 41
+	BUFF_END = 41,
+
+	INVINCIBLE_SET = 50,
+	INVINCIBLE_UNSET = 51
 };
 
 struct CombatLog

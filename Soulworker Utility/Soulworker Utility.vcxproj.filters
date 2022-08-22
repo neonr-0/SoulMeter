@@ -261,9 +261,6 @@
     <ClInclude Include="Soulworker Packet\SWPacketStatChange.h">
       <Filter>SWPacket\Packet\0x03</Filter>
     </ClInclude>
-    <ClInclude Include="Soulworker Packet\SWPacketPos.h">
-      <Filter>SWPacket\Packet\0x2e Force</Filter>
-    </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketInInfoMonster.h">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClInclude>
@@ -393,6 +390,12 @@
     <ClInclude Include="Combat Meter\Combat.h">
       <Filter>Damge Meter\Combat Meter</Filter>
     </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketBigParty.h">
+      <Filter>SWPacket\Packet\0x2e Force</Filter>
+    </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketEnterAnimation.h">
+      <Filter>SWPacket\Packet\0x05</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -521,9 +524,6 @@
     <ClCompile Include="Soulworker Packet\SWPacketStatChange.cpp">
       <Filter>SWPacket\Packet\0x03</Filter>
     </ClCompile>
-    <ClCompile Include="Soulworker Packet\SWPacketPos.cpp">
-      <Filter>SWPacket\Packet\0x2e Force</Filter>
-    </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketInInfoMonster.cpp">
       <Filter>SWPacket\Packet\0x04 World</Filter>
     </ClCompile>
@@ -634,6 +634,12 @@
     </ClCompile>
     <ClCompile Include="Combat Meter\Combat.cpp">
       <Filter>Damge Meter\Combat Meter</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketBigParty.cpp">
+      <Filter>SWPacket\Packet\0x2e Force</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketEnterAnimation.cpp">
+      <Filter>SWPacket\Packet\0x05</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

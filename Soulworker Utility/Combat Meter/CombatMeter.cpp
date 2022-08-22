@@ -125,6 +125,12 @@ string CombatMeter::ConvertCombatLogVal(CombatLog* pCombatLog, CombatType type)
 			sprintf_s(tmp, "%s %s", typeText, buffName);
 		break;
 	}
+	case CombatLogType::INVINCIBLE_SET:
+	case CombatLogType::INVINCIBLE_UNSET:
+	{
+		sprintf_s(tmp, "%s %s", DAMAGEMETER.GetPlayerName(static_cast<UINT32>(pCombatLog->_val1)), typeText);
+		break;
+	}
 	default:
 		sprintf_s(tmp, "Unk%d(%.0lf, %.0lf)", pCombatLog->_type, pCombatLog->_val1, pCombatLog->_val2);
 		break;

@@ -21,6 +21,7 @@
 // stopMove
 // jump
 // cancelwithmove
+#include ".\Soulworker Packet\SWPacketEnterAnimation.h"
 
 /* 0x06 */
 // DODGE
@@ -55,7 +56,7 @@
 #include ".\Soulworker Packet\SWPacketGestureUsed.h"
 
 /* 0x2e */
-#include ".\Soulworker Packet\SWPacketPos.h"
+#include ".\Soulworker Packet\SWPacketBigParty.h"
 
 // SWSPacket
 #include ".\Soulworker Packet\SWSPacket.h"
@@ -85,6 +86,7 @@ enum RecvOPcode {
 	STOPMOVE = 0x0504,
 	JUMP = 0x0506,
 	CANCEL_WITHMOVE = 0x0511,
+	ENTER_ANIMATION = 0x050d,
  
 	/* 0x06 */
 	DODGE = 0x0607,
@@ -118,7 +120,7 @@ enum RecvOPcode {
 	GESTURE_USED = 0x2301,
 
 	/* 0x2e */
-	POS = 0x2e09,
+	BIG_PARTY = 0x2e09,
 };
 
 enum class SendOPCode

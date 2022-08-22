@@ -108,6 +108,9 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 		case RecvOPcode::CANCEL_WITHMOVE:
 			break;
+		case RecvOPcode::ENTER_ANIMATION:
+			swpacket = new SWPacketEnterAnimation(swheader, data);
+			break;
 
 			/*0x06 Combat*/
 		//case RecvOPcode::EVADE:
@@ -175,9 +178,11 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 
 			/* 0x2e Force*/
 			// 8 players party
-		case RecvOPcode::POS: //0817
-			swpacket = new SWPacketPos(swheader, data);
+		case RecvOPcode::BIG_PARTY: //0817
+			swpacket = new SWPacketBigParty(swheader, data);
 			break;
+
+
 
 		default:
 #if DEBUG_RECV_DISPLAYPKT == 1

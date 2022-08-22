@@ -3,31 +3,31 @@
 #include ".\Soulworker Packet\SWPacket.h"
 #include ".\Damage Meter\Damage Meter.h"
 
-#define SWPACKETPOS_DUMMY 36
+#define SWPACKETBIGPARTY_DUMMY 36
 
 #pragma pack(push, 1)
 
-typedef struct _SWPACKETPOS_HEADER {
+typedef struct _SWPACKETBIGPARTY_HEADER {
 	BYTE _unknown01[4];
 	UINT32 _posHostID;
 	BYTE _unknown02[10];
 	BYTE _posPlayerCount;
-}SWPACKETPOS_HEADER;
+}SWPACKETBIGPARTY_HEADER;
 
-typedef struct _SWPACKETPOS_DATA {
+typedef struct _SWPACKETBIGPARTY_DATA {
 	UINT32 _playerID;
 	USHORT _nickSize;
-}SWPACKETPOS_DATA;
+}SWPACKETBIGPARTY_DATA;
 
 #pragma pack(pop)
 
-class SWPacketPos : public SWPacket {
+class SWPacketBigParty : public SWPacket {
 protected:
-	SWPacketPos() {}
+	SWPacketBigParty() {}
 
 public:
-	SWPacketPos(SWHEADER* swheader, BYTE* data);
-	~SWPacketPos() {}
+	SWPacketBigParty(SWHEADER* swheader, BYTE* data);
+	~SWPacketBigParty() {}
 
 	VOID Do();
 	VOID Log();

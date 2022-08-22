@@ -157,6 +157,8 @@
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_32": "Take damage(Crit)",
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_40": "Started buff",
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_41": "End buff",
+    "STR_UTILLWINDOW_COMBAT_LOG_TYPE_50": "Set Invincible",
+    "STR_UTILLWINDOW_COMBAT_LOG_TYPE_51": "Unset Invincible",
 
     "STR_STAT_TYPE_0": "None",
     "STR_STAT_TYPE_1": "CurrentHP",
