@@ -237,8 +237,8 @@
     "STR_STAT_TYPE_74": "苦痛抵抗力",
     "STR_STAT_TYPE_75": "PvP傷害加成",
     "STR_STAT_TYPE_76": "PvP防禦加成",
-    "STR_STAT_TYPE_77": "移動速度(修正前)(%%)",
-    "STR_STAT_TYPE_78": "攻擊速度(修正前)(%%)",
+    "STR_STAT_TYPE_77": "移動速度(遞減前)(%%)",
+    "STR_STAT_TYPE_78": "攻擊速度(遞減前)(%%)",
 
     "STR_SPECIAL_STAT_TYPE_0": "冷卻時間減少(%%)",
     "STR_SPECIAL_STAT_TYPE_1": "PvP附加傷害",
@@ -295,7 +295,6 @@
     "STR_SPECIAL_STAT_TYPE_52": "金色城堡減少傷害(%%)",
     "STR_SPECIAL_STAT_TYPE_53": "原始勢力附加傷害(%%)",
     "STR_SPECIAL_STAT_TYPE_54": "原始勢力減少傷害(%%)",
-    "STR_SPECIAL_STAT_TYPE_55": "STAT_TYPE_55",
 
     "STR_FILEDIALOG_PATH": "目錄",
     "STR_FILEDIALOG_NAME": "名稱",

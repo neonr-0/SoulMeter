@@ -295,7 +295,6 @@
     "STR_SPECIAL_STAT_TYPE_52": "CitadelDamageDown(%%)",
     "STR_SPECIAL_STAT_TYPE_53": "PrimalDamageAdd(%%)",
     "STR_SPECIAL_STAT_TYPE_54": "PrimalDamageDown(%%)",
-    "STR_SPECIAL_STAT_TYPE_55": "STAT_TYPE_55",
 
     "STR_FILEDIALOG_PATH": "Path",
     "STR_FILEDIALOG_NAME": "Name",
