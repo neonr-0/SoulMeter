@@ -1,3 +1,16 @@
+## 1.3.2.1
+
+### 功能新增(Feature add)
+
+- 新增缺少的素質名稱(Add new stats type)
+- 新增新的戰鬥紀錄類型(ESC)(Add new CombatLog type for ESC)
+
+
+### 功能修正(Feature fix)
+
+- 修正未安裝VC2010依賴庫無法開啟程式(Fix can't open DPS when not install VC2010 runtime)
+- 修正選擇最後一個紀錄時會崩潰(Fix crash when selecting the last record)
+
 ## 1.3.2.0a
 
 ### 功能修正(Feature fix)
