@@ -24,6 +24,7 @@ VOID UtillWindow::handleDialogInfo()
 					}
 					else if (_fileDialogInfo.type == ImGuiFileDialogType_OpenFile)
 					{
+						_currentIndex = -1;
 						HISTORY.ClearVector();
 						SAVEDATA.GetLock();
 						{
