@@ -136,7 +136,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\openssl\lib\VC\static;..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;..\Soulworker Utility\Third Party\PcapPlusPlus\x64\Debug;..\Soulworker Utility\Third Party\PcapPlusPlus\pthread\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\openssl\lib\VC;..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;..\Soulworker Utility\Third Party\PcapPlusPlus\x64\Debug;..\Soulworker Utility\Third Party\PcapPlusPlus\pthread\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;wpcap.lib;Packet.lib;Common++.lib;Packet++.lib;Pcap++.lib;pthreadVC2.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
@@ -166,7 +166,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\openssl\lib\VC\static;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;..\Soulworker Utility\Third Party\PcapPlusPlus\x64\Release;..\Soulworker Utility\Third Party\PcapPlusPlus\pthread\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\openssl\lib\VC;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;..\Soulworker Utility\Third Party\PcapPlusPlus\x64\Release;..\Soulworker Utility\Third Party\PcapPlusPlus\pthread\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;wpcap.lib;Packet.lib;Common++.lib;Packet++.lib;Pcap++.lib;pthreadVC2.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
