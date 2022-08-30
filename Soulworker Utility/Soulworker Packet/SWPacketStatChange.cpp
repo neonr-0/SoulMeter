@@ -34,7 +34,6 @@ VOID SWPacketStatChange::Do() {
 #if _DEBUG
 			Log::WriteLogA("[SWPacketStatChange] Find Unknown statType = %x, statValue = %f", party_data->_statType, party_data->_statValue);
 #endif
-			continue;
 		}
 		else {
 			//Log::MyLog(_T("[DEBUG] [ID %08x] [statType = %x], [statValue = %f]\n"), stat_header->_playerID, party_data->_statType, party_data->_statValue);

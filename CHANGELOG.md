@@ -10,6 +10,7 @@
 
 - 修正未安裝VC2010依賴庫無法開啟程式(Fix can't open DPS when not install VC2010 runtime)
 - 修正選擇最後一個紀錄時會崩潰(Fix crash when selecting the last record)
+- 修正數據庫未包含琪的所有76技能(Fix DB not include all 76 skills of Chii)
 
 ## 1.3.2.0a
 
