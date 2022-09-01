@@ -103,12 +103,11 @@ enum StatType {
 
 	PvPAttack = 0x4B,
 	PvPDefense = 0x4C,
-	
-	MAX_STAT = 0x4D,
 
-	UNK_78 = 0x4E,
-	UNK_79 = 0x4F,
+	MoveSpeedNoFix = 0x4D,
+	AttackSpeedNoFix = 0x4E,
 
+	MAX_STAT,
 	END
 };
 

@@ -10,8 +10,8 @@
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#define APP_VERSION "1.3.2.1"
-#define SWMAGIC 8
+#define APP_VERSION "1.3.2.2"
+#define SWMAGIC 9
 #define SWCONSTVALUE_RECV 1
 #define SWCONSTVALUE_SEND 2 // maybe client send request
 #define USE_XOR 0

@@ -1,3 +1,15 @@
+## 1.3.2.2
+
+### 功能新增(Feature add)
+
+- 對應Steam v2.0.1.3(Update to Steam v2.0.1.3)
+- 更新數據庫(Update DB)
+
+
+### 功能修正(Feature fix)
+
+- 修正讀取新的歷史紀錄有時無法顯示(Fix loading new savedata sometimes will can't show)
+
 ## 1.3.2.1
 
 ### 功能新增(Feature add)
