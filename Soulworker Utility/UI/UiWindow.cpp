@@ -26,7 +26,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 	return uiWindow->WndProc(hWnd, msg, wParam, lParam);
 }
 
-UiWindow::UiWindow() : _x(0), _y(0), _width(0), _height(0), _swapChain(nullptr), _renderTargetView(nullptr), _hInst(0), _hWnd(0), _imGuiContext(nullptr) {
+UiWindow::UiWindow() : _x(0), _y(0), _width(0), _height(0), _swapChain(nullptr), _renderTargetView(nullptr), _hInst(0), _hWnd(0), _imGuiContext(nullptr), _deltaTime(0) {
 	uiWindow = this;
 }
 
@@ -157,29 +157,54 @@ BOOL UiWindow::SetFontList() {
 	_finddata_t fd;
 	const char* path = ".\\Font\\";
 	const char* filter = "*.ttf";
+	vector<string> vsFontPathPool;
 
 	string fontDir(path);
 	fontDir.append(filter);
-	
-	auto handle = _findfirst(fontDir.c_str(), &fd);
 
-	if (handle == -1)
-		return FALSE;
+	auto handle = _findfirst(fontDir.c_str(), &fd);
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImFontConfig config;
 	config.OversampleH = 1;
 	config.OversampleV = 1;
 
-	do {
-		char fontPath[MAX_BUFFER_LENGTH] = { 0 };
-		strcat_s(fontPath, path);
-		strcat_s(fontPath, fd.name);
+	if (handle == -1)
+	{
+		char szSysPath[MAX_PATH] = { 0 };
+		if (GetWindowsDirectoryA(szSysPath, MAX_PATH) != 0)
+		{
+			const char* szWindowsFontsDir = "\\Fonts\\";
+			string sFindDefaultFontPath(szSysPath);
+			sFindDefaultFontPath.append(szWindowsFontsDir);
+			sFindDefaultFontPath.append("msjh.*");
 
-		io.Fonts->AddFontFromFileTTF(fontPath, 32, &config, io.Fonts->GetGlyphRangesChineseAndKoreaFull());
-	} while (_findnext(handle, &fd) != -1);
-	
-	_findclose(handle);
+			_finddata_t defaultFontFD;
+			auto pFont = _findfirst(sFindDefaultFontPath.c_str(), &defaultFontFD);
+
+			if (pFont != -1)
+			{
+				sFindDefaultFontPath = szSysPath;
+				sFindDefaultFontPath.append(szWindowsFontsDir);
+				sFindDefaultFontPath.append(defaultFontFD.name);
+				vsFontPathPool.push_back(sFindDefaultFontPath);
+			}
+		}
+	}
+	else {
+		do {
+			char fontPath[MAX_BUFFER_LENGTH] = { 0 };
+			strcat_s(fontPath, path);
+			strcat_s(fontPath, fd.name);
+
+			vsFontPathPool.push_back(fontPath);
+		} while (_findnext(handle, &fd) != -1);
+
+		_findclose(handle);
+	}
+
+	for (auto itr = vsFontPathPool.begin(); itr != vsFontPathPool.end(); itr++)
+		io.Fonts->AddFontFromFileTTF((*itr).c_str(), 32, &config, io.Fonts->GetGlyphRangesChineseAndKoreaFull());
 
 	return TRUE;
 }

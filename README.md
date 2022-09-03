@@ -21,6 +21,13 @@
 option.xml 與 imgui.ini 為使用者設定
 
 
+Q&A
+---------------------
+
+Q: 無法顯示中文
+
+A: 請將中文字體文件(.ttf/.ttc)放到Font資料夾內
+
 
 注意事項
 ---------------------
@@ -57,6 +64,14 @@ Right click title bar can display more features
 Can get player details with left click table of character name row
 
 option.xml and imgui.ini is user settings
+
+
+Q&A
+---------------------
+
+Q: Can't display chinese
+
+A: Put chinese font file to Font folder.
 
 
 

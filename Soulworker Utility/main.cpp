@@ -19,7 +19,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	MiniDump::Begin();
 	{
-		DWORD errorCode = 0;
+		DWORD errorCode = ERROR_SUCCESS;
 		CHAR errorMsg[512] = { 0 };
 
 		do
