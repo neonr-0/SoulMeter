@@ -1,3 +1,14 @@
+## 1.3.2.4
+
+### 功能新增(Feature add)
+
+- 於單人排名模式新增不保存未完成的副本紀錄(Add don't save unfinished maze history in solo rank mode)
+
+
+### 功能修正(Feature fix)
+
+- 修正於歷史紀錄模式下增減益層數不顯示(Fix buff stack not show in history mode)
+
 ## 1.3.2.3
 
 ### 功能新增(Feature add)

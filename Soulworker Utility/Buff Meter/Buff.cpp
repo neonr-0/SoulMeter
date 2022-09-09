@@ -16,7 +16,6 @@ VOID Buff::SetNameFromDB()
 
 	CHAR stackName[8] = { 0 };
 	sprintf_s(stackName, 8, "(%d)", _stack);
-
 	strcat_s(_name, BUFF_NAME_LEN, stackName);
 }
 

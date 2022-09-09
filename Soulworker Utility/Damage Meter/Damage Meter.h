@@ -751,6 +751,11 @@ public:
 		_testMode = TRUE;
 	}
 
+	VOID ClearTestMode()
+	{
+		_testMode = FALSE;
+	}
+
 	LPVOID GetHistoryHI()
 	{
 		return _historyHI;

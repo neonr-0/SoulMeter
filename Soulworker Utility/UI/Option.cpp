@@ -15,6 +15,7 @@
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
 	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
+	_isDontSaveUnfinishedMaze(false),
 	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE),
 	_selectedInterface("ALL")
 {
@@ -298,7 +299,7 @@ VOID UiOption::ShowFeatures()
 	}
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_MODE"), (bool*)&_isSoloMode);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
-	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode); ImGui::SameLine(); ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_DONT_SAVE_UNFINISHED_MAZE"), (bool*)&_isDontSaveUnfinishedMaze);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_USE_SAVEDATA"), (bool*)&_isUseSaveData);
 }
 
@@ -523,6 +524,11 @@ BOOL UiOption::GetOption() {
 	if (attr2 != nullptr) {
 		strcpy_s(_selectedInterface, attr2->GetText());
 	}
+
+	
+	attr = ele->FindAttribute("IsDontSaveUnfinishedMaze");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_isDontSaveUnfinishedMaze);
 
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1M = %d")), _is1M);
@@ -895,6 +901,7 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 
 	option->InsertNewChildElement("UseInterface")->SetText(_selectedInterface);
 
+	option->SetAttribute("IsDontSaveUnfinishedMaze", _isDontSaveUnfinishedMaze);
 
 	RECT rect;
 	GetWindowRect(UIWINDOW.GetHWND(), &rect);
@@ -1085,6 +1092,11 @@ const BOOL& UiOption::isUseSaveData()
 	if (_oriIsUseSaveData != _isUseSaveData)
 		return _oriIsUseSaveData;
 	return _isUseSaveData;
+}
+
+const BOOL& UiOption::isDontSaveUnfinishedMaze()
+{
+	return _isDontSaveUnfinishedMaze;
 }
 
 VOID UiOption::Update() {

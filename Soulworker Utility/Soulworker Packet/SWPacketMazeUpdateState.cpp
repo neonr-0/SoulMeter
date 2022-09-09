@@ -23,7 +23,8 @@ VOID SWPacketMazeUpdateState::Do() {
 		break;
 		// Maze start
 	case 0x01:
-		PACKETCAPTURE.UpdateLoss(FALSE, TRUE);
+		if (UIOPTION.isDontSaveUnfinishedMaze())
+			DAMAGEMETER.SetTestMode();
 		DAMAGEMETER.SetMazeState(FALSE);
 		DAMAGEMETER.Start();
 		break;
@@ -35,6 +36,7 @@ VOID SWPacketMazeUpdateState::Do() {
 		break;
 		// Maze end
 	case 0x04:
+		DAMAGEMETER.ClearTestMode();
 		DAMAGEMETER.SetMazeState(TRUE);
 		DAMAGEMETER.Suspend();
 		break;
