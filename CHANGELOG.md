@@ -1,3 +1,14 @@
+## 1.3.2.3
+
+### 功能新增(Feature add)
+
+- 將滑鼠移動至增減益表格的名稱上方可查看說明(Hovering name of buff table can show buff info)
+
+
+### 功能修正(Feature fix)
+
+- 預設字體變更為微軟正黑體(Changed default font to msjh if font folder is empty)
+
 ## 1.3.2.2
 
 ### 功能新增(Feature add)

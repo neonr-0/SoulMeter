@@ -182,12 +182,16 @@ BOOL UiWindow::SetFontList() {
 			_finddata_t defaultFontFD;
 			auto pFont = _findfirst(sFindDefaultFontPath.c_str(), &defaultFontFD);
 
-			if (pFont != -1 && (strstr(defaultFontFD.name, ".ttc") != NULL || strstr(defaultFontFD.name, ".ttf") != NULL))
+			if (pFont != -1)
 			{
-				sFindDefaultFontPath = szSysPath;
-				sFindDefaultFontPath.append(szWindowsFontsDir);
-				sFindDefaultFontPath.append(defaultFontFD.name);
-				vsFontPathPool.push_back(sFindDefaultFontPath);
+				string fnExt = defaultFontFD.name;
+				if (fnExt.substr(fnExt.find_last_of(".") + 1) == "ttc" || fnExt.substr(fnExt.find_last_of(".") + 1) == "ttf")
+				{
+					sFindDefaultFontPath = szSysPath;
+					sFindDefaultFontPath.append(szWindowsFontsDir);
+					sFindDefaultFontPath.append(defaultFontFD.name);
+					vsFontPathPool.push_back(sFindDefaultFontPath);
+				}
 			}
 		}
 	}
