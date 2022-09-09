@@ -7,17 +7,17 @@ Buff::Buff(USHORT buffID, BYTE stack) : _buffID(buffID), _stack(stack) {
 	_time = 0;
 
 	SetNameFromDB();
-
-	CHAR stackName[8] = { 0 };
-	sprintf_s(stackName, 8, "(%d)", stack);
-
-	strcat_s(_name, BUFF_NAME_LEN, stackName);
 }
 
 VOID Buff::SetNameFromDB()
 {
 	ZeroMemory(&_desc, BUFF_DESC_LEN);
 	SWDB.GetBuffName(_buffID, _name, BUFF_NAME_LEN, _desc, BUFF_DESC_LEN);
+
+	CHAR stackName[8] = { 0 };
+	sprintf_s(stackName, 8, "(%d)", _stack);
+
+	strcat_s(_name, BUFF_NAME_LEN, stackName);
 }
 
 VOID Buff::Update() {
