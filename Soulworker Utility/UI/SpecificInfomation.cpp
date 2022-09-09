@@ -389,9 +389,16 @@ VOID SpecificInformation::UpdateBuffTable() {
 
 			DrawBar(windowWidth, duration_percent, UIOPTION.GetJobColor(DAMAGEMETER.GetPlayerJob(_playerID)));
 
-			// NAME
-			ImGui::Text((*itr)->GetName());
-
+			// NAME & DESC
+			ImGui::TextAlignCenter::UnSetTextAlignCenter();
+			{
+				// Custom text align bug BRUH
+				ImGui::SetCursorPosX((ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize((*itr)->GetName()).x - ImGui::GetScrollX()) * 0.5f);
+				ImGui::Text((*itr)->GetName());
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip((*itr)->GetDesc());
+			}
+			ImGui::TextAlignCenter::SetTextAlignCenter();
 			ImGui::TableNextColumn();
 
 			// DURATION

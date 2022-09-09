@@ -3238,10 +3238,10 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
 {
     if (!text_end)
         text_end = text_begin + strlen(text_begin); // ImGui:: functions generally already provides a valid text_end, so this is merely to handle direct calls.
-
-    if (ImGui::TextAlignCenter::CheckAlignCenter()) 
-        pos.x = pos.x + (clip_rect.z - clip_rect.x - ImGui::CalcTextSize(text_begin).x) / 2;
     
+    if (ImGui::TextAlignCenter::CheckAlignCenter())
+        pos.x = pos.x + (clip_rect.z - clip_rect.x - ImGui::CalcTextSize(text_begin).x) / 2;
+
     // Align to be pixel perfect
     pos.x = IM_FLOOR(pos.x);
     pos.y = IM_FLOOR(pos.y);

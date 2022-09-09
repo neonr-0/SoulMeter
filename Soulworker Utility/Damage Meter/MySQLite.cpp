@@ -137,7 +137,7 @@ BOOL MySQL::InitMapDB() {
 BOOL MySQL::InitBuffDB() {
 	CHAR* errbuf = nullptr;
 
-	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Buff (Id INTEGER PRIMARY KEY, Name_EN TEXT NULL, Name_TC TEXT NOT NULL)";
+	const CHAR* sql = "CREATE TABLE IF NOT EXISTS Buff (Id INTEGER PRIMARY KEY, Name_EN TEXT NULL, Name_TC TEXT NOT NULL, Desc_EN TEXT NULL, Desc_TC TEXT NOT NULL)";
 
 	if (sqlite3_exec(_db, sql, 0, 0, &errbuf) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in InitBuffDB : %s"), errbuf);
@@ -146,7 +146,7 @@ BOOL MySQL::InitBuffDB() {
 		return FALSE;
 	}
 
-	std::string sql2 = "SELECT Name_"s + string(LANGMANAGER.GetText("STR_SQL_SUFFIX")) + " From Buff Where Id = ?";
+	std::string sql2 = "SELECT Name_"s + string(LANGMANAGER.GetText("STR_SQL_SUFFIX")) + ",Desc_"s + string(LANGMANAGER.GetText("STR_SQL_SUFFIX")) + " From Buff Where Id = ?";
 
 	if (sqlite3_prepare_v2(_db, sql2.c_str(), -1, &_buff_stmt, 0) != SQLITE_OK) {
 		Log::WriteLogA(const_cast<CHAR*>("Error in sqlite3_prepare_v2 : %s"), sqlite3_errmsg(_db));
@@ -317,7 +317,7 @@ BOOL MySQL::GetMapName(UINT32 mapID, CHAR* out_buffer, SIZE_T out_buffer_length)
 	return TRUE;
 }
 
-BOOL MySQL::GetBuffName(UINT32 buffId, CHAR* out_buffer, SIZE_T out_buffer_length) {
+BOOL MySQL::GetBuffName(UINT32 buffId, CHAR* out_buffer, SIZE_T out_buffer_length, CHAR* out_buffer_desc, SIZE_T out_buffer_desc_length) {
 
 	if (out_buffer == nullptr || _buff_stmt == nullptr)
 		return FALSE;
@@ -342,8 +342,17 @@ BOOL MySQL::GetBuffName(UINT32 buffId, CHAR* out_buffer, SIZE_T out_buffer_lengt
 			return FALSE;
 
 		strcpy_s(out_buffer, out_buffer_length, result);
+
+		if (out_buffer_desc != NULL)
+		{
+			result = (const CHAR*)sqlite3_column_text(_buff_stmt, 1);
+
+			if (result == nullptr || strlen(result) > out_buffer_desc_length)
+				return FALSE;
+
+			strcpy_s(out_buffer_desc, out_buffer_desc_length, result);
+		}
 	}
 
 	return TRUE;
 }
-

@@ -116,7 +116,7 @@ string CombatMeter::ConvertCombatLogVal(CombatLog* pCombatLog, CombatType type)
 	case CombatLogType::BUFF_END:
 	{
 		char buffName[128] = { 0 };
-		if (!SWDB.GetBuffName(static_cast<UINT32>(pCombatLog->_val1), buffName, sizeof(buffName)))
+		if (!SWDB.GetBuffName(static_cast<UINT32>(pCombatLog->_val1), buffName, sizeof(buffName), NULL, NULL))
 			sprintf_s(buffName, "%.0f", pCombatLog->_val1);
 
 		if (pCombatLog->_type == CombatLogType::BUFF_STARTED)

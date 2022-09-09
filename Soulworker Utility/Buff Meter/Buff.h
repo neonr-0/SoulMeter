@@ -5,13 +5,15 @@
 using namespace std;
 using namespace SoulMeterFBS::History;
 
-#define BUFF_NAME_LEN 64 // 
+#define BUFF_NAME_LEN 64
+#define BUFF_DESC_LEN 256
 
 class Buff : public MemoryPool<Buff> {
 private:
 	USHORT _buffID;
 	BYTE _stack;
 	CHAR _name[BUFF_NAME_LEN];
+	CHAR _desc[BUFF_DESC_LEN];
 
 	timePoint _timePoint;
 	FLOAT _time;
@@ -36,6 +38,7 @@ public:
 	const BYTE& GetStack();
 	const FLOAT& GetTime();
 	const CHAR* GetName();
+	const CHAR* GetDesc();
 
 	VOID SetNameFromDB();
 

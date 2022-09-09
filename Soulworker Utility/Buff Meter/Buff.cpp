@@ -16,7 +16,8 @@ Buff::Buff(USHORT buffID, BYTE stack) : _buffID(buffID), _stack(stack) {
 
 VOID Buff::SetNameFromDB()
 {
-	SWDB.GetBuffName(_buffID, _name, BUFF_NAME_LEN);
+	ZeroMemory(&_desc, BUFF_DESC_LEN);
+	SWDB.GetBuffName(_buffID, _name, BUFF_NAME_LEN, _desc, BUFF_DESC_LEN);
 }
 
 VOID Buff::Update() {
@@ -70,4 +71,8 @@ const FLOAT& Buff::GetTime() {
 
 const CHAR* Buff::GetName() {
 	return _name;
+}
+
+const CHAR* Buff::GetDesc() {
+	return _desc;
 }

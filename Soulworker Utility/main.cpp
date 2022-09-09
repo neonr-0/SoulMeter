@@ -81,7 +81,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		} while (false);
 
-		if (errorCode) {
+		if (errorCode != ERROR_SUCCESS) {
 			MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK | MB_TOPMOST);
 			Log::WriteLogA(errorMsg);
 		}
