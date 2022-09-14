@@ -196,7 +196,9 @@ VOID PlayerTable::BeginPopupMenu() {
 		if (ImGui::BeginMenu(LANGMANAGER.GetText("STR_MENU_HISTORY"), history_open)) {
 			HISTORY.GetLock();
 			{
-				INT32 i = static_cast<INT32>(HISTORY.size());
+				INT32 i = static_cast<INT32>(HISTORY.size()), iSelectedID = 0;
+				BOOL bChangeHistory = false;
+				HISTORY_INFO* pSelectedHI = nullptr;
 				for (auto itr = HISTORY.rbegin(); itr != HISTORY.rend(); itr++)
 				{
 					HISTORY_INFO* pHI = (HISTORY_INFO*)*itr;
@@ -215,12 +217,21 @@ VOID PlayerTable::BeginPopupMenu() {
 
 					i--;
 
-					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) {
+					if (ImGui::Selectable(label, DAMAGEMETER.GetCurrentHistoryId() == i) && !DAMAGEMETER.isRun()) 
+					{
 						if (!DAMAGEMETER.isRun()) {
-							DAMAGEMETER.SetCurrentHistoryId(i);
-							DAMAGEMETER.SetHistory((LPVOID)pHI);
+							bChangeHistory = true;
+							iSelectedID = i;
+							pSelectedHI = pHI;
 						}
 					}
+				}
+
+				if (bChangeHistory)
+				{
+					DAMAGEMETER.SetCurrentHistoryId(iSelectedID);
+					DAMAGEMETER.SetHistory((LPVOID)pSelectedHI);
+					bChangeHistory = false;
 				}
 				HISTORY.FreeLock();
 			}

@@ -28,6 +28,10 @@ Q: 無法顯示中文
 
 A: 請將中文字體文件(.ttf/.ttc)放到Font資料夾內
 
+Q: 升級到新版時如何保存舊版本的設定
+
+A: 複製option.xml 與 imgui.ini 到新版本的資料夾
+
 
 注意事項
 ---------------------
@@ -73,6 +77,9 @@ Q: Can't display chinese
 
 A: Put chinese font file to Font folder.
 
+Q: how to keep settings when upgrading to new version
+
+A: Copy option.xml and imgui.ini to new version folder
 
 
 Notice
