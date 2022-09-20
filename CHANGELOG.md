@@ -1,3 +1,15 @@
+## 1.3.2.5
+
+### 功能新增(Add Features)
+
+- 新增滿、均攻速(Add Full、Avg AttackSpeed)
+
+
+### 功能修正(BUG Fixes)
+
+- 修正歷史紀錄選單有時會崩潰的問題(Fix history menu sometimes will crash)
+
+
 ## 1.3.2.4
 
 ### 功能新增(Add Features)
