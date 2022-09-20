@@ -69,6 +69,9 @@ public:
 	UINT64 _avgBDSum = 0;
 	UINT64 _avgBDPreviousTime = 0;
 
+	UINT64 _avgASSum = 0;
+	UINT64 _avgASPreviousTime = 0;
+
 	BOOL _gear90EffectStarted = false;
 	UINT64 _gear90Sum = 0;
 	UINT64 _gear90EffectStartedTime = 0;
@@ -99,6 +102,12 @@ public:
 	DOUBLE _AggroPrevTime = 0;
 	DOUBLE _AggroTime = 0;
 
+	BOOL _fullASStarted = false;
+	UINT64 _fullASStartTime = 0;
+	UINT64 _fullASEndTime = 0;
+	DOUBLE _fullASPrevTime = 0;
+	DOUBLE _fullASTime = 0;
+
 
 	_SW_PLAYER_METADATA() {
 		_id = 0;
@@ -122,6 +131,26 @@ public:
 			break;
 		case StatType::AttackSpeed:
 			_attackSpeed = statValue;
+			if (DAMAGEMETER.isRun()) {
+				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime()); // timer time
+				FLOAT correctedAS = (_attackSpeed > 250) ? 250 : _attackSpeed;
+				_avgASSum += static_cast<UINT64>((time - _avgASPreviousTime) * correctedAS);
+				_avgASPreviousTime = time;
+
+				if (_attackSpeed >= 250) {
+					if (!_fullASStarted) {
+						_fullASStarted = true;
+						_fullASStartTime = time;
+						_fullASPrevTime = _fullASTime;
+					}
+					_fullASEndTime = time;
+				}
+				else if (_fullASStarted) {
+					_fullASStarted = false;
+					_fullASEndTime = time;
+				}
+				CalcFullASTime();
+			}
 			break;
 		case StatType::PartialDamage:
 			_partialDamage = statValue;
@@ -219,6 +248,10 @@ public:
 		_avgBDSum += static_cast<UINT64>((currentTime - _avgBDPreviousTime) * _bossDamage);
 		_avgBDPreviousTime = currentTime;
 
+		FLOAT correctedAS = (_attackSpeed > 250) ? 250 : _attackSpeed;
+		_avgASSum += static_cast<UINT64>((currentTime - _avgASPreviousTime) * correctedAS);
+		_avgASPreviousTime = currentTime;
+
 		if (_fullABStarted) {
 			_fullABStarted = false;
 			_fullABEndTime = currentTime;
@@ -230,6 +263,12 @@ public:
 			_AggroEndTime = currentTime;
 		}
 		CalcAggroTime();
+
+		if (_fullASStarted) {
+			_fullASStarted = false;
+			_fullASEndTime = currentTime;
+		}
+		CalcFullASTime();
 	}
 
 	VOID MeterReseted() {
@@ -258,12 +297,25 @@ public:
 				UINT64 calculatedAvgBD = static_cast<UINT64>((_avgBDSum + avgTimeDifference * _bossDamage));
 				(*player)->SetHistoryAvgBD((DOUBLE)calculatedAvgBD / currentTime);
 
+				DOUBLE currentAS = GetStat(StatType::AttackSpeed);
+				currentAS = currentAS > 250 ? 250.0 : currentAS;
+				avgTimeDifference = currentTime - _avgASPreviousTime;
+				UINT64 calculatedAvgAS = static_cast<UINT64>((_avgASSum + avgTimeDifference * currentAS));
+				(*player)->SetHistoryAvgAS((DOUBLE)calculatedAvgAS / currentTime);
+
 				if (_fullABStarted) {
 					_fullABStarted = false;
 					_fullABEndTime = currentTime;
 					CalcFullABTime();
 				}
 				(*player)->SetHistoryABTime(_fullABTime);
+
+				if (_fullASStarted) {
+					_fullASStarted = false;
+					_fullASEndTime = currentTime;
+					CalcFullASTime();
+				}
+				(*player)->SetHistoryASTime(_fullASTime);
 
 				// 
 				if (_gear90EffectStarted) {
@@ -314,6 +366,9 @@ public:
 		_avgBDSum = 0;
 		_avgBDPreviousTime = 0;
 
+		_avgASSum = 0;
+		_avgASPreviousTime = 0;
+
 		_gear90EffectStarted = false;
 		_gear90Sum = 0;
 		_gear90EffectStartedTime = 0;
@@ -341,6 +396,12 @@ public:
 		_AggroEndTime = 0;
 		_AggroPrevTime = 0;
 		_AggroTime = 0;
+
+		_fullASStarted = false;
+		_fullASStartTime = 0;
+		_fullASEndTime = 0;
+		_fullASPrevTime = 0;
+		_fullASTime = 0;
 	}
 
 	VOID HitEnemy() {
@@ -534,6 +595,14 @@ public:
 			endTime = _fullABEndTime;
 
 		_fullABTime = _fullABPrevTime + ((DOUBLE)(endTime - _fullABStartTime) / 1000);
+	}
+
+	VOID CalcFullASTime(UINT64 endTime = NULL)
+	{
+		if (endTime == NULL || _attackSpeed < 250)
+			endTime = _fullASEndTime;
+
+		_fullASTime = _fullASPrevTime + ((DOUBLE)(endTime - _fullASStartTime) / 1000);
 	}
 
 	VOID CalcAggroTime(UINT64 endTime = NULL)

@@ -259,7 +259,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	const int columnSize = 43;
+	const int columnSize = 46;
 	if (ImGui::BeginTable("###Player Table", columnSize, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
@@ -310,6 +310,9 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_AGGRO_TIME_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AS_TIME"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_FULL_AS_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_AVG_AS_PERCENT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		//ImGuiTableColumnFlags_WidthStretch
 
 		ImGui::TableHeadersRow();
@@ -986,6 +989,60 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			savedResultAggroTime = playerMetaData->_AggroTime;
 		}
 		sprintf_s(label, 128, "%.0f", ((DOUBLE)(savedResultAggroTime * 1000) / DAMAGEMETER.GetTime()) * 100);
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
+
+		static DOUBLE savedResultFullAS = 0;
+		// Full AS Time
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
+			if (DAMAGEMETER.isHistoryMode()) {
+				savedResultFullAS = (*itr)->GetHistoryASTime();
+			}
+			else {
+				playerMetaData->CalcFullASTime(DAMAGEMETER.GetTime());
+				savedResultFullAS = playerMetaData->_fullASTime;
+			}
+			sprintf_s(label, 128, "%.1f", savedResultFullAS);
+		}
+		else {
+			sprintf_s(label, 128, "-");
+		}
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
+
+		// Full AS Percent
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) == LANGMANAGER.GetText("STR_TABLE_YOU")) {
+			sprintf_s(label, 128, "%.0f", ((DOUBLE)(savedResultFullAS * 1000) / DAMAGEMETER.GetTime()) * 100);
+		}
+		else {
+			sprintf_s(label, 128, "-");
+		}
+		ImGui::Text(label);
+		ImGui::TableNextColumn();
+
+		// AS
+		static DOUBLE savedResultAS = 0;
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) != LANGMANAGER.GetText("STR_TABLE_YOU") || _tableTime == 0) {
+			sprintf_s(label, 128, "-");
+		}
+		else if (DAMAGEMETER.isHistoryMode()) {
+			savedResultAS = (*itr)->GetHistoryAvgAS();
+			sprintf_s(label, 128, "%.1f", savedResultAS);
+		}
+		else {
+
+			if ((INT64)(milliTableTime - playerMetaData->_avgASPreviousTime) < 0) {
+				sprintf_s(label, 128, "%.1f", savedResultAS);
+			}
+			else {
+				UINT64 timeDifference = (milliTableTime - playerMetaData->_avgASPreviousTime);
+				DOUBLE currentAS = playerMetaData->GetStat(StatType::AttackSpeed);
+				UINT64 calculatedAvgAS = static_cast<UINT64>((playerMetaData->_avgASSum + timeDifference * currentAS));
+
+				savedResultAS = (DOUBLE)calculatedAvgAS / milliTableTime;
+				sprintf_s(label, 128, "%.1f", savedResultAS);
+			}
+		}
 		ImGui::Text(label);
 		ImGui::TableNextColumn();
 

@@ -52,6 +52,9 @@ table _tDamagePlayer {
   _skillcount:[_tSkillCount];
 
   _historyaggrotime:double;
+  
+  _historyavgas:double;
+  _historyastime:double;
 }
 
 table _tSkillCount {

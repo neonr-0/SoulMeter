@@ -279,6 +279,26 @@ VOID SWDamagePlayer::SetHistoryAggroTime(DOUBLE t)
 	_historyAggroTime = t;
 }
 
+DOUBLE SWDamagePlayer::GetHistoryASTime()
+{
+	return _historyASTime;
+}
+
+VOID SWDamagePlayer::SetHistoryASTime(DOUBLE d)
+{
+	_historyASTime = d;
+}
+
+VOID SWDamagePlayer::SetHistoryAvgAS(DOUBLE d)
+{
+	_historyAvgAS = d;
+}
+
+DOUBLE SWDamagePlayer::GetHistoryAvgAS()
+{
+	return _historyAvgAS;
+}
+
 FLOAT SWDamagePlayer::GetEnlightenSum()
 {
 	return _enlightenSum;

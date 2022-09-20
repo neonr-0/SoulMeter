@@ -63,6 +63,9 @@ private:
 
 	DOUBLE _historyAggroTime = 0;
 
+	DOUBLE _historyASTime = 0;
+	DOUBLE _historyAvgAS = 0.0;
+
 	vector<SWDamageMonster*> _monsterInfo;
 	VOID InsertMonsterInfo(UINT32 monsterID, UINT64 damage, UINT64 critDamage, USHORT hitCount, USHORT critHitCount, UINT32 skillID);
 	VOID Sort();
@@ -118,6 +121,12 @@ public:
 
 	VOID SetHistoryAggroTime(DOUBLE t);
 	DOUBLE GetHistoryAggroTime();
+
+	DOUBLE GetHistoryASTime();
+	VOID SetHistoryASTime(DOUBLE d);
+
+	VOID SetHistoryAvgAS(DOUBLE d);
+	DOUBLE GetHistoryAvgAS();
 
 	VOID setHistoryBS(int type, DOUBLE value);
 	DOUBLE GetHistoryBS(int type);
@@ -217,6 +226,9 @@ public:
 		tdpb.add__skillcount(fcvSkillCount);
 
 		tdpb.add__historyaggrotime(_historyAggroTime);
+
+		tdpb.add__historyavgas(_historyAvgAS);
+		tdpb.add__historyastime(_historyASTime);
 		
 		vDamagePlayer.push_back(tdpb.Finish());
 	}
@@ -289,5 +301,8 @@ public:
 		_historyABTime = tDamagePlayer->_historyabtime();
 
 		_historyAggroTime = tDamagePlayer->_historyaggrotime();
+
+		_historyAvgAS = tDamagePlayer->_historyavgas();
+		_historyASTime = tDamagePlayer->_historyastime();
 	}
 };

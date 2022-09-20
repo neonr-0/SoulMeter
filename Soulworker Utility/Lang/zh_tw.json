@@ -66,6 +66,9 @@
     "STR_TABLE_GIGA_ENLIGHTEN_SKILL_PERCENT": "紅啟蒙/技能(%)",
     "STR_TABLE_TERA_ENLIGHTEN_SKILL_PERCENT": "紫啟蒙/技能(%)",
     "STR_TABLE_AGGRO_TIME_PERCENT": "仇恨%",
+    "STR_TABLE_FULL_AS_PERCENT": "滿攻速(%)",
+    "STR_TABLE_FULL_AS_TIME": "滿攻速(秒)",
+    "STR_TABLE_AVG_AS_PERCENT": "均攻速(%)",
 
     "STR_OPTION_WINDOWS_NAME": "設定",
     "STR_OPTION_FONTSCALE": "文字放大倍率",
