@@ -117,6 +117,24 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 			bypassCheck = true;
 		}
 	}
+	// TF Hard
+	if (worldID == 21019) {
+		if (db2 == 31365101 || db2 == 31365102) {
+			bypassCheck = true;
+		}
+	}
+	// TF Maniac
+	if (worldID == 22019) {
+		if (db2 == 31365121 || db2 == 31365122) {
+			bypassCheck = true;
+		}
+	}
+	// TF Normal
+	if (worldID == 23019) {
+		if (db2 == 31365131 || db2 == 31365132) {
+			bypassCheck = true;
+		}
+	}
 
 	// Ignore object, Ex: car
 	if (bypassCheck || (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end() && db->_type != 6)) {

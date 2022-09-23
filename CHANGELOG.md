@@ -1,3 +1,10 @@
+## 1.3.2.6
+
+### 功能修正(BUG Fixes)
+
+- 對應Steam v2.0.2.2(Updated to Steam v2.0.2.2)
+
+
 ## 1.3.2.5
 
 ### 功能新增(Add Features)

@@ -24,6 +24,11 @@ static unordered_set<UINT32> pauseIdList({
 	/* BS Solo */
 	32320101, // Tenebris P1
 
+	/* TF */
+	31365101, // Ferdelance Hard P1
+	31365121, // Ferdelance Maniac P1
+	31365131, // Ferdelance Normal P1
+
 	});
 
 static unordered_set<UINT32> endIdList({
@@ -50,6 +55,11 @@ static unordered_set<UINT32> endIdList({
 	/* RANK */
 	32308101, // Raphakumba Rank
 	32301001, // Flemma Rank
+
+	/* TF */
+	31365102, // Ferdelance Hard P1
+	31365122, // Ferdelance Maniac P1
+	31365132, // Ferdelance Normal P1
 
 	});
 
@@ -81,6 +91,11 @@ static unordered_set<UINT32> changeAggroIdList({
 	/* BS */
 	31310101, 31310102, // Tenebris
 	31310103, 31310107, // Tenebris Hard
+
+	/* TF */
+	31365101, 31365102, // Ferdelance Hard
+	31365121, 31365122, // Ferdelance Maniac
+	31365131, 31365132, // Ferdelance Normal
 
 	});
 
