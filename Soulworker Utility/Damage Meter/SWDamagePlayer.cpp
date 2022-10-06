@@ -104,40 +104,19 @@ VOID SWDamagePlayer::AddDamage(UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAM
 	}
 
 	USHORT worldID = DAMAGEMETER.GetWorldID();
-	BOOL bypassCheck = false;
-	// BS
-	if (worldID == 21018) {
-		if (db2 == 31310101 || db2 == 31310102) {
-			bypassCheck = true;
-		}
-	}
-	// BS Solo
-	if (worldID == 24018) {
-		if (db2 == 32320101 || db2 == 32320102) {
-			bypassCheck = true;
-		}
-	}
-	// TF Hard
-	if (worldID == 21019) {
-		if (db2 == 31365101 || db2 == 31365102) {
-			bypassCheck = true;
-		}
-	}
-	// TF Maniac
-	if (worldID == 22019) {
-		if (db2 == 31365121 || db2 == 31365122) {
-			bypassCheck = true;
-		}
-	}
-	// TF Normal
-	if (worldID == 23019) {
-		if (db2 == 31365131 || db2 == 31365132) {
-			bypassCheck = true;
-		}
-	}
 
-	// Ignore object, Ex: car
-	if (bypassCheck || (dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end() && db->_type != 6)) {
+	auto stList = StrictModeList.find(worldID);
+	BOOL isStrictMode = false;
+	if (stList != StrictModeList.end())
+	{
+		auto& vec = (*stList).second;
+		auto find = std::find(vec.begin(), vec.end(), db2);
+		if (find == vec.end())
+			return;
+		isStrictMode = true;
+	}
+	// Ignore object
+	if (isStrictMode || (!isStrictMode && dpsIgnoreIdList.find(db2) == dpsIgnoreIdList.end() && db->_type != 6)) {
 		_damage += totalDMG;
 		_soulstoneDamage += soulstoneDMG;
 

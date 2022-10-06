@@ -1,3 +1,17 @@
+## 1.3.2.7
+
+### 功能新增(Add Features)
+
+- 對應Steam v2.0.3.1(Updated to Steam v2.0.3.1)
+
+
+### 功能修正(BUG Fixes)
+
+- 修正76普通、79普困會計算小怪傷害的問題(Fix include mobs DPS in 76N,79NH)
+- 修正Npcap模式下丟包計數器不重置的問題(Fix Loss packet counter not reset in Npcap mode)
+- 修正打完黃金浣熊不會立即暫停(Fix killed Gold Gruton not stop DPS)
+
+
 ## 1.3.2.6
 
 ### 功能修正(BUG Fixes)

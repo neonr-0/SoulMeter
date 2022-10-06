@@ -26,8 +26,8 @@ static unordered_set<UINT32> pauseIdList({
 
 	/* TF */
 	31365101, // Ferdelance Hard P1
-	31365121, // Ferdelance Maniac P1
-	31365131, // Ferdelance Normal P1
+	31365121, // Ferdelance Normal P1
+	31365131, // Ferdelance Maniac P1
 
 	});
 
@@ -58,8 +58,11 @@ static unordered_set<UINT32> endIdList({
 
 	/* TF */
 	31365102, // Ferdelance Hard P1
-	31365122, // Ferdelance Maniac P1
-	31365132, // Ferdelance Normal P1
+	31365122, // Ferdelance Normal P1
+	31365132, // Ferdelance Maniac P1
+
+	/* GoP */
+	41100005, // Gold Gruton
 
 	});
 
@@ -94,8 +97,8 @@ static unordered_set<UINT32> changeAggroIdList({
 
 	/* TF */
 	31365101, 31365102, // Ferdelance Hard
-	31365121, 31365122, // Ferdelance Maniac
-	31365131, 31365132, // Ferdelance Normal
+	31365121, 31365122, // Ferdelance Normal
+	31365131, 31365132, // Ferdelance Maniac
 
 	});
 
@@ -109,19 +112,6 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 
 	/* LF */
 	31309109, 31309154, // Queen's Sword
-
-	/* BS */
-	31310111, 31310112, // Tenebris
-	31310116, 31310117, // Flame of Tenebris
-	31310151, 31310152, 31310153, 31310154, // Mobs
-	31310192, // Reward box
-
-	/* BS Solo */
-	32320103, 32320104, 32320105, 32320106, // Mobs
-	32320107, 32320108, 32320109, 32320114, // Fake Tenebris
-	32320110, 32320111, // Flame of Tenebris
-	32320112,  // Hazy Beam
-	32320113, 32320115, // Reward box
 
 	/* BSVH */
 	31310118, 31310119, // Desire Energy Fragment, Hazy Beam
@@ -150,3 +140,41 @@ static unordered_set<UINT32> LunarFallBossListId({
 	31309151, // Junk Queen
 
 	});
+
+static unordered_map<UINT32, vector<UINT32>> StrictModeList({
+	// BS 
+	{
+		21018,
+		{
+			31310101, 31310102
+		}
+	},
+	// BS Solo
+	{
+		24018,
+		{
+			32320101, 32320102
+		}
+	},
+	// TF Hard
+	{
+		21019,
+		{
+			31365101, 31365102
+		}
+	},
+	// TF Maniac
+	{
+		22019,
+		{
+			31365131, 31365132
+		}
+	},
+	// TF Normal
+	{
+		23019,
+		{
+			31365121, 31365122
+		}
+	}
+});
