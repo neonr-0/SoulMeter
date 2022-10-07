@@ -258,7 +258,7 @@
     "STR_SPECIAL_STAT_TYPE_11": "MeleeDamagedDown(%%)",
     "STR_SPECIAL_STAT_TYPE_12": "RangedDamagedDown(%%)",
     "STR_SPECIAL_STAT_TYPE_13": "SA.DamageAdd(%%)",
-    "STR_SPECIAL_STAT_TYPE_14": "CostDown(%%)",
+    "STR_SPECIAL_STAT_TYPE_14": "SG.Absorb_14(%%)",
     "STR_SPECIAL_STAT_TYPE_15": "ExpAdd(%%)",
     "STR_SPECIAL_STAT_TYPE_16": "GoldAdd(%%)",
     "STR_SPECIAL_STAT_TYPE_17": "SV.Add(%%)",
