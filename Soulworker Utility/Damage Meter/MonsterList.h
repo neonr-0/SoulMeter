@@ -149,6 +149,13 @@ static unordered_map<UINT32, vector<UINT32>> StrictModeList({
 			31310101, 31310102
 		}
 	},
+	// BS Hard
+	{
+		22018,
+		{
+			31310103, 31310107
+		}
+	},
 	// BS Solo
 	{
 		24018,

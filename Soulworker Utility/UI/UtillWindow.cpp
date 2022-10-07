@@ -158,8 +158,11 @@ VOID UtillWindow::HistoryWindow()
 						SWDB.GetMapName(hi->_worldID, mapName, MAX_MAP_LEN);
 
 						CHAR extInfo[256] = { 0 };
-						if (hi->_historyData->_extInfo.length() > 0)
-							sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
+						//if (hi->_historyData->_extInfo.length() > 0)
+						//	sprintf_s(extInfo, "(%s)", hi->_historyData->_extInfo.c_str());
+#ifdef _DEBUG
+						sprintf_s(extInfo, "(M:%u)", hi->_worldID);
+#endif
 
 						CHAR realClearTime[128] = { 0 };
 						if (hi->_realClearTime > 0)
