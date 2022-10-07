@@ -1,3 +1,15 @@
+## 1.3.2.8
+
+### 功能新增(Add Features)
+
+- 新增於BOSS無敵狀態下自動暫停DPS(Add suspend DPS when BOSS god mode)
+
+
+### 功能修正(BUG Fixes)
+
+- 修正擊中小怪會導致DPS繼續計算的問題(Fix DPS not correctly suspend when hit mobs)
+
+
 ## 1.3.2.7
 
 ### 功能新增(Add Features)

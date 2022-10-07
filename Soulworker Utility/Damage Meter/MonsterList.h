@@ -156,6 +156,13 @@ static unordered_map<UINT32, vector<UINT32>> StrictModeList({
 			32320101, 32320102
 		}
 	},
+	// BS Rank
+	{
+		23018,
+		{
+			32310101
+		}
+	},
 	// TF Hard
 	{
 		21019,

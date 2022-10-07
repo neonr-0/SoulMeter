@@ -63,14 +63,26 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 	if (_mazeEnd)
 		return;
 
+	USHORT usWorldID = GetWorldID();
 	// Meter must know mazeId to work correctly
-	if (GetWorldID() == 0)
+	if (usWorldID == 0)
 		return;
 
 	SW_DB2_STRUCT* db = DAMAGEMETER.GetMonsterDB(monsterID);
 	UINT32 monsterId = 0;
+	bool bIsListBoss = false, bIsListMap = false;
 	if (db != nullptr) {
 		monsterId = db->_db2;
+	}
+
+	auto stList = StrictModeList.find(usWorldID);
+	if (stList != StrictModeList.end())
+	{
+		auto& vec = (*stList).second;
+		auto find = std::find(vec.begin(), vec.end(), monsterId);
+		if (find != vec.end())
+			bIsListBoss = true;
+		bIsListMap = true;
 	}
 
 	if (!isRun()) {
@@ -79,33 +91,27 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 			return;
 		}
 
-		// If it is BS normal, only damage to Boss can start/resume timer.
-		if (GetWorldID() == 21018) {
-			if ((monsterId != 31310101) && (monsterId != 31310102)) {
-				return;
-			}
-		}
-
-		// BS Solo
-		if (GetWorldID() == 24018) {
-			if ((monsterId != 32320101) && (monsterId != 32320102)) {
-				return;
-			}
-		}
-
-		// BS Rank
-		if (GetWorldID() == 23018) {
-			if (monsterId != 32310101) {
-				return;
-			}
-		}
+		// only damage in list Boss can start/resume timer.
+		if (bIsListMap && !bIsListBoss)
+			return;
 	}
 
-	CombatLog* pCombatLog = new CombatLog;
-	pCombatLog->_type = COMBATMETER.ConvertDamageTypeForGiveDamage(damageType);
-	pCombatLog->_val1 = static_cast<DOUBLE>(totalDMG);
-	pCombatLog->_val2 = static_cast<DOUBLE>(soulstoneDMG);
-	COMBATMETER.Insert(id, CombatType::PLAYER, pCombatLog);
+	if (totalDMG > 0)
+	{
+		CombatLog* pCombatLog = new CombatLog;
+		pCombatLog->_type = COMBATMETER.ConvertDamageTypeForGiveDamage(damageType);
+		pCombatLog->_val1 = static_cast<DOUBLE>(totalDMG);
+		pCombatLog->_val2 = static_cast<DOUBLE>(soulstoneDMG);
+		COMBATMETER.Insert(id, CombatType::PLAYER, pCombatLog);
+	}
+	else {
+		// suspend by boss is god mode
+		if ((bIsListMap && bIsListBoss) || (db != NULL && db->_type == 4))
+		{
+			DAMAGEMETER.Suspend();
+			return;
+		}
+	}
 
 	Start();
 	InsertPlayerInfo(id, totalDMG, soulstoneDMG, damageType, maxCombo, monsterID, skillID);

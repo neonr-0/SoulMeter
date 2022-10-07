@@ -39,7 +39,7 @@ A: 複製option.xml 與 imgui.ini 到新版本的資料夾
 
 建議盡量不要於遊戲內公開談論本程式
 
-問題回報及功能建議群組: https://discord.gg/3pvVXybhX8
+問題回報及功能建議群組: https://discord.gg/PN3VmS98bt
 
 如果無法開啟，請嘗試安裝此整合包: https://github.com/abbodi1406/vcredist/releases
 
