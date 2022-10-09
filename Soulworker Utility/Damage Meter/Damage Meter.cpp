@@ -105,11 +105,15 @@ VOID SWDamageMeter::AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, S
 		COMBATMETER.Insert(id, CombatType::PLAYER, pCombatLog);
 	}
 	else {
-		// suspend by boss is god mode
-		if ((bIsListMap && bIsListBoss) || (db != NULL && db->_type == 4))
+		// ignore if rank map
+		if (rankMap.find(usWorldID) == rankMap.end())
 		{
-			DAMAGEMETER.Suspend();
-			return;
+			// suspend by boss is god mode
+			if ((bIsListMap && bIsListBoss) || (db != NULL && db->_type == 4))
+			{
+				DAMAGEMETER.Suspend();
+				return;
+			}
 		}
 	}
 

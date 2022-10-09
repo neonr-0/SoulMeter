@@ -90,7 +90,7 @@ Also, USE AT YOUR OWN RISK
 
 I recommend not to talk about dps meter at in-game public chat
 
-Issue and suggest: https://discord.gg/3pvVXybhX8
+Issue and suggest: https://discord.gg/PN3VmS98bt
 
 If you can't open, try install this: https://github.com/abbodi1406/vcredist/releases
 
