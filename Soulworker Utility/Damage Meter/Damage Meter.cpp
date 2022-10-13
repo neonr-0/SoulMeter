@@ -36,6 +36,8 @@ SWDamageMeter::~SWDamageMeter() {
 	_historyDbInfo.clear();
 	_historyPlayerMetadata.clear();
 
+	_playerUseAwaken.clear();
+
 	FreeLock();
 }
 
@@ -201,8 +203,12 @@ VOID SWDamageMeter::AddSkillUsed(UINT32 playerId, UINT32 skillId)
 		return;
 	}
 
-	auto itr = _playerInfo.begin();
+	if (std::find(_dwSkills.begin(), _dwSkills.end(), skillId) != _dwSkills.end())
+	{
+		DAMAGEMETER.AddAwakenPlayer(playerId);
+	}
 
+	auto itr = _playerInfo.begin();
 	for (; itr != _playerInfo.end(); itr++) {
 		if (playerId == (*itr)->GetID()) {
 			(*itr)->AddSkillUsed(skillId);
@@ -213,7 +219,6 @@ VOID SWDamageMeter::AddSkillUsed(UINT32 playerId, UINT32 skillId)
 	SWDamagePlayer* newPlayer = new SWDamagePlayer(playerId);
 	newPlayer->AddSkillUsed(skillId);
 	_playerInfo.push_back(newPlayer);
-
 }
 
 VOID SWDamageMeter::AddDodgeUsed(UINT32 playerId)
@@ -741,6 +746,7 @@ VOID SWDamageMeter::ClearInfo(BOOL clear)
 		ClearDB();
 	}
 
+	_playerUseAwaken.clear();
 	PLOTWINDOW.Clear();
 	BUFFMETER.Clear();
 	COMBATMETER.End();

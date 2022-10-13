@@ -376,9 +376,13 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		if (playerId == DAMAGEMETER.GetAggro()) {
 			style.Colors[0] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 		}
-		//else if (playerId == DAMAGEMETER.GetOwnerID(DAMAGEMETER.GetAggro())) {
-		//	style.Colors[0] = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
-		//}
+		else if (playerId == DAMAGEMETER.GetOwnerID(DAMAGEMETER.GetAggro())) {
+			style.Colors[0] = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
+		}
+
+		if (DAMAGEMETER.PlayerInAwakening(playerId)) {
+			style.Colors[0] = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
+		}
 		
 		//colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 0.95f);
 		if (ImGui::Selectable(playerName, false, ImGuiSelectableFlags_SpanAllColumns))

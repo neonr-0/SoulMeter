@@ -44,6 +44,68 @@ typedef struct _SW_DB2_STRUCT {
 	INT32 _type;
 }SW_DB2_STRUCT;
 
+static vector<UINT32> _dwSkills({
+
+	// Haru
+	15000111,
+	15000211,
+	16000111, // Frenzy
+	15130111, // ??
+	17000111, // EX
+
+	// Erwin
+	25000111,
+	25000211,
+	26000111,
+	25130111, // ??
+	27000111,
+
+	// Lily
+	35000111,
+	35000211,
+	36000111,
+	35130111, // ??
+	37000111,
+
+	// Jin
+	45000111,
+	45000211,
+	46000111,
+	45130111, // ??
+	47000111,
+
+	// Stella
+	55000111,
+	55000211,
+	56000111,
+	55130111, // ??
+	57000111,
+
+	// Iris
+	65000111,
+	65000211,
+	66000111,
+	67000111,
+
+	// Chii
+	75000111,
+	75000211,
+	76000111,
+	77000111,
+
+	// Ephnel
+	85000111,
+	85000211,
+	86000111,
+	87000111,
+
+	// Nabi
+	95000111,
+	95000211,
+	96000111,
+	97000111,
+
+	});
 
 class SWDamageMeter : public Singleton<SWDamageMeter> {
 public: typedef struct _SW_PLAYER_METADATA {
@@ -704,6 +766,7 @@ private:
 	unordered_map<UINT32, SW_PLAYER_METADATA*> _historyPlayerMetadata;
 
 	vector<string> _extInfo;
+	unordered_map<UINT32, ULONG64> _playerUseAwaken;
 
 	CHAR _mapName[MAX_MAP_LEN];
 	UINT32 _myID;
@@ -838,5 +901,31 @@ public:
 	VOID SetRealClearTime(UINT32 t)
 	{
 		_realClearTime = t;
+	}
+
+	VOID AddAwakenPlayer(UINT32 uPlayerId)
+	{
+		ULONG64 ulTime = GetTime();
+		if (_playerUseAwaken.find(uPlayerId) != _playerUseAwaken.end())
+			_playerUseAwaken[uPlayerId] = ulTime;
+		else
+			_playerUseAwaken.insert({ uPlayerId, ulTime });
+	}
+
+	BOOL PlayerInAwakening(UINT32 uPlayerId)
+	{
+		WORD wTimeOut = 10000;
+		do
+		{
+			auto find = _playerUseAwaken.find(uPlayerId);
+			if (find != _playerUseAwaken.end())
+			{
+				if (GetTime() <= find->second + wTimeOut)
+					return TRUE;
+			}
+
+		} while (false);
+
+		return FALSE;
 	}
 };

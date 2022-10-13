@@ -1,3 +1,16 @@
+## 1.3.2.9
+
+### 功能新增(Add Features)
+
+- 新增使用覺醒技能時以黃色高亮使用者10秒(Add highlight player name when using DW)
+
+
+### 功能修正(BUG Fixes)
+
+- 修正排名地圖的DPS會暫停(Fix rank map will pause DPS)
+
+
+
 ## 1.3.2.8
 
 ### 功能新增(Add Features)

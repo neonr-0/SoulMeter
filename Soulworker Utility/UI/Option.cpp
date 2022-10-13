@@ -114,12 +114,13 @@ BOOL UiOption::ShowTableOption() {
 BOOL UiOption::ShowHotkeySetting() {
 
 	char text[4096] = { 0 };
-	sprintf_s(text, "%s%s%s%s%s",
+	sprintf_s(text, "%s%s%s%s%s%s",
 		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_1"),
 		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_2"),
 		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_3"),
 		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_4"),
-		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_5")
+		LANGMANAGER.GetText("STR_OPTION_HOTKEY_DESC_5"),
+		"\n\n\n\n//Ga0321 x Kavy//"
 	);
 
 	ImGui::Text(text);
