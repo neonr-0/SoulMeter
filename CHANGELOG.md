@@ -1,8 +1,15 @@
+## 1.3.3.0
+
+### 功能新增(Add Features)
+
+- 對應Steam v2.0.4.3 & 數據庫(Updated meter and database to Steam v2.0.4.3)
+
+
 ## 1.3.2.9
 
 ### 功能新增(Add Features)
 
-- 新增使用覺醒技能時以黃色高亮使用者10秒(Add highlight player name when using DW)
+- 新增使用覺醒技能時以黃色高亮使用者10秒(Add highlight player name when using DW skills)
 
 
 ### 功能修正(BUG Fixes)
