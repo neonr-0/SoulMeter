@@ -90,7 +90,7 @@
     "STR_OPTION_HOTKEY_DESC_2": "You can edit hotkey by editing option.XML\n",
     "STR_OPTION_HOTKEY_DESC_3": "Value of key is from DirectInput Code Table\n",
     "STR_OPTION_HOTKEY_DESC_4": "All hotkeys start from key1 (then key2...)\nIf you don't assign any key, then you need to assign -1\n",
-    "STR_OPTION_HOTKEY_DESC_5": "Get update: https://discord.gg/3pvVXybhX8",
+    "STR_OPTION_HOTKEY_DESC_5": "Get update: https://discord.gg/PN3VmS98bt",
     "STR_OPTION_TEST_VALUE_PLAYER": "Test Data",
     "STR_OPTION_ADD_TEST_VALUE": "Add Test Value",
     "STR_OPTION_SAVE_AND_EXIT": "Save and Exit",

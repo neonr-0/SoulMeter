@@ -4,6 +4,7 @@
 #include ".\Packet Capture\PacketParser.h"
 #include ".\UI\PlayerTable.h"
 #include ".\SWCrypt\SWCryptDLL.h"
+#include "SWConfig.h"
 
 SWHEADER* SWPacketMaker::GetSWHeader(IPv4Packet* packet) {
 
@@ -181,6 +182,7 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		case RecvOPcode::BIG_PARTY: //0817
 			swpacket = new SWPacketBigParty(swheader, data);
 			break;
+
 
 
 

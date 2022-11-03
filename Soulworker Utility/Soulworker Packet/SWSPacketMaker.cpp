@@ -4,6 +4,7 @@
 #include ".\Packet Capture\PacketParser.h"
 #include ".\UI\PlayerTable.h"
 #include ".\SWCrypt\SWCryptDLL.h"
+#include "SWConfig.h"
 
 SWSHEADER* SWSPacketMaker::GetSWSHeader(IPv4Packet* packet) {
 

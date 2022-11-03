@@ -5,6 +5,7 @@
 #include ".\UI\Option.h"
 #include ".\Third Party\Npcap\Include\pcap.h"
 #include ".\Soulworker Packet\PacketType.h"
+#include "SWConfig.h"
 
 DWORD MyNpcap::LoadNpcapDlls() {
 

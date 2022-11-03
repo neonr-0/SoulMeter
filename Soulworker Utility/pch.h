@@ -10,12 +10,6 @@
 #define WIN32_LEAN_AND_MEAN
 #define DIRECTINPUT_VERSION 0x0800
 
-#define APP_VERSION "1.3.3.0"
-#define SWMAGIC 0x02
-#define SWCONSTVALUE_RECV 1
-#define SWCONSTVALUE_SEND 2 // maybe client send request
-#define USE_XOR 0
-
 #include <Windows.h>
 
 #include <DbgHelp.h>
