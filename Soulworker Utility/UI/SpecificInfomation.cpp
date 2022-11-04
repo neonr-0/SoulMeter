@@ -173,15 +173,20 @@ VOID SpecificInformation::UpdateMonsterCombo() {
 		comboPreview = (*monster)->GetName();
 	}
 
-
 	CHAR label[128] = { 0 };
 	sprintf_s(label, "%s###DetailMonster", LANGMANAGER.GetText("STR_SPECIFICINFO_MONSTER"));
 	if(ImGui::BeginCombo(label, comboPreview, ImGuiComboFlags_HeightLarge)) {
 	
-		for (auto itr = (*player)->begin(); itr != (*player)->end(); itr++) {
-			
-			CHAR label[MONSTER_NAME_LEN] = { 0 };
-			sprintf_s(label, MONSTER_NAME_LEN, "%s##%d", (*itr)->GetName(), (*itr)->GetID());
+		for (auto itr = (*player)->begin(); itr != (*player)->end(); itr++) 
+		{
+		
+			CHAR ext[MONSTER_NAME_LEN] = { 0 };
+#ifdef _DEBUG
+			sprintf_s(ext, "(%d)", (*itr)->GetDB2());
+#endif
+
+			CHAR label[MONSTER_NAME_LEN + MONSTER_NAME_LEN] = { 0 };
+			sprintf_s(label, MONSTER_NAME_LEN + MONSTER_NAME_LEN, "%s%s##%d", (*itr)->GetName(), ext, (*itr)->GetID());
 
 			if (ImGui::Selectable(label, _monsterID_SKILL == (*itr)->GetID())) {
 				_monsterID_SKILL = (*itr)->GetID();

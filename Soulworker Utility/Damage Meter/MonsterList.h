@@ -142,6 +142,13 @@ static unordered_set<UINT32> LunarFallBossListId({
 	});
 
 static unordered_map<UINT32, vector<UINT32>> StrictModeList({
+	// HH Rank
+	{
+		22016,
+		{
+			32308101
+		}
+	},
 	// BS 
 	{
 		21018,
