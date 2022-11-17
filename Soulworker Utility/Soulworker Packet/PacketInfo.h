@@ -186,6 +186,9 @@ enum SpecialStatType {
 	PrimalDamageAddRate = 0x35,
 	PrimalDamagedDownRate = 0x36,
 
+	ParallelMetronomeAddRate = 0x37,
+	ParallelMetronomeDownRate = 0x38,
+
 	End
 };
 

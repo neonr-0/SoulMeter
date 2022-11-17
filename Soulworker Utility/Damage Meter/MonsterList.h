@@ -29,6 +29,10 @@ static unordered_set<UINT32> pauseIdList({
 	31365121, // Ferdelance Normal P1
 	31365131, // Ferdelance Maniac P1
 
+	/* PM */
+	13901202, // Parallel Metronome Noraml P1
+	13901201, // Parallel Metronome Hard P1
+
 	});
 
 static unordered_set<UINT32> endIdList({
@@ -63,6 +67,10 @@ static unordered_set<UINT32> endIdList({
 
 	/* GoP */
 	41100005, // Gold Gruton
+
+	/* PM */
+	13901302, // Parallel Metronome Noraml P2
+	13901301, // Parallel Metronome Hard P2
 
 	});
 
@@ -99,6 +107,10 @@ static unordered_set<UINT32> changeAggroIdList({
 	31365101, 31365102, // Ferdelance Hard
 	31365121, 31365122, // Ferdelance Normal
 	31365131, 31365132, // Ferdelance Maniac
+
+	/* PM */
+	13901202, 13901302, // Parallel Metronome Noraml
+	13901201, 13901301, // Parallel Metronome Hard
 
 	});
 
@@ -197,5 +209,19 @@ static unordered_map<UINT32, vector<UINT32>> StrictModeList({
 		{
 			31365121, 31365122
 		}
-	}
+	},
+	// PM Normal
+	{
+		21204,
+		{
+			13901202, 13901302
+		}
+	},
+	// PM Hard
+	{
+		21203,
+		{
+			13901201, 13901301
+		}
+	},
 });
