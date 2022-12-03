@@ -1113,7 +1113,7 @@ VOID PlayerTable::CheckUpdate()
 
 			httplib::Client cli(url);
 
-			auto res = cli.Get("/ga0321/SoulMeter/master/VERSION");
+			auto res = cli.Get("/neonr-0/SoulMeter/master/VERSION");
 
 			if (res != nullptr && res.error() == httplib::Error::Success && res->status == 200) {
 				_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
