@@ -42,8 +42,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 				break;
 			}
 
-			PLAYERTABLE.CheckUpdate();
-
 			if ((errorCode = SWCRYPT.LoadSWCrypt())) {
 				sprintf_s(errorMsg, "Load SWCrypt.dll failed, err: %lu", errorCode);
 				break;
@@ -72,6 +70,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 						break;
 					}
 				}
+				if (UIOPTION.isUpdateCheck())
+					PLAYERTABLE.CheckUpdate();
 				UIWINDOW.Run();
 			}
 			else {

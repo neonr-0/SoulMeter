@@ -4,7 +4,7 @@
     "STR_SQL_SUFFIX": "TC",
 
     "STR_WORLD_NO_INFORMATION": "無資料",
-    "PLAYER_NAME_CANT_FIND" : "未知玩家",
+    "PLAYER_NAME_CANT_FIND": "未知玩家",
 
     "STR_MENU_RESUME": "開始/暫停",
     "STR_MENU_RESET": "清除",
@@ -108,6 +108,7 @@
     "STR_OPTION_SELECT_INTERFACE": "擷取的網路卡",
     "STR_OPTION_ALL": "全部",
     "STR_OPTION_DONT_SAVE_UNFINISHED_MAZE": "不保存未完成的副本",
+    "STR_OPTION_CHECK_UPDATE": "Check for updates",
 
     "STR_CHAR_UNKNOWN": "未知玩家",
     "STR_CHAR_HARU": "哈露",
@@ -299,8 +300,8 @@
     "STR_SPECIAL_STAT_TYPE_52": "金色城堡減少傷害(%%)",
     "STR_SPECIAL_STAT_TYPE_53": "原始勢力附加傷害(%%)",
     "STR_SPECIAL_STAT_TYPE_54": "原始勢力減少傷害(%%)",
-	"STR_SPECIAL_STAT_TYPE_55": "平衡的守護者勢力附加傷害(%%)",
-	"STR_SPECIAL_STAT_TYPE_56": "平衡的守護者勢力減少傷害(%%)",
+    "STR_SPECIAL_STAT_TYPE_55": "平衡的守護者勢力附加傷害(%%)",
+    "STR_SPECIAL_STAT_TYPE_56": "平衡的守護者勢力減少傷害(%%)",
 
     "STR_FILEDIALOG_PATH": "目錄",
     "STR_FILEDIALOG_NAME": "名稱",

@@ -4,7 +4,7 @@
     "STR_SQL_SUFFIX": "EN",
 
     "STR_WORLD_NO_INFORMATION": "No Info",
-    "PLAYER_NAME_CANT_FIND" : "Unknown",
+    "PLAYER_NAME_CANT_FIND": "Unknown",
 
     "STR_MENU_RESUME": "Start/Pause",
     "STR_MENU_RESET": "Reset",
@@ -108,6 +108,7 @@
     "STR_OPTION_SELECT_INTERFACE": "Use network interface",
     "STR_OPTION_ALL": "All",
     "STR_OPTION_DONT_SAVE_UNFINISHED_MAZE": "Don't save unfinished maze",
+    "STR_OPTION_CHECK_UPDATE": "Check for updates",
 
     "STR_CHAR_UNKNOWN": "Unknown",
     "STR_CHAR_HARU": "Haru",
@@ -299,8 +300,8 @@
     "STR_SPECIAL_STAT_TYPE_52": "CitadelDamageDown(%%)",
     "STR_SPECIAL_STAT_TYPE_53": "PrimalDamageAdd(%%)",
     "STR_SPECIAL_STAT_TYPE_54": "PrimalDamageDown(%%)",
-	"STR_SPECIAL_STAT_TYPE_55": "ParallelMetronomeAdd(%%)",
-	"STR_SPECIAL_STAT_TYPE_56": "ParallelMetronomeDown(%%)",
+    "STR_SPECIAL_STAT_TYPE_55": "ParallelMetronomeAdd(%%)",
+    "STR_SPECIAL_STAT_TYPE_56": "ParallelMetronomeDown(%%)",
 
     "STR_FILEDIALOG_PATH": "Path",
     "STR_FILEDIALOG_NAME": "Name",

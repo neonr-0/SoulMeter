@@ -46,6 +46,7 @@ private:
 	BOOL _oriIsUseSaveData;
 	CHAR _selectedInterface[MAX_PATH] = { 0 };
 	BOOL _isDontSaveUnfinishedMaze;
+	BOOL _isUpdateCheck;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
@@ -98,6 +99,7 @@ public:
 	const BOOL& isUseSaveData();
 	const CHAR* GetUseInterface();
 	const BOOL& isDontSaveUnfinishedMaze();
+	const BOOL& isUpdateCheck();
 
 	BOOL ToggleTopMost();
 

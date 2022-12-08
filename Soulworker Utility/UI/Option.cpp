@@ -15,7 +15,7 @@
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
 	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
-	_isDontSaveUnfinishedMaze(false),
+	_isDontSaveUnfinishedMaze(false), _isUpdateCheck(true),
 	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE),
 	_selectedInterface("ALL")
 {
@@ -306,6 +306,7 @@ VOID UiOption::ShowFeatures()
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode); ImGui::SameLine(); ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_DONT_SAVE_UNFINISHED_MAZE"), (bool*)&_isDontSaveUnfinishedMaze);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_USE_SAVEDATA"), (bool*)&_isUseSaveData);
+	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_CHECK_UPDATE"), (bool*)&_isUpdateCheck);
 }
 
 VOID UiOption::OpenOption() {
@@ -524,6 +525,11 @@ BOOL UiOption::GetOption() {
 		attr->QueryIntValue(&_isUseSaveData);
 		attr->QueryIntValue(&_oriIsUseSaveData);
 	}
+
+	attr = ele->FindAttribute("IsUpdateCheck");
+	if (attr != nullptr) 
+		attr->QueryIntValue(&_isUpdateCheck);
+	
 
 	attr2 = ele->FirstChildElement("UseInterface");
 	if (attr2 != nullptr) {
@@ -893,6 +899,7 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 	option->SetAttribute("TeamTA_LF_Mode", _teamTA_LF_Mode);
 	option->SetAttribute("IsSoloRankMode", _isSoloRankMode);
 	option->SetAttribute("IsUseSaveData", _isUseSaveData);
+	option->SetAttribute("IsUpdateCheck", _isUpdateCheck);
 
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -1097,6 +1104,11 @@ const BOOL& UiOption::isUseSaveData()
 	if (_oriIsUseSaveData != _isUseSaveData)
 		return _oriIsUseSaveData;
 	return _isUseSaveData;
+}
+
+const BOOL& UiOption::isUpdateCheck()
+{
+	return _isUpdateCheck;
 }
 
 const BOOL& UiOption::isDontSaveUnfinishedMaze()
