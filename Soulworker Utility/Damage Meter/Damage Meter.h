@@ -16,7 +16,7 @@ using namespace SoulMeterFBS::History;
 //#define MAX_MAP_LEN 32
 #define MAX_MAP_LEN 64
 
-#define PLAYER_JOB_CANT_FIND 10
+#define PLAYER_JOB_CANT_FIND 11
 
 #ifdef _DEBUG
 #define DEBUG_DAMAGEMETER_OWNER_ID 0
@@ -104,6 +104,13 @@ static vector<UINT32> _dwSkills({
 	95000211,
 	96000111,
 	97000111,
+
+	// Dhana??
+	105000111,
+	105000211,
+	106000111,//Desire
+	107000111,//EX
+//	107000121, //not sure looks like last hit
 
 	});
 

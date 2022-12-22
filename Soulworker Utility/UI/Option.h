@@ -14,8 +14,8 @@
 
 class UiOption : public Singleton<UiOption> {
 private:
-	ImVec4 _jobColor[10];
-	ImVec4 _jobBasicColor[10];
+	ImVec4 _jobColor[11];
+	ImVec4 _jobBasicColor[11];
 	ImVec4 _activeColor[2];
 	ImVec4 _outlineColor;
 	ImVec4 _textColor;
