@@ -127,7 +127,7 @@ BOOL UiOption::ShowHotkeySetting() {
 	ImGui::Text(text);
 	ImGui::TextAlignCenter::SetTextAlignCenter();
 	{
-		ImGui::Text("\n\n\n\n\\\\Ga0321 x Kavy//");
+		ImGui::Text("\n\n\n\n\\\\neonr-0//");
 	}
 	ImGui::TextAlignCenter::UnSetTextAlignCenter();
 

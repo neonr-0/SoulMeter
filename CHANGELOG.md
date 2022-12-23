@@ -1,3 +1,7 @@
+## 1.3.4.1
+
+- Updated database
+
 ## 1.3.4.0
 
 - Updated meter and database

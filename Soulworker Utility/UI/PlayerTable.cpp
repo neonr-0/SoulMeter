@@ -92,7 +92,7 @@ VOID PlayerTable::Update() {
 			sprintf_s(loss, 128, "%s: %lld/%lld", LANGMANAGER.GetText("STR_MENU_LOSS"), PACKETCAPTURE.GetLoss(), PACKETCAPTURE.GetAllLoss());
 
 		CHAR title[1024] = { 0 };
-		sprintf_s(title, 1024, "%s - %02d:%02d.%01d [v%s_@ga0321(%s)] %s: %lldms %s %s ###DamageMeter", 
+		sprintf_s(title, 1024, "%s - %02d:%02d.%01d [v%s_@neonr-0(%s)] %s: %lldms %s %s ###DamageMeter", 
 			DAMAGEMETER.GetWorldName(), 
 			(UINT)DAMAGEMETER.GetTime() / (60 * 1000), (UINT)(DAMAGEMETER.GetTime() / 1000) % 60, (UINT)DAMAGEMETER.GetTime() % 1000 / 100,
 			APP_VERSION,

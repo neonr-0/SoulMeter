@@ -77,10 +77,10 @@ BEGIN
     BEGIN
         BLOCK "040404b0"
         BEGIN
-            VALUE "FileDescription", "https://github.com/ga0321/SoulMeter"
+            VALUE "FileDescription", "https://github.com/neonr-0/SoulMeter"
             VALUE "FileVersion", "1.0.0.0"
             VALUE "InternalName", "SoulMeter.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2022 ga0321"
+            VALUE "LegalCopyright", "Copyright (C) 2022 neonr-0"
             VALUE "OriginalFilename", "SoulMeter.exe"
             VALUE "ProductName", "SoulMeter"
             VALUE "ProductVersion", "1.0.0.0"

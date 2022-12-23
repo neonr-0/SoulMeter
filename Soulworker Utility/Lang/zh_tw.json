@@ -90,7 +90,7 @@
     "STR_OPTION_HOTKEY_DESC_2": "您可以通過編輯 option.XML 來編輯熱鍵\n",
     "STR_OPTION_HOTKEY_DESC_3": "key 對應的值來自 DirectInput Code Table\n",
     "STR_OPTION_HOTKEY_DESC_4": "熱鍵的設定從 key1 開始 (接著 key2...)\n如不需要使用 key2/key3 請設定成 -1\n",
-    "STR_OPTION_HOTKEY_DESC_5": "獲取更新: https://discord.gg/PN3VmS98bt",
+    "STR_OPTION_HOTKEY_DESC_5": "獲取更新: https://github.com/neonr-0/SoulMeter",
     "STR_OPTION_TEST_VALUE_PLAYER": "測試資料",
     "STR_OPTION_ADD_TEST_VALUE": "加入測試資料",
     "STR_OPTION_SAVE_AND_EXIT": "保存並退出設定",
