@@ -1,3 +1,7 @@
+## 1.3.4.2
+
+- Updated meter, change default color of dhana, added to hotkey:clear right control
+
 ## 1.3.4.1
 
 - Updated database

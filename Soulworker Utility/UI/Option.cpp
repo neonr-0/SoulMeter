@@ -30,7 +30,7 @@ UiOption::UiOption()  :
 	_jobBasicColor[7] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(138, 2, 4, 255)));		// chii
 	_jobBasicColor[8] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(118, 206, 158, 255)));	// eph
 	_jobBasicColor[9] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(128, 128, 64, 255)));	// nabi
-	_jobBasicColor[10] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(99, 96, 110, 255)));	// dhana
+	_jobBasicColor[10] = ImVec4(ImGui::ColorConvertU32ToFloat4(ImColor(121, 141, 247, 255)));	// dhana
 
 	for (int i = 0; i < 11; i++)
 		_jobColor[i] = _jobBasicColor[i];
@@ -1014,6 +1014,7 @@ BOOL UiOption::SetBasicOption() {
 
 	HOTKEY.InsertHotkeyToogle(DIK_LCONTROL, DIK_END, -1);
 	HOTKEY.InsertHotkeyStop(DIK_LCONTROL, DIK_DELETE, -1);
+	HOTKEY.InsertHotkeyStop(DIK_RCONTROL, DIK_DELETE, -1);
 
 	Helper();
 	PLAYERTABLE.ResizeTalbe();
