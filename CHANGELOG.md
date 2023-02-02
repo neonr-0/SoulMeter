@@ -1,3 +1,7 @@
+## 1.3.4.4
+
+- Updated meter
+
 ## 1.3.4.3
 
 - Updated meter
