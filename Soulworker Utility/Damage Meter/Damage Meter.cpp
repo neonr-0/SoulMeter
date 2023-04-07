@@ -186,6 +186,26 @@ VOID SWDamageMeter::AddEnlighten(UINT32 playerId, FLOAT value)
 	}
 }
 
+VOID SWDamageMeter::AddFeverProc(UINT32 playerId)
+{
+	if (!isRun() || GetTime() == 0)
+		return;
+
+	auto itr = _playerInfo.begin();
+	for (; itr != _playerInfo.end(); itr++) {
+		if (playerId == (*itr)->GetID()) {
+			(*itr)->AddFeverProc();
+			return;
+		}
+	}
+
+	if (CheckPlayer(playerId)) {
+		SWDamagePlayer* newPlayer = new SWDamagePlayer(playerId);
+		newPlayer->AddFeverProc();
+		_playerInfo.push_back(newPlayer);
+	}
+}
+
 VOID SWDamageMeter::AddSkillUsed(UINT32 playerId, UINT32 skillId)
 {
 

@@ -67,7 +67,8 @@ struct _tDamagePlayer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__SKILLCOUNT = 84,
     VT__HISTORYAGGROTIME = 86,
     VT__HISTORYAVGAS = 88,
-    VT__HISTORYASTIME = 90
+    VT__HISTORYASTIME = 90,
+    VT__TERAFEVERNPROC = 92
   };
   uint32_t _id() const {
     return GetField<uint32_t>(VT__ID, 0);
@@ -149,6 +150,9 @@ struct _tDamagePlayer FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   uint16_t _teraenlightenproc() const {
     return GetField<uint16_t>(VT__TERAENLIGHTENPROC, 0);
+  }
+  uint16_t _terafevernproc() const {
+    return GetField<uint16_t>(VT__TERAFEVERNPROC, 0);
   }
   uint16_t _skillcounts() const {
     return GetField<uint16_t>(VT__SKILLCOUNTS, 0);
@@ -339,6 +343,9 @@ struct _tDamagePlayerBuilder {
   }
   void add__teraenlightenproc(uint16_t _teraenlightenproc) {
     fbb_.AddElement<uint16_t>(_tDamagePlayer::VT__TERAENLIGHTENPROC, _teraenlightenproc, 0);
+  }
+  void add__terafevernproc(uint16_t _terafevernproc) {
+    fbb_.AddElement<uint16_t>(_tDamagePlayer::VT__TERAFEVERNPROC, _terafevernproc, 0);
   }
   void add__skillcounts(uint16_t _skillcounts) {
     fbb_.AddElement<uint16_t>(_tDamagePlayer::VT__SKILLCOUNTS, _skillcounts, 0);

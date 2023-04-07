@@ -133,6 +133,9 @@
     <Filter Include="Damge Meter\Combat Meter">
       <UniqueIdentifier>{658c129f-87f4-4757-a778-a9a9eac9ff2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SWPacket\Packet\0x08">
+      <UniqueIdentifier>{190bfa8f-eb2e-458c-a5e7-8d09b4fd03f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -399,6 +402,9 @@
     <ClInclude Include="SWConfig.h">
       <Filter>PCH</Filter>
     </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketBrooch.h">
+      <Filter>SWPacket\Packet\0x08</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -643,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketEnterAnimation.cpp">
       <Filter>SWPacket\Packet\0x05</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketBrooch.cpp">
+      <Filter>SWPacket\Packet\0x08</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

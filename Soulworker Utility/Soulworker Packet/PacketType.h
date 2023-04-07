@@ -39,6 +39,9 @@
 #include ".\Soulworker Packet\SWPacketChat.h"
 // chat_whisper
 
+/* 0x0864*/
+#include ".\Soulworker Packet\SWPacketBrooch.h"
+
 /* 0x11 Maze */
 #include ".\Soulworker Packet\SWPacketMazeEnd.h"
 #include ".\Soulworker Packet\SWPacketMazeUpdateState.h"
@@ -102,6 +105,9 @@ enum RecvOPcode {
 	/* 0x07 */
 	CHAT = 0x0701,
 	CHAT_WHISPER = 0x0702,
+
+	/* 0x08 */
+	BROOCH = 0x0864,
 
 	/* 0x11 Maze */
 	MAZEEND = 0x1175,

@@ -311,6 +311,11 @@ USHORT SWDamagePlayer::GetTeraEnlighten()
 	return _teraEnlightenProc;
 }
 
+USHORT SWDamagePlayer::GetTeraFever()
+{
+	return _teraFeverProc;
+}
+
 VOID SWDamagePlayer::setHistoryBS(int type, DOUBLE value)
 {
 	switch (type) {
@@ -423,6 +428,12 @@ VOID SWDamagePlayer::AddEnlighten(FLOAT value)
 	else if (value == 10.0) {
 		_teraEnlightenProc++;
 	}
+}
+
+
+VOID SWDamagePlayer::AddFeverProc()
+{
+	_teraFeverProc++;
 }
 
 USHORT SWDamagePlayer::GetSkillUsed()

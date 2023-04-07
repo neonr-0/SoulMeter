@@ -145,6 +145,10 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			//swpacket = new SWPacketChat(swheader, data);
 			break;
 
+		case RecvOPcode::BROOCH: //0864
+			swpacket = new SWPacketBrooches(swheader, data);
+			break;
+
 			/* 0x11 Maze*/
 		case RecvOPcode::MAZEEND:
 			swpacket = new SWPacketMazeEnd(swheader, data);

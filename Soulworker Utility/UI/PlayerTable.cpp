@@ -260,7 +260,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	const int columnSize = 46;
+	const int columnSize = 47;
 	if (ImGui::BeginTable("###Player Table", columnSize, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
@@ -303,6 +303,7 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_EVADE_RATE_B"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_GIGA_ENLIGHTEN"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_TERA_ENLIGHTEN"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_TERA_FEVER"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_LOSED_HP"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DODGE_COUNT"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_DEATH"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
@@ -892,6 +893,17 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			ImGui::TableNextColumn();
 
 			sprintf_s(label, 128, "%u", (*itr)->GetTeraEnlighten());
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+		}
+		// Fever
+		if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) != LANGMANAGER.GetText("STR_TABLE_YOU") || _tableTime == 0) {
+			sprintf_s(label, 128, "-");
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+		}
+		else {
+			sprintf_s(label, 128, "%u", (*itr)->GetTeraFever());
 			ImGui::Text(label);
 			ImGui::TableNextColumn();
 		}

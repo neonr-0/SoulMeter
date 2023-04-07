@@ -812,6 +812,7 @@ public:
 	VOID AddDamage(UINT32 id, UINT64 totalDMG, UINT64 soulstoneDMG, SWPACKETDAMAGE_DAMAGETYPE damageType, USHORT maxCombo, UINT32 monsterID, UINT32 skillID);
 	VOID AddPlayerGetDamage(UINT32 playerId, UINT64 totalDMG, SWPACKETDAMAGE_DAMAGETYPE damageType, UINT32 monsterID, UINT32 skillID);
 	VOID AddEnlighten(UINT32 playerId, FLOAT value);
+	VOID AddFeverProc(UINT32 playerId);
 	VOID AddSkillUsed(UINT32 playerId, UINT32 skillId);
 	VOID AddDodgeUsed(UINT32 playerId);
 	VOID AddDeath(UINT32 playerId);

@@ -44,6 +44,7 @@ private:
 	FLOAT _enlightenSum;
 	USHORT _gigaEnlightenProc;
 	USHORT _teraEnlightenProc;
+	USHORT _teraFeverProc;
 	USHORT _skillCounts = 0;
 	USHORT _dodgeCounts = 0;
 	USHORT _deathCounts = 0;
@@ -106,6 +107,7 @@ public:
 	FLOAT GetEnlightenSum();
 	USHORT GetGigaEnlighten();
 	USHORT GetTeraEnlighten();
+	USHORT GetTeraFever();
 	USHORT GetSkillUsed();
 	USHORT GetDodgeUsed();
 	USHORT GetDeathCount();
@@ -139,6 +141,7 @@ public:
 
 	VOID AddGetDamage(UINT64 totalDMG, SWPACKETDAMAGE_DAMAGETYPE damageType, UINT32 monsterID, UINT32 skillID);
 	VOID AddEnlighten(FLOAT value);
+	VOID AddFeverProc();
 	VOID AddSkillUsed(UINT32 skillId);
 	VOID AddDodgeUsed();
 	VOID AddDeathCount();
@@ -207,6 +210,7 @@ public:
 
 		tdpb.add__gigaenlightenproc(_gigaEnlightenProc);
 		tdpb.add__teraenlightenproc(_teraEnlightenProc);
+		tdpb.add__terafevernproc(_teraFeverProc);
 		tdpb.add__skillcounts(_skillCounts);
 		tdpb.add__dodgecounts(_dodgeCounts);
 		tdpb.add__deathcounts(_deathCounts);
@@ -285,6 +289,7 @@ public:
 
 		_gigaEnlightenProc = tDamagePlayer->_gigaenlightenproc();
 		_teraEnlightenProc = tDamagePlayer->_teraenlightenproc();
+		_teraFeverProc = tDamagePlayer->_terafevernproc();
 		_skillCounts = tDamagePlayer->_skillcounts();
 		_dodgeCounts = tDamagePlayer->_dodgecounts();
 		_deathCounts = tDamagePlayer->_deathcounts();

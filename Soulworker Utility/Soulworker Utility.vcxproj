@@ -212,6 +212,7 @@
     <ClInclude Include="Soulworker Packet\SWPacketDamage.h" />
     <ClInclude Include="Soulworker Packet\SWPacketDead.h" />
     <ClInclude Include="Soulworker Packet\SWPacketEnterAnimation.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketBrooch.h" />
     <ClInclude Include="Soulworker Packet\SWPacketGestureUsed.h" />
     <ClInclude Include="Soulworker Packet\SWPacketHeartbeat.h" />
     <ClInclude Include="Soulworker Packet\SWPacketMaker.h" />
@@ -299,6 +300,7 @@
     <ClCompile Include="Soulworker Packet\SWPacketDamage.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketDead.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketEnterAnimation.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketBrooch.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketGestureUsed.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketHeartbeat.cpp" />
     <ClCompile Include="Soulworker Packet\SWPacketMaker.cpp" />
