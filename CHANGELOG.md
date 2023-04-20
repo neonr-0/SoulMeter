@@ -1,3 +1,8 @@
+
+## 1.3.5.0
+
+- Updated meter and database, added tera fever brooch dps meter.
+
 ## 1.3.4.8
 
 - Updated meter and database
