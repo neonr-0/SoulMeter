@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>SoulMeter 1.3.5.0</TargetName>
+    <TargetName>SoulMeter 1.3.5.1</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -160,12 +160,13 @@
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <AdditionalOptions>/Zc:char8_t- /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Soulworker Utility\Third Party\Npcap\Lib\x64;..\Soulworker Utility\Third Party\openssl\lib\VC;..\Soulworker Utility\Third Party\WinDivert\x64;..\Soulworker Utility\Third Party\SQLite\lib;..\Soulworker Utility\Third Party\PcapPlusPlus\x64\Release;..\Soulworker Utility\Third Party\PcapPlusPlus\pthread\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WinDivert.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;SQLite.lib;wpcap.lib;Packet.lib;Common++.lib;Packet++.lib;Pcap++.lib;pthreadVC2.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>

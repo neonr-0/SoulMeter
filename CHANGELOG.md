@@ -1,4 +1,8 @@
 
+## 1.3.5.1
+
+- Bugfixes (fixed crash in team)
+
 ## 1.3.5.0
 
 - Updated meter and database, added tera fever brooch dps meter.
