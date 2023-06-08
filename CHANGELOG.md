@@ -1,5 +1,9 @@
 ## 1.3.5.4
 
+- Updated meter
+
+## 1.3.5.4
+
 - Fixed crash in LF and LFH
 
 ## 1.3.5.3
