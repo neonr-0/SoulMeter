@@ -405,6 +405,9 @@
     <ClInclude Include="Soulworker Packet\SWPacketBrooch.h">
       <Filter>SWPacket\Packet\0x08</Filter>
     </ClInclude>
+    <ClInclude Include="Soulworker Packet\SWPacketSquad.h">
+      <Filter>SWPacket\Packet\0x12 Party</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -652,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketBrooch.cpp">
       <Filter>SWPacket\Packet\0x08</Filter>
+    </ClCompile>
+    <ClCompile Include="Soulworker Packet\SWPacketSquad.cpp">
+      <Filter>SWPacket\Packet\0x12 Party</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -169,6 +169,9 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 			break;
 		case RecvOPcode::PARTY_LIST_INFO:
 			//swpacket = new SWPacketPartyListInfo(swheader, data);
+			break;		
+		case RecvOPcode::PARTY_SQUAD: //1261
+			swpacket = new SWPacketSquad(swheader, data); //VP Squad
 			break;
 
 			/* 0x17 Monster */
@@ -192,7 +195,6 @@ VOID SWPacketMaker::CreateSWPacket(IPv4Packet* packet) {
 		case RecvOPcode::BIG_PARTY: //1117
 			swpacket = new SWPacketBigParty(swheader, data);
 			break;
-
 
 
 

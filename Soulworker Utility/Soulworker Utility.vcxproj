@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>SoulMeter 1.3.5.10</TargetName>
+    <TargetName>SoulMeter 1.3.6.0</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -240,6 +240,7 @@
     <ClInclude Include="Soulworker Packet\SWSPacketMySkillUsed.h" />
     <ClInclude Include="SWConfig.h" />
     <ClInclude Include="SWCrypt\SWCryptDLL.h" />
+    <ClInclude Include="Soulworker Packet\SWPacketSquad.h" />
     <ClInclude Include="Third Party\http\httplib.h" />
     <ClInclude Include="Third Party\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Third Party\imgui\backends\imgui_impl_win32.h" />
@@ -326,6 +327,7 @@
     <ClCompile Include="Soulworker Packet\SWSPacketMaker.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacketMyDodgeUsed.cpp" />
     <ClCompile Include="Soulworker Packet\SWSPacketMySkillUsed.cpp" />
+    <ClCompile Include="Soulworker Packet\SWPacketSquad.cpp" />
     <ClCompile Include="Third Party\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Third Party\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Third Party\imgui\Custom.cpp" />

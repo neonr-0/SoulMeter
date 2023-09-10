@@ -1,3 +1,7 @@
+## 1.3.6.0
+
+- Updated meter and database, added VP raid support
+
 ## 1.3.5.10
 
 - Updated meter
