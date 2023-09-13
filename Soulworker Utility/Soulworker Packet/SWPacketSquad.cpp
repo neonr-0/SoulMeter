@@ -21,7 +21,7 @@ VOID SWPacketSquad::Do() {
 
 	p_data += sizeof(SWPACKETSQUAD_HEADER_P2);
 
-	for (int i = 0; i < squad_header->_squadPlayerCount; i++) {
+	for (int i = 0; i < squad_header->_squadCurPlayerCount; i++) {
 		SWPACKETSQUAD_DATA* squad_data = (SWPACKETSQUAD_DATA*)p_data;
 		BYTE job = *(p_data + sizeof(SWPACKETSQUAD_DATA) + squad_data->_nickSize + 1);
 

@@ -18,8 +18,10 @@ typedef struct _SWPACKETSQUAD_HEADER_P1 {
 
 typedef struct _SWPACKETSQUAD_HEADER_P2 {
 	BYTE _unknown01[4];
-	BYTE _squadPlayerCount;
-	BYTE _unknown02[11];
+	BYTE _squadMaxPlayerCount; //??
+	BYTE _unknown02[7];
+	BYTE _squadCurPlayerCount;
+	BYTE _unknown03[3];
 }SWPACKETSQUAD_HEADER_P2;
 
 typedef struct _SWPACKETSQUAD_DATA {

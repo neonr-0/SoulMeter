@@ -1,3 +1,7 @@
+## 1.3.6.1
+
+- Updated database, possible fix crash after people leaving squad 
+
 ## 1.3.6.0
 
 - Updated meter and database, added VP raid support
