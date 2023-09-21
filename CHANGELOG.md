@@ -1,3 +1,7 @@
+## 1.3.6.2
+
+- Updated meter and database
+
 ## 1.3.6.1
 
 - Updated database, possible fix crash after people leaving squad 
