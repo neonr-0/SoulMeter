@@ -39,8 +39,6 @@ A: 複製option.xml 與 imgui.ini 到新版本的資料夾
 
 建議盡量不要於遊戲內公開談論本程式
 
-問題回報及功能建議群組: https://discord.gg/PN3VmS98bt
-
 如果無法開啟，請嘗試安裝此整合包: https://github.com/abbodi1406/vcredist/releases
 
 特別感謝 @Nyanchii、@FeAr
@@ -89,8 +87,6 @@ You need to run dps meter before entering maze
 Also, USE AT YOUR OWN RISK
 
 I recommend not to talk about dps meter at in-game public chat
-
-Issue and suggest: https://discord.gg/PN3VmS98bt
 
 If you can't open, try install this: https://github.com/abbodi1406/vcredist/releases
 
