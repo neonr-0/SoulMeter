@@ -33,6 +33,8 @@ static unordered_set<UINT32> pauseIdList({
 	13901202, // Parallel Metronome Noraml P1
 	13901201, // Parallel Metronome Hard P1
 
+	/* VP */
+	40301004, // Vista P1
 	});
 
 static unordered_set<UINT32> endIdList({
@@ -71,7 +73,12 @@ static unordered_set<UINT32> endIdList({
 	/* PM */
 	13901302, // Parallel Metronome Noraml P2
 	13901301, // Parallel Metronome Hard P2
-
+	
+	/* VP */
+	40301005, // Vista
+	40301009, // Vista Shadow (Flemma maze)
+	40301002, // Relfenne
+	40301003, // Flemma
 	});
 
 static unordered_set<UINT32> resumeIgnoreIdList({
@@ -112,6 +119,11 @@ static unordered_set<UINT32> changeAggroIdList({
 	13901202, 13901302, // Parallel Metronome Noraml
 	13901201, 13901301, // Parallel Metronome Hard
 
+	/* VP */
+	40301004, 40301005, // Vista
+	40301008, 40301009, // Vista Shadow
+	40301002, // Relfenne
+	40301003, // Flemma
 	});
 
 static unordered_set<UINT32> dpsIgnoreIdList({
@@ -138,8 +150,10 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 
 	/* SKILL */
 	1081102, 1081103, 1081104, 1081105, 1081106, 1081107, 1081108, 1081109, // Field Octagon(Ephnel)
-	1091101 // Bomb Wick(Nabi)
-
+	1091101, // Bomb Wick(Nabi)
+	
+	/* VP */
+	40301006, // Relfenne center mech
 	});
 
 static unordered_set<UINT32> LunarFallBossListId({
