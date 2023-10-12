@@ -1,3 +1,7 @@
+## 1.3.6.3
+
+- Updated meter and database, fixed agro in VP
+
 ## 1.3.6.2
 
 - Updated meter and database

@@ -154,6 +154,8 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 	
 	/* VP */
 	40301006, // Relfenne center mech
+	40201011, // Vista summoned wolf
+	40301011, // Vista egg?
 	});
 
 static unordered_set<UINT32> LunarFallBossListId({
