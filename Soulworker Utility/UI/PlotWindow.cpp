@@ -1,3 +1,5 @@
+#define IMPLOT_DISABLE_OBSOLETE_WARNINGS
+#define IMPLOT_DISABLE_DEPRECATED_WARNINGS
 #include "pch.h"
 #include "PlotWindow.h"
 #include "UtillWindow.h"
@@ -224,8 +226,8 @@ VOID PlotWindow::UpdatePlotTab()
 				endY += 1000;
 
 				if (!_end) {
-					ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-					ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+					ImPlot::SetNextAxisLimits(ImAxis_X1,startX, endX, ImGuiCond_Always);
+					ImPlot::SetNextAxisLimits(ImAxis_Y1,startY, endY, ImGuiCond_Always);
 				}
 			}
 		}
@@ -233,7 +235,8 @@ VOID PlotWindow::UpdatePlotTab()
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_DPSGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
-			LANGMANAGER.GetText("STR_PLOTWINDOW_DPSGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
+			LANGMANAGER.GetText("STR_PLOTWINDOW_DPSGRAPH"), ImVec2(-1, 0), ImPlotFlags_None, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
+			//ImPlot::SetupAxis(ImAxis_X1, "My X-Axis");
 			auto it = metaInfos.begin();
 			for (; it != metaInfos.end(); it++) {
 				UINT32 id = (*it)->_id;
@@ -267,15 +270,15 @@ VOID PlotWindow::UpdateAbPlotTab()
 			}
 
 			if (!_end) {
-				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_X1, startX, endX, ImGuiCond_Always);
 			}
-			ImPlot::SetNextPlotLimitsY(0.0, 100.0, ImGuiCond_Always);
+			ImPlot::SetNextAxisLimits(ImAxis_Y1, 0.0, 100.0, ImGuiCond_Always);
 		}
 		
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_ABGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
-			LANGMANAGER.GetText("STR_PLOTWINDOW_ABGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
+			LANGMANAGER.GetText("STR_PLOTWINDOW_ABGRAPH"), ImVec2(-1, 0), ImPlotFlags_None, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(LANGMANAGER.GetText("STR_TABLE_YOU"), _abTimeList.data(), _abList.data(), static_cast<INT>(_abList.size()));
 			ImPlot::EndPlot();
 		}
@@ -316,14 +319,14 @@ VOID PlotWindow::UpdateBdPlotTab()
 			endY += 10;
 
 			if (!_end) {
-				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-				ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_X1, startX, endX, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_Y1, startY, endY, ImGuiCond_Always);
 			}
 		}
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_BDGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
-			LANGMANAGER.GetText("STR_PLOTWINDOW_BDGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
+			LANGMANAGER.GetText("STR_PLOTWINDOW_BDGRAPH"), ImVec2(-1, 0), ImPlotFlags_None, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(LANGMANAGER.GetText("STR_TABLE_YOU"), _bdTimeList.data(), _bdList.data(), static_cast<INT>(_bdList.size()));
 			ImPlot::EndPlot();
 		}
@@ -349,15 +352,15 @@ VOID PlotWindow::UpdateJqPlotTab()
 				endX = _jqTimeList.back();
 			}
 			if (!_end) {
-				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_X1, startX, endX, ImGuiCond_Always);
 			}
-			ImPlot::SetNextPlotLimitsY(0, 4, ImGuiCond_Always);
+			ImPlot::SetNextAxisLimits(ImAxis_Y1, 0.0, 4.0, ImGuiCond_Always);
 		}
 
 		if (ImPlot::BeginPlot(
 			LANGMANAGER.GetText("STR_PLOTWINDOW_JQGRAPH"),
 			LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
-			LANGMANAGER.GetText("STR_PLOTWINDOW_JQGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
+			LANGMANAGER.GetText("STR_PLOTWINDOW_JQGRAPH"), ImVec2(-1, 0), ImPlotFlags_None, ImPlotAxisFlags_None, ImPlotAxisFlags_None)) {
 			ImPlot::PlotLine(LANGMANAGER.GetText("STR_TABLE_YOU"), _jqTimeList.data(), _jqList.data(), static_cast<INT>(_jqList.size()));
 			ImPlot::EndPlot();
 		}
@@ -447,8 +450,8 @@ VOID PlotWindow::UpdateBossHpPlotGraph()
 			endY += 100;
 
 			if (!_end) {
-				ImPlot::SetNextPlotLimitsX(startX, endX, ImGuiCond_Always);
-				ImPlot::SetNextPlotLimitsY(startY, endY, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_X1, startX, endX, ImGuiCond_Always);
+				ImPlot::SetNextAxisLimits(ImAxis_Y1, startY, endY, ImGuiCond_Always);
 			}
 		}
 	}
@@ -456,7 +459,7 @@ VOID PlotWindow::UpdateBossHpPlotGraph()
 	if (ImPlot::BeginPlot(
 		LANGMANAGER.GetText("STR_PLOTWINDOW_BOSSHPGRAPH"),
 		LANGMANAGER.GetText("STR_PLOTWINDOW_TIME_SEC"),
-		LANGMANAGER.GetText("STR_PLOTWINDOW_BOSSHPGRAPH"), ImVec2(-1, 0), ImPlotFlags_AntiAliased, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
+		LANGMANAGER.GetText("STR_PLOTWINDOW_BOSSHPGRAPH"), ImVec2(-1, 0), ImPlotFlags_None, ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit)) {
 		ImPlot::PlotLine(LANGMANAGER.GetText("STR_PLOTWINDOW_BOSSHPGRAPH_UNIT"), timeList[_selectedBossHpComboID].data(), bossHpList[_selectedBossHpComboID].data(), static_cast<INT>(bossHpList[_selectedBossHpComboID].size()));
 		ImPlot::EndPlot();
 	}

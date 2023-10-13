@@ -37,15 +37,6 @@
     <Filter Include="SWPacket\Packet">
       <UniqueIdentifier>{53757cd3-4ef9-4ed2-b1e6-0474e6a25bf8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Damge Meter">
-      <UniqueIdentifier>{80ce6a70-681f-4467-a0eb-127456ea6e8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Damge Meter\SQLite">
-      <UniqueIdentifier>{44527f9c-69fc-487a-a30d-a540b023912e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Damge Meter\SWDamageType">
-      <UniqueIdentifier>{de70e6bd-958b-4232-8145-be840081ce6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PacketCapture">
       <UniqueIdentifier>{8f52f91d-3646-4373-a9b2-ff5407e77710}</UniqueIdentifier>
     </Filter>
@@ -69,9 +60,6 @@
     </Filter>
     <Filter Include="UI\Window\UI">
       <UniqueIdentifier>{d1da892c-51f8-4ffd-af79-67efd73c9dad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Damge Meter\Buff Meter">
-      <UniqueIdentifier>{0e1b8015-2f51-4434-97a0-aa057ccba788}</UniqueIdentifier>
     </Filter>
     <Filter Include="Language">
       <UniqueIdentifier>{df5bc8c9-605f-4439-9c65-8c00881c0be5}</UniqueIdentifier>
@@ -127,14 +115,26 @@
     <Filter Include="SWPacket\Packet\0x11 Maze">
       <UniqueIdentifier>{45651462-a456-4dfd-8f66-4a71442b2066}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Damge Meter\History">
-      <UniqueIdentifier>{68509aa2-5d39-4f11-ab5a-86562f577bb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Damge Meter\Combat Meter">
-      <UniqueIdentifier>{658c129f-87f4-4757-a778-a9a9eac9ff2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SWPacket\Packet\0x08">
       <UniqueIdentifier>{190bfa8f-eb2e-458c-a5e7-8d09b4fd03f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter">
+      <UniqueIdentifier>{80ce6a70-681f-4467-a0eb-127456ea6e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter\SQLite">
+      <UniqueIdentifier>{44527f9c-69fc-487a-a30d-a540b023912e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter\SWDamageType">
+      <UniqueIdentifier>{de70e6bd-958b-4232-8145-be840081ce6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter\Buff Meter">
+      <UniqueIdentifier>{0e1b8015-2f51-4434-97a0-aa057ccba788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter\History">
+      <UniqueIdentifier>{68509aa2-5d39-4f11-ab5a-86562f577bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Damage Meter\Combat Meter">
+      <UniqueIdentifier>{658c129f-87f4-4757-a778-a9a9eac9ff2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,19 +172,19 @@
       <Filter>PacketCapture\Windivert</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\Damage Meter.h">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\MySQLite.h">
-      <Filter>Damge Meter\SQLite</Filter>
+      <Filter>Damage Meter\SQLite</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\SWDamagePlayer.h">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\SWDamageMonster.h">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\SWDamageSkill.h">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacket.h">
       <Filter>SWPacket\Packet</Filter>
@@ -196,7 +196,7 @@
       <Filter>UI\Window</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\Timer.h">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClInclude>
     <ClInclude Include="UI\Option.h">
       <Filter>UI\Window</Filter>
@@ -232,10 +232,10 @@
       <Filter>tinyxml2</Filter>
     </ClInclude>
     <ClInclude Include="Buff Meter\Buff Meter.h">
-      <Filter>Damge Meter\Buff Meter</Filter>
+      <Filter>Damage Meter\Buff Meter</Filter>
     </ClInclude>
     <ClInclude Include="Buff Meter\Buff.h">
-      <Filter>Damge Meter\Buff Meter</Filter>
+      <Filter>Damage Meter\Buff Meter</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\PacketInfo.h">
       <Filter>SWPacket\헤더 파일</Filter>
@@ -340,7 +340,7 @@
       <Filter>SWPacket\Packet\0x17 Monster</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\MonsterList.h">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClInclude>
     <ClInclude Include="Language\Language.h">
       <Filter>Language</Filter>
@@ -364,7 +364,7 @@
       <Filter>SWPacket\Packet\0x11 Maze</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\MapList.h">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClInclude>
     <ClInclude Include="SWCrypt\SWCryptDLL.h">
       <Filter>SWCrypt</Filter>
@@ -376,22 +376,22 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\History.h">
-      <Filter>Damge Meter\History</Filter>
+      <Filter>Damage Meter\History</Filter>
     </ClInclude>
     <ClInclude Include="Damage Meter\SaveData.h">
-      <Filter>Damge Meter\History</Filter>
+      <Filter>Damage Meter\History</Filter>
     </ClInclude>
     <ClInclude Include="Third Party\imgui\imgui_filedialog.h">
       <Filter>UI\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Combat Meter\CombatMeter.h">
-      <Filter>Damge Meter\Combat Meter</Filter>
+      <Filter>Damage Meter\Combat Meter</Filter>
     </ClInclude>
     <ClInclude Include="UI\UtillWindow.h">
       <Filter>UI\Window</Filter>
     </ClInclude>
     <ClInclude Include="Combat Meter\Combat.h">
-      <Filter>Damge Meter\Combat Meter</Filter>
+      <Filter>Damage Meter\Combat Meter</Filter>
     </ClInclude>
     <ClInclude Include="Soulworker Packet\SWPacketBigParty.h">
       <Filter>SWPacket\Packet\0x2e Force</Filter>
@@ -441,19 +441,19 @@
       <Filter>PacketCapture\Windivert</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\Damage Meter.cpp">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\MySQLite.cpp">
-      <Filter>Damge Meter\SQLite</Filter>
+      <Filter>Damage Meter\SQLite</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\SWDamagePlayer.cpp">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\SWDamageMonster.cpp">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\SWDamageSkill.cpp">
-      <Filter>Damge Meter\SWDamageType</Filter>
+      <Filter>Damage Meter\SWDamageType</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacket.cpp">
       <Filter>SWPacket\Packet</Filter>
@@ -465,7 +465,7 @@
       <Filter>UI\Window</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\Timer.cpp">
-      <Filter>Damge Meter</Filter>
+      <Filter>Damage Meter</Filter>
     </ClCompile>
     <ClCompile Include="UI\Option.cpp">
       <Filter>UI\Window</Filter>
@@ -507,10 +507,10 @@
       <Filter>tinyxml2</Filter>
     </ClCompile>
     <ClCompile Include="Buff Meter\Buff Meter.cpp">
-      <Filter>Damge Meter\Buff Meter</Filter>
+      <Filter>Damage Meter\Buff Meter</Filter>
     </ClCompile>
     <ClCompile Include="Buff Meter\Buff.cpp">
-      <Filter>Damge Meter\Buff Meter</Filter>
+      <Filter>Damage Meter\Buff Meter</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketDamage.cpp">
       <Filter>SWPacket\Packet\0x06 Combat</Filter>
@@ -630,22 +630,19 @@
       <Filter>SWPacket\Packet\0x11 Maze</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\History.cpp">
-      <Filter>Damge Meter\History</Filter>
+      <Filter>Damage Meter\History</Filter>
     </ClCompile>
     <ClCompile Include="Damage Meter\SaveData.cpp">
-      <Filter>Damge Meter\History</Filter>
-    </ClCompile>
-    <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp">
-      <Filter>UI\ImGui</Filter>
+      <Filter>Damage Meter\History</Filter>
     </ClCompile>
     <ClCompile Include="Combat Meter\CombatMeter.cpp">
-      <Filter>Damge Meter\Combat Meter</Filter>
+      <Filter>Damage Meter\Combat Meter</Filter>
     </ClCompile>
     <ClCompile Include="UI\UtillWindow.cpp">
       <Filter>UI\Window</Filter>
     </ClCompile>
     <ClCompile Include="Combat Meter\Combat.cpp">
-      <Filter>Damge Meter\Combat Meter</Filter>
+      <Filter>Damage Meter\Combat Meter</Filter>
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketBigParty.cpp">
       <Filter>SWPacket\Packet\0x2e Force</Filter>
@@ -658,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="Soulworker Packet\SWPacketSquad.cpp">
       <Filter>SWPacket\Packet\0x12 Party</Filter>
+    </ClCompile>
+    <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp">
+      <Filter>UI\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

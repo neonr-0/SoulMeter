@@ -122,6 +122,7 @@ static unordered_set<UINT32> changeAggroIdList({
 	/* VP */
 	40301004, 40301005, // Vista
 	40301008, 40301009, // Vista Shadow
+	40301001, // Howling fang maze wolf
 	40301002, // Relfenne
 	40301003, // Flemma
 	});

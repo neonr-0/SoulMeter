@@ -14,14 +14,28 @@ SWHEADER* SWPacketMaker::GetSWHeader(IPv4Packet* packet) {
 
 	SWHEADER* swheader = (SWHEADER*)(packet->_data);
 	
-#ifdef DEBUG_FIND_SWMAGIC
-	static int test_SWMAGIC = 0;
-	test_SWMAGIC = test_SWMAGIC++;
-	if (swheader->_magic != test_SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND)) 
-		return nullptr;
-	Log::WriteLogA("%d ", test_SWMAGIC);
-#endif
-	if (swheader->_magic != SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND)) {
+	USHORT swMagic = UIOPTION.GetManualSWMagic();
+	if (UIOPTION.GetAutoMagic_Mode() == 0) // auto
+	{
+		if (swMagic == 0)
+		{
+			static int test_SWMAGIC = 0;
+			test_SWMAGIC++;
+			if (swheader->_magic != test_SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND))
+				return nullptr;
+			swMagic = test_SWMAGIC;
+			UIOPTION.SetManualSWMagic(swMagic);
+			test_SWMAGIC = 0;
+		}
+		else
+			swMagic = UIOPTION.GetManualSWMagic();
+	}
+	else if (UIOPTION.GetAutoMagic_Mode() == 2) // Manual
+		swMagic = UIOPTION.GetManualSWMagic();
+	else // 1 Static
+		swMagic = SWMAGIC;
+
+	if (swheader->_magic != swMagic || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND)) {
 		return nullptr;
 	}
 	return swheader;

@@ -250,14 +250,14 @@ VOID UiOption::ShowTeamTALFSelector()
 	if (ImGui::BeginCombo(u8"###OptionTALF", comboPreview, ImGuiComboFlags_HeightLargest))
 	{
 
-		CHAR label[128] = { 0 };
+		CHAR label[64] = { 0 };
 
 		for (INT32 i = 1; i <= 2; i++)
 		{
 			if (i == 1)
-				sprintf_s(label, 128, "%s##OptionTALF1", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_1"));
+				sprintf_s(label, 64, "%s##OptionTALF1", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_1"));
 			else
-				sprintf_s(label, 128, "%s##OptionTALF2", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_2"));
+				sprintf_s(label, 64, "%s##OptionTALF2", LANGMANAGER.GetText("STR_OPTION_TEAMTA_OPTION_2"));
 			if (ImGui::Selectable(label, _teamTA_LF_Mode == i)) {
 				_teamTA_LF_Mode = i;
 			}
@@ -265,6 +265,47 @@ VOID UiOption::ShowTeamTALFSelector()
 
 		ImGui::EndCombo();
 	}
+}
+
+VOID UiOption::ShowAutoDetectSWMagic()
+{
+	ImGui::Text(LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_LABEL"));
+	
+	const CHAR* comboPreview = nullptr;
+	if (_autoSWMG_Mode == 2)
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_2");
+	else if (_autoSWMG_Mode == 1)
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_1");
+	else // 0
+		comboPreview = LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_0");
+
+	if (ImGui::BeginCombo(u8"###OptionAMG", comboPreview, ImGuiComboFlags_HeightLargest))
+	{
+		CHAR label[64] = { 0 };
+		for (INT32 i = 0; i <= 2; i++)
+		{
+			if (i == 2)
+				sprintf_s(label, 64, "%s##OptionAMG2", LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_2"));
+			else if (i == 1)
+				sprintf_s(label, 64, "%s##OptionAMG1", LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_1"));
+			else
+				sprintf_s(label, 64, "%s##OptionAMG0", LANGMANAGER.GetText("STR_OPTION_AUTOSWMAGIC_OPTION_0"));
+
+			if (ImGui::Selectable(label, _autoSWMG_Mode == i)) {
+				_autoSWMG_Mode = i;
+				if (i == 0)
+					_manualSWMagic = 0;
+			}
+		}
+		ImGui::EndCombo();
+	}
+	CHAR SWMagic_input[32] = { 0 };
+	if (_autoSWMG_Mode == 2)
+	{
+		ImGui::SameLine(0.0f,10.0f);
+		ImGui::InputInt(u8"###OptionAMG0", &_manualSWMagic, 1, 1);
+	}
+	
 }
 
 VOID UiOption::ShowInterfaceSelector() {
@@ -362,6 +403,7 @@ VOID UiOption::OpenOption() {
 				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
 				ShowFeatures();
 				ShowTeamTALFSelector();
+				ShowAutoDetectSWMagic();
 				ImGui::PopItemWidth();
 				ImGui::EndTabItem();
 			}
@@ -508,6 +550,18 @@ BOOL UiOption::GetOption() {
 	if (attr != nullptr)
 		attr->QueryIntValue(&_teamTA_LF_Mode);
 
+	attr = ele->FindAttribute("Manual_SWMagic");
+	if (attr != nullptr)
+		attr->QueryIntValue(&_manualSWMagic);
+
+	attr = ele->FindAttribute("AutoMG_Mode");
+	if (attr != nullptr)
+	{
+		attr->QueryIntValue(&_autoSWMG_Mode);
+		if (_autoSWMG_Mode == 0)
+			_manualSWMagic = 0; // reset if auto
+	}
+	
 	attr = ele->FindAttribute("UseCaptureMode");
 	if (attr != nullptr)
 		attr->QueryIntValue(&_captureMode);
@@ -902,6 +956,8 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 	option->SetAttribute("IsSoloRankMode", _isSoloRankMode);
 	option->SetAttribute("IsUseSaveData", _isUseSaveData);
 	option->SetAttribute("IsUpdateCheck", _isUpdateCheck);
+	option->SetAttribute("AutoMG_Mode", _autoSWMG_Mode);
+	option->SetAttribute("Manual_SWMagic", _manualSWMagic);
 
 	option->SetAttribute("CellPaddingX", _cellPadding.x);
 	option->SetAttribute("CellPaddingY", _cellPadding.y);
@@ -1119,6 +1175,15 @@ const BOOL& UiOption::isDontSaveUnfinishedMaze()
 	return _isDontSaveUnfinishedMaze;
 }
 
+const INT32& UiOption::GetAutoMagic_Mode()
+{
+	return _autoSWMG_Mode;
+}
+const INT32& UiOption::GetManualSWMagic()
+{
+	return _manualSWMagic;
+}
+
 VOID UiOption::Update() {
 
 	ImFont* font = ImGui::GetFont();
@@ -1161,6 +1226,10 @@ const FLOAT& UiOption::GetWindowWidth() {
 
 VOID UiOption::SetWindowWidth(const FLOAT& width) {
 	_windowWidth = width;
+}
+
+VOID UiOption::SetManualSWMagic(const USHORT& sw_magic) {
+	_manualSWMagic = sw_magic;
 }
 
 const FLOAT& UiOption::GetRefreshTime() {

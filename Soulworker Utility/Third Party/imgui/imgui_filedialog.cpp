@@ -78,7 +78,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
 		ImGui::Text("%s: %s", LANGMANAGER.GetText("STR_FILEDIALOG_PATH"), dialogInfo->directoryPath.string().c_str());
 
 
-		ImGui::BeginChild("##browser", ImVec2(ImGui::GetWindowContentRegionWidth(), 300), true, ImGuiWindowFlags_HorizontalScrollbar);
+		ImGui::BeginChild("##browser", ImVec2(ImGui::GetContentRegionAvail().x, 300), true, ImGuiWindowFlags_HorizontalScrollbar);
 		ImGui::Columns(4);
 
 		// Columns size
@@ -221,7 +221,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
 		// Draw parent
 		if (dialogInfo->directoryPath.has_parent_path())
 		{
-			if (ImGui::Selectable("..", dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetWindowContentRegionWidth(), 0)))
+			if (ImGui::Selectable("..", dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetContentRegionAvail().x, 0)))
 			{
 				dialogInfo->currentIndex = index;
 
@@ -250,7 +250,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
 			auto directoryPath = directoryEntry.path();
 			auto directoryName = directoryPath.filename();
 
-			if (ImGui::Selectable(directoryName.string().c_str(), dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetWindowContentRegionWidth(), 0)))
+			if (ImGui::Selectable(directoryName.string().c_str(), dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetContentRegionAvail().x, 0)))
 			{
 				dialogInfo->currentIndex = index;
 
@@ -288,7 +288,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
 			auto filePath = fileEntry.path();
 			auto fileName = filePath.filename();
 
-			if (ImGui::Selectable(fileName.string().c_str(), dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetWindowContentRegionWidth(), 0)))
+			if (ImGui::Selectable(fileName.string().c_str(), dialogInfo->currentIndex == index, ImGuiSelectableFlags_AllowDoubleClick, ImVec2(ImGui::GetContentRegionAvail().x, 0)))
 			{
 				dialogInfo->currentIndex = index;
 				dialogInfo->fileName = fileName;
@@ -325,7 +325,7 @@ bool ImGui::FileDialog(bool* open, ImFileDialogInfo* dialogInfo)
 		std::memcpy(fileNameBuffer, fileNameStr.c_str(), fileNameSize);
 		fileNameBuffer[fileNameSize] = 0;
 
-		ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth());
+		ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 		sprintf_s(label, "%s", LANGMANAGER.GetText("STR_FILEDIALOG_NAME"));
 		if (ImGui::InputText(label, fileNameBuffer, fileNameBufferSize))
 		{

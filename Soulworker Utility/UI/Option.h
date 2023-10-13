@@ -47,6 +47,8 @@ private:
 	CHAR _selectedInterface[MAX_PATH] = { 0 };
 	BOOL _isDontSaveUnfinishedMaze;
 	BOOL _isUpdateCheck;
+	INT32 _autoSWMG_Mode = 0;
+	INT32 _manualSWMagic = 0;
 
 	BOOL ShowTableOption();
 	BOOL ShowHotkeySetting();
@@ -55,6 +57,7 @@ private:
 
 	VOID ShowCaptureModeSelector();
 	VOID ShowTeamTALFSelector();
+	VOID ShowAutoDetectSWMagic();
 	VOID ShowInterfaceSelector();
 
 	VOID Helper();
@@ -100,7 +103,8 @@ public:
 	const CHAR* GetUseInterface();
 	const BOOL& isDontSaveUnfinishedMaze();
 	const BOOL& isUpdateCheck();
-
+	const INT32& GetAutoMagic_Mode();
+	const INT32& GetManualSWMagic();
 	BOOL ToggleTopMost();
 
 	const FLOAT& GetFramerate();
@@ -108,6 +112,7 @@ public:
 
 	const FLOAT& GetWindowWidth();
 	VOID SetWindowWidth(const FLOAT& width);
+	VOID SetManualSWMagic(const USHORT& sw_magic);
 
 	const FLOAT& GetRefreshTime();
 
