@@ -21,6 +21,8 @@ SWHEADER* SWPacketMaker::GetSWHeader(IPv4Packet* packet) {
 		{
 			static int test_SWMAGIC = 0;
 			test_SWMAGIC++;
+			if (test_SWMAGIC >= 300)//not sure if this can be more than 300
+				test_SWMAGIC = 0;
 			if (swheader->_magic != test_SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND))
 				return nullptr;
 			swMagic = test_SWMAGIC;
