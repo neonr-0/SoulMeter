@@ -13,7 +13,15 @@ SWSHEADER* SWSPacketMaker::GetSWSHeader(IPv4Packet* packet) {
 
 	SWSHEADER* swheader = (SWSHEADER*)(packet->_data);
 
-	if (swheader->_magic != SWMAGIC || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND))
+	USHORT swMagic = UIOPTION.GetManualSWMagic();
+	if (UIOPTION.GetAutoMagic_Mode() == 0) // auto
+		swMagic = UIOPTION.GetManualSWMagic();
+	else if (UIOPTION.GetAutoMagic_Mode() == 2) // Manual
+		swMagic = UIOPTION.GetManualSWMagic();
+	else
+		swMagic = SWMAGIC;
+
+	if (swheader->_magic != swMagic || (swheader->_const_value01 != SWCONSTVALUE_RECV && swheader->_const_value01 != SWCONSTVALUE_SEND))
 		return nullptr;
 
 	return swheader;

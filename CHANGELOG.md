@@ -1,3 +1,7 @@
+## 1.4.0.1
+
+- Updated meter, fixed ping
+
 # 1.4.0.0
 
 - Updated ImGui library, added automatic detection of "Magic packet", updated database
