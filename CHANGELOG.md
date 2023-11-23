@@ -1,3 +1,7 @@
+## 1.4.0.2
+
+- Updated meter
+
 ## 1.4.0.1
 
 - Updated meter, fixed ping

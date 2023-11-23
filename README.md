@@ -9,6 +9,10 @@ Supported capture software: *Npcap(Recommended), WinDivert(Default, The data wil
 
 ![example](example.png)
 
+Starting from version 1.4.0.0 there are auto-detection mechanism to find right version of game, on first launch it can take a while before DPS meter started to work. You can **manually** change it in settings or use a **static** with latests version of DPS meter.
+
+![example](settings_auto.png)
+
 ## How to use
 
 Hotkey - CTRL + DEL : Reset
@@ -26,9 +30,13 @@ Q: Can't display chinese
 
 A: Put chinese font file to Font folder.
 
-Q: how to keep settings when upgrading to new version
+Q: How to keep settings when upgrading to new version
 
 A: Copy option.xml and imgui.ini to new version folder
+
+Q: Does this DPS meter work only on global server?
+
+A: This DPS meter tested only on global server, but since version >1.4.0.0 it may work on JP/KR. It might work, but there are no guarantees.
 
 
 ## Notice
