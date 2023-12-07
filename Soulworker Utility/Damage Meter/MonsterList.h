@@ -35,6 +35,9 @@ static unordered_set<UINT32> pauseIdList({
 
 	/* VP */
 	40301004, // Vista P1
+	/* CD */
+	44002014, // Beletto Solo P1
+	44002010, // Belletto P1 
 	});
 
 static unordered_set<UINT32> endIdList({
@@ -125,6 +128,9 @@ static unordered_set<UINT32> changeAggroIdList({
 	40301001, // Howling fang maze wolf
 	40301002, // Relfenne
 	40301003, // Flemma
+
+	/* CD */
+	44002010,
 	});
 
 static unordered_set<UINT32> dpsIgnoreIdList({
