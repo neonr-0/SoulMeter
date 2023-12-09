@@ -82,6 +82,9 @@ static unordered_set<UINT32> endIdList({
 	40301009, // Vista Shadow (Flemma maze)
 	40301002, // Relfenne
 	40301003, // Flemma
+	/* CD */
+	44002011, // Belletto P2
+
 	});
 
 static unordered_set<UINT32> resumeIgnoreIdList({

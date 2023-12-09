@@ -1,3 +1,7 @@
+## 1.4.0.4
+
+- Fix for P2 CD Raid, updated database
+
 ## 1.4.0.3
 
 - Updated meter and database
