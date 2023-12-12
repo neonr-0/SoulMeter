@@ -84,7 +84,10 @@ static unordered_set<UINT32> endIdList({
 	40301003, // Flemma
 	/* CD */
 	44002011, // Belletto P2
-
+	44002010, // Belletto P1
+	/* CD Solo */
+	44002015, // Belletto P2
+	44002014, // Belletto P1
 	});
 
 static unordered_set<UINT32> resumeIgnoreIdList({
@@ -133,7 +136,11 @@ static unordered_set<UINT32> changeAggroIdList({
 	40301003, // Flemma
 
 	/* CD */
-	44002010,
+	44002011, // Belletto P2
+	44002010, // Belletto P1
+	/* CD Solo */
+	44002015, // Belletto P2
+	44002014, // Belletto P1
 	});
 
 static unordered_set<UINT32> dpsIgnoreIdList({

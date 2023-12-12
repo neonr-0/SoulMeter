@@ -1,3 +1,7 @@
+## 1.4.0.5
+
+- Fix for P1 CD Raid and Solo version of it, updated database
+
 ## 1.4.0.4
 
 - Fix for P2 CD Raid, updated database
