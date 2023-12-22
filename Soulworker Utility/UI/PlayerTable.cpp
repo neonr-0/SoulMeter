@@ -1132,10 +1132,13 @@ VOID PlayerTable::CheckUpdate()
 				_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
 				error = ERROR_SUCCESS;
 				//Send data to dialogue
-				MODALWINDOW.SetUID(MODALWINDOW_UID_UPDATE);
-				MODALWINDOW.SetLabel(LANGMANAGER.GetText("STR_MODALWINDOW_TITLE_UPDATE"));
-				MODALWINDOW.SetText(LANGMANAGER.GetText("STR_MODALWINDOW_TEXT_UPDATE"));
-				MODALWINDOW.ShowWindow();
+				if (!_isNewestVersion)
+				{
+					MODALWINDOW.SetUID(MODALWINDOW_UID_UPDATE);
+					MODALWINDOW.SetLabel(LANGMANAGER.GetText("STR_MODALWINDOW_TITLE_UPDATE"));
+					MODALWINDOW.SetText(LANGMANAGER.GetText("STR_MODALWINDOW_TEXT_UPDATE"));
+					MODALWINDOW.ShowWindow();
+				}
 				break;
 			}
 			else {
