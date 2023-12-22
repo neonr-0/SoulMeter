@@ -7,6 +7,7 @@
 #include ".\UI\UiWindow.h"
 #include ".\UI\UtillWindow.h"
 #include ".\UI\PlotWindow.h"
+#include ".\UI\ModalWindow.h"
 #include ".\Soulworker Packet\PacketInfo.h"
 #include ".\Soulworker Packet\SWPacketMaker.h"
 #include ".\Packet Capture\PacketCapture.h"
@@ -1130,6 +1131,11 @@ VOID PlayerTable::CheckUpdate()
 			if (res != nullptr && res.error() == httplib::Error::Success && res->status == 200) {
 				_isNewestVersion = strcmp(res->body.c_str(), APP_VERSION) == 0;
 				error = ERROR_SUCCESS;
+				//Send data to dialogue
+				MODALWINDOW.SetUID(MODALWINDOW_UID_UPDATE);
+				MODALWINDOW.SetLabel(LANGMANAGER.GetText("STR_MODALWINDOW_TITLE_UPDATE"));
+				MODALWINDOW.SetText(LANGMANAGER.GetText("STR_MODALWINDOW_TEXT_UPDATE"));
+				MODALWINDOW.ShowWindow();
 				break;
 			}
 			else {

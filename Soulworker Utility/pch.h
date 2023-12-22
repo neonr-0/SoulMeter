@@ -11,6 +11,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <Windows.h>
+#include <shellapi.h>
 
 #include <DbgHelp.h>
 #pragma comment(lib, "Dbghelp.lib")
@@ -75,6 +76,10 @@
 #pragma comment(lib, "libssl64MD.lib")
 #endif
 
+//11Zip
+#include ".\Third Party\11Zip\include\elzip\elzip.hpp"
+#pragma comment(lib, "libminizip.lib")
+#pragma comment(lib, "zlibstatic.lib")
 // Http
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include ".\Third Party\http\httplib.h"

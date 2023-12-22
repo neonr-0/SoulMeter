@@ -32,6 +32,7 @@ private:
 	BOOL SetFontList();
 
 	VOID UpdateMainTable();
+	VOID CheckModalWindowState();
 
 	BOOL _isExit = false;
 

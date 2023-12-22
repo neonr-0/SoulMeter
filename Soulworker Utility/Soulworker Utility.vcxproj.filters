@@ -408,6 +408,9 @@
     <ClInclude Include="Soulworker Packet\SWPacketSquad.h">
       <Filter>SWPacket\Packet\0x12 Party</Filter>
     </ClInclude>
+    <ClInclude Include="UI\ModalWindow.h">
+      <Filter>UI\Window\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -658,6 +661,9 @@
     </ClCompile>
     <ClCompile Include="Third Party\imgui\imgui_filedialog.cpp">
       <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ModalWindow.cpp">
+      <Filter>UI\Window\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

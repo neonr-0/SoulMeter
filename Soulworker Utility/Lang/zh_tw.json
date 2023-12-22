@@ -171,6 +171,12 @@
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_50": "已設定為無敵狀態",
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_51": "無敵狀態結束",
 
+    "STR_MODALWINDOW_TITLE_DEFAULT": "Confirmation dialog",
+    "STR_MODALWINDOW_CONFIRM": "Confirm",
+    "STR_MODALWINDOW_CANCEL": "Cancel",
+    "STR_MODALWINDOW_TITLE_UPDATE": "Update",
+    "STR_MODALWINDOW_TEXT_UPDATE": "Update dps meter now?\nIt will restart after update.",
+
     "STR_STAT_TYPE_0": "無",
     "STR_STAT_TYPE_1": "當前血量",
     "STR_STAT_TYPE_2": "靈魂值",

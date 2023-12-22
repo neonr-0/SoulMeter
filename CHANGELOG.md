@@ -1,3 +1,7 @@
+## 1.5.0.0
+
+- Updated meter, added modal dialogues support and auto update feature.
+
 ## 1.4.0.5
 
 - Fix for P1 CD Raid and Solo version of it, updated database

@@ -8,6 +8,7 @@
 #include ".\UI\HotKey.h"
 #include ".\UI\UtillWindow.h"
 #include ".\UI\PlotWindow.h"
+#include ".\UI\ModalWindow.h"
 #include ".\Damage Meter\Damage Meter.h"
 #include <io.h>
 #include <chrono>
@@ -239,10 +240,12 @@ VOID UiWindow::Update() {
 	DXINPUT.Update();
 	HOTKEY.Update();
 	UIOPTION.Update();
+	MODALWINDOW.Update();
 	UTILLWINDOW.Update();
 	PLOTWINDOW.Update();
-	UpdateMainTable();
 
+	UpdateMainTable();
+	CheckModalWindowState();
 #ifdef _DEBUG
 	//ImGui::ShowMetricsWindow();
 #endif
@@ -325,6 +328,60 @@ VOID UiWindow::CalcDeltaTime() {
 
 VOID UiWindow::UpdateMainTable() {
 	PLAYERTABLE.Update();
+}
+
+VOID UiWindow::CheckModalWindowState() {
+	
+	if (MODALWINDOW.GetUID() == MODALWINDOW_UID_UPDATE)
+		if (MODALWINDOW.GetState() == 1)
+		{
+			MODALWINDOW.SetUID(-1);
+			CHAR errorMsg[256] = { 0 };
+			// Download update
+			httplib::Client cli("https://api.github.com");
+			//httplib::Client cli("http://localhost");
+			auto res = cli.Get("/repos/neonr-0/SoulMeter/releases/latest");
+			//auto res = cli.Get("/latest.json");
+			if (res != nullptr && res.error() == httplib::Error::Success && res->status == 200)
+			{
+				try
+				{
+					json jsonData = json::parse(res->body);
+					string url = jsonData["assets"][0]["browser_download_url"];
+					httplib::Client cli2("https://github.com");
+					//httplib::Client cli2("http://localhost");
+					cli2.set_follow_location(true);
+					url = url.substr(sizeof("https://github.com") - 1);
+					//url = url.substr(sizeof("http://localhost") - 1);
+					auto res2 = cli2.Get(url.c_str());
+					if (res2 != nullptr && res2.error() == httplib::Error::Success && res2->status == 200)
+					{
+						std::ofstream out("update.zip", std::ios::binary | std::ios::app);
+						out << res2->body;
+						out.close();
+						elz::extractZip("update.zip", "./tmp", "");
+						std::filesystem::remove("./update.zip");
+						std::filesystem::copy("./tmp/SoulMeter.exe", "./update.exe", std::filesystem::copy_options::update_existing);
+						//std::filesystem::remove("./tmp/WinDivert64.sys"); // ignore locked windivert driver
+						Sleep(1000);
+						wchar_t wpath[2048];
+						GetCurrentDirectoryW(2048, wpath);
+						HINSTANCE hInst = ShellExecuteW(NULL, L"open", L"update.exe", L"-update", wpath, 1);
+						exit(0);
+					}
+				}
+				catch (const std::exception&)
+				{
+					sprintf_s(errorMsg, "Connection issue");
+					MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK | MB_TOPMOST);
+				}
+			}
+			else
+			{
+				sprintf_s(errorMsg, "Update failed");
+				MessageBoxA(NULL, errorMsg, "SoulMeter", MB_ICONERROR | MB_OK | MB_TOPMOST);
+			}
+		}	
 }
 
 const HWND& UiWindow::GetHWND() {

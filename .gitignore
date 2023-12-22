@@ -23,6 +23,9 @@ SWCrypt.dll
 #Npcap
 [Nn]pcap/
 
+#elzip
+elzip.dll
+
 #Font File
 *.ttf
 
@@ -371,3 +374,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+# temp files
+/Soulworker Utility/tmp

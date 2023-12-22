@@ -171,6 +171,12 @@
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_50": "Set Invincible",
     "STR_UTILLWINDOW_COMBAT_LOG_TYPE_51": "Unset Invincible",
 
+    "STR_MODALWINDOW_TITLE_DEFAULT": "Confirmation dialog",
+    "STR_MODALWINDOW_CONFIRM": "Confirm",
+    "STR_MODALWINDOW_CANCEL": "Cancel",
+    "STR_MODALWINDOW_TITLE_UPDATE": "Update",
+    "STR_MODALWINDOW_TEXT_UPDATE": "Update dps meter now?\nIt will restart after update.",
+
     "STR_STAT_TYPE_0": "None",
     "STR_STAT_TYPE_1": "CurrentHP",
     "STR_STAT_TYPE_2": "SG",
