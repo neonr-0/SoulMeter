@@ -49,11 +49,11 @@ END
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (Traditional, Taiwan) resources
+// Neutral resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
-LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
-#pragma code_page(950)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -92,7 +92,7 @@ BEGIN
     END
 END
 
-#endif    // Chinese (Traditional, Taiwan) resources
+#endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
 

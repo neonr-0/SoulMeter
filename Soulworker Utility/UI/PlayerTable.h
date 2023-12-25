@@ -40,6 +40,12 @@ private:
 	FLOAT _tableTime;
 	FLOAT _accumulatedTime;
 
+	//Theme
+	bool _bkgImageLoaded;
+	ID3D11ShaderResourceView* _bkgTexture;
+	int _bkgImageWidth;
+	int _bkgImageHeight;
+
 public:
 	PlayerTable();
 	~PlayerTable();

@@ -12,15 +12,26 @@
 #include ".\Soulworker Packet\SWPacketMaker.h"
 #include ".\Packet Capture\PacketCapture.h"
 #include "SWConfig.h"
+#include "DX11.h"
 
-
-PlayerTable::PlayerTable() : _tableResize(0), _globalFontScale(0), _columnFontScale(0), _tableFontScale(0), _curWindowSize(0), _tableTime(0), _accumulatedTime(0)
+PlayerTable::PlayerTable() : _tableResize(0), _globalFontScale(0), _columnFontScale(0), _tableFontScale(0), _curWindowSize(0), _tableTime(0), _accumulatedTime(0), _bkgImageLoaded(false), _bkgTexture(NULL), _bkgImageWidth(0), _bkgImageHeight(0)
 {
-
+	// Background image
+	if (std::filesystem::exists("Themes/table_bkg.png") && !_bkgImageLoaded)
+	{
+		bool ret = DIRECTX11.LoadTextureFromFile("Themes/table_bkg.png", &_bkgTexture, &_bkgImageWidth, &_bkgImageHeight);
+		if (ret)
+			_bkgImageLoaded = true;
+	}
+	else
+		_bkgImageLoaded = false;
+	
 }
 
 PlayerTable::~PlayerTable() {
 	ClearTable();
+	if (_bkgImageLoaded)
+		DIRECTX11.UnloadTexture(_bkgTexture);
 }
 
 VOID PlayerTable::ClearTable() {
@@ -103,9 +114,18 @@ VOID PlayerTable::Update() {
 			loss,
 			!_isNewestVersion ? LANGMANAGER.GetText("STR_MENU_OUT_OF_DATE") : ""
 		);
+		//UIWINDOW.GetHWND();
 
 		ImGui::Begin(title, 0, windowFlag);
 		{
+			if (_bkgImageLoaded)
+			{
+				auto pos = ImGui::GetWindowPos();
+				auto size = ImGui::GetWindowSize();
+				ImGui::GetBackgroundDrawList()->AddImage((void*)_bkgTexture, ImVec2(pos.x, pos.y), ImVec2((pos.x + size.x), pos.x + _bkgImageHeight));
+				//ImGui::Image((void*)my_texture, ImVec2(my_image_width, my_image_height));
+			}
+
 			if (!UIOPTION.isOption() || _tableResize)
 				SetWindowSize();
 

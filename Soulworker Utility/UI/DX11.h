@@ -24,4 +24,7 @@ public:
 
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetDeviceContext();
+
+	bool LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
+	void UnloadTexture(ID3D11ShaderResourceView* in_srv);
 };

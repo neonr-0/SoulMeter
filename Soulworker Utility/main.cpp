@@ -51,8 +51,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		// Cleanup if update was happen
 		if (std::filesystem::exists("./tmp/"))
 		{
-			std::filesystem::remove_all("./tmp/");
-			std::filesystem::remove("./update.exe");
+			try
+			{
+				std::filesystem::remove_all("./tmp/");
+				std::filesystem::remove("./update.exe");
+			}
+			catch (const std::exception&)
+			{
+				//failed
+			}
+
 		}
 		do
 		{
