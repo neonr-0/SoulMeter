@@ -141,6 +141,9 @@ public:
 	UINT64 _avgASSum = 0;
 	UINT64 _avgASPreviousTime = 0;
 
+	UINT64 _avgAtkCritDmgSum = 0;
+	UINT64 _avgAtkCritDmgPreviousTime = 0;
+
 	BOOL _gear90EffectStarted = false;
 	UINT64 _gear90Sum = 0;
 	UINT64 _gear90EffectStartedTime = 0;
@@ -185,6 +188,8 @@ public:
 		_avgABPreviousTime = 0;
 		_avgBDSum = 0;
 		_avgBDPreviousTime = 0;
+		_avgAtkCritDmgSum = 0;
+		_avgAtkCritDmgPreviousTime = 0;
 	}
 
 	VOID UpdateStat(USHORT statType, FLOAT statValue) {
@@ -258,6 +263,11 @@ public:
 			break;
 		case StatType::MinAttack:
 			_maxAttack = static_cast<FLOAT>(statValue * 1.25);
+			if (DAMAGEMETER.isRun()) {
+				UINT64 time = (UINT64)((DOUBLE)DAMAGEMETER.GetTime()); // timer time
+			_avgAtkCritDmgSum += static_cast<UINT64>((time - _avgAtkCritDmgPreviousTime) * (_maxAttack + _critDamage));
+			_avgAtkCritDmgPreviousTime = time;
+			}
 			break;
 		case StatType::MaxAttack:
 			_maxAttack = statValue;
@@ -372,6 +382,12 @@ public:
 				UINT64 calculatedAvgAS = static_cast<UINT64>((_avgASSum + avgTimeDifference * currentAS));
 				(*player)->SetHistoryAvgAS((DOUBLE)calculatedAvgAS / currentTime);
 
+				// average atk+crit dmg
+				DOUBLE currentAtkCritDmg = (DOUBLE)GetStat(StatType::MaxAttack) + (DOUBLE)GetStat(StatType::CritDamage);
+				avgTimeDifference = currentTime - _avgAtkCritDmgPreviousTime;
+				UINT64 calculatedAvgAtkCritDmg = static_cast<UINT64>(_avgAtkCritDmgSum + avgTimeDifference + currentAtkCritDmg);
+				(*player)->SetHistoryAvgAtkCritDmg((DOUBLE)calculatedAvgAtkCritDmg / currentTime);
+
 				if (_fullABStarted) {
 					_fullABStarted = false;
 					_fullABEndTime = currentTime;
@@ -437,6 +453,9 @@ public:
 
 		_avgASSum = 0;
 		_avgASPreviousTime = 0;
+
+		_avgAtkCritDmgSum = 0;
+		_avgAtkCritDmgPreviousTime = 0;
 
 		_gear90EffectStarted = false;
 		_gear90Sum = 0;

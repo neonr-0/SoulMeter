@@ -29,6 +29,11 @@ private:
 	VOID SetupTable();
 	VOID UpdateTable(FLOAT windowWidth);
 
+	VOID Convert1M_s(UINT64 in_int, char* in_out_str, size_t in_str_length);
+	VOID Convert1M_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length);
+	VOID Convert1K_s(UINT64 in_int, char* in_out_str, size_t in_str_length);
+	VOID Convert1K_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length);
+
 	FLOAT _globalFontScale;
 	FLOAT _columnFontScale;
 	FLOAT _tableFontScale;

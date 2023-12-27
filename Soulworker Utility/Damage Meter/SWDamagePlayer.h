@@ -67,6 +67,8 @@ private:
 	DOUBLE _historyASTime = 0;
 	DOUBLE _historyAvgAS = 0.0;
 
+	DOUBLE _historyAvgAtkCritDmg = 0.0;
+
 	vector<SWDamageMonster*> _monsterInfo;
 	VOID InsertMonsterInfo(UINT32 monsterID, UINT64 damage, UINT64 critDamage, USHORT hitCount, USHORT critHitCount, UINT32 skillID);
 	VOID Sort();
@@ -129,6 +131,9 @@ public:
 
 	VOID SetHistoryAvgAS(DOUBLE d);
 	DOUBLE GetHistoryAvgAS();
+
+	VOID SetHistoryAvgAtkCritDmg(DOUBLE d);
+	DOUBLE GetHistoryAvgAtkCritDmg();
 
 	VOID setHistoryBS(int type, DOUBLE value);
 	DOUBLE GetHistoryBS(int type);

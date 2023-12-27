@@ -296,6 +296,16 @@ DOUBLE SWDamagePlayer::GetHistoryAvgAS()
 	return _historyAvgAS;
 }
 
+VOID SWDamagePlayer::SetHistoryAvgAtkCritDmg(DOUBLE d)
+{
+	_historyAvgAtkCritDmg = d;
+}
+
+DOUBLE SWDamagePlayer::GetHistoryAvgAtkCritDmg()
+{
+	return _historyAvgAtkCritDmg;
+}
+
 FLOAT SWDamagePlayer::GetEnlightenSum()
 {
 	return _enlightenSum;

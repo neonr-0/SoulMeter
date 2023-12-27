@@ -44,6 +44,7 @@
     "STR_TABLE_SOULSTONE_DAMAGE": "靈魂石總傷",
     "STR_TABLE_AVERAGE_AB": "均貫",
     "STR_TABLE_AVERAGE_BD": "均B",
+    "STR_TABLE_AVERAGE_ATKCRITDMG": "Avg.ATK+C.DMG",
     "STR_TABLE_MISS": "攻擊失敗",
     "STR_TABLE_MISS_RATE": "攻擊失敗(%)",
     "STR_TABLE_PARTIAL": "攻擊失敗總傷",

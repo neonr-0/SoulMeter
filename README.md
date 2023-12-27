@@ -9,7 +9,7 @@ Supported capture software: *Npcap(Recommended), WinDivert(Default, The data wil
 
 ![example](example.png)
 
-Starting from version 1.4.0.0 there are auto-detection mechanism to find right version of game, on first launch it can take a while before DPS meter started to work. You can **manually** change it in settings or use a **static** with latests version of DPS meter.
+Starting from version 1.4.0.0 there are auto-detection mechanism to find right version of game, on first launch it can take a while before DPS meter started to work. You can **manually** change it in settings or use a **static** with latest version of DPS meter.
 
 ![example](settings_auto.png)
 
@@ -23,6 +23,7 @@ Can get player details with left click table of character name row
 
 option.xml and imgui.ini is user settings
 
+Adding background to dps meter: put background with right size to **Themes\table_bkg.png**
 
 ## Q&A
 

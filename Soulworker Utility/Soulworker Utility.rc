@@ -61,8 +61,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,5,0,0
- PRODUCTVERSION 1,5,0,0
+ FILEVERSION 1,5,1,0
+ PRODUCTVERSION 1,5,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -78,12 +78,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "https://github.com/neonr-0/SoulMeter"
-            VALUE "FileVersion", "1.5.0.0"
+            VALUE "FileVersion", "1.5.1.0"
             VALUE "InternalName", "SoulMeter.exe"
             VALUE "LegalCopyright", "Copyright (C) 2024 neonr-0"
             VALUE "OriginalFilename", "SoulMeter.exe"
             VALUE "ProductName", "SoulMeter"
-            VALUE "ProductVersion", "1.5.0.0"
+            VALUE "ProductVersion", "1.5.1.0"
         END
     END
     BLOCK "VarFileInfo"

@@ -281,7 +281,7 @@ VOID PlayerTable::SetupTable() {
 	ImGuiTableFlags tableFlags = ImGuiTableFlags_None;
 	tableFlags |= (ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Resizable);
 
-	const int columnSize = 47;
+	const int columnSize = 48;
 	if (ImGui::BeginTable("###Player Table", columnSize, tableFlags)) {
 
 		ImGuiTableColumnFlags columnFlags = ImGuiTableColumnFlags_None;
@@ -300,6 +300,7 @@ VOID PlayerTable::SetupTable() {
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_SKILL_PER_SECOND"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_MAX_COMBO"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_ATTACK_CDMG_SUM"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
+		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_AVERAGE_ATKCRITDMG"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_SOUL_GAUGE"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_ATTACK_SPEED"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
 		ImGui::TableSetupColumn(LANGMANAGER.GetText("STR_TABLE_ARMOR_BREAK"), columnFlags | ImGuiTableColumnFlags_WidthFixed, -1);
@@ -420,18 +421,14 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			ImGui::Text("-");
 		}
 		else {
-			DOUBLE dps = ((DOUBLE)(*itr)->GetDamage()) / _tableTime;
+			DOUBLE dps = ((DOUBLE)(*itr)->GetDamage()) / _tableTime; 
 			if (UIOPTION.is1K())
-				dps /= 1000;
+				Convert1K_s(dps, label, 128);
 			else if (UIOPTION.is1M())
-				dps /= 1000000;
-			sprintf_s(label, 128, "%.0lf", dps);
-			TextCommma(label, comma);
-			if (UIOPTION.is1K())
-				strcat_s(comma, 128, "K");
-			else if (UIOPTION.is1M())
-				strcat_s(comma, 128, "M");
-			ImGui::Text(comma);
+				Convert1M_s(dps, label, 128);
+			else
+				sprintf_s(label, 128, "%.0lf", dps);
+			ImGui::Text(label);
 
 			bool isFirstElement = ((itr - DAMAGEMETER.begin()) == 0);
 			PLOTWINDOW.AddData((*itr)->GetID(), DAMAGEMETER.GetPlayerName((*itr)->GetID()), dps, _tableTime, isFirstElement);
@@ -455,16 +452,12 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		// DAMAGE
 		UINT64 damage = (*itr)->GetDamage();
 		if (UIOPTION.is1K())
-			damage /= 1000;
+			Convert1K_s(damage, label, 128);
 		else if (UIOPTION.is1M())
-			damage /= 1000000;
-		sprintf_s(label, 128, "%llu", damage);
-		TextCommma(label, comma);
-		if (UIOPTION.is1K())
-			strcat_s(comma, 128, "K");
-		else if (UIOPTION.is1M())
-			strcat_s(comma, 128, "M");
-		ImGui::Text(comma);
+			Convert1M_s(damage, label, 128);
+		else
+			sprintf_s(label, 128, "%llu", damage);
+		ImGui::Text(label);//comma
 
 		ImGui::TableNextColumn();
 
@@ -571,19 +564,48 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			ImGui::TableNextColumn();
 		}
 		else {
-			// Attack+Crit SUM
-			DOUBLE gongchihap = (DOUBLE)playerMetaData->GetStat(StatType::MaxAttack) + (DOUBLE)playerMetaData->GetStat(StatType::CritDamage);
-			if (UIOPTION.is1K())
-				gongchihap /= 1000;
-			else if (UIOPTION.is1M())
-				gongchihap /= 1000000;
-			sprintf_s(label, 128, "%.0f", gongchihap);
-			TextCommma(label, comma);
-			if (UIOPTION.is1K())
-				strcat_s(comma, 128, "K");
-			else if (UIOPTION.is1M())
-				strcat_s(comma, 128, "M");
-			ImGui::Text(comma);
+			// Attack+Crit Damage SUM
+			DOUBLE AtkCritDmgSum = (DOUBLE)playerMetaData->GetStat(StatType::MaxAttack) + (DOUBLE)playerMetaData->GetStat(StatType::CritDamage);
+			if ((UIOPTION.is1K()) || (UIOPTION.is1M())) // ignore 1M value is not informative
+				Convert1K_s(AtkCritDmgSum, label, 128);
+			else
+				sprintf_s(label, 128, "%.0f", AtkCritDmgSum);
+			ImGui::Text(label);
+			ImGui::TableNextColumn();
+
+			// ATK+C.DMG Average
+			static DOUBLE savedResultAtkCritDmg = 0;
+			if (DAMAGEMETER.GetPlayerName((*itr)->GetID()) != LANGMANAGER.GetText("STR_TABLE_YOU") || _tableTime == 0) {
+				sprintf_s(label, 128, "-");
+			}
+			else if (DAMAGEMETER.isHistoryMode()) {
+				savedResultAtkCritDmg = (*itr)->GetHistoryAvgAtkCritDmg();
+				if ((UIOPTION.is1K()) || (UIOPTION.is1M())) // ignore 1M value is not informative
+					Convert1K_s(savedResultAtkCritDmg, label, 128);
+				else
+					sprintf_s(label, 128, "%.0f", savedResultAtkCritDmg);
+			}
+			else {
+
+				if ((INT64)(milliTableTime - playerMetaData->_avgAtkCritDmgPreviousTime) < 0) {
+					if ((UIOPTION.is1K()) || (UIOPTION.is1M())) // ignore 1M value is not informative
+						Convert1K_s(savedResultAtkCritDmg, label, 128);
+					else
+						sprintf_s(label, 128, "%.0f", savedResultAtkCritDmg);
+				}
+				else {
+					UINT64 timeDifference = (milliTableTime - playerMetaData->_avgAtkCritDmgPreviousTime);
+					DOUBLE currentAtkCritDmg = (DOUBLE)playerMetaData->GetStat(StatType::MaxAttack) + (DOUBLE)playerMetaData->GetStat(StatType::CritDamage);
+					UINT64 calculatedAvgAtkCritDmg = static_cast<UINT64>((playerMetaData->_avgAtkCritDmgSum + timeDifference * currentAtkCritDmg));
+
+					savedResultAtkCritDmg = (DOUBLE)calculatedAvgAtkCritDmg / milliTableTime;
+					if ((UIOPTION.is1K()) || (UIOPTION.is1M())) // ignore 1M value is not informative
+						Convert1K_s(savedResultAtkCritDmg, label, 128);
+					else
+						sprintf_s(label, 128, "%.0f", savedResultAtkCritDmg);
+				}
+			}
+			ImGui::Text(label);
 			ImGui::TableNextColumn();
 
 			static FLOAT statTmp = 0;
@@ -1083,7 +1105,6 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		}
 		ImGui::Text(label);
 		ImGui::TableNextColumn();
-
 		//  (etc)
 		PLOTWINDOW.AddJqData((*itr)->GetJqStack(), _tableTime);
 	}
@@ -1128,6 +1149,58 @@ VOID PlayerTable::ShowSelectedTable() {
 	}
 }
 
+VOID PlayerTable::Convert1M_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length) {
+	if (in_out_str == nullptr || in_str_length <= 0) {
+		return;
+	}
+	memset(in_out_str, 0, in_str_length);
+	DOUBLE print = in_dfloat / 1000000;
+	stringstream ss;
+	ss.imbue(locale(""));
+	ss.setf(ios::fixed, ios::floatfield);
+	ss.precision(2);
+	ss << print;
+	strcpy_s(in_out_str, in_str_length, ss.str().c_str());
+	strcat_s(in_out_str, in_str_length, "M");
+}
+VOID PlayerTable::Convert1M_s(UINT64 in_int, char* in_out_str, size_t in_str_length) {
+	if (in_out_str == nullptr || in_str_length <= 0) {
+		return;
+	}
+	memset(in_out_str, 0, in_str_length);
+	UINT64 print = (UINT64)in_int / 1000000;
+	stringstream ss;
+	ss.imbue(locale(""));
+	ss << print;
+	strcpy_s(in_out_str, in_str_length, ss.str().c_str());
+	strcat_s(in_out_str, in_str_length, "M");
+}
+VOID PlayerTable::Convert1K_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length) {
+	if (in_out_str == nullptr || in_str_length <= 0) {
+		return;
+	}
+	memset(in_out_str, 0, in_str_length);
+	DOUBLE print = in_dfloat / 1000;
+	stringstream ss;
+	ss.imbue(locale(""));
+	ss.setf(ios::fixed, ios::floatfield);
+	ss.precision(0);
+	ss << print;
+	strcpy_s(in_out_str, in_str_length, ss.str().c_str());
+	strcat_s(in_out_str, in_str_length, "K");
+}
+VOID PlayerTable::Convert1K_s(UINT64 in_int, char* in_out_str, size_t in_str_length) {
+	if (in_out_str == nullptr || in_str_length <= 0) {
+		return;
+	}
+	memset(in_out_str, 0, in_str_length);
+	UINT64 print = in_int / 1000;
+	stringstream ss;
+	ss.imbue(locale(""));
+	ss << print;
+	strcpy_s(in_out_str, in_str_length, ss.str().c_str());
+	strcat_s(in_out_str, in_str_length, "K");
+}
 VOID PlayerTable::CheckUpdate()
 {
 

@@ -1,3 +1,7 @@
+## 1.5.1.0
+
+- Added support for background image (experimental), added **Average Attack+Crit Damage** stat, fixed 1M display in certain conditions and added precision to it.
+
 ## 1.5.0.0
 
 - Updated meter, added modal dialogues support and auto update feature.
