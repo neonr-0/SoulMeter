@@ -14,7 +14,7 @@
 
 UiOption::UiOption()  : 
 	_open(0), _framerate(1), _windowBorderSize(1), _fontScale(1), _columnFontScale(1), _tableFontScale(1), 
-	_is1K(0), _is1M(0), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
+	_is1K(0), _is1M(0), _precision1M(2), _isSoloMode(0), _hideName(0), _isTopMost(true), _teamTA_LF(false), _isSoloRankMode(FALSE), _isUseSaveData(FALSE),
 	_isDontSaveUnfinishedMaze(false), _isUpdateCheck(true),
 	_cellPadding(0, 0), _windowWidth(800), _refreshTime((FLOAT)0.3), _captureMode((INT32)CaptureType::_WINDIVERT), _oriIsUseSaveData(FALSE),
 	_selectedInterface("ALL")
@@ -345,6 +345,15 @@ VOID UiOption::ShowFeatures()
 		if (_is1K)
 			_is1K = FALSE;
 	}
+	if (_is1M)
+	{
+		ImGui::SameLine(0.0f, 10.0f);
+		ImGui::InputInt(LANGMANAGER.GetText("STR_OPTION_UNIT_1M"), &_precision1M, 1, 1);
+		if (_precision1M < 0)
+			_precision1M = 0;
+		if (_precision1M > 2)
+			_precision1M = 2;
+	}
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_MODE"), (bool*)&_isSoloMode);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_HIDE_NAME"), (bool*)&_hideName);
 	ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_SOLO_RANK_MODE"), (bool*)&_isSoloRankMode); ImGui::SameLine(); ImGui::Checkbox(LANGMANAGER.GetText("STR_OPTION_DONT_SAVE_UNFINISHED_MAZE"), (bool*)&_isDontSaveUnfinishedMaze);
@@ -510,22 +519,26 @@ BOOL UiOption::GetOption() {
 #endif
 
 	attr = ele->FindAttribute("K");
-
 	if (attr == nullptr)
 		return FALSE;
-
 	attr->QueryIntValue(&_is1K);
-
 #if DEBUG_READ_XML == 1
 	Log::WriteLog(const_cast<LPTSTR>(_T("Read 1K = %d")), _is1K);
 #endif
 
 	attr = ele->FindAttribute("M");
-
 	if (attr == nullptr)
 		return FALSE;
-
 	attr->QueryIntValue(&_is1M);
+
+	attr = ele->FindAttribute("Precision1M");
+	if (attr != nullptr)
+	{
+		attr->QueryIntValue(&_precision1M);
+		if (attr == nullptr)
+			return 2;
+	}
+	
 
 	attr = ele->FindAttribute("IsSoloMode");
 	if (attr == nullptr)
@@ -949,6 +962,7 @@ BOOL UiOption::SaveOption(BOOL skipWarning) {
 	option->SetAttribute("ColumnScale", _columnFontScale);
 	option->SetAttribute("K", _is1K);
 	option->SetAttribute("M", _is1M);
+	option->SetAttribute("Precision1M", _precision1M);
 	option->SetAttribute("IsSoloMode", _isSoloMode);
 	option->SetAttribute("DoHideName", _hideName);
 	option->SetAttribute("TeamTA_LF", _teamTA_LF);
@@ -1128,6 +1142,9 @@ const BOOL& UiOption::is1K() {
 
 const BOOL& UiOption::is1M() {
 	return _is1M;
+}
+const BOOL& UiOption::precision1M() {
+	return _precision1M;
 }
 
 const BOOL& UiOption::isSoloMode(){

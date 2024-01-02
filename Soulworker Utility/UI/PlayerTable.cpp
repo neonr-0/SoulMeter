@@ -425,7 +425,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			if (UIOPTION.is1K())
 				Convert1K_s(dps, label, 128);
 			else if (UIOPTION.is1M())
-				Convert1M_s(dps, label, 128);
+				Convert1M_s(dps, label, 128, UIOPTION.precision1M());
 			else
 				sprintf_s(label, 128, "%.0lf", dps);
 			ImGui::Text(label);
@@ -454,7 +454,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		if (UIOPTION.is1K())
 			Convert1K_s(damage, label, 128);
 		else if (UIOPTION.is1M())
-			Convert1M_s(damage, label, 128);
+			Convert1M_s(damage, label, 128, UIOPTION.precision1M());
 		else
 			sprintf_s(label, 128, "%llu", damage);
 		ImGui::Text(label);//comma
@@ -1149,7 +1149,7 @@ VOID PlayerTable::ShowSelectedTable() {
 	}
 }
 
-VOID PlayerTable::Convert1M_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length) {
+VOID PlayerTable::Convert1M_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_length, int precision) {
 	if (in_out_str == nullptr || in_str_length <= 0) {
 		return;
 	}
@@ -1158,7 +1158,7 @@ VOID PlayerTable::Convert1M_s(DOUBLE in_dfloat, char* in_out_str, size_t in_str_
 	stringstream ss;
 	ss.imbue(locale(""));
 	ss.setf(ios::fixed, ios::floatfield);
-	ss.precision(2);
+	ss.precision(precision);
 	ss << print;
 	strcpy_s(in_out_str, in_str_length, ss.str().c_str());
 	strcat_s(in_out_str, in_str_length, "M");

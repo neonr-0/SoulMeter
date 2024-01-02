@@ -29,6 +29,7 @@ private:
 	FLOAT _tableFontScale;
 	BOOL _is1K;
 	BOOL _is1M;
+	INT32 _precision1M;
 	BOOL _isSoloMode;
 	BOOL _hideName;
 	ImVec2 _cellPadding;
@@ -92,6 +93,7 @@ public:
 	const ImVec4& GetWindowBGColor();
 	const BOOL& is1K();
 	const BOOL& is1M();
+	const INT32& precision1M();
 	const BOOL& isSoloMode();
 	const BOOL& doHideName();
 	const BOOL& isTopMost();
