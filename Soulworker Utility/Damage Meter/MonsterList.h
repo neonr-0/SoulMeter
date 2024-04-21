@@ -38,6 +38,8 @@ static unordered_set<UINT32> pauseIdList({
 	/* CD */
 	44002014, // Beletto Solo P1
 	44002010, // Belletto P1 
+	/* HH Hero */
+	44002030, 44003030, // Raphakumba
 	});
 
 static unordered_set<UINT32> endIdList({
@@ -88,6 +90,9 @@ static unordered_set<UINT32> endIdList({
 	/* CD Solo */
 	44002015, // Belletto P2
 	44002014, // Belletto P1
+
+	/* HH Hero */
+	44002030, 44003030, // Raphakumba
 	});
 
 static unordered_set<UINT32> resumeIgnoreIdList({
@@ -98,6 +103,14 @@ static unordered_set<UINT32> resumeIgnoreIdList({
 	/* SKILL */
 	1081102, 1081103, 1081104, 1081105, 1081106, 1081107, 1081108, 1081109, // Field Octagon(Ephnel)
 	1091101, // Bomb Wick(Nabi)
+
+	/* HH Hero */
+	44002054, // Piety
+	44002052, // Tombstone? Normal
+	44002031, 44002033, // False Followers Normal
+	44002035, 44002038, // True Followers Normal
+	44002032, 44002036, // True Followers Hard
+	44002034, // False Followers Hard
 
 	});
 
@@ -141,6 +154,8 @@ static unordered_set<UINT32> changeAggroIdList({
 	/* CD Solo */
 	44002015, // Belletto P2
 	44002014, // Belletto P1
+	/* HH Hero */
+	44002030, 44003030, // Raphakumba
 	});
 
 static unordered_set<UINT32> dpsIgnoreIdList({
@@ -173,6 +188,14 @@ static unordered_set<UINT32> dpsIgnoreIdList({
 	40301006, // Relfenne center mech
 	40201011, // Vista summoned wolf
 	40301011, // Vista egg?
+
+	/* HH Hero */
+	44002054, // Piety
+	44002052, // Tombstone? Normal
+	44002031, 44002033, // False Followers Normal
+	44002035, 44002038, // True Followers Normal
+	44002032, 44002036, // True Followers Hard
+	44002034, // False Followers Hard
 	});
 
 static unordered_set<UINT32> LunarFallBossListId({

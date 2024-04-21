@@ -37,7 +37,7 @@ A: Copy option.xml and imgui.ini to new version folder
 
 Q: Does this DPS meter work only on global server?
 
-A: This DPS meter tested only on global server, but since version >1.4.0.0 it may work on JP/KR. It might work, but there are no guarantees.
+A: This DPS meter tested only on global server, but since version >1.4.0.0 it might work on JP/KR, but there are no guarantees.
 
 
 ## Notice

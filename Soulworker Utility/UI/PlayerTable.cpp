@@ -454,7 +454,7 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 		if (UIOPTION.is1K())
 			Convert1K_s(damage, label, 128);
 		else if (UIOPTION.is1M())
-			Convert1M_s(damage, label, 128, UIOPTION.precision1M());
+			Convert1M_s(damage, label, 128, 0);
 		else
 			sprintf_s(label, 128, "%llu", damage);
 		ImGui::Text(label);//comma
@@ -535,6 +535,10 @@ VOID PlayerTable::UpdateTable(FLOAT windowWidth) {
 			// Attack+Crit SUM
 			sprintf_s(label, 128, "-");
 			ImGui::Text(label);
+			ImGui::TableNextColumn();
+
+			// ATK+C.DMG Average
+			ImGui::Text("-");
 			ImGui::TableNextColumn();
 
 			// SG
